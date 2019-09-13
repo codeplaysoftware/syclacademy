@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+		<link rel="stylesheet" href="css/custom.css">
+		
+	</head>
+	<body>
+		<span class='overlay-image bottom-left'><img src="images/sycl_logo.png" alt="SYCL"></span>
+		<span class='overlay-image bottom-right'><img src="images/codeplay.png" alt="Codeplay Software"></span>
+		<span class='overlay-image top-left'><img src="images/sycl_academy.png" alt="SYCL Academy"></span>
+		<div class="reveal">
+			<div class="slides">
+				<section class="hbox" data-markdown>
+					## Launching SYCL Kernels
+				</section>
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+
+					* Learn about the SPMD model of describing parallelism
+					* Learn about the SYCL execution model
+					* Learn how to declare a SYCL kernel function and invoke over an nd-range
+					* Learn about the rules and restrictions on SYCL kernel functions
+					* Learn how to define a SYCL kernel function as a lambda or a function object
+					* Learn how to pre-compile a SYCL kernel function
+				</section>
+				<section class="hbox" data-markdown>
+				    ## The SYCL Execution Model
+				</section>
+				<section>
+					<div class="container">
+						<div class="col-left" data-markdown>
+							* SYCL kernel functions are executed by **work-items**
+							* You can think of a work-item as like a thread of execution
+							* Though the way work-items are executed in SYCL is different to how threads are executed in C++
+							* These work-items can be run on OS threads, GPU processing elements, etc, depending on the device
+						</div>
+						<div class="col-right" data-markdown>
+							![Work Item](images/workitem.png "Work-Item")
+						</div>
+
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Work-items are collected together into **work-groups**
+							* The size of work-groups is generally relative to what is optimal on the device being targeted
+						</div>
+						<div class="col" data-markdown>
+							![Work Group](images/workgroup.png "Work-Group")
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							* SYCL kernel functions are invoked within an **nd-range**
+							* An nd-range has a number of work-groups and subsequently a number of work-items
+							* Work-groups always have the same number of work-items
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](images/ndrange.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							* The nd-range describes an **iteration space**; how the work-items and work-groups are composed
+							* An nd-range can be 1, 2 or 3 dimensions
+							* An nd-range has two components
+							  * The **global-range** describes the total number of workitems in each dimension
+							  * The **local-range** describes the number of work-items in a work-group in dimension
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](images/ndrange-example.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Each invocation in the iteration space of an nd-range is a work-item
+							* Each invocation knows which work-item it is and can query certain information about its position in the iteration space 
+							* An nd-range has two components
+							  * **Global range**: {12, 12}
+							  * **Global id**: {6, 5}
+							  * **Group range**: {3, 3}
+							  * **Group id**: {1, 1}
+							  * **Local range**: {4, 4}
+							  * **Local id**: {2, 1}
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](images/ndrange-example-work-item.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							Typically an nd-range invocation SYCL will execute the SYCL kernel function on a very large number of work-items, often in the thousands
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](images/ndrange-invocation.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Multiple work-items will generally execute concurrently
+							* On vector hardware this done in lock-step, which means the same hardware instructions
+							* The number of work-items that will execute concurrently can vary from one device to another
+							* Work-items will be batched along with other work-items in the same work-group
+							* The order work-items and workgroups are executed in is implementation defined
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](images/ndrange-lock-step.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Work-items in a work-group can be synchronized using a work-group barrier
+							  * All work-items within a work-group must reach the barrier before any can continue on
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](images/work-group-0.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							* SYCL does not support synchronizing across all work-items in the nd-range
+							* The only way to do this is to split the computation into separate SYCL kernel functions
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](images/work-group-0-1.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<section data-markdown>
+					SYCL is an SPMD Progamming Model
+				</section>
+				<section>
+					<div class="container">
+						<div class="col">
+							Sequential CPU code
+							<code><pre>
+void calc(int *in, int *out) {
+	// all iterations are run in the same 
+	// thread in a loop 
+	for (int i = 0; i < 1024; i++){ 
+		out[i] = in[i] * in[i];
+	} 
+}
+
+// calc is invoked just once and all 
+// iterations are performed inline 
+calc(in, out);
+							</code></pre>
+						</div>
+						<div class="col">
+							Parallel SPMD code
+							<code><pre>
+void calc(int *in, int *out, int id) { 
+	// function is described in terms of 
+	// a single iteration 
+	out[id] = in[id] * in[id];
+}
+
+// parallel_for invokes calc multiple 
+// times in parallel 
+parallel_for(calc, in, out, 1024);
+
+
+							</code></pre>
+						</div>
+					</div>
+				</section>
+				<section>
+					Invoking SYCL Kernel Functions
+				</section>
+				<section>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt 
+using namespace cl::sycl;
+
+class add;
+
+int main(int argc, char *argv[]) { 
+	queue gpuQueue(gpu_selector{});
+
+	gpuQueue.submit([&](handler &cgh){
+
+		cgh.parallel_for&ltadd&gt(range&lt1&gt(1024), 
+		  [=](id&lt1&gt i) { 
+			// kernel code }); 
+	}); 
+	gpuQueue.wait();
+}
+
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* SYCL kernel functions are defined and invoked using one of the kernel function invoke APIs provided by the **handler** class
+							* These add a SYCL kernel function command to the command group
+							* There can only be one SYCL kernel function command in a command group
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt 
+using namespace cl::sycl;
+
+class add;
+
+int main(int argc, char *argv[]) { 
+	queue gpuQueue(gpu_selector{});
+
+	gpuQueue.submit([&](handler &cgh){
+
+		cgh.parallel_for&ltadd&gt(range&lt1&gt(1024), 
+		  <mark>[=](id&lt1&gt i) { 
+			// kernel code }); 
+	}); </mark>
+	gpuQueue.wait();
+}
+
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* The lambda or function object represents the SYCL device function
+							* This is the part that is compiled for the device
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt 
+using namespace cl::sycl;
+
+class add;
+
+int main(int argc, char *argv[]) { 
+	queue gpuQueue(gpu_selector{});
+
+	gpuQueue.submit([&](handler &cgh){
+
+		cgh.parallel_for&ltadd&gt(<mark>range&lt1&gt(1024), 
+		  [=](id&lt1&gt i</mark>) { 
+			// kernel code }); 
+	}); 
+	gpuQueue.wait();
+}
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* There are a number of different APIs for expressing different forms of parallelism, complexity and functionality
+							* Each takes some representation of the nd-range and expects a certain parameter type that describes the current index into the iteration space
+							* These types have a number of member functions for retrieving different index and range information about the current interation
+						</div>
+					</div>
+				</section>
+				<section>
+					Expressing Parallelism
+					<div class="container">
+						<div class="col">
+							<code><pre>
+cgh.<mark>single_task</mark><T>([=](){
+	// SYCL kernel function is executed 
+	// once on a single work-item
+});
+							</code></pre>
+							<code><pre>
+cgh.<mark>parallel_for</mark><T>(range&lt2&gt(64, 64), 
+			[=](id&lt2&gt idx){
+	// SYCL kernel function is executed 
+	// on an nd-range of work-items
+});
+							</code></pre>
+						</div>
+						<div class="col">
+							<code><pre>
+cgh.<mark>parallel_for_work_group</mark>(range&lt2&gt(64, 64), 
+			[=](group&lt2&gt gp){
+	// SYCL kernel function is executed  
+	// once per work-group
+							</code></pre>
+							<code><pre>
+	<mark>parallel_for_work_item</mark>(gp, [=](h_item&lt2&gt it){
+		// SYCL kernel function is executed  
+		// once per work-item
+	});
+});
+							</code></pre>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
+		[=](<mark>id&lt1&gt idx</mark>){
+			
+	// kernel code
+	
+});
+
+							</code></pre>
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
+		[=](<mark>item&lt1&gt item</mark>){
+			
+	// kernel code
+	
+});
+
+							</code></pre>
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024), 
+	  range&lt1&gt(32))</mark>,[=](<mark>nd_item&lt1&gt ndItem</mark>){
+			
+	// kernel code
+	
+});
+
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Overload taking a **range** object specifies the global range, runtime decides local range
+							* An **id** parameter represents the index within the global range
+							____________________________________________________________________________________________
+							* Overload taking a **range** object specifies the global range, runtime decides local range
+							* An **item** parameter represents the global range and the index within the global range
+							____________________________________________________________________________________________
+							* Overload taking an **nd_range** object specifies the global and local range
+							* An **nd_item** parameter represents the global and local range and index
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(range&lt1&gt(1024), 
+		[=](<mark>id&lt1&gt(512)</mark>, id&lt1&gtidx){
+			
+	// kernel code
+	
+});
+
+							</code></pre>
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(range&lt1&gt(1024), 
+		 <mark>id&lt1&gt(512)</mark>, [=](item&lt1&gt item){
+			
+	// kernel code
+	
+});
+
+							</code></pre>
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(range&lt1&gt(1024), 
+	  range&lt1&gt(32), <mark>id&lt1&gt(512)</mark>),
+	  [=](nd_item&lt1&gt ndItem){
+			
+	// kernel code
+	
+});
+
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* All overloads of **parallel_for** also allow you to optionally specify an offset
+							* The offset, if used, will increment each index into the global index by the specified value
+							  * E.g. with a range of 1024 and an offset of 512 the indexes would become (512, 1536)
+						</div>
+					</div>
+				</section>
+				<section>
+					SYCL Kernels
+					<div class=container data-markdown>
+						* SYCL Kernel Functions
+						  * Must be defined using a C++ lambda or function object, they cannot be a function pointer or std::function
+						  * Must always capture or store members by-value 
+						  * Captures or stored members must be standard-layout
+						* Kernel Function Naming
+						  * SYCL kernel functions declared with a lambda must be named using a forward declarable C++ type, declared in global scope 
+						  * SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name
+					</div>
+				</section>
+				<section>
+					SYCL kernels as function objects
+				</section>
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt
+using namespace cl::sycl;
+class add;
+
+int main(int argc, char *argv[]) {
+  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  try { 
+    queue gpuQueue(gpu_selector{}, 
+      async_handler{});
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    gpuQueue.submit([&](handler &cgh){
+
+      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+
+      cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()),
+        <mark>[=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; }</mark>);
+    }); 
+    gpuQueue.wait_and_throw();
+  } catch (...) { /* handle errors */ }
+}
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+							* All the examples of SYCL kernel functions up until now have been defined using lambdas
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+struct add { 
+	using read_accessor_t = 
+	  accessor&ltfloat, 1, 
+	  access::mode::read, 
+	  access::target::global_buffer&gt;
+	using write_accessor_t = 
+	  accessor&ltfloat, 1 
+	  access::mode::write, 
+	  access::target::global_buffer&gt;
+	  
+	read_accessor_t inA_, inB_; 
+	write_accessor_t out_;
+
+void operator()(id&lt1&gt i){ 
+	out_[i] = inA_[i] + inB_[i]; 
+	}
+};
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* As well as defining SYCL kernels using lambdas you can also define a SYCL kernel using a regular C++ function object
+							* Where the accessors are stored as members and the function call operator takes the appropriate parameter
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt
+using namespace cl::sycl;
+class add;
+
+int main(int argc, char *argv[]) {
+  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  try { 
+    queue gpuQueue(gpu_selector{}, 
+      async_handler{});
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    gpuQueue.submit([&](handler &cgh){
+
+      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+
+      <mark>cgh.parallel_for(range&lt1&gt(dA.size()), 
+	    add{inA, inB, out});</mark>
+    }); 
+    gpuQueue.wait_and_throw();
+  } catch (...) { /* handle errors */ }
+}
+							</code></pre>
+						</div>
+						<div class="col-right-1">
+						<code><pre>
+struct add { 
+  using read_accessor_t = 
+    accessor&ltfloat, 1, 
+    access::mode::read, 
+    access::target::global_buffer&gt; 
+  using write_accessor_t = 
+    accessor&ltfloat, 1 
+    access::mode::write, 
+    access::target::global_buffer&lt;
+  
+  read_accessor_t inA_, inB_; 
+  write_accessor_t out_;
+
+  void operator()(id&lt1&gt i) ){ 
+  out[i] = inA[i] + inB[i]; 
+  } 
+};
+						</code></pre>
+						
+							To use a C++ function object you simply construct an instance of the type initialising the accessors and pass it to parallel_for<br><br>
+							
+							Notice you no longer need to name the SYCL kernel
+						</div>
+					</div>
+				</section>
+				<section>
+				Pre-Compiling SYCL Kernel Functions
+				</section>
+				<section>
+										<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt
+using namespace cl::sycl;
+class add;
+
+int main(int argc, char *argv[]) {
+  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  try { 
+    queue gpuQueue(gpu_selector{}, 
+      async_handler{});
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    gpuQueue.submit([&](handler &cgh){
+
+      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+
+      cgh.parallel_for(range&lt1&gt(dA.size()), 
+	    add{inA, inB, out});
+    }); 
+    gpuQueue.wait_and_throw();
+  } catch (...) { /* handle errors */ }
+}
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+							* When you invoke a SYCL kernel function the runtime has to justin-time compile the kernel for the device it’s being executed on
+							* This means the first time a kernel function is invoked will take longer than subsequent invocations
+							* However you can avoid this by pre-compiling the kernel
+						</div>
+					</div>
+				</section>
+				<section>
+										<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+int main(int argc, char *argv[]) {
+  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  try { 
+    queue gpuQueue(gpu_selector{}, 
+      async_handler{});
+
+    <mark>program addProgram(gpuQueue.get_context());</mark>
+
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    gpuQueue.submit([&](handler &cgh){
+
+      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+
+      cgh.parallel_for(range&lt1&gt(dA.size()), 
+	    add{inA, inB, out});
+    }); 
+    gpuQueue.wait_and_throw();
+  } catch (...) { /* handle errors */ }
+}
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+							* To pre-compile a kernel you need to create a program that is associated with the context you are executing the kernel on
+							* A program is represented by the **program** class
+						</div>
+					</div>
+				</section>
+				<section>
+										<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+int main(int argc, char *argv[]) {
+  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  try { 
+    queue gpuQueue(gpu_selector{}, 
+      async_handler{});
+
+    program addProgram(gpuQueue.get_context());
+    <mark>addProgram.compile_with_kernel_type&ltadd&gt();</mark>
+
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    gpuQueue.submit([&](handler &cgh){
+
+      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+
+      cgh.parallel_for(range&lt1&gt(dA.size()), 
+	    add{inA, inB, out});
+    }); 
+    gpuQueue.wait_and_throw();
+  } catch (...) { /* handle errors */ }
+}
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+							* The program can be then be compiled from a SYCL kernel function name by calling **compile_with_kernel_type** and specifying the kernel name as a template parameter
+							* If the kernel function was defined as a function object then the name would be the function object type
+						</div>
+					</div>
+				</section>
+				<section>
+										<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+int main(int argc, char *argv[]) {
+  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  try { 
+    queue gpuQueue(gpu_selector{}, async_handler{});
+
+    program addProgram(gpuQueue.get_context());
+    addProgram.compile_with_kernel_type&ltadd&gt();
+    <mark>auto addKernel = addProgram.get_kernel&ltadd&gt();</mark>
+
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&gtfloat, 1&lt bufO(dO.data(), range&lt1&gt(dO.size()));
+    gpuQueue.submit([&](handler &cgh){
+
+      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+
+      cgh.parallel_for(range&lt1&gt(dA.size()), 
+	    add{inA, inB, out});
+    }); 
+    gpuQueue.wait_and_throw();
+  } catch (...) { /* handle errors */ }
+}
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+							* Once the program is compiled you can retrieve the kernel
+							* A kernel is represented by the **kernel** class
+							* This is retrieved from a program object by calling the **get_kernel** member function and specifying the kernel name as a template parameter
+						</div>
+					</div>
+				</section>
+				<section>
+										<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+int main(int argc, char *argv[]) {
+  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  try{
+    queue gpuQueue(gpu_selector{}, async_handler{});
+
+    program addProgram(gpuQueue.get_context());
+    addProgram.compile_with_kernel_type&ltadd&gt();
+    auto addKernel = addProgram.get_kernel&ltadd&gt();
+
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    gpuQueue.submit([&](handler &cgh){
+
+      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+
+      cgh.parallel_for(<mark>addKernel</mark>,
+       range&lt1&gt(dA.size()), [=](id&lt1&gt i)
+       { out[i] = inA[i] + inB[i]; }); 
+    }); 
+    gpuQueue.wait_and_throw();
+  } catch (...) { /* handle errors */ }
+}
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+							* Finally the kernel object can then be passed to parallel_for in order to specify that the invocation should use the precompiled kernel
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="js/reveal.js"></script>
+		<script src="plugin/markdown/marked.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script>
+	Reveal.initialize();
+	Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
