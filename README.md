@@ -52,20 +52,41 @@ For Intel CPU or GPU
 * Download the latest ComputeCpp release package from [developer.codeplay.com](https://developer.codeplay.com)
 * Get the OpenCL header files from the [Khronos GitHub repo](https://github.com/KhronosGroup/OpenCL-Headers)
 
-Now create a DockerFile that uses these packages.
+Now create a DockerFile that uses these packages, an example of how this might be done is below:
+
 ```
 FROM ubuntu:18.04
 
-MAINTAINER John <insertyour@email.address>
+RUN apt-get update
+RUN apt-get install -y git
+RUN apt-get install -y ninja-build
+RUN apt-get install -y g++
+RUN apt-get install -y python3
+RUN apt-get install -y python3-pip
+RUN apt-get install -y software-properties-common
 
-RUN apt-get update && apt-get install -y apache2 && apt-get clean && rm -rf /var/lib/apt/lists/*ENV APACHE_RUN_USER  www-data
+RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
+RUN apt-get update
 
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR   /var/log/apache2
-ENV APACHE_PID_FILE  /var/run/apache2/apache2.pid
-ENV APACHE_RUN_DIR   /var/run/apache2
-ENV APACHE_LOCK_DIR  /var/lock/apache2
-ENV APACHE_LOG_DIR   /var/log/apache2RUN mkdir -p $APACHE_RUN_DIR
-RUN mkdir -p $APACHE_LOCK_DIR
-RUN mkdir -p $APACHE_LOG_DIRCOPY index.html /var/www/htmlEXPOSE 80CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
+RUN apt-get install -y g++-8
+
+RUN python3 -m pip install cmake
+
+# install Intel OpenCL drivers from downloaded package
+RUN tar -xvf intelopenclsdk.tar.gz
+RUN ./setup.sh
+
+# Create a directory for ComputeCpp
+RUN mkdir /usr/local/computecpp
+RUN cd /usr/local/computecpp
+
+# Copy the ComputeCpp release package and extract it to /usr/local/computecpp
+RUN cp Ubuntu-16.04-64bit.tar.gz . 
+RUN tar -xvf Ubuntu-16.04-64bit.tar.gz
+
+# Add the ComputeCpp location to the path on the machine
+ENV PATH=OCL_INC:OCL_LIB:/usr/local/computecpp/bin:/usr/local/computecpp/include:/usr/local/computecpp/lib:${PATH}
+
+ENV CC=gcc-8
+ENV CXX=g++-8
 ```
