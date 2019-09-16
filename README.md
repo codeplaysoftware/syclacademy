@@ -47,12 +47,10 @@ In order to more easily deploy a SYCL implementation onto a bank of machines in 
 An example of how to set up a Docker container:
 
 For Intel CPU or GPU
-* Download the OpenCL SDK for Intel from the [Intel website](https://software.intel.com/en-us/opencl-sdk)
-
+* Download the OpenCL Drivers for Intel from the [Intel website](https://software.intel.com/en-us/articles/opencl-drivers)
 * Download the latest ComputeCpp release package from [developer.codeplay.com](https://developer.codeplay.com)
-* Get the OpenCL header files from the [Khronos GitHub repo](https://github.com/KhronosGroup/OpenCL-Headers)
 
-Now create a DockerFile that uses these packages, an example of how this might be done is below:
+Now create a DockerFile that uses these packages, an example of how this might be done is below. Please note this file is not tested or maintained regularly but shows the elements that need to be installed.
 
 ```
 FROM ubuntu:18.04
@@ -68,23 +66,21 @@ RUN apt-get install -y software-properties-common
 RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
 RUN apt-get update
 
-RUN apt-get install -y g++-8
-
 RUN python3 -m pip install cmake
 
 # install Intel OpenCL drivers from downloaded package
-RUN tar -xvf intel_sdk_for_opencl_applications_2019.4.314.tar.gz
-RUN cd intel_sdk_for_opencl_applications_2019.4.314
+RUN tar -xvf l_opencl_p_18.1.0.015.tgz
+RUN cd l_opencl_p_18.1.0.015
 RUN chmod +x install.sh
 RUN ./install.sh
 
-# Download the Khronos OpenCL 1.20 headers
-RUN export TGT_DIR="$OCL_INC" \
-    && export URL="https://raw.githubusercontent.com/KhronosGroup/OpenCL-Headers/opencl12" \
-    && mkdir -p "$TGT_DIR/CL" && cd "$TGT_DIR/CL" \
-    && for u in opencl cl_platform cl cl_ext cl_gl cl_gl_ext; do \
-         wget -q --no-check-certificate $URL/$u.h; \
-       done;
+# Download the Khronos OpenCL headers
+RUN git clone https://github.com/KhronosGroup/OpenCL-Headers.git
+RUN mv OpenCL-Headers/CL/ /opt/khronos/opencl/include
+
+# Set up the ICD Loader
+RUN mkdir -p /etc/OpenCL/vendors/ \
+    && echo "$OCL_LIB/libintelocl.so" > /etc/OpenCL/vendors/intel.icd
 
 # Create a directory for ComputeCpp
 RUN mkdir /usr/local/computecpp
