@@ -1,6 +1,6 @@
-# Teaching SYCL
+# SYCL Academy
 
-This repository provides materials that can be used for teaching SYCL.
+This repository provides materials that can be used for teaching SYCL. The materials are provided using the "Creative Commons Attribution Share Alike 4.0 International" license.
 
 ## Lesson Materials
 
