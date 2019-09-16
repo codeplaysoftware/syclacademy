@@ -73,8 +73,18 @@ RUN apt-get install -y g++-8
 RUN python3 -m pip install cmake
 
 # install Intel OpenCL drivers from downloaded package
-RUN tar -xvf intelopenclsdk.tar.gz
-RUN ./setup.sh
+RUN tar -xvf intel_sdk_for_opencl_applications_2019.4.314.tar.gz
+RUN cd intel_sdk_for_opencl_applications_2019.4.314
+RUN chmod +x install.sh
+RUN ./install.sh
+
+# Download the Khronos OpenCL 1.20 headers
+RUN export TGT_DIR="$OCL_INC" \
+    && export URL="https://raw.githubusercontent.com/KhronosGroup/OpenCL-Headers/opencl12" \
+    && mkdir -p "$TGT_DIR/CL" && cd "$TGT_DIR/CL" \
+    && for u in opencl cl_platform cl cl_ext cl_gl cl_gl_ext; do \
+         wget -q --no-check-certificate $URL/$u.h; \
+       done;
 
 # Create a directory for ComputeCpp
 RUN mkdir /usr/local/computecpp
@@ -90,3 +100,5 @@ ENV PATH=OCL_INC:OCL_LIB:/usr/local/computecpp/bin:/usr/local/computecpp/include
 ENV CC=gcc-8
 ENV CXX=g++-8
 ```
+
+SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
