@@ -4,6 +4,10 @@ This repository provides materials that can be used for teaching SYCL. The mater
 
 ## Lesson Materials
 
+#### How to use the Materials
+
+Simply clone this repository, then open the "index.html" file for the presentation you want to view. Your browser will have a "Full Screen" mode that can be used to run the presentation, use the right and left cursors to move forward and backward in the presentation.
+
 #### An Introduction to SYCL
 
 A presentation deck introducing SYCL, and how it can be used for parallel programming.
