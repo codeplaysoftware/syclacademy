@@ -154,11 +154,11 @@
 							Sequential CPU code
 							<code><pre>
 void calc(int *in, int *out) {
-	// all iterations are run in the same 
-	// thread in a loop 
-	for (int i = 0; i < 1024; i++){ 
-		out[i] = in[i] * in[i];
-	} 
+  // all iterations are run in the same 
+  // thread in a loop 
+  for (int i = 0; i < 1024; i++){ 
+    out[i] = in[i] * in[i];
+  } 
 }
 
 // calc is invoked just once and all 
@@ -170,9 +170,9 @@ calc(in, out);
 							Parallel SPMD code
 							<code><pre>
 void calc(int *in, int *out, int id) { 
-	// function is described in terms of 
-	// a single iteration 
-	out[id] = in[id] * in[id];
+  // function is described in terms of 
+  // a single iteration 
+  out[id] = in[id] * in[id];
 }
 
 // parallel_for invokes calc multiple 
@@ -197,15 +197,15 @@ using namespace cl::sycl;
 class add;
 
 int main(int argc, char *argv[]) { 
-	queue gpuQueue(gpu_selector{});
+  queue gpuQueue(gpu_selector{});
 
-	gpuQueue.submit([&](handler &cgh){
+  gpuQueue.submit([&](handler &cgh){
 
-		cgh.parallel_for&ltadd&gt(range&lt1&gt(1024), 
-		  [=](id&lt1&gt i) { 
-			// kernel code }); 
-	}); 
-	gpuQueue.wait();
+    cgh.parallel_for&ltadd&gt(range&lt1&gt(1024), 
+      [=](id&lt1&gt i) { 
+      // kernel code }); 
+  }); 
+  gpuQueue.wait();
 }
 
 							</code></pre>
@@ -227,15 +227,15 @@ using namespace cl::sycl;
 class add;
 
 int main(int argc, char *argv[]) { 
-	queue gpuQueue(gpu_selector{});
+  queue gpuQueue(gpu_selector{});
 
-	gpuQueue.submit([&](handler &cgh){
+  gpuQueue.submit([&](handler &cgh){
 
-		cgh.parallel_for&ltadd&gt(range&lt1&gt(1024), 
-		  <mark>[=](id&lt1&gt i) { 
-			// kernel code }); 
-	}); </mark>
-	gpuQueue.wait();
+    cgh.parallel_for&ltadd&gt(range&lt1&gt(1024), 
+      <mark>[=](id&lt1&gt i) { 
+      // kernel code }); 
+  }); </mark>
+  gpuQueue.wait();
 }
 
 							</code></pre>
@@ -256,15 +256,15 @@ using namespace cl::sycl;
 class add;
 
 int main(int argc, char *argv[]) { 
-	queue gpuQueue(gpu_selector{});
+  queue gpuQueue(gpu_selector{});
 
-	gpuQueue.submit([&](handler &cgh){
+  gpuQueue.submit([&](handler &cgh){
 
-		cgh.parallel_for&ltadd&gt(<mark>range&lt1&gt(1024), 
-		  [=](id&lt1&gt i</mark>) { 
-			// kernel code }); 
-	}); 
-	gpuQueue.wait();
+    cgh.parallel_for&ltadd&gt(<mark>range&lt1&gt(1024), 
+      [=](id&lt1&gt i</mark>) { 
+      // kernel code }); 
+  }); 
+  gpuQueue.wait();
 }
 							</code></pre>
 						</div>
@@ -281,30 +281,30 @@ int main(int argc, char *argv[]) {
 						<div class="col">
 							<code><pre>
 cgh.<mark>single_task</mark><T>([=](){
-	// SYCL kernel function is executed 
-	// once on a single work-item
+  // SYCL kernel function is executed 
+  // once on a single work-item
 });
 							</code></pre>
 							<code><pre>
 cgh.<mark>parallel_for</mark><T>(range&lt2&gt(64, 64), 
-			[=](id&lt2&gt idx){
-	// SYCL kernel function is executed 
-	// on an nd-range of work-items
+                          [=](id&lt2&gt idx){
+  // SYCL kernel function is executed 
+  // on an nd-range of work-items
 });
 							</code></pre>
 						</div>
 						<div class="col">
 							<code><pre>
 cgh.<mark>parallel_for_work_group</mark>(range&lt2&gt(64, 64), 
-			[=](group&lt2&gt gp){
-	// SYCL kernel function is executed  
-	// once per work-group
+                     [=](group&lt2&gt gp){
+  // SYCL kernel function is executed  
+  // once per work-group
 							</code></pre>
 							<code><pre>
-	<mark>parallel_for_work_item</mark>(gp, [=](h_item&lt2&gt it){
-		// SYCL kernel function is executed  
-		// once per work-item
-	});
+  <mark>parallel_for_work_item</mark>(gp, [=](h_item&lt2&gt it){
+    // SYCL kernel function is executed  
+    // once per work-item
+  });
 });
 							</code></pre>
 						</div>
@@ -316,30 +316,30 @@ cgh.<mark>parallel_for_work_group</mark>(range&lt2&gt(64, 64),
 							<code><pre>
 							
 cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
-		[=](<mark>id&lt1&gt idx</mark>){
-			
-	// kernel code
-	
+    [=](<mark>id&lt1&gt idx</mark>){
+
+  // kernel code
+
 });
 
 							</code></pre>
 							<code><pre>
 							
 cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
-		[=](<mark>item&lt1&gt item</mark>){
-			
-	// kernel code
-	
+    [=](<mark>item&lt1&gt item</mark>){
+
+  // kernel code
+
 });
 
 							</code></pre>
 							<code><pre>
 							
 cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024), 
-	  range&lt1&gt(32))</mark>,[=](<mark>nd_item&lt1&gt ndItem</mark>){
-			
-	// kernel code
-	
+    range&lt1&gt(32))</mark>,[=](<mark>nd_item&lt1&gt ndItem</mark>){
+
+  // kernel code
+
 });
 
 							</code></pre>
@@ -362,31 +362,31 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 							<code><pre>
 							
 cgh.parallel_for&ltkernel&gt(range&lt1&gt(1024), 
-		[=](<mark>id&lt1&gt(512)</mark>, id&lt1&gtidx){
-			
-	// kernel code
-	
+    [=](<mark>id&lt1&gt(512)</mark>, id&lt1&gtidx){
+
+  // kernel code
+
 });
 
 							</code></pre>
 							<code><pre>
 							
 cgh.parallel_for&ltkernel&gt(range&lt1&gt(1024), 
-		 <mark>id&lt1&gt(512)</mark>, [=](item&lt1&gt item){
-			
-	// kernel code
-	
+     <mark>id&lt1&gt(512)</mark>, [=](item&lt1&gt item){
+      
+  // kernel code
+
 });
 
 							</code></pre>
 							<code><pre>
 							
 cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(range&lt1&gt(1024), 
-	  range&lt1&gt(32), <mark>id&lt1&gt(512)</mark>),
-	  [=](nd_item&lt1&gt ndItem){
-			
-	// kernel code
-	
+    range&lt1&gt(32), <mark>id&lt1&gt(512)</mark>),
+    [=](nd_item&lt1&gt ndItem){
+
+  // kernel code
+
 });
 
 							</code></pre>
@@ -453,21 +453,21 @@ int main(int argc, char *argv[]) {
 						<div class="col">
 							<code><pre>
 struct add { 
-	using read_accessor_t = 
-	  accessor&ltfloat, 1, 
-	  access::mode::read, 
-	  access::target::global_buffer&gt;
-	using write_accessor_t = 
-	  accessor&ltfloat, 1 
-	  access::mode::write, 
-	  access::target::global_buffer&gt;
-	  
-	read_accessor_t inA_, inB_; 
-	write_accessor_t out_;
+  using read_accessor_t = 
+    accessor&ltfloat, 1, 
+    access::mode::read, 
+    access::target::global_buffer&gt;
+  using write_accessor_t = 
+    accessor&ltfloat, 1 
+    access::mode::write, 
+    access::target::global_buffer&gt;
+    
+  read_accessor_t inA_, inB_; 
+  write_accessor_t out_;
 
 void operator()(id&lt1&gt i){ 
-	out_[i] = inA_[i] + inB_[i]; 
-	}
+  out_[i] = inA_[i] + inB_[i]; 
+  }
 };
 							</code></pre>
 						</div>
@@ -500,7 +500,7 @@ int main(int argc, char *argv[]) {
       auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
 
       <mark>cgh.parallel_for(range&lt1&gt(dA.size()), 
-	    add{inA, inB, out});</mark>
+        add{inA, inB, out});</mark>
     }); 
     gpuQueue.wait_and_throw();
   } catch (...) { /* handle errors */ }
@@ -560,7 +560,7 @@ int main(int argc, char *argv[]) {
       auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
 
       cgh.parallel_for(range&lt1&gt(dA.size()), 
-	    add{inA, inB, out});
+        add{inA, inB, out});
     }); 
     gpuQueue.wait_and_throw();
   } catch (...) { /* handle errors */ }
@@ -596,7 +596,7 @@ int main(int argc, char *argv[]) {
       auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
 
       cgh.parallel_for(range&lt1&gt(dA.size()), 
-	    add{inA, inB, out});
+        add{inA, inB, out});
     }); 
     gpuQueue.wait_and_throw();
   } catch (...) { /* handle errors */ }
@@ -632,7 +632,7 @@ int main(int argc, char *argv[]) {
       auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
 
       cgh.parallel_for(range&lt1&gt(dA.size()), 
-	    add{inA, inB, out});
+        add{inA, inB, out});
     }); 
     gpuQueue.wait_and_throw();
   } catch (...) { /* handle errors */ }

@@ -101,11 +101,11 @@ buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
 buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
-	<mark>auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);</mark>
-	<mark>auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);</mark>
-	<mark>auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);</mark>
-	cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-	  [=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; }); 
+  <mark>auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);</mark>
+  <mark>auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);</mark>
+  <mark>auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);</mark>
+  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
+    [=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; }); 
 });
 							</code></pre>
 						</div>
@@ -304,11 +304,11 @@ buffer&ltfloat, 1&gt bufI(dA.data(), range&lt1&gt(dA.size()));
 buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
-	auto inA = bufI.get_access&lt<mark>access::mode::read</mark>&gt(cgh);
-	auto inB = bufI.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-	auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
-	cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-	  [=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; }); 
+  auto inA = bufI.get_access&lt<mark>access::mode::read</mark>&gt(cgh);
+  auto inB = bufI.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
+    [=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; }); 
 });
 							</code></pre>
 						</div>
@@ -346,13 +346,13 @@ buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
 buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
-	auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
-	auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
-	auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
-	cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-	  [=](id&lt1&gt i){ 
-		<mark>out[i] = inA[i] + inB[i];</mark>
-	});
+  auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+  auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+  auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
+    [=](id&lt1&gt i){ 
+    <mark>out[i] = inA[i] + inB[i];</mark>
+  });
 });
 							</code></pre>
 						</div>
@@ -374,12 +374,12 @@ gpuQueue.submit([&](handler &cgh){
   auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
   auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
   cgh.parallel_for&ltadd&gt(rng, [=](id&lt3&gt i){
-	  <mark>auto ptrA = inA.get_pointer();</mark>
-	  <mark>auto ptrB = inB.get_pointer();</mark>
-	  <mark>auto ptrO = out.get_pointer();</mark>
-	  <mark>auto linearId = i.get_linear_id();</mark>
+    <mark>auto ptrA = inA.get_pointer();</mark>
+    <mark>auto ptrB = inB.get_pointer();</mark>
+    <mark>auto ptrO = out.get_pointer();</mark>
+    <mark>auto linearId = i.get_linear_id();</mark>
 
-	  <mark>ptrA[linearId] = ptrB[linearId] + ptrO[linearId]; </mark>
+    <mark>ptrA[linearId] = ptrB[linearId] + ptrO[linearId]; </mark>
   });
 });
 							</code></pre>

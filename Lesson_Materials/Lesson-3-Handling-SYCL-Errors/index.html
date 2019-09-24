@@ -48,23 +48,23 @@
 using namespace cl::sycl;
 
 int main(int argc, char *argv[]) {
-	std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
-	queue gpuQueue(gpu_selector{});
+  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  queue gpuQueue(gpu_selector{});
 
-	buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-	buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-	buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+  buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
+  buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
+  buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
-	gpuQueue.submit([&](handler &cgh){
-		auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh); 
-		auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh); 
-		auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+  gpuQueue.submit([&](handler &cgh){
+    auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh); 
+    auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh); 
+    auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
 
-		cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), [=](id&lt1&gt i){
-			out[i] = inA[i] + inB[i];
-		}); 
-	}); 
-	gpuQueue.wait();
+    cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), [=](id&lt1&gt i){
+      out[i] = inA[i] + inB[i];
+    }); 
+  }); 
+  gpuQueue.wait();
 }
 						</code></pre>
 					</div>
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
   <mark>try{</mark>
     queue gpuQueue(gpu_selector{});
-	
+
     buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
     buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
     buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
       }); 
     });
     gpuQueue.wait();
-  <mark>} catch (...) { /* handle errors */</mark>
+  <mark>} catch (...) { /* handle errors */ }</mark>
 }
 						</code></pre>
 					</div>
@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
   try{
     queue gpuQueue(gpu_selector{}, <mark>async_handler{}</mark>);
-	
+
     buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
     buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
     buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
@@ -143,9 +143,9 @@ int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
   try{
     queue gpuQueue(gpu_selector{}, <mark>[=](exception_list eL) { 
-	  for (auto e : eL) { std::rethrow_exception(e); } 
-	}</mark>);
-	
+      for (auto e : eL) { std::rethrow_exception(e); } 
+    }</mark>);
+
     buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
     buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
     buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
@@ -176,13 +176,13 @@ int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
   try { 
     queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
-	  for (auto e : eL) { std::rethrow_exception(e); } 
-	});
+      for (auto e : eL) { std::rethrow_exception(e); } 
+    });
   ...
     gpuQueue.wait_and_throw(); 
   } catch (<mark>exception e</mark>) { 
     <mark>std::cout << “Exception caught: ” << e.what() 
-	 << std::endl;</mark>
+     << std::endl;</mark>
   }
 }
 							</code></pre>
@@ -199,14 +199,14 @@ int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
   try { 
     queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
-	  for (auto e : eL) { std::rethrow_exception(e); } 
-	});
+      for (auto e : eL) { std::rethrow_exception(e); } 
+    });
   ...
     gpuQueue.wait_and_throw(); 
   } catch (exception e) { 
     std::cout << “Exception caught: ” << e.what();
-	<mark>std:: cout << “ With OpenCL error code: ”</mark> 
-	 <mark><< e.get_cl_code() << std::endl;</mark>
+    <mark>std:: cout << “ With OpenCL error code: ”</mark> 
+     <mark><< e.get_cl_code() << std::endl;</mark>
   }
 }
 							</code></pre>
@@ -223,8 +223,8 @@ int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
   try { 
     queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
-	  for (auto e : eL) { std::rethrow_exception(e); } 
-	});
+      for (auto e : eL) { std::rethrow_exception(e); } 
+    });
   ...
     gpuQueue.wait_and_throw(); 
   } catch (exception e) { 
@@ -284,10 +284,10 @@ int main(int argc, char *argv[]) {
       auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
 
       cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-	   [=](id&lt1&gt i){out[i] = inA[i] + inB[i];}); 
+       [=](id&lt1&gt i){out[i] = inA[i] + inB[i];}); 
     });
     gpuQueue.wait_and_throw();
-  } catch (...) { /* handle errors */
+  } catch (...) { /* handle errors */ }
 }
 							</code></pre>
 						</div>
