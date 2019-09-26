@@ -14,9 +14,11 @@
 		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
+				<!--Slide 1-->
 				<section class="hbox" data-markdown>
 				    ## Handling SYCL Errors
                 </section>
+				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 				    ## Learning Objectives
 
@@ -26,6 +28,7 @@
 					* Learn about the different exception types 
 					* Learn about the host device and how to use it
                 </section>
+				<!--Slide 3-->
 				<section class="hbox" data-markdown>
 					* In SYCL errors are handled by throwing exceptions
 					  *  It is crucial that these errors are handled otherwise your application may silently fail
@@ -33,22 +36,26 @@
 					  * Synchronous errors (thrown in user thread) 
 					  * Asynchronous errors (thrown by the SYCL scheduler)
 				</section>
+				<!--Slide 4-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						![SYCL](images/sycl-exceptions.png "SYCL")
 					</div>
 				</section>
+				<!--Slide 5-->
 				<section class="hbox" data-markdown>
 					## Handling Errors
 				</section>
+				<!--Slide 6-->
 				<section>
 					<div class="hbox">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
+class add;
 
 int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   queue gpuQueue(gpu_selector{});
 
   buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
@@ -72,11 +79,12 @@ int main(int argc, char *argv[]) {
 							* If errors are not handled, the application can fail silently
 					</div>
 				</section>
+				<!--Slide 7-->
 				<section>
 					<div class="hbox">
 						<code><pre>
 int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   <mark>try{</mark>
     queue gpuQueue(gpu_selector{});
 
@@ -99,15 +107,16 @@ int main(int argc, char *argv[]) {
 						</code></pre>
 					</div>
 					<div class="bottom-bullets" data-markdown>
-							* Synchronous errors are thrown by any constructor or member function in the SYCL API
+							* Synchronous errors are typically thrown by SYCL API functions
 							* In order to handle all SYCL errors you must wrap everything in a try-catch block
 					</div>
 				</section>
+				<!--Slide 8-->
 				<section>
 					<div class="hbox">
 						<code><pre>
 int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
     queue gpuQueue(gpu_selector{}, <mark>async_handler{}</mark>);
 
@@ -130,19 +139,20 @@ int main(int argc, char *argv[]) {
 						</code></pre>
 					</div>
 					<div class="bottom-bullets" data-markdown>
-							* Asynchronous errors are thrown after a command group has been submitted to a queue
+							* Asynchronous errors errors that may have occurred will be thrown after a command group has been submitted to a queue 
 							  * To handle these errors you must provide an async handler when constructing the queue object
 							* Then you must also call the **throw_asynchronous or wait_and_throw** member functions of the queue class
 							* This will pass the exceptions to the async handler in the user thread so they can be thrown
 					</div>
 				</section>
+				<!--Slide 9-->
 				<section>
 					<div class="hbox">
 						<code><pre>
 int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
-    queue gpuQueue(gpu_selector{}, <mark>[=](exception_list eL) { 
+    queue gpuQueue(gpu_selector{}, <mark>[=](sycl::exception_list eL) { 
       for (auto e : eL) { std::rethrow_exception(e); } 
     }</mark>);
 
@@ -150,7 +160,7 @@ int main(int argc, char *argv[]) {
     buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
     buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
-    gpuQueue.submit([&](handler &cgh){
+    gpuQueue.submit([&](handler &cgh){ // Command group submitted to queue
       auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh); 
       auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh); 
       auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
@@ -169,18 +179,19 @@ int main(int argc, char *argv[]) {
 							* The exception_ptrs can be rethrown by passing them to **std::rethrow_exception**
 					</div>
 				</section>
+				<!--Slide 10-->
 				<section>
 						<div class="hbox">
 							<code><pre>
 int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try { 
-    queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
+    queue gpuQueue(gpu_selector{}, [=](sycl::exception_list eL) {
       for (auto e : eL) { std::rethrow_exception(e); } 
     });
   ...
     gpuQueue.wait_and_throw(); 
-  } catch (<mark>exception e</mark>) { 
+  } catch (<mark>std::exception e</mark>) { 
     <mark>std::cout << “Exception caught: ” << e.what() 
      << std::endl;</mark>
   }
@@ -192,18 +203,19 @@ int main(int argc, char *argv[]) {
 							* The **what** member function will return a string with more details
 						</div>
 				</section>
+				<!--Slide 11-->
 				<section>
 						<div class="hbox">
 							<code><pre>
 int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try { 
-    queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
+    queue gpuQueue(gpu_selector{}, [=](sycl::exception_list eL) {
       for (auto e : eL) { std::rethrow_exception(e); } 
     });
   ...
     gpuQueue.wait_and_throw(); 
-  } catch (exception e) { 
+  } catch (std::exception e) { 
     std::cout << “Exception caught: ” << e.what();
     <mark>std:: cout << “ With OpenCL error code: ”</mark> 
      <mark><< e.get_cl_code() << std::endl;</mark>
@@ -216,18 +228,19 @@ int main(int argc, char *argv[]) {
 							* If there is no OpenCL error code this will return <mark>CL_SUCCESS</mark>
 						</div>
 				</section>
+				<!--Slide 12-->
 				<section>
 						<div class="hbox">
 							<code><pre>
 int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try { 
-    queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
+    queue gpuQueue(gpu_selector{}, [=](sycl::exception_list eL) {
       for (auto e : eL) { std::rethrow_exception(e); } 
     });
   ...
     gpuQueue.wait_and_throw(); 
-  } catch (exception e) { 
+  } catch (std::exception e) { 
     <mark>if (e.has_context()) {</mark>
 	  <mark>if (e.get_context() == gpuContext) {</mark>
 	    <mark>/* handle error */</mark>
@@ -242,11 +255,13 @@ int main(int argc, char *argv[]) {
 							* If that returns true then the **get_context** member function will return the associated SYCL context object
 						</div>
 				</section>
+				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Exception Types
 					</div>
 				</section>
+				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
 						* In SYCL there are a number of different exception types that inherit from **exception**
@@ -254,24 +269,27 @@ int main(int argc, char *argv[]) {
 						* The SYCL 1.2.1 specification will specify cases where a specific error can be expected
 					</div>
 				</section>
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Debugging SYCL Kernel Functions
 					</div>
 				</section>
+				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
 						*  Every SYCL implementation is required to provide a host device
 						  * This device executes native C++ code but is guaranteed to emulate the SYCL execution and memory model
-						* This means you can debug a SYCL kernel function by switching to the host device and enabling a standard C++ debugger
+						* This means you can debug a SYCL kernel function by switching to the host device and using a standard C++ debugger
 						  * For example gdb
 					</div>
 				</section>
+				<!--Slide 17-->
 				<section>
 						<div class="hbox">
 							<code><pre>
 int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };
+  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
     queue <mark>hostQueue(host_selector{}</mark>, async_handler{});
     buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
@@ -294,7 +312,6 @@ int main(int argc, char *argv[]) {
 						<div class="bottom-bullets" data-markdown>
 							* Any SYCL application can be debugged on the host device by switching the queue for a host queue
 							* By replacing the device selector for the host_selector will ensure that the queue submits all work to the host device
-							* Be aware this could have an impact on data copies as data would no longer be required to be copied to the original device
 						</div>
 				</section>
 			</div>

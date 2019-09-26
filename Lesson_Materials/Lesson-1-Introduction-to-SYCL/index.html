@@ -14,11 +14,13 @@
 		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
+				<!--Slide 1-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						## Introduction to SYCL
 					</div>
 				</section>
+				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 				    ## Learning Objectives
 
@@ -28,12 +30,15 @@
 					* Learn about the anatomy of a typical SYCL application 
 					* Learn where to find useful resources for SYCL
                 </section>
+				<!--Slide 3-->
 				<section class="hbox" data-markdown>
 				    ## What is SYCL?
 				</section>
+				<!--Slide 4-->
 				<section class="hbox" data-markdown>
 					SYCL is a single source, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
 				</section>
+				<!--Slide 5-->
 				<section class="hbox">
 					<aside class="notes">
 						Single source means that the host and kernel code can be contained in the same source code file. This is means that the code 
@@ -52,6 +57,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 6-->
 				<section class="hbox">
 					<aside class="notes">
 						TBD
@@ -71,6 +77,7 @@
 						  * Dependency management and scheduling
 					</article>
 				</section>
+				<!--Slide 7-->
 				<section class="hbox">
 				    <div class="hbox" data-markdown>
 				        SYCL is a single source, high-level **standard C++** programming model, that can target a range of heterogeneous platforms
@@ -88,6 +95,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 8-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						SYCL is a single source, high-level standard C programming model, that can **target a range of heterogeneous platforms**
@@ -104,14 +112,17 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 9-->
 				<section data-markdown>
 					#### What SYCL implementations are available?
 					![SYCL Implementations](https://raw.githubusercontent.com/illuhad/hipSYCL/master/doc/img/sycl-targets.png "SYCL-Implementations")
 					Image referenced from the hipSYCL project (https://github.com/illuhad/hipSYCL)
 				</section>
+				<!--Slide 10-->
 				<section data-markdown>
 					## What is in a SYCL Implementation?
 				</section>
+				<!--Slide 11-->
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
@@ -127,6 +138,7 @@
 						* The device is the parallel unit used to execute the kernels, such as a GPU
 					</div>
 				</section>
+				<!--Slide 12-->
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
@@ -137,6 +149,7 @@
 							  * It loads kernels, tracks data dependencies and schedules commands
 						</div>
 				</section>
+				<!--Slide 13-->
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
@@ -147,6 +160,7 @@
 							* The host device can be used to execute kernels without backend drivers and for debugging purposes
 						</div>
 				</section>
+				<!--Slide 14-->
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
@@ -158,6 +172,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 15-->
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
@@ -172,9 +187,11 @@
 						**IR** = Intermediate Representation 	**ISA** = Instruction Set Architecture
 					</div>
 				</section>
+				<!--Slide 16-->
 				<section data-markdown>
 					## What does a SYCL Application Look Like?
 				</section>
+				<!--Slide 17-->
 				<section>
 					
 					<div class="hbox" data-markdown>
@@ -206,6 +223,7 @@ int main(int argc, char *argv[]) {
 							* We also import the **cl::sycl** namespace here, this reduces the amount of code we need to write
 					</div>
 				</section>
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Device Selectors And Queues
@@ -240,6 +258,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Queues and Command Groups
@@ -278,6 +297,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 20-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Set up Vectors
@@ -310,6 +330,7 @@ int main(int argc, char *argv[]) {
 						We initialize three vectors, two inputs (**dA**, **dB**) and an output (**dO**)
 					</div>
 				</section>
+				<!--Slide 21-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Create Buffers
@@ -344,6 +365,7 @@ int main(int argc, char *argv[]) {
 					    We create a buffer for each vector to manage the data across host and device
 					</div>
 				</section>
+				<!--Slide 22-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Buffers on Leaving Scope
@@ -378,6 +400,7 @@ int main(int argc, char *argv[]) {
 						So adding this scope means that all kernels writing to the buffers will wait and the data will be copied back to the vectors on leaving this scope
 					</div>
 				</section>
+				<!--Slide 23-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Create Accessors
@@ -412,6 +435,7 @@ int main(int argc, char *argv[]) {
 						Read access for the two input buffers and write access for the output buffer
 					</div>
 				</section>
+				<!--Slide 24-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Kernel
@@ -451,6 +475,7 @@ int main(int argc, char *argv[]) {
 						* This lambda takes an id parameter that describes the current iteration being executed
 					</div>
 				</section>
+				<!--Slide 25-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Template Parameter
@@ -489,6 +514,7 @@ int main(int argc, char *argv[]) {
 						* SYCL kernel functions follow C++ ODR rules, which means that if a SYCL kernel is in a template context, the kernel name needs to reflect that context, so must contain the same template arguments
 					</div>
 				</section>
+				<!--Slide 26-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Error Handling
@@ -530,6 +556,7 @@ int main(int argc, char *argv[]) {
 						* Other exceptions are asynchronous and are stored by the runtime and passed to an **async handler** when the queue is told to throw
 					</div>
 				</section>
+				<!--Slide 27-->
 				<section data-markdown>
 					## Where to Get Started with SYCL
 					

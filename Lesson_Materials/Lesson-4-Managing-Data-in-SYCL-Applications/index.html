@@ -14,9 +14,11 @@
 		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
+				<!--Slide 1-->
 				<section class="hbox" data-markdown>
 					## Managing Data in SYCL Applications
 				</section>
+				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
 
@@ -28,9 +30,11 @@
 					* Learn about how SYCL synchronizes data
 					* Understand the SPMD model of describing parallelism
 				</section>
+				<!--Slide 3-->
 				<section class="hbox" data-markdown>
 				    ## The SYCL Memory Model
 				</section>
+				<!--Slide 4-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -43,6 +47,7 @@
 
 					</div>
 				</section>
+				<!--Slide 5-->
 				<section>
 					<div class="container">
 						<div class="col-left-3" data-markdown>
@@ -54,6 +59,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 6-->
 				<section>
 					<div class="container">
 						<div class="col-left-3" data-markdown>
@@ -66,23 +72,26 @@
 
 					</div>
 				</section>
+				<!--Slide 7-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
 							* Each memory region has a different size and access latency 
 							* Global / constant memory is larger than local memory and local memory is larger than private memory
-							* Private memory is fast than local memory and local memory is faster than global / constant memory
+							* Private memory is faster than local memory and local memory is faster than global / constant memory
 						</div>
 						<div class="col" data-markdown>
 							![Memory Regions](images/memory-regions.png "Memory Regions")
 						</div>
 					</div>
 				</section>
+				<!--Slide 8-->
 				<section>
 					<div class="hbox" data-markdown>
 						## SYCL Buffers & Accessors
 					</div>
 				</section>
+				<!--Slide 9-->
 				<section>
 					<div class="hbox" data-markdown>
 						* SYCL separates the storage and access of data 
@@ -92,6 +101,7 @@
 						  * This means they are declared in the host code but captured by and then accessed within a SYCL kernel function
 					</div>
 				</section>
+				<!--Slide 10-->
 				<section>
 					<div class="container">
 						<div class="col-left-3">
@@ -116,6 +126,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 11-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -129,6 +140,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 12-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -140,6 +152,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 13-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -151,6 +164,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 14-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -163,6 +177,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 15-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -174,6 +189,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 16-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -185,6 +201,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 17-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -196,41 +213,19 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Different Kinds of Accessors
 					</div>
 				</section>
-				<section>
-					<div class="code-header" data-markdown>```accessor&ltelementT, dimensions, access::mode, access::target, access::placeholder&gt```</div>
-					<div class="container-top">
-						<div class="col" data-markdown style="border: 4px dotted blue">
-							##### Element Type
-							The element type of an accessor can be any non-pointer type that is standard layout and trivially copyable
-						</div>
-						<div class="col" data-markdown style="border: 4px dotted red">
-							##### Dimensions
-							The dimensionality of an accessor can be 0,1,2 or 3
-						</div>
-						<div class="col" data-markdown style="border: 4px dotted green">
-							##### Access Mode
-							The access mode of an accessor can be read, write, read_write, discard_write, discard_read_write or atomic
-						</div>
-						<div class="col" data-markdown style="border: 4px dotted orange">
-							##### Access Target
-							The access target of an accessor can be host_buffer, global_buffer, constant_buffer or local
-						</div>
-						<div class="col" data-markdown style="border: 4px dotted purple">
-							##### Placeholder
-							An accessor can optionally be a placeholder accessor, which allows it to be constructed in advance outside a command group
-						</div>
-					</div>
-				</section>
+				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
 						![Accessor Types](images/accessor-types.png "Accessor Types")
 					</div>
 				</section>
+				<!--Slide 20-->
 				<section>
 					<div class="code-header" data-markdown>```accessor&ltelementT, dimensions, access::mode, access::target, access::placeholder&gt```</div>
 					<div class="container">
@@ -245,6 +240,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 21-->
 				<section>
 					<div class="code-header" data-markdown>```accessor&ltelementT, dimensions, access::mode, access::target, access::placeholder&gt```</div>
 					<div class="container">
@@ -259,6 +255,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 22-->
 				<section>
 					<div class="code-header" data-markdown>```accessor&ltelementT, dimensions, access::mode, access::target, access::placeholder&gt```</div>
 					<div class="container">
@@ -271,6 +268,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 23-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -283,11 +281,13 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 24-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Accessor Resolution
 					</div>
 				</section>
+				<!--Slide 25-->
 				<section>
 					<div class="hbox" data-markdown>
 						* If a command group has accessors to the same buffer with conflicting access modes they are resolved into one 
@@ -296,6 +296,7 @@ gpuQueue.submit([&](handler &cgh){
 						* Within the SYCL kernel function there are still multiple accessors, but they alias to the same memory address
 					</div>
 				</section>
+				<!--Slide 26-->
 				<section>
 					<div class="container">
 						<div class="col-left-3">
@@ -320,11 +321,13 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 27-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Using Data With Accessors
 					</div>
 				</section>
+				<!--Slide 28-->
 				<section>
 					<div class="smaller-size-font" data-markdown>
 						* There are a few different ways to access the data represented by an accessor
@@ -334,9 +337,10 @@ gpuQueue.submit([&](handler &cgh){
 						* Nested subscript operators can be called for each dimension taking a **size_t**
 						  * E.g. a 3-dimensional accessor: acc[x][y][z] = …
 						* A pointer to the underlying memory can be retrieved by calling **get_pointer**
-						  * This returns a **global_ptr**, which is a wrapper class for pointers with an address space
+						  * This returns a **global_ptr**, which is a wrapper class for pointers to global memory
 					</div>
 				</section>
+				<!--Slide 29-->
 				<section>
 					<div class="container">
 						<div class="col-left-3">
@@ -361,6 +365,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
+				<!--Slide 30-->
 				<section>
 					<div class="container">
 						<div class="col-left-3">

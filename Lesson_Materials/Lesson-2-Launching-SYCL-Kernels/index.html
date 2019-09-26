@@ -14,9 +14,11 @@
 		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
+				<!--Slide 1-->
 				<section class="hbox" data-markdown>
 					## Launching SYCL Kernels
 				</section>
+				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
 
@@ -27,9 +29,11 @@
 					* Learn how to define a SYCL kernel function as a lambda or a function object
 					* Learn how to pre-compile a SYCL kernel function
 				</section>
+				<!--Slide 3-->
 				<section class="hbox" data-markdown>
 				    ## The SYCL Execution Model
 				</section>
+				<!--Slide 4-->
 				<section>
 					<div class="container">
 						<div class="col-left" data-markdown>
@@ -44,6 +48,7 @@
 
 					</div>
 				</section>
+				<!--Slide 5-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -55,6 +60,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 6-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -67,6 +73,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 7-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -81,6 +88,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 8-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -99,6 +107,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 9-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -109,6 +118,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 10-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -123,6 +133,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 11-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -134,6 +145,7 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 12-->
 				<section>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -145,9 +157,11 @@
 						</div>
 					</div>
 				</section>
+				<!--Slide 13-->
 				<section data-markdown>
 					SYCL is an SPMD Progamming Model
 				</section>
+				<!--Slide 14-->
 				<section>
 					<div class="container">
 						<div class="col">
@@ -184,9 +198,11 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
+				<!--Slide 15-->
 				<section>
 					Invoking SYCL Kernel Functions
 				</section>
+				<!--Slide 16-->
 				<section>
 					<div class="container">
 						<div class="col">
@@ -217,6 +233,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 17-->
 				<section>
 					<div class="container">
 						<div class="col">
@@ -246,6 +263,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 18-->
 				<section>
 					<div class="container">
 						<div class="col">
@@ -275,6 +293,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 19-->
 				<section>
 					Expressing Parallelism
 					<div class="container">
@@ -310,6 +329,7 @@ cgh.<mark>parallel_for_work_group</mark>(range&lt2&gt(64, 64),
 						</div>
 					</div>
 				</section>
+				<!--Slide 20-->
 				<section>
 					<div class="container">
 						<div class="col">
@@ -356,6 +376,7 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						</div>
 					</div>
 				</section>
+				<!--Slide 21-->
 				<section>
 					<div class="container">
 						<div class="col">
@@ -398,6 +419,7 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(range&lt1&gt(1024),
 						</div>
 					</div>
 				</section>
+				<!--Slide 22-->
 				<section>
 					SYCL Kernels
 					<div class=container data-markdown>
@@ -410,9 +432,11 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(range&lt1&gt(1024),
 						  * SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name
 					</div>
 				</section>
+				<!--Slide 23-->
 				<section>
 					SYCL kernels as function objects
 				</section>
+				<!--Slide 24-->
 				<section>
 					<div class="container">
 						<div class="col-left-3">
@@ -448,6 +472,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 25-->
 				<section>
 					<div class="container">
 						<div class="col">
@@ -477,6 +502,7 @@ void operator()(id&lt1&gt i){
 						</div>
 					</div>
 				</section>
+				<!--Slide 26-->
 				<section>
 					<div class="container">
 						<div class="col-left-3">
@@ -534,9 +560,11 @@ struct add {
 						</div>
 					</div>
 				</section>
+				<!--Slide 27-->
 				<section>
 				Pre-Compiling SYCL Kernel Functions
 				</section>
+				<!--Slide 28-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -574,6 +602,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 29-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -609,6 +638,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 30-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -645,6 +675,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 31-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -682,6 +713,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
+				<!--Slide 32-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
