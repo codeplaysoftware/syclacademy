@@ -1,6 +1,6 @@
 # SYCL Academy
 
-![SYCL Academy](images/sycl_academy.png "SYCL Academy")
+![SYCL Academy](sycl_academy.png "SYCL Academy")
 
 This repository provides materials that can be used for teaching SYCL. The materials are provided using the "Creative Commons Attribution Share Alike 4.0 International" license.
 
