@@ -17,12 +17,12 @@
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
 				    ## Handling SYCL Errors
-                </section>
+				</section>
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
-				    ## Learning Objectives
+					## Learning Objectives
 
-		            * Learn about how SYCL handles errors 
+					* Learn about how SYCL handles errors 
 					* Learn about the difference between synchronous and asynchronous exceptions 
 					* Learn how to handle exceptions and retrieve further information
 					* Learn about the different exception types 
@@ -264,9 +264,9 @@ int main(int argc, char *argv[]) {
 				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
-						* In SYCL there are a number of different exception types that inherit from **exception**
+						* In SYCL there are a number of different exception types that inherit from **std::exception**
 						  * E.g. runtime_error, kernel_error
-						* The SYCL 1.2.1 specification will specify cases where a specific error can be expected
+						* The [SYCL 1.2.1 specification](https://sycl.tech/) will detail cases where a specific error can be expected
 					</div>
 				</section>
 				<!--Slide 15-->
@@ -319,9 +319,10 @@ int main(int argc, char *argv[]) {
 		<script src="js/reveal.js"></script>
 		<script src="plugin/markdown/marked.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/notes/notes.js"></script>
 		<script>
-	Reveal.initialize();
-	Reveal.configure({ slideNumber: true });
+			Reveal.initialize();
+			Reveal.configure({ slideNumber: true });
 		</script>
 	</body>
 </html>

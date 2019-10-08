@@ -1,11 +1,11 @@
 <!DOCTYPE html>
+
 <html>
 	<head>
 	    <meta charset="utf-8">
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/white.css">
 		<link rel="stylesheet" href="css/custom.css">
-		
 	</head>
 	<body>
 		<span class='overlay-image bottom-left'>SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</span>
@@ -35,15 +35,16 @@
 				    ## What is SYCL?
 				</section>
 				<!--Slide 4-->
-				<section class="hbox" data-markdown>
-					SYCL is a single source, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
+				<section>
+					<div class="hbox" data-markdown>
+						SYCL is a single source, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
+					</div>
+					<aside class="notes">
+						We'll examine what each of the parts of this statement means.
+					</aside>
 				</section>
 				<!--Slide 5-->
 				<section class="hbox">
-					<aside class="notes">
-						Single source means that the host and kernel code can be contained in the same source code file. This is means that the code 
-						used to give the host (usually a CPU) and the code used to give the device (a GPU for example) can live in the same source code file
-					</aside>
 					<div class="hbox" data-markdown>
 						SYCL is a **single source**, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
 					</div>
@@ -56,6 +57,11 @@
 							*  This requires two compilation passes; one for the host code and one for the device code
 						</div>
 					</div>
+					<aside class="notes">
+						Single source means that SYCL kernel source code can live in the same source file as the other code you are using.
+						This is not the case with something like OpenCL, another heterogeneous programming interface, where the kernel code lives in a separate file.
+						Your kernel contains the code you want to execute on parallel hardware, i.e the bit you want to accelerate such as a vector addition
+					</aside>
 				</section>
 				<!--Slide 6-->
 				<section class="hbox">
@@ -76,6 +82,9 @@
 						  * Kernel compilation
 						  * Dependency management and scheduling
 					</article>
+					<aside class="notes">
+						
+					</aside>
 				</section>
 				<!--Slide 7-->
 				<section class="hbox">
@@ -94,11 +103,15 @@
 							  * No attributes
 						</div>
 					</div>
+					<aside class="notes">
+						SYCL only uses standard C++ code to contruct the code used to dispatch your work
+						As you can see other models use proprietary things like pragmas, attributes and language extensions
+					</aside>
 				</section>
 				<!--Slide 8-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
-						SYCL is a single source, high-level standard C programming model, that can **target a range of heterogeneous platforms**
+						SYCL is a single source, high-level standard C++ programming model, that can **target a range of heterogeneous platforms**
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -111,6 +124,11 @@
 							While the current specification is limited to OpenCL, some implementations are already supporting other non-OpenCL back-ends.
 						</div>
 					</div>
+					<aside class="notes">
+						SYCL has been designed to enable developers to write C++ code that can be used to target different types of processors that are part of a heterogeneous system. 
+						This means that you can write your code and deploy it to devices that support the SYCL implementation's back-end. 
+						Whilst the current specification of SYCL is bound to OpenCL, it is possible to support non-OpenCL back-ends. For example hipSYCL targets AMD's HIP interface and ComputeCpp targets NVidia's ptx instruction set
+					</aside>
 				</section>
 				<!--Slide 9-->
 				<section data-markdown>
@@ -569,9 +587,10 @@ int main(int argc, char *argv[]) {
 		<script src="js/reveal.js"></script>
 		<script src="plugin/markdown/marked.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/notes/notes.js"></script>
 		<script>
-	Reveal.initialize();
-	Reveal.configure({ slideNumber: true });
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
 		</script>
 	</body>
 </html>
