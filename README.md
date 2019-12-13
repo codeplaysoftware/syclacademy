@@ -11,6 +11,10 @@ Don't know what SYCL is?
 *  Browse SYCL news, videos, projects and more on the [sycl.tech community website](https://sycl.tech/)
 *  Get a list of the [available SYCL implementations](https://sycl.tech/#get-sycl)
 
+## Contributing to SYCL Academy
+
+Contributions to the materials are very gratefully received and this can be done by submitting a Pull Request with any changes. Please limit the scope of each Pull Request so that they can be reviewed and merged in a timely manner.
+
 ## Lesson Materials
 
 #### How to use the Materials
