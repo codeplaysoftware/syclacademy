@@ -15,6 +15,10 @@ Don't know what SYCL is?
 
 Contributions to the materials are very gratefully received and this can be done by submitting a Pull Request with any changes. Please limit the scope of each Pull Request so that they can be reviewed and merged in a timely manner.
 
+## Supporting Organizations
+
+Organizations using SYCL Academy include Abertay University, Heriot Watt University and Universitat Innsbruck.
+
 ## Lesson Materials
 
 #### How to use the Materials
