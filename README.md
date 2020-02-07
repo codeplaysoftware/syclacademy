@@ -17,7 +17,7 @@ Contributions to the materials are very gratefully received and this can be done
 
 ## Supporting Organizations
 
-Organizations using SYCL Academy include Abertay University, Heriot Watt University, TU Dresden and Universitat Innsbruck.
+Abertay University, Heriot Watt University, University of Edinburgh, TU Dresden and Universitat Innsbruck.
 
 ## Lesson Materials
 
