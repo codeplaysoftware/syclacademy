@@ -17,7 +17,7 @@ Contributions to the materials are very gratefully received and this can be done
 
 ## Supporting Organizations
 
-Abertay University, Heriot Watt University, University of Edinburgh, TU Dresden, Universitat Innsbruck and Universidad de Concepcion.
+Abertay University, Heriot Watt University, University of Edinburgh, TU Dresden, University of the West of Scotland, Universitat Innsbruck and Universidad de Concepcion.
 
 ## Lesson Materials
 
