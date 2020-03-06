@@ -217,7 +217,7 @@ int main(int argc, char *argv[]) {
 
   gpuQueue.submit([&](handler &cgh){
 
-    cgh.parallel_for&ltadd&gt(range&lt1&gt(1024), 
+    cgh.<mark>parallel_for</mark>&ltadd&gt(range&lt1&gt(1024), 
       [=](id&lt1&gt i) { 
       // kernel code }); 
   }); 
@@ -430,7 +430,19 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(range&lt1&gt(1024),
 						* Kernel Function Naming
 						  * SYCL kernel functions declared with a lambda must be named using a forward declarable C++ type, declared in global scope 
 						  * SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name
+						* Language restrictions for SYCL kernel functions:
+						  * No dynamic allocation
+						  * No dynamic polymorphism
+						  * No recursion
+						  * No function pointers
+						  * No exception handling
+						  * No RTTI
 					</div>
+					<aside class="notes">
+						Note that there are ways to get around some of these restrictions. For example there are blog posts offering alternative ways to achieve function pointers and dynamic polymorphism using standard C++ code.
+						https://www.codeplay.com/portal/09-24-19-alternatives-to-cpp-function-pointers-in-sycl-using-function-objects
+						https://www.codeplay.com/portal/07-12-19-enabling-polymorphism-in-sycl-using-the-cpp-idiom-crtp
+					</aside>
 				</section>
 				<!--Slide 23-->
 				<section>
@@ -554,7 +566,7 @@ struct add {
 };
 						</code></pre>
 						
-							To use a C++ function object you simply construct an instance of the type initialising the accessors and pass it to parallel_for<br><br>
+							To use a C++ function object you simply construct an instance of the type initializing the accessors and pass it to parallel_for<br><br>
 							
 							Notice you no longer need to name the SYCL kernel
 						</div>

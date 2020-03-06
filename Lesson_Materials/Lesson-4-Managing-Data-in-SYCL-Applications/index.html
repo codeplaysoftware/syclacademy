@@ -28,7 +28,6 @@
 					* Learn about different ways to access the data
 					* Learn about execution ordering using data dependencies
 					* Learn about how SYCL synchronizes data
-					* Understand the SPMD model of describing parallelism
 				</section>
 				<!--Slide 3-->
 				<section class="hbox" data-markdown>
@@ -95,10 +94,11 @@
 				<section>
 					<div class="hbox" data-markdown>
 						* SYCL separates the storage and access of data 
-						  * A SYCL buffer manages data across the host and any number of devices 
-						  * A SYCL accessor requests access to data on the host or on a device for a specific SYCL kernel function
+						  * A SYCL buffer manages data across the host devices 
+						  * A SYCL accessor requests access to data for a specific kernel
 						* Accessors are also used to access data within a SYCL kernel function
-						  * This means they are declared in the host code but captured by and then accessed within a SYCL kernel function
+						  * This means they are declared in the host code 
+						  * But captured by and then accessed within a SYCL kernel
 					</div>
 				</section>
 				<!--Slide 10-->
@@ -345,16 +345,16 @@ gpuQueue.submit([&](handler &cgh){
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+buffer&ltfloat, 3&gt bufA(dA, rng); 
+buffer&ltfloat, 3&gt bufB(dB, rng); 
+buffer&ltfloat, 3&gt bufO(dO, rng);
 
 gpuQueue.submit([&](handler &cgh){
   auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
   auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
   auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
   cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-    [=](id&lt1&gt i){ 
+    [=](id&3t1&gt i){ 
     <mark>out[i] = inA[i] + inB[i];</mark>
   });
 });
@@ -370,15 +370,45 @@ gpuQueue.submit([&](handler &cgh){
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+buffer&ltfloat, 3&gt bufA(dA, rng); 
+buffer&ltfloat, 3&gt bufB(dB, rng); 
+buffer&ltfloat, 3&gt bufO(dO, rng);
 
 gpuQueue.submit([&](handler &cgh){
   auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
   auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
   auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
-  cgh.parallel_for&ltadd&gt(rng, [=](id&lt3&gt i){
+  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
+    [=](id&3t1&gt i){ 
+    <mark>auto x = i[0];
+    auto y = i[1];
+    auto z = i[2];
+    out[z][y][x] = inA[z][y][x] + inB[z][y][x];</mark>
+  });
+});
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+							* Here we access the data of the accessor by passing in the index at each dimension in nested subscript operators
+						</div>
+					</div>
+				</section>
+				
+				
+				<!--Slide 31-->
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+buffer&ltfloat, 3&gt bufA(dA, rng); 
+buffer&ltfloat, 3&gt bufB(dA, rng); 
+buffer&ltfloat, 3&gt bufO(dA, rng);
+
+gpuQueue.submit([&](handler &cgh){
+  auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+  auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+  auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+  cgh.parallel_for&ltadd&gt(rng, [=](id&3t3&gt i){
     <mark>auto ptrA = inA.get_pointer();</mark>
     <mark>auto ptrB = inB.get_pointer();</mark>
     <mark>auto ptrO = out.get_pointer();</mark>

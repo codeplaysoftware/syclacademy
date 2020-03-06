@@ -22,13 +22,12 @@
 				</section>
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
-				    ## Learning Objectives
-
-		            * Learn about the SYCL 1.2.1 specification and it's implementations 
+					## Learning Objectives
+					* Learn about the SYCL 1.2.1 specification and its implementations 
 					* Learn about the major features that SYCL provides 
 					* Learn about the components of a SYCL implementation 
 					* Learn about the anatomy of a typical SYCL application 
-					* Learn where to find useful resources for SYCL
+					* Learn where to find useful resources for SYCL 
                 </section>
 				<!--Slide 3-->
 				<section class="hbox" data-markdown>
@@ -218,8 +217,8 @@
 					<div class="hbox">
 						<code><pre>
 
-<mark>#include &ltCL/sycl.hpp&gt </mark>
-using namespace cl::sycl;
+<mark>#include &ltCL/sycl.hpp&gt 
+using namespace cl::sycl;</mark>
 class add;
 
 int main(int argc, char *argv[]) { 
@@ -299,7 +298,7 @@ int main(int argc, char *argv[]) {
 
 
 
-  });
+  <mark>});</mark>
 }
 						</code></pre>
 					</div>
@@ -398,18 +397,19 @@ int main(int argc, char *argv[]) {
   std::vector<float> dA{ … }, dB{ … }, dO{ … };
 
   queue gpuQueue{gpu_selector{}};
+<mark>  {</mark>
+    buffer<float, 1> bufA(dA.data(), range<1>(dA.size())); 
+    buffer<float, 1> bufB(dB.data(), range<1>(dB.size())); 
+    buffer<float, 1> bufO(dO.data(), range<1>(dO.size()));
 
-  buffer<float, 1> bufA(dA.data(), range<1>(dA.size())); 
-  buffer<float, 1> bufB(dB.data(), range<1>(dB.size())); 
-  buffer<float, 1> bufO(dO.data(), range<1>(dO.size()));
-
-  gpuQueue.submit([&](handler &cgh)<mark>{</mark>
-
-
+    gpuQueue.submit([&](handler &cgh){
 
 
 
-  <mark>});</mark>
+
+
+    });
+  <mark>}</mark>
 }
 						</code></pre>
 					</div>
@@ -449,8 +449,8 @@ int main(int argc, char *argv[]) {
 						</code></pre>
 					</div>
 					<div class="bottom-bullets" data-markdown>
-						We create an accessor for each of the buffers
-						Read access for the two input buffers and write access for the output buffer
+						 * We create an accessor for each of the buffers
+						 * Read access for the two input buffers and write access for the output buffer
 					</div>
 				</section>
 				<!--Slide 24-->
