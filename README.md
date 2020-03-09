@@ -117,15 +117,15 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-2-source]: ./Code_Exercises/cppcon/source/sycl_01_configuring_a_queue.cpp
 [lesson-2-solution]: ./Code_Exercises/cppcon/solutions/sycl_01_configuring_a_queue.cpp
 
-[lesson-3-slides]: ./Lesson_Materials/Lesson-3-Launching-SYCL-Kernels/index.html
+[lesson-3-slides]: ./Lesson_Materials/Lesson-2-Launching-SYCL-Kernels/index.html
 [lesson-3-tutorial]: ./Code_Exercises/cppcon/docs/sycl_02_hello_world.md
 [lesson-3-source]: ./Code_Exercises/cppcon/source/sycl_02_hello_world.cpp
 [lesson-3-solution]: ./Code_Exercises/cppcon/solutions/sycl_02_hello_world.cpp
 
-[lesson-4-slides]: ./Lesson_Materials/Lesson-4-Managing-Data-in-SYCL/index.html
+[lesson-4-slides]: ./Lesson_Materials/Lesson-4-Managing-Data-in-SYCL-Applications/index.html
 [lesson-4-tutorial]: ./Code_Exercises/cppcon/docs/sycl_03_vector_add.md
 [lesson-4-source]: ./Code_Exercises/cppcon/source/sycl_03_vector_add.cpp
 [lesson-4-solution]: ./Code_Exercises/cppcon/solutions/sycl_03_vector_add.cpp
 
-[lesson-5-slides]: ./Lesson_Materials/Lesson-5-Handling-SYCL-Errors/index.html
+[lesson-5-slides]: ./Lesson_Materials/Lesson-3-Handling-SYCL-Errors/index.html
 
