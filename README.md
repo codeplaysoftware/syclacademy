@@ -29,8 +29,8 @@ Each of the lessons are designed to be self contained modules in order to suppor
 | Lesson | Description | Slides | Write-up | Tutorial | Source | Solution |
 |--------|-------------|--------|----------|----------|--------|----------|
 | Introduction to SYCL | Introduction to SYCL and how it can be used for parallel programming. | [slides][lesson-1-slides] (30min) | TODO | [tutorial][lesson-1-tutorial] | NA | NA |
-| Creating a SYCL Queue | How to query the SYCL device topology and create a queue. | [slides][lesson-2-slides] (45min) | TODO | [tutorial][lesson-2-tutorial] | [source][lesson-2-source] | [solution][lesson-2-solution] |
-| Launching SYCL Kernels | How to enqueue kernels using SYCL. | [slides][lesson-3-slides] | TODO | [tutorial][lesson-3-tutorial] | [source][lesson-3-source] | [solution][lesson-3-solution] |
+| Creating a SYCL Queue | How to query the SYCL device topology and create a queue. | TODO | TODO | [tutorial][lesson-2-tutorial] | [source][lesson-2-source] | [solution][lesson-2-solution] |
+| Launching SYCL Kernels | How to enqueue kernels using SYCL. | [slides][lesson-3-slides] (45min) | TODO | [tutorial][lesson-3-tutorial] | [source][lesson-3-source] | [solution][lesson-3-solution] |
 | Managing Data in SYCL | The memory model in SYCL and how buffers and accessors are used to manage this memory. | [slides][lesson-4-slides] (60min) | TODO | [tutorial][lesson-4-tutorial] | [source][lesson-4-source] | [solution][lesson-4-solution] |
 | Handling SYCL Errors | How to catch and understand errors that might be emitted by a SYCL application. | [slides][lesson-5-slides] (20min) | TODO | NA | NA | NA |
 
