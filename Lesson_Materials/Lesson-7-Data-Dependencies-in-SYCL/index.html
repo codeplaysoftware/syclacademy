@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+		<link rel="stylesheet" href="css/custom.css">
+		
+	</head>
+	<body>
+		<span class='overlay-image bottom-left'>SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</span>
+		<span class='overlay-image bottom-right'><img src="images/codeplay.png" alt="Codeplay Software"></span>
+		<span class='overlay-image top-left'><img src="images/sycl_academy.png" alt="SYCL Academy"></span>
+		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
+		<div class="reveal">
+			<div class="slides">
+				<!--Slide 1-->
+				<section class="hbox" data-markdown>
+					## SYCL Data Dependency Analysis
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about how the SYCL runtime orders execution using data dependencies
+					* Learn about how SYCL synchronizes data
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="container">
+						<div class="col" data-markdown>
+							* When a command group is submitted to a SYCL queue the runtime performs dependency analysis
+							  * If command group requests access to a buffer, a pre-requisite is the data must be available before kernel execution
+							  * The scheduler uses these pre-requisites to order the execution of kernels
+							* Data is copied when required or when explicitly requested
+							  * Data will stay on the device to avoid unnecessary copies back to the host
+						</div>
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+queue cpuQueue(cpu_selector{}, async_handler{});
+cpuQueue.submit([&](handler &cgh){ // CG A 
+  auto in = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufB</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(in, out)); });
+
+cpuQueue.submit([&](handler &cgh){ // CG B 
+  auto in = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufC</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(in, out)); });
+
+cpuQueue.submit([&](handler &cgh){ // CG C 
+  auto in = <mark>bufC</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufD</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltC&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  
+cpuQueue.wait_and_throw();
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![Command Group](images/cg-1.png "Command Group")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* To use a C++ function object you simply construct an instance of the type initializing the accessors and pass it to parallel_for
+							* Notice you no longer need to name the SYCL kernel
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+queue cpuQueue(cpu_selector{}, async_handler{});
+cpuQueue.submit([&](handler &cgh){ // CG A 
+  auto in = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufB</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(in, out)); });
+
+cpuQueue.submit([&](handler &cgh){ // CG B 
+  auto in = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufC</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(in, out)); });
+
+cpuQueue.submit([&](handler &cgh){ // CG C 
+  auto in = <mark>bufC</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufD</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltC&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  
+cpuQueue.wait_and_throw();
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![Command Group](images/cg-2.png "Command Group")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							Buffers B and C are not accessed on the host so they can be optimized to remain on the device
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+						    ![Command Group](images/cg-3.png "Command Group")
+						</div>
+						<div class="col-right-1" data-markdown>
+							* As these commands are required to execute in sequence, they are enqueued to OpenCL with events between each one
+							* There are no copies required for buffers B and C as they remain on the device
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							![Command Group Workflow](images/cg-workflow-1.png "Command Group Workflow")
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+queue cpuQueue(cpu_selector{}, async_handler{});
+cpuQueue.submit([&](handler &cgh){ // CG A 
+  auto in = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufB</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(in, out)); });
+
+cpuQueue.submit([&](handler &cgh){ // CG B 
+  auto in = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufC</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(in, out)); });
+
+cpuQueue.submit([&](handler &cgh){ // CG C 
+  auto in = <mark>bufC</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  auto out = <mark>bufD</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
+  cgh.parallel_for&ltC&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  
+cpuQueue.wait_and_throw();
+
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+						    ![Command Group](images/cg-4.png "Command Group")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							The third command group has data dependencies on the previous, the first two command groups run concurrently
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+						    ![Command Group](images/cg-5.png "Command Group")
+						</div>
+						<div class="col-right-1" data-markdown>
+							* As command groups A and B are only reading from buffer A, they can both access it concurrently
+							* As there are no dependencies between command groups A and B they can be run in parallel
+							* Again, there are no copies required for buffers B and C as they remain on the device
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							![Command Group Workflow](images/cg-workflow-2.png "Command Group Workflow")
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section class="hbox" data-markdown>
+					## Explicit Copy Commands
+				</section>
+				<!--Slide 10-->
+				<section class="hbox" data-markdown>
+					* As well as SYCL kernel functions a command group can also contain explicit copy commands 
+					  * These commands enqueue a copy operation to the SYCL scheduler with the same data dependency analysis
+					  * This can be used to perform double buffering of copy and compute
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+queue cpuQueue(cpu_selector{}, async_handler{});
+cpuQueue.submit([&](handler &cgh){ // Copy
+  auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  cgh.copy(data, ptr); });
+
+cpuQueue.submit([&](handler &cgh){ // Compute
+  auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh); 
+  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(ptr)); });
+  
+cpuQueue.wait_and_throw();
+
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+						    ![Command Group](images/cg-6.png "Command Group")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+						The command group performing the copy must complete before the command group performing the computation
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+queue cpuQueue(cpu_selector{}, async_handler{});
+cpuQueue.submit([&](handler &cgh){ // Copy A 
+  auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  cgh.copy(data, ptr); });
+
+cpuQueue.submit([&](handler &cgh){ // Compute A
+  auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh); 
+
+  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(ptr)); });
+
+cpuQueue.submit([&](handler &cgh){ // Copy B
+  auto ptr = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  cgh.copy(data, ptr); });
+
+cpuQueue.submit([&](handler &cgh){ // Compute B
+  auto ptr = <mark>bufB</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh); 
+  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(ptr)); });
+
+cpuQueue.wait_and_throw();
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![Command Group](images/cg-7.png "Command Group")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+						The command group copying buffer B can execute concurrently with the compute of buffer A
+					</div>
+				</section>
+				<!--Slide 13-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+						    ![Command Group](images/cg-8.png "Command Group")
+						</div>
+						<div class="col-right-1" data-markdown>
+							* The copy and compute on buffer A and buffer B are independent so they have separate chains of events
+							* This means that they can be run in parallel, double buffering copy and compute
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+						![Command Group Workflow](images/cg-workflow-3.png "Command Group Workflow")
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section class="hbox" data-markdown>
+					## Ranged Accessors
+				</section>
+				<!--Slide 14-->
+				<section class="hbox" data-markdown>
+					* By default accessors access the entire buffer, however it’s possible to access only a region of a buffer 
+					  * Only the region of the buffer that you are accessing is copied 
+					  * This is particularly useful for tiling larger data
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+queue cpuQueue(cpu_selector{}, async_handler{});
+cpuQueue.submit([&](handler &cgh){ // Copy first half
+  auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh, halfSize, origin);
+  cgh.copy(data, ptr);
+
+cpuQueue.submit([&](handler &cgh){ // Compute first half
+  auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh, halfSize, origin);
+  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(ptr)); });
+
+cpuQueue.submit([&](handler &cgh){ // Copy second half
+  auto ptr = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
+  cgh.copy(data, ptr);});
+  
+cpuQueue.submit([&](handler &cgh){ // Compute first half
+  auto ptr = <mark>bufB</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh, halfSize, origin);
+  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(ptr)); });
+  
+cpuQueue.wait_and_throw();
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+							![Command Group](images/cg-9.png "Command Group")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+						The first copy and compute operate on the first half of the buffer and the other copy and compute operate on the second half
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+							![Command Group](images/cg-9.png "Command Group")
+						</div>
+						<div class="col-right-1" data-markdown>
+						    * Each region of data is copied and then that region is computed
+							* The entire buffer is copied back to the host at the end
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+						![Command Group Workflow](images/cg-workflow-4.png "Command Group Workflow")
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="js/reveal.js"></script>
+		<script src="plugin/markdown/marked.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize();
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
