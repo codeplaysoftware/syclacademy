@@ -2,16 +2,16 @@
 <html>
 	<head>
 	    <meta charset="utf-8">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/white.css">
-		<link rel="stylesheet" href="css/custom.css">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
 		
 	</head>
 	<body>
 		<span class='overlay-image bottom-left'>SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</span>
-		<span class='overlay-image bottom-right'><img src="images/codeplay.png" alt="Codeplay Software"></span>
-		<span class='overlay-image top-left'><img src="images/sycl_academy.png" alt="SYCL Academy"></span>
-		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
+		<span class='overlay-image bottom-right'><img src="../common-revealjs/images/codeplay.png" alt="Codeplay Software"></span>
+		<span class='overlay-image top-left'><img src="../common-revealjs/images/sycl_academy.png" alt="SYCL Academy"></span>
+		<span class='overlay-image top-right'><img src="../common-revealjs/images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
 				<!--Slide 1-->
@@ -43,7 +43,7 @@
 							* These work-items can be run on OS threads, GPU processing elements, etc, depending on the device
 						</div>
 						<div class="col-right" data-markdown>
-							![Work Item](images/workitem.png "Work-Item")
+							![Work Item](../common-revealjs/images/workitem.png "Work-Item")
 						</div>
 
 					</div>
@@ -56,7 +56,7 @@
 							* The size of work-groups is generally relative to what is optimal on the device being targeted
 						</div>
 						<div class="col" data-markdown>
-							![Work Group](images/workgroup.png "Work-Group")
+							![Work Group](../common-revealjs/images/workgroup.png "Work-Group")
 						</div>
 					</div>
 				</section>
@@ -69,7 +69,7 @@
 							* Work-groups always have the same number of work-items
 						</div>
 						<div class="col" data-markdown>
-							![ND-Range](images/ndrange.png "ND-Range")
+							![ND-Range](../common-revealjs/images/ndrange.png "ND-Range")
 						</div>
 					</div>
 				</section>
@@ -84,7 +84,7 @@
 							  * The **local-range** describes the number of work-items in a work-group in dimension
 						</div>
 						<div class="col" data-markdown>
-							![ND-Range](images/ndrange-example.png "ND-Range")
+							![ND-Range](../common-revealjs/images/ndrange-example.png "ND-Range")
 						</div>
 					</div>
 				</section>
@@ -103,7 +103,7 @@
 							  * **Local id**: {2, 1}
 						</div>
 						<div class="col" data-markdown>
-							![ND-Range](images/ndrange-example-work-item.png "ND-Range")
+							![ND-Range](../common-revealjs/images/ndrange-example-work-item.png "ND-Range")
 						</div>
 					</div>
 				</section>
@@ -114,7 +114,7 @@
 							Typically an nd-range invocation SYCL will execute the SYCL kernel function on a very large number of work-items, often in the thousands
 						</div>
 						<div class="col" data-markdown>
-							![ND-Range](images/ndrange-invocation.png "ND-Range")
+							![ND-Range](../common-revealjs/images/ndrange-invocation.png "ND-Range")
 						</div>
 					</div>
 				</section>
@@ -129,7 +129,7 @@
 							* The order work-items and workgroups are executed in is implementation defined
 						</div>
 						<div class="col" data-markdown>
-							![ND-Range](images/ndrange-lock-step.png "ND-Range")
+							![ND-Range](../common-revealjs/images/ndrange-lock-step.png "ND-Range")
 						</div>
 					</div>
 				</section>
@@ -141,7 +141,7 @@
 							  * All work-items within a work-group must reach the barrier before any can continue on
 						</div>
 						<div class="col" data-markdown>
-							![ND-Range](images/work-group-0.png "ND-Range")
+							![ND-Range](../common-revealjs/images/work-group-0.png "ND-Range")
 						</div>
 					</div>
 				</section>
@@ -153,13 +153,13 @@
 							* The only way to do this is to split the computation into separate SYCL kernel functions
 						</div>
 						<div class="col" data-markdown>
-							![ND-Range](images/work-group-0-1.png "ND-Range")
+							![ND-Range](../common-revealjs/images/work-group-0-1.png "ND-Range")
 						</div>
 					</div>
 				</section>
 				<!--Slide 13-->
-				<section data-markdown>
-					SYCL is an SPMD Progamming Model
+				<section class="hbox" data-markdown>
+					## SYCL is an SPMD Progamming Model
 				</section>
 				<!--Slide 14-->
 				<section>
@@ -199,8 +199,8 @@ parallel_for(calc, in, out, 1024);
 					</div>
 				</section>
 				<!--Slide 15-->
-				<section>
-					Invoking SYCL Kernel Functions
+				<section class="hbox" data-markdown>
+					## Invoking SYCL Kernel Functions
 				</section>
 				<!--Slide 16-->
 				<section>
@@ -217,7 +217,7 @@ int main(int argc, char *argv[]) {
 
   gpuQueue.submit([&](handler &cgh){
 
-    cgh.<mark>parallel_for</mark>&ltadd&gt(range&lt1&gt(1024), 
+    cgh.parallel_for&ltadd&gt(range&lt1&gt(1024), 
       [=](id&lt1&gt i) { 
       // kernel code }); 
   }); 
@@ -430,23 +430,11 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(range&lt1&gt(1024),
 						* Kernel Function Naming
 						  * SYCL kernel functions declared with a lambda must be named using a forward declarable C++ type, declared in global scope 
 						  * SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name
-						* Language restrictions for SYCL kernel functions:
-						  * No dynamic allocation
-						  * No dynamic polymorphism
-						  * No recursion
-						  * No function pointers
-						  * No exception handling
-						  * No RTTI
 					</div>
-					<aside class="notes">
-						Note that there are ways to get around some of these restrictions. For example there are blog posts offering alternative ways to achieve function pointers and dynamic polymorphism using standard C++ code.
-						https://www.codeplay.com/portal/09-24-19-alternatives-to-cpp-function-pointers-in-sycl-using-function-objects
-						https://www.codeplay.com/portal/07-12-19-enabling-polymorphism-in-sycl-using-the-cpp-idiom-crtp
-					</aside>
 				</section>
 				<!--Slide 23-->
-				<section>
-					SYCL kernels as function objects
+				<section class="hbox" data-markdown>
+					## SYCL kernels as function objects
 				</section>
 				<!--Slide 24-->
 				<section>
@@ -566,15 +554,15 @@ struct add {
 };
 						</code></pre>
 						
-							To use a C++ function object you simply construct an instance of the type initializing the accessors and pass it to parallel_for<br><br>
+							To use a C++ function object you simply construct an instance of the type initialising the accessors and pass it to parallel_for<br><br>
 							
 							Notice you no longer need to name the SYCL kernel
 						</div>
 					</div>
 				</section>
 				<!--Slide 27-->
-				<section>
-				Pre-Compiling SYCL Kernel Functions
+				<section class="hbox" data-markdown>
+				## Pre-Compiling SYCL Kernel Functions
 				</section>
 				<!--Slide 28-->
 				<section>
@@ -764,10 +752,10 @@ int main(int argc, char *argv[]) {
 				</section>
 			</div>
 		</div>
-		<script src="js/reveal.js"></script>
-		<script src="plugin/markdown/marked.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/notes/notes.js"></script>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
 		<script>
 	Reveal.initialize();
 	Reveal.configure({ slideNumber: true });

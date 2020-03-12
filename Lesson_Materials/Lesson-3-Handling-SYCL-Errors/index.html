@@ -2,16 +2,16 @@
 <html>
 	<head>
 	    <meta charset="utf-8">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/white.css">
-		<link rel="stylesheet" href="css/custom.css">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
 		
 	</head>
 	<body>
 		<span class='overlay-image bottom-left'>SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</span>
-		<span class='overlay-image bottom-right'><img src="images/codeplay.png" alt="Codeplay Software"></span>
-		<span class='overlay-image top-left'><img src="images/sycl_academy.png" alt="SYCL Academy"></span>
-		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
+		<span class='overlay-image bottom-right'><img src="../common-revealjs/images/codeplay.png" alt="Codeplay Software"></span>
+		<span class='overlay-image top-left'><img src="../common-revealjs/images/sycl_academy.png" alt="SYCL Academy"></span>
+		<span class='overlay-image top-right'><img src="../common-revealjs/images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
 				<!--Slide 1-->
@@ -39,7 +39,7 @@
 				<!--Slide 4-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
-						![SYCL](images/sycl-exceptions.png "SYCL")
+						![SYCL](../common-revealjs/images/sycl-exceptions.png "SYCL")
 					</div>
 				</section>
 				<!--Slide 5-->
@@ -48,8 +48,8 @@
 				</section>
 				<!--Slide 6-->
 				<section>
-					<div class="hbox">
-						<code><pre>
+					<div class="hbox" >
+						<code class="code-60pc"><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
 class add;
@@ -77,13 +77,12 @@ int main(int argc, char *argv[]) {
 					</div>
 					<div class="bottom-bullets" data-markdown>
 							* If errors are not handled, the application can fail silently
-							  * This can often resemble incorrect results
 					</div>
 				</section>
 				<!--Slide 7-->
 				<section>
 					<div class="hbox">
-						<code><pre>
+						<code class="code-60pc"><pre>
 int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   <mark>try{</mark>
@@ -115,7 +114,7 @@ int main(int argc, char *argv[]) {
 				<!--Slide 8-->
 				<section>
 					<div class="hbox">
-						<code><pre>
+						<code class="code-60pc"><pre>
 int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
@@ -149,7 +148,7 @@ int main(int argc, char *argv[]) {
 				<!--Slide 9-->
 				<section>
 					<div class="hbox">
-						<code><pre>
+						<code class="code-60pc"><pre>
 int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
@@ -183,7 +182,7 @@ int main(int argc, char *argv[]) {
 				<!--Slide 10-->
 				<section>
 						<div class="hbox">
-							<code><pre>
+							<code class="code-60pc"><pre>
 int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try { 
@@ -207,7 +206,7 @@ int main(int argc, char *argv[]) {
 				<!--Slide 11-->
 				<section>
 						<div class="hbox">
-							<code><pre>
+							<code class="code-60pc"><pre>
 int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try { 
@@ -232,7 +231,7 @@ int main(int argc, char *argv[]) {
 				<!--Slide 12-->
 				<section>
 						<div class="hbox">
-							<code><pre>
+							<code class="code-60pc"><pre>
 int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try { 
@@ -288,7 +287,7 @@ int main(int argc, char *argv[]) {
 				<!--Slide 17-->
 				<section>
 						<div class="hbox">
-							<code><pre>
+							<code class="code-60pc"><pre>
 int main(int argc, char *argv[]) {
   std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
@@ -313,15 +312,14 @@ int main(int argc, char *argv[]) {
 						<div class="bottom-bullets" data-markdown>
 							* Any SYCL application can be debugged on the host device by switching the queue for a host queue
 							* By replacing the device selector for the host_selector will ensure that the queue submits all work to the host device
-							* Be aware this could have an impact on data copies as data would no longer be required to be copied to the original device
 						</div>
 				</section>
 			</div>
 		</div>
-		<script src="js/reveal.js"></script>
-		<script src="plugin/markdown/marked.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/notes/notes.js"></script>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
 		<script>
 			Reveal.initialize();
 			Reveal.configure({ slideNumber: true });
