@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+	</head>
+	<body>
+		<span class='overlay-image bottom-left'>SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</span>
+		<span class='overlay-image bottom-right'><img src="../common-revealjs/images/codeplay.png" alt="Codeplay Software"></span>
+		<span class='overlay-image top-left'><img src="../common-revealjs/images/sycl_academy.png" alt="SYCL Academy"></span>
+		<span class='overlay-image top-right'><img src="../common-revealjs/images/sycl_logo.png" alt="SYCL"></span>
+		<div class="reveal">
+			<div class="slides">
+				<!--Slide 1-->
+				<section class="hbox" data-markdown>
+				    ## Configuring a SYCL Queue
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					
+					* Learn about the SYCL queue and what it does
+					* Learn about command groups and the command group handler
+					* Learn about the SYCL scheduler model
+				</section>
+				<!--Slide 3-->
+				<section class="hbox" data-markdown>
+					## What is a SYCL Queue
+					
+					* Manages the execution of commands on your device(s)
+					* Jobs are submitted to the queue to be executed on the devices
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+							![Queue](../common-revealjs/images/queue-1.png "SYCL-Queue")
+						</div>
+						<div class="col-right-1" data-markdown>
+							* In SYCL the underlying execution and memory resources of a platform and its devices is managed by creating a context
+							* A context represents one or more devices, but all devices must be associated with the same platform
+						</div>
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+							![Queue](../common-revealjs/images/queue-2.png "SYCL-Queue")
+						</div>
+						<div class="col-right-1" data-markdown>
+							* In SYCL the object which is used to submit work is the queue
+							* A queue is associated with a context and a specific device
+						</div>
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+							![Queue](../common-revealjs/images/queue-3.png "SYCL-Queue")
+						</div>
+						<div class="col-right-1" data-markdown>
+							* A single SYCL application will often want to target several different devices
+							* This can be useful for task level parallelism and load balancing
+						</div>
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section class="hbox" data-markdown>
+				    ## Creating a Context
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+auto defaultContext = context{};
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![SYCL](../common-revealjs/images/context-1.png "SYCL-Context")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* A default constructed context object will use the **default_selector** to choose a device
+							* It will then create a context for all devices that share a platform with the chosen device
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+auto intelSelector = intel_selector{};
+auto intelContext = context{intelSelector};
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![SYCL](../common-revealjs/images/context-2.png "SYCL-Context")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* A context object can be constructed from a device selector
+							* This will use the device selector to choose a device and then create a context for all devices that share a platform with the chosen device
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+auto intelContext = context{intelPlatform};
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![SYCL](../common-revealjs/images/context-3.png "SYCL-Context")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* A context object can also be constructed from a platform
+							* This will create a context for all devices associated with that platform
+					</div>
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+auto intelGPUContext = context{intelGPUDevice};
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![SYCL](../common-revealjs/images/context-4.png "SYCL-Context")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* Further, a context object can be constructed from a device
+							* This will create a context for only that device
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section class="hbox" data-markdown>
+				    ## Creating a Queue
+				</section>
+				<!--Slide 13-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+auto defaultQueue = queue{};
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![SYCL](../common-revealjs/images/queue-4.png "SYCL-Queue")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* A default constructed queue object will use the **default_selector** to choose a device
+							* It will then create a queue for the chosen device, creating an implicit context for all devices that share a platform with the chosen device
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+auto intelGPUSelector = intel_gpu_selector{};
+auto intelGPUQeuue = queue{intelGPUSelector};
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![SYCL](../common-revealjs/images/queue-4.png "SYCL-Queue")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* A queue object can be constructed from a device selector which is used to choose a device
+							* It will then create a queue for the chosen device, creating an implicit context for all devices that share a platform with the chosen device
+					</div>
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+auto intelGPUSelector = intel_gpu_selector{};
+auto intelGPUQeuue = queue{intelContext, intelGPUSel};
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![SYCL](../common-revealjs/images/queue-5.png "SYCL-Queue")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* A queue object can be constructed from a context
+							* A device selector must also be provided which is used to choose a device
+							* It will then create a queue for the chosen device, using the context provided
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+auto intelGPUSel = intel_gpu_selector{};
+auto intelGPUDevice = intelGPUSel.select_device();
+auto intelGPUQeuue = queue{intelGPUDevice};
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+						    ![SYCL](../common-revealjs/images/queue-5.png "SYCL-Queue")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* A queue object can be constructed from a device
+							* This will create a queue for only that device
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section class="hbox" data-markdown>
+				    ## Submitting Work to a Queue
+				</section>
+				<!--Slide 18-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+							![SYCL](../common-revealjs/images/queue-6.png "SYCL-Queue")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* In SYCL work is submitted via a queue object
+							* This is done using the **submit** member function
+							* This will submit a command group to the SYCL scheduler for execution on the device associated with the queue
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="container">
+						<div class="col-left-1" data-markdown>
+							![SYCL](../common-revealjs/images/queue-7.png "SYCL-Queue")
+						</div>
+					</div>
+					<div class="smaller-size-font" data-markdown>
+							* The same scheduler is used for all queues in order to share dependency information
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt using namespace cl::sycl;
+int main(int argc, char *argv[]) {
+  queue gpuQueue(gpu_selector{});
+  <mark>gpuQueue.submit([&](handler &cgh){</mark>
+  
+  // Command group
+  
+  <mark>});</mark>
+  
+  
+}
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+							* The **submit** member function takes a C++ function object, which takes a reference to a **handler** object
+							* The function object can be a lambda or a class with a function call operator
+							* The body of the function object represents the command group that is being submitted
+							* The handler object is created by the SYCL runtime and is used to link commands and requirements declared inside the command group
+						</div>
+					</div>
+				</section>
+				<!--Slide 21-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt using namespace cl::sycl;
+int main(int argc, char *argv[]) {
+  queue gpuQueue(gpu_selector{});
+  <mark>gpuQueue.submit([&](handler &cgh){</mark>
+  
+  // Command group
+  
+  <mark>});</mark>
+  
+  
+}
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+							* The command group is processed exactly once when **submit** is called
+							* At this point all the commands and requirements declared inside the command group are collected together, processed and passed on to the scheduler
+							* The work is then enqueued to the device asynchronously by the SYCL scheduler, potentially in another thread
+						</div>
+					</div>
+				</section>
+				<!--Slide 22-->
+				<section>
+					<div class="container">
+						<div class="col-left-1">
+							<code><pre>
+#include &ltCL/sycl.hpp&gt using namespace cl::sycl;
+int main(int argc, char *argv[]) {
+  queue gpuQueue(gpu_selector{});
+  gpuQueue.submit([&](handler &cgh){
+  
+  // Command group
+  
+  });
+  
+  <mark>gpuQueue.wait();</mark>
+  
+}
+
+							</code></pre>
+						</div>
+						<div class="col-right-1" data-markdown>
+							* The queue object will not wait for work to complete on destruction
+							* You must wait on the queue to complete if there are no data dependencies
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
