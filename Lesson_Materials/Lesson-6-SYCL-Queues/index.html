@@ -14,9 +14,9 @@
 		<span class='overlay-image top-right'><img src="../common-revealjs/images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
-				<!--Slide 25-->
+				<!--Slide 1-->
 				<section class="hbox" data-markdown>
-				    ## SYCL Queues
+				    ## Configuring a SYCL Queue
 				</section>
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
@@ -26,14 +26,14 @@
 					* Learn about command groups and the command group handler
 					* Learn about the SYCL scheduler model
 				</section>
-				<!--Slide 2-->
+				<!--Slide 3-->
 				<section class="hbox" data-markdown>
 					## What is a SYCL Queue
 					
-					* Manages the execution of the kernels on your device(s)
+					* Manages the execution of commands on your device(s)
 					* Jobs are submitted to the queue to be executed on the devices
 				</section>
-				<!--Slide 26-->
+				<!--Slide 4-->
 				<section>
 					<div class="container">
 						<div class="col-left-1" data-markdown>
@@ -45,7 +45,7 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 27-->
+				<!--Slide 5-->
 				<section>
 					<div class="container">
 						<div class="col-left-1" data-markdown>
@@ -57,7 +57,7 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 28-->
+				<!--Slide 6-->
 				<section>
 					<div class="container">
 						<div class="col-left-1" data-markdown>
@@ -69,11 +69,11 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 29-->
+				<!--Slide 7-->
 				<section class="hbox" data-markdown>
 				    ## Creating a Context
 				</section>
-				<!--Slide 30-->
+				<!--Slide 8-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -91,7 +91,7 @@ auto defaultContext = context{};
 							* It will then create a context for all devices that share a platform with the chosen device
 					</div>
 				</section>
-				<!--Slide 31-->
+				<!--Slide 9-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -110,7 +110,7 @@ auto intelContext = context{intelSelector};
 							* This will use the device selector to choose a device and then create a context for all devices that share a platform with the chosen device
 					</div>
 				</section>
-				<!--Slide 32-->
+				<!--Slide 10-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -128,7 +128,7 @@ auto intelContext = context{intelPlatform};
 							* This will create a context for all devices associated with that platform
 					</div>
 				</section>
-				<!--Slide 33-->
+				<!--Slide 11-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -146,11 +146,11 @@ auto intelGPUContext = context{intelGPUDevice};
 							* This will create a context for only that device
 					</div>
 				</section>
-				<!--Slide 34-->
+				<!--Slide 12-->
 				<section class="hbox" data-markdown>
 				    ## Creating a Queue
 				</section>
-				<!--Slide 35-->
+				<!--Slide 13-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -168,7 +168,7 @@ auto defaultQueue = queue{};
 							* It will then create a queue for the chosen device, creating an implicit context for all devices that share a platform with the chosen device
 					</div>
 				</section>
-				<!--Slide 36-->
+				<!--Slide 14-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -187,7 +187,7 @@ auto intelGPUQeuue = queue{intelGPUSelector};
 							* It will then create a queue for the chosen device, creating an implicit context for all devices that share a platform with the chosen device
 					</div>
 				</section>
-				<!--Slide 37-->
+				<!--Slide 15-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -207,7 +207,7 @@ auto intelGPUQeuue = queue{intelContext, intelGPUSel};
 							* It will then create a queue for the chosen device, using the context provided
 					</div>
 				</section>
-				<!--Slide 38-->
+				<!--Slide 16-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -227,11 +227,11 @@ auto intelGPUQeuue = queue{intelGPUDevice};
 							* This will create a queue for only that device
 					</div>
 				</section>
-				<!--Slide 39-->
+				<!--Slide 17-->
 				<section class="hbox" data-markdown>
 				    ## Submitting Work to a Queue
 				</section>
-				<!--Slide 40-->
+				<!--Slide 18-->
 				<section>
 					<div class="container">
 						<div class="col-left-1" data-markdown>
@@ -244,7 +244,7 @@ auto intelGPUQeuue = queue{intelGPUDevice};
 							* This will submit a command group to the SYCL scheduler for execution on the device associated with the queue
 					</div>
 				</section>
-				<!--Slide 41-->
+				<!--Slide 19-->
 				<section>
 					<div class="container">
 						<div class="col-left-1" data-markdown>
@@ -255,7 +255,7 @@ auto intelGPUQeuue = queue{intelGPUDevice};
 							* The same scheduler is used for all queues in order to share dependency information
 					</div>
 				</section>
-				<!--Slide 42-->
+				<!--Slide 20-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -282,7 +282,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
-				<!--Slide 43-->
+				<!--Slide 21-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">
@@ -308,7 +308,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
-				<!--Slide 44-->
+				<!--Slide 22-->
 				<section>
 					<div class="container">
 						<div class="col-left-1">

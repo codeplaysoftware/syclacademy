@@ -29,8 +29,9 @@
 					<div class="container">
 						<div class="col" data-markdown>
 							* When a command group is submitted to a SYCL queue the runtime performs dependency analysis
-							  * If command group requests access to a buffer, a pre-requisite is the data must be available before kernel execution
-							  * The scheduler uses these pre-requisites to order the execution of kernels
+							  * If a command group requests access to a memory object, such as a buffer
+							    * A pre-requisite is the data must be available before kernel execution
+							  * The scheduler uses these pre-requisites to order the execution of commands
 							* Data is copied when required or when explicitly requested
 							  * Data will stay on the device to avoid unnecessary copies back to the host
 						</div>
@@ -45,17 +46,17 @@ queue cpuQueue(cpu_selector{}, async_handler{});
 cpuQueue.submit([&](handler &cgh){ // CG A 
   auto in = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufB</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
 
 cpuQueue.submit([&](handler &cgh){ // CG B 
   auto in = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufC</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
 
 cpuQueue.submit([&](handler &cgh){ // CG C 
   auto in = <mark>bufC</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufD</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltC&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
   
 cpuQueue.wait_and_throw();
 
@@ -79,17 +80,17 @@ queue cpuQueue(cpu_selector{}, async_handler{});
 cpuQueue.submit([&](handler &cgh){ // CG A 
   auto in = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufB</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
 
 cpuQueue.submit([&](handler &cgh){ // CG B 
   auto in = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufC</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
 
 cpuQueue.submit([&](handler &cgh){ // CG C 
   auto in = <mark>bufC</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufD</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltC&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
   
 cpuQueue.wait_and_throw();
 
@@ -127,17 +128,17 @@ queue cpuQueue(cpu_selector{}, async_handler{});
 cpuQueue.submit([&](handler &cgh){ // CG A 
   auto in = <mark>bufA</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufB</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
 
 cpuQueue.submit([&](handler &cgh){ // CG B 
   auto in = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufC</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
 
 cpuQueue.submit([&](handler &cgh){ // CG C 
   auto in = <mark>bufC</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
   auto out = <mark>bufD</mark>.get_access&lt<mark>access::mode::write</mark>&gt(cgh);
-  cgh.parallel_for&ltC&gt(range&lt1&gt(dA.size()), func(in, out)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(in, out)); });
   
 cpuQueue.wait_and_throw();
 
@@ -189,7 +190,7 @@ cpuQueue.submit([&](handler &cgh){ // Copy
 
 cpuQueue.submit([&](handler &cgh){ // Compute
   auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh); 
-  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(ptr)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(ptr)); });
   
 cpuQueue.wait_and_throw();
 
@@ -216,7 +217,7 @@ cpuQueue.submit([&](handler &cgh){ // Copy A
 cpuQueue.submit([&](handler &cgh){ // Compute A
   auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh); 
 
-  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(ptr)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(ptr)); });
 
 cpuQueue.submit([&](handler &cgh){ // Copy B
   auto ptr = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
@@ -224,7 +225,7 @@ cpuQueue.submit([&](handler &cgh){ // Copy B
 
 cpuQueue.submit([&](handler &cgh){ // Compute B
   auto ptr = <mark>bufB</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh); 
-  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(ptr)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(ptr)); });
 
 cpuQueue.wait_and_throw();
 							</code></pre>
@@ -274,7 +275,7 @@ cpuQueue.submit([&](handler &cgh){ // Copy first half
 
 cpuQueue.submit([&](handler &cgh){ // Compute first half
   auto ptr = <mark>bufA</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh, halfSize, origin);
-  cgh.parallel_for&ltA&gt(range&lt1&gt(dA.size()), func(ptr)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(ptr)); });
 
 cpuQueue.submit([&](handler &cgh){ // Copy second half
   auto ptr = <mark>bufB</mark>.get_access&lt<mark>access::mode::read</mark>&gt(cgh); 
@@ -282,7 +283,7 @@ cpuQueue.submit([&](handler &cgh){ // Copy second half
   
 cpuQueue.submit([&](handler &cgh){ // Compute first half
   auto ptr = <mark>bufB</mark>.get_access&lt<mark>access::mode::read_write</mark>&gt(cgh, halfSize, origin);
-  cgh.parallel_for&ltB&gt(range&lt1&gt(dA.size()), func(ptr)); });
+  cgh.parallel_for(range&lt1&gt(dA.size()), func(ptr)); });
   
 cpuQueue.wait_and_throw();
 

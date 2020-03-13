@@ -17,7 +17,7 @@
 				<!--Slide 1-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
-						## SYCL Devices and Queues
+						## SYCL Topology Discovery
 					</div>
 				</section>
 				<!--Slide 2-->
@@ -71,7 +71,7 @@
 						<code>auto hostPlatform = platform{};</code>
 					</div>
 					<div class="hbox" data-markdown>
-						* The **platform** and **device** classes represent these
+						* The **platform** and **device** classes encapsulate these
 						* A default constructed platform object represents the host platform
 					</div>
 					<div class="container">
@@ -98,8 +98,8 @@
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						* In SYCL there are two ways to query a system’s topology 
-						* The topology can be manually queried and iterated over via APIs of the platform and device classes 
-						* The topology can be automatically queried and iterated over using a use  specified heuristic by a device selector object
+						  * The topology can be manually queried and iterated over via APIs of the platform and device classes 
+						  * The topology can be automatically queried and iterated over using a use  specified heuristic by a device selector object
 					</div>
                 </section>
 				<!--Slide 10-->
