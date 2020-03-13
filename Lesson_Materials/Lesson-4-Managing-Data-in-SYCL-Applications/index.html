@@ -2,16 +2,16 @@
 <html>
 	<head>
 	    <meta charset="utf-8">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/white.css">
-		<link rel="stylesheet" href="css/custom.css">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
 		
 	</head>
 	<body>
 		<span class='overlay-image bottom-left'>SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</span>
-		<span class='overlay-image bottom-right'><img src="images/codeplay.png" alt="Codeplay Software"></span>
-		<span class='overlay-image top-left'><img src="images/sycl_academy.png" alt="SYCL Academy"></span>
-		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
+		<span class='overlay-image bottom-right'><img src="../common-revealjs/images/codeplay.png" alt="Codeplay Software"></span>
+		<span class='overlay-image top-left'><img src="../common-revealjs/images/sycl_academy.png" alt="SYCL Academy"></span>
+		<span class='overlay-image top-right'><img src="../common-revealjs/images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
 				<!--Slide 1-->
@@ -28,6 +28,7 @@
 					* Learn about different ways to access the data
 					* Learn about execution ordering using data dependencies
 					* Learn about how SYCL synchronizes data
+					* Understand the SPMD model of describing parallelism
 				</section>
 				<!--Slide 3-->
 				<section class="hbox" data-markdown>
@@ -41,7 +42,7 @@
 							* A work-item cannot access the private memory of another work-item
 						</div>
 						<div class="col" data-markdown>
-							![Private Memory](images/workitem-privatememory.png "Private Memory")
+							![Private Memory](../common-revealjs/images/workitem-privatememory.png "Private Memory")
 						</div>
 
 					</div>
@@ -50,7 +51,7 @@
 				<section>
 					<div class="container">
 						<div class="col-left-3" data-markdown>
-							![Local Memory](images/workitem-localmemory.png "Local Memory")
+							![Local Memory](../common-revealjs/images/workitem-localmemory.png "Local Memory")
 						</div>
 						<div class="col-right-2" data-markdown>
 							* Each work-item can access a dedicated region of **local memory** accessible to all work-items in a work-group
@@ -62,7 +63,7 @@
 				<section>
 					<div class="container">
 						<div class="col-left-3" data-markdown>
-							![Constant Memory](images/workitem-constantmemory.png "Constant Memory")
+							![Constant Memory](../common-revealjs/images/workitem-constantmemory.png "Constant Memory")
 						</div>
 						<div class="col-right-2" data-markdown>
 							* Each work-item can access a single region of **global memory** that's accessible to all work-items in a ND-range
@@ -80,7 +81,7 @@
 							* Private memory is faster than local memory and local memory is faster than global / constant memory
 						</div>
 						<div class="col" data-markdown>
-							![Memory Regions](images/memory-regions.png "Memory Regions")
+							![Memory Regions](../common-revealjs/images/memory-regions.png "Memory Regions")
 						</div>
 					</div>
 				</section>
@@ -94,11 +95,10 @@
 				<section>
 					<div class="hbox" data-markdown>
 						* SYCL separates the storage and access of data 
-						  * A SYCL buffer manages data across the host devices 
-						  * A SYCL accessor requests access to data for a specific kernel
+						  * A SYCL buffer manages data across the host and any number of devices 
+						  * A SYCL accessor requests access to data on the host or on a device for a specific SYCL kernel function
 						* Accessors are also used to access data within a SYCL kernel function
-						  * This means they are declared in the host code 
-						  * But captured by and then accessed within a SYCL kernel
+						  * This means they are declared in the host code but captured by and then accessed within a SYCL kernel function
 					</div>
 				</section>
 				<!--Slide 10-->
@@ -136,7 +136,7 @@ gpuQueue.submit([&](handler &cgh){
 							* This will only happen once the SYCL runtime knows the data needs to be accessed and where it needs to be accessed
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Host Memory](images/buffer-hostmemory.png "Buffer Host Memory")
+							![Buffer Host Memory](../common-revealjs/images/buffer-hostmemory.png "Buffer Host Memory")
 						</div>
 					</div>
 				</section>
@@ -148,7 +148,7 @@ gpuQueue.submit([&](handler &cgh){
 							* There are a range of different types of accessor which provide different ways to access data
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Host Memory Accessor](images/buffer-hostmemory-accessor.png "Buffer Host Memory Accessor")
+							![Buffer Host Memory Accessor](../common-revealjs/images/buffer-hostmemory-accessor.png "Buffer Host Memory Accessor")
 						</div>
 					</div>
 				</section>
@@ -160,7 +160,7 @@ gpuQueue.submit([&](handler &cgh){
 							* This connects the buffer that is being accessed, the way in which it’s being accessed and the device that the command group is being submitted to
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Host Memory Accessor CG](images/buffer-hostmemory-accessor-cg.png "Buffer Host Memory Accessor CG")
+							![Buffer Host Memory Accessor CG](../common-revealjs/images/buffer-hostmemory-accessor-cg.png "Buffer Host Memory Accessor CG")
 						</div>
 					</div>
 				</section>
@@ -173,7 +173,7 @@ gpuQueue.submit([&](handler &cgh){
 							* If the most recent copy of the data is already on the device then the runtime will not copy again
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Host Memory Accessor CG Device](images/buffer-hostmemory-accessor-cg-device.png "Buffer Host Memory Accessor CG Device")
+							![Buffer Host Memory Accessor CG Device](../common-revealjs/images/buffer-hostmemory-accessor-cg-device.png "Buffer Host Memory Accessor CG Device")
 						</div>
 					</div>
 				</section>
@@ -185,7 +185,7 @@ gpuQueue.submit([&](handler &cgh){
 							* When the buffer object is destroyed it will wait for any outstanding work that is accessing the data to complete and then copy back to the original host memory
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Destroyed](images/buffer-destroyed.png "Buffer Destroyed")
+							![Buffer Destroyed](../common-revealjs/images/buffer-destroyed.png "Buffer Destroyed")
 						</div>
 					</div>
 				</section>
@@ -197,7 +197,7 @@ gpuQueue.submit([&](handler &cgh){
 							* If the two devices are of the same context the data can be copied directly
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Copied](images/buffer-copied.png "Buffer Copied")
+							![Buffer Copied](../common-revealjs/images/buffer-copied.png "Buffer Copied")
 						</div>
 					</div>
 				</section>
@@ -209,7 +209,7 @@ gpuQueue.submit([&](handler &cgh){
 							* It's important to consider this as it could incur further overhead when copying between devices
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Copied](images/copy-via-host.png "Buffer Copied")
+							![Buffer Copied](../common-revealjs/images/copy-via-host.png "Buffer Copied")
 						</div>
 					</div>
 				</section>
@@ -222,7 +222,7 @@ gpuQueue.submit([&](handler &cgh){
 				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
-						![Accessor Types](images/accessor-types.png "Accessor Types")
+						![Accessor Types](../common-revealjs/images/accessor-types.png "Accessor Types")
 					</div>
 				</section>
 				<!--Slide 20-->
@@ -236,7 +236,7 @@ gpuQueue.submit([&](handler &cgh){
 							* Element type must be the same
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Accessors](images/buffer-accessors.png "Buffer Accessors")
+							![Buffer Accessors](../common-revealjs/images/buffer-accessors.png "Buffer Accessors")
 						</div>
 					</div>
 				</section>
@@ -251,7 +251,7 @@ gpuQueue.submit([&](handler &cgh){
 							* Note that a host accessor will block other accessors until it’s destroyed
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Accessors](images/buffer-accessors-get-access.png "Buffer Accessors")
+							![Buffer Accessors](../common-revealjs/images/buffer-accessors-get-access.png "Buffer Accessors")
 						</div>
 					</div>
 				</section>
@@ -264,7 +264,7 @@ gpuQueue.submit([&](handler &cgh){
 							* This access targets does not require a buffer to be constructed as it’s temporary memory allocation for the duration of a SYCL kernel function invocation
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Accessors](images/buffer-accessors-local.png "Buffer Accessors")
+							![Buffer Accessors](../common-revealjs/images/buffer-accessors-local.png "Buffer Accessors")
 						</div>
 					</div>
 				</section>
@@ -277,7 +277,7 @@ gpuQueue.submit([&](handler &cgh){
 							* A **discard_*** accessor instructs the SYCL runtime that the SYCL kernel function does not need the initial values of the data – removing the dependency on previous command groups
 						</div>
 						<div class="col" data-markdown>
-							![Buffer Accessors](images/accessors.png "Buffer Accessors")
+							![Buffer Accessors](../common-revealjs/images/accessors.png "Buffer Accessors")
 						</div>
 					</div>
 				</section>
@@ -329,15 +329,15 @@ gpuQueue.submit([&](handler &cgh){
 				</section>
 				<!--Slide 28-->
 				<section>
-					<div class="smaller-size-font" data-markdown>
-						* There are a few different ways to access the data represented by an accessor
-						  *  The subscript operator can take an **id**
-						    * Must be the same dimensionality of the accessor
-						    * For dimensions > 1, linear address is calculated in row major 
-						* Nested subscript operators can be called for each dimension taking a **size_t**
-						  * E.g. a 3-dimensional accessor: acc[x][y][z] = …
-						* A pointer to the underlying memory can be retrieved by calling **get_pointer**
-						  * This returns a **global_ptr**, which is a wrapper class for pointers to global memory
+					<div class="container" data-markdown>
+					* There are a few different ways to access the data represented by an accessor
+					  *  The subscript operator can take an **id**
+					    * Must be the same dimensionality of the accessor
+					    * For dimensions > 1, linear address is calculated in row major 
+					* Nested subscript operators can be called for each dimension taking a **size_t**
+					  * E.g. a 3-dimensional accessor: acc[x][y][z] = …
+					* A pointer to the underlying memory can be retrieved by calling **get_pointer**
+					  * This returns a **global_ptr**, which is a wrapper class for pointers to global memory
 					</div>
 				</section>
 				<!--Slide 29-->
@@ -345,16 +345,16 @@ gpuQueue.submit([&](handler &cgh){
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-buffer&ltfloat, 3&gt bufA(dA, rng); 
-buffer&ltfloat, 3&gt bufB(dB, rng); 
-buffer&ltfloat, 3&gt bufO(dO, rng);
+buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
+buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
+buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
   auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
   auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
   auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
   cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-    [=](id&3t1&gt i){ 
+    [=](id&lt1&gt i){ 
     <mark>out[i] = inA[i] + inB[i];</mark>
   });
 });
@@ -370,45 +370,15 @@ gpuQueue.submit([&](handler &cgh){
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-buffer&ltfloat, 3&gt bufA(dA, rng); 
-buffer&ltfloat, 3&gt bufB(dB, rng); 
-buffer&ltfloat, 3&gt bufO(dO, rng);
+buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
+buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
+buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
   auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
   auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
   auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
-  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-    [=](id&3t1&gt i){ 
-    <mark>auto x = i[0];
-    auto y = i[1];
-    auto z = i[2];
-    out[z][y][x] = inA[z][y][x] + inB[z][y][x];</mark>
-  });
-});
-							</code></pre>
-						</div>
-						<div class="col-right-2" data-markdown>
-							* Here we access the data of the accessor by passing in the index at each dimension in nested subscript operators
-						</div>
-					</div>
-				</section>
-				
-				
-				<!--Slide 31-->
-				<section>
-					<div class="container">
-						<div class="col-left-3">
-							<code><pre>
-buffer&ltfloat, 3&gt bufA(dA, rng); 
-buffer&ltfloat, 3&gt bufB(dA, rng); 
-buffer&ltfloat, 3&gt bufO(dA, rng);
-
-gpuQueue.submit([&](handler &cgh){
-  auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
-  auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
-  auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
-  cgh.parallel_for&ltadd&gt(rng, [=](id&3t3&gt i){
+  cgh.parallel_for&ltadd&gt(rng, [=](id&lt3&gt i){
     <mark>auto ptrA = inA.get_pointer();</mark>
     <mark>auto ptrB = inB.get_pointer();</mark>
     <mark>auto ptrO = out.get_pointer();</mark>
@@ -428,10 +398,10 @@ gpuQueue.submit([&](handler &cgh){
 				</section>
 			</div>
 		</div>
-		<script src="js/reveal.js"></script>
-		<script src="plugin/markdown/marked.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/notes/notes.js"></script>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
 		<script>
 			Reveal.initialize();
 			Reveal.configure({ slideNumber: true });

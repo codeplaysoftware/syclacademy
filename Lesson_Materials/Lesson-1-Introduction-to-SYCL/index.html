@@ -3,15 +3,15 @@
 <html>
 	<head>
 	    <meta charset="utf-8">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/white.css">
-		<link rel="stylesheet" href="css/custom.css">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
 	</head>
 	<body>
 		<span class='overlay-image bottom-left'>SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</span>
-		<span class='overlay-image bottom-right'><img src="images/codeplay.png" alt="Codeplay Software"></span>
-		<span class='overlay-image top-left'><img src="images/sycl_academy.png" alt="SYCL Academy"></span>
-		<span class='overlay-image top-right'><img src="images/sycl_logo.png" alt="SYCL"></span>
+		<span class='overlay-image bottom-right'><img src="../common-revealjs/images/codeplay.png" alt="Codeplay Software"></span>
+		<span class='overlay-image top-left'><img src="../common-revealjs/images/sycl_academy.png" alt="SYCL Academy"></span>
+		<span class='overlay-image top-right'><img src="../common-revealjs/images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
 				<!--Slide 1-->
@@ -22,12 +22,13 @@
 				</section>
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
-					## Learning Objectives
-					* Learn about the SYCL 1.2.1 specification and its implementations 
+				    ## Learning Objectives
+
+		            * Learn about the SYCL 1.2.1 specification and it's implementations 
 					* Learn about the major features that SYCL provides 
 					* Learn about the components of a SYCL implementation 
 					* Learn about the anatomy of a typical SYCL application 
-					* Learn where to find useful resources for SYCL 
+					* Learn where to find useful resources for SYCL
                 </section>
 				<!--Slide 3-->
 				<section class="hbox" data-markdown>
@@ -49,7 +50,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](images/sycl.png "SYCL")
+							![SYCL](../common-revealjs/images/sycl.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							*  SYCL allows you to write both host CPU and device code in the same C++ source file
@@ -72,7 +73,7 @@
 					</div>
 					<div class="container">
 					<aside class="aside aside-1" data-markdown>
-						![SYCL](images/sycl_opencl.png "SYCL-OpenCL")
+						![SYCL](../common-revealjs/images/sycl_opencl.png "SYCL-OpenCL")
 					</aside>
 					<article class="main" data-markdown>
 						*  SYCL provides high-level abstractions over common boilerplate code 
@@ -92,7 +93,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](images/code_comparison.png "SYCL-Comparison")
+							![SYCL](../common-revealjs/images/code_comparison.png "SYCL-Comparison")
 						</div>
 						<div class="col" data-markdown>
 							* SYCL allows you to write standard C++
@@ -114,7 +115,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](images/sycl_targets.png "SYCL-Targets")
+							![SYCL](../common-revealjs/images/sycl_targets.png "SYCL-Targets")
 						</div>
 						<div class="col" data-markdown>
 							* SYCL can target any device supported by its back-end
@@ -143,7 +144,7 @@
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Implementation](images/sycl_implementation_sycl_interface.png "SYCL-Implementation")
+							![SYCL Implementation](../common-revealjs/images/sycl_implementation_sycl_interface.png "SYCL-Implementation")
 						</div>
 						<div class="col" data-markdown>
 							* The SYCL interface is a C++ template library that developers can use to access the features of SYCL
@@ -159,7 +160,7 @@
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Runtime](images/sycl_implementation_sycl_runtime.png "SYCL-Host-Device")
+							![SYCL Runtime](../common-revealjs/images/sycl_implementation_sycl_runtime.png "SYCL-Host-Device")
 						</div>
 						<div class="col" data-markdown>
 							* The SYCL runtime is a library that schedules and executes work
@@ -170,7 +171,7 @@
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Host Device](images/sycl_implementation_host_device.png "SYCL-Host-Device")
+							![SYCL Host Device](../common-revealjs/images/sycl_implementation_host_device.png "SYCL-Host-Device")
 						</div>
 						<div class="col" data-markdown>
 							* The host device is an emulated backend that is executed as native C++ code and emulates the SYCL execution and memory model 
@@ -181,7 +182,7 @@
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Backend](images/sycl_implementation_backend_interface.png "SYCL-Backend")
+							![SYCL Backend](../common-revealjs/images/sycl_implementation_backend_interface.png "SYCL-Backend")
 						</div>
 						<div class="col" data-markdown>
 							* The back-end interface is where the SYCL runtime calls down into a back-end in order to execute on a particular device  
@@ -193,7 +194,7 @@
 				<section class="hbox">
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Compiler](images/sycl_implementation_sycl_compiler.png "SYCL-Compiler")
+							![SYCL Compiler](../common-revealjs/images/sycl_implementation_sycl_compiler.png "SYCL-Compiler")
 						</div>
 						<div class="col" data-markdown>
 							* The SYCL device compiler is a C++ compiler which can identify SYCL kernels and compile them down to an IR or ISA
@@ -217,8 +218,8 @@
 					<div class="hbox">
 						<code><pre>
 
-<mark>#include &ltCL/sycl.hpp&gt 
-using namespace cl::sycl;</mark>
+<mark>#include &ltCL/sycl.hpp&gt </mark>
+using namespace cl::sycl;
 class add;
 
 int main(int argc, char *argv[]) { 
@@ -245,7 +246,7 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### Device Selectors And Queues
 					</div>
-					<div class="hbox">
+					<div class="container">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
@@ -271,7 +272,7 @@ int main(int argc, char *argv[]) {
 							* The queue default constructor uses a the default_selector, which allows the runtime to select a device for you
 						</div>
 						<div class="col-right" data-markdown>
-							![SYCL Selector](images/sycl_code_selector.png "SYCL-Queues")
+							![SYCL Selector](../common-revealjs/images/sycl_code_selector.png "SYCL-Queues")
 						</div>
 					</div>
 				</section>
@@ -280,7 +281,7 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### Queues and Command Groups
 					</div>
-					<div class="hbox">
+					<div class="container">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl; 
@@ -298,7 +299,7 @@ int main(int argc, char *argv[]) {
 
 
 
-  <mark>});</mark>
+  });
 }
 						</code></pre>
 					</div>
@@ -310,7 +311,7 @@ int main(int argc, char *argv[]) {
 							* Accessors
 						</div>
 						<div class="col-right" data-markdown>
-							![SYCL Selector](images/sycl_code_cg.png "SYCL-Queues")
+							![SYCL Selector](../common-revealjs/images/sycl_code_cg.png "SYCL-Queues")
 						</div>
 					</div>
 				</section>
@@ -319,7 +320,7 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### Set up Vectors
 					</div>
-					<div class="hbox">
+					<div class="container">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt 
 using namespace cl::sycl; 
@@ -352,7 +353,7 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### Create Buffers
 					</div>
-					<div class="hbox">
+					<div class="container">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt 
 using namespace cl::sycl; 
@@ -387,7 +388,7 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### Buffers on Leaving Scope
 					</div>
-					<div class="hbox">
+					<div class="container">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl; 
@@ -397,19 +398,18 @@ int main(int argc, char *argv[]) {
   std::vector<float> dA{ … }, dB{ … }, dO{ … };
 
   queue gpuQueue{gpu_selector{}};
-<mark>  {</mark>
-    buffer<float, 1> bufA(dA.data(), range<1>(dA.size())); 
-    buffer<float, 1> bufB(dB.data(), range<1>(dB.size())); 
-    buffer<float, 1> bufO(dO.data(), range<1>(dO.size()));
 
-    gpuQueue.submit([&](handler &cgh){
+  buffer<float, 1> bufA(dA.data(), range<1>(dA.size())); 
+  buffer<float, 1> bufB(dB.data(), range<1>(dB.size())); 
+  buffer<float, 1> bufO(dO.data(), range<1>(dO.size()));
 
-
+  gpuQueue.submit([&](handler &cgh)<mark>{</mark>
 
 
 
-    });
-  <mark>}</mark>
+
+
+  <mark>});</mark>
 }
 						</code></pre>
 					</div>
@@ -423,7 +423,7 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### Create Accessors
 					</div>
-					<div class="hbox">
+					<div class="container">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
@@ -449,8 +449,8 @@ int main(int argc, char *argv[]) {
 						</code></pre>
 					</div>
 					<div class="bottom-bullets" data-markdown>
-						 * We create an accessor for each of the buffers
-						 * Read access for the two input buffers and write access for the output buffer
+						We create an accessor for each of the buffers
+						Read access for the two input buffers and write access for the output buffer
 					</div>
 				</section>
 				<!--Slide 24-->
@@ -458,7 +458,7 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### SYCL Kernel
 					</div>
-					<div class="hbox">
+					<div class="container">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
@@ -498,7 +498,7 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### Template Parameter
 					</div>
-					<div class="hbox">
+					<div class="container">
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
@@ -537,8 +537,8 @@ int main(int argc, char *argv[]) {
 					<div class="hbox" data-markdown>
 						#### Error Handling
 					</div>
-					<div class="hbox">
-						<code><pre>
+					<div class="container">
+						<code class="code-60pc"><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
 class add;
@@ -584,10 +584,10 @@ int main(int argc, char *argv[]) {
 				</section>
 			</div>
 		</div>
-		<script src="js/reveal.js"></script>
-		<script src="plugin/markdown/marked.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/notes/notes.js"></script>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
 		<script>
 			Reveal.initialize({mouseWheel: true, defaultNotes: true});
 			Reveal.configure({ slideNumber: true });
