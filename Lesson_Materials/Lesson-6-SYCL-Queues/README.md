@@ -1,5 +1,5 @@
-## An Introduction to SYCL
+## Configuring a SYCL Queue
 
-A presentation deck introducing SYCL, and how it can be used for parallel programming.
+A presentation deck explaining what SYCL queues, command groups and the command group handler are, and how the SYCL scheduler model works.
 
-Recommended duration of talk: 30 minutes
+Recommended duration of talk: 25 minutes

@@ -1,5 +1,5 @@
 ## Managing Data In SYCL
 
-A presentation deck explaining the memory model in SYCL and how buffers and accessors are used to maange this memory.
+A presentation deck explaining how SYCL orders execution using data dependencies and how SYCL synchronizes data.
 
-Recommended duration of talk: 60 minutes
+Recommended duration of talk: 20 minutes

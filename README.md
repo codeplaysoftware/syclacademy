@@ -43,11 +43,23 @@ A presentation deck explaining how to catch and understand errors that might be 
 
 Recommended duration of talk: 20 minutes
 
+#### SYCL Device Topology Discovery
+
+A presentation deck explaining how to find out what devices are available and how to select these devices using SYCL device topology.
+
+Recommended duration of talk: 25 minutes
+
+#### Configuring a SYCL Queue
+
+A presentation deck explaining what SYCL queues, command groups and the command group handler are, and how the SYCL scheduler model works.
+
+Recommended duration of talk: 25 minutes
+
 #### Managing Data in SYCL
 
-A presentation deck explaining the memory model in SYCL and how buffers and accessors are used to maange this memory.
+A presentation deck explaining how SYCL orders execution using data dependencies and how SYCL synchronizes data.
 
-Recommended duration of talk: 60 minutes
+Recommended duration of talk: 20 minutes
 
 ## Online Interactive Tutorial
 

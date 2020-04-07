@@ -1,5 +1,5 @@
-## An Introduction to SYCL
+## SYCL Device Topology Discovery
 
-A presentation deck introducing SYCL, and how it can be used for parallel programming.
+A presentation deck explaining how to find out what devices are available and how to select these devices using SYCL device topology.
 
-Recommended duration of talk: 30 minutes
+Recommended duration of talk: 25 minutes
