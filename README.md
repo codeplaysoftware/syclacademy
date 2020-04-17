@@ -19,47 +19,24 @@ Contributions to the materials are very gratefully received and this can be done
 
 Abertay University, Heriot Watt University, University of Edinburgh, TU Dresden, University of the West of Scotland, Universitat Innsbruck, Universidad de Concepcion and University of Salerno.
 
-## Lesson Materials
+## Lesson Curriculum
+
+The SYCL Academy curriculum is divided up into a number of short lessons consisting of slides for presenting the material and a more detailed write-up,
+each accompanied by a tutorial for getting hands on experience with the subject matter.
+
+Each of the lessons are designed to be self contained modules in order to support both academic and training style teaching environments.
+
+| Lesson | Description | Slides | Write-up | Tutorial | Source | Solution |
+|--------|-------------|--------|----------|----------|--------|----------|
+| Introduction to SYCL | Introduction to SYCL and how it can be used for parallel programming. | [slides][lesson-1-slides] (30min) | TODO | [tutorial][lesson-1-tutorial] | NA | NA |
+| Creating a SYCL Queue | How to query the SYCL device topology and create a queue. | [slides][lesson-2-slides] (45min) | TODO | [tutorial][lesson-2-tutorial] | [source][lesson-2-source] | [solution][lesson-2-solution] |
+| Launching SYCL Kernels | How to enqueue kernels using SYCL. | [slides][lesson-3-slides] | TODO | [tutorial][lesson-3-tutorial] | [source][lesson-3-source] | [solution][lesson-3-solution] |
+| Managing Data in SYCL | The memory model in SYCL and how buffers and accessors are used to manage this memory. | [slides][lesson-4-slides] (60min) | TODO | [tutorial][lesson-4-tutorial] | [source][lesson-4-source] | [solution][lesson-4-solution] |
+| Handling SYCL Errors | How to catch and understand errors that might be emitted by a SYCL application. | [slides][lesson-5-slides] (20min) | TODO | NA | NA | NA |
 
 #### How to use the Materials
 
 Simply clone this repository, then open the "index.html" file for the presentation you want to view. Your browser will have a "Full Screen" mode that can be used to run the presentation, use the right and left cursors to move forward and backward in the presentation.
-
-#### An Introduction to SYCL
-
-A presentation deck introducing SYCL, and how it can be used for parallel programming.
-
-Recommended duration of talk: 30 minutes
-
-#### Launching SYCL Kernels
-
-A presentation deck explaining how to develop kernels using SYCL
-
-Recommended duration of talk: 45 minutes
-
-#### Handling SYCL Errors
-
-A presentation deck explaining how to catch and understand errors that might be emitted by a SYCL application
-
-Recommended duration of talk: 20 minutes
-
-#### SYCL Device Topology Discovery
-
-A presentation deck explaining how to find out what devices are available and how to select these devices using SYCL device topology.
-
-Recommended duration of talk: 25 minutes
-
-#### Configuring a SYCL Queue
-
-A presentation deck explaining what SYCL queues, command groups and the command group handler are, and how the SYCL scheduler model works.
-
-Recommended duration of talk: 25 minutes
-
-#### Managing Data in SYCL
-
-A presentation deck explaining how SYCL orders execution using data dependencies and how SYCL synchronizes data.
-
-Recommended duration of talk: 20 minutes
 
 ## Online Interactive Tutorial
 
@@ -131,3 +108,24 @@ ENV CXX=g++-8
 ```
 
 SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
+
+[lesson-1-slides]: ./Lesson_Materials/Lesson-1-Introduction-to-SYCL/index.html
+[lesson-1-tutorial]: ./Code_Exercises/cppcon/docs/sycl_00_setting_up_computecpp.md
+
+[lesson-2-slides]: ./Lesson_Materials/Lesson-2-Creating-a-SYCL-Queue/index.html
+[lesson-2-tutorial]: ./Code_Exercises/cppcon/docs/sycl_01_configuring_a_queue.md
+[lesson-2-source]: ./Code_Exercises/cppcon/source/sycl_01_configuring_a_queue.cpp
+[lesson-2-solution]: ./Code_Exercises/cppcon/solutions/sycl_01_configuring_a_queue.cpp
+
+[lesson-3-slides]: ./Lesson_Materials/Lesson-3-Launching-SYCL-Kernels/index.html
+[lesson-3-tutorial]: ./Code_Exercises/cppcon/docs/sycl_02_hello_world.md
+[lesson-3-source]: ./Code_Exercises/cppcon/source/sycl_02_hello_world.cpp
+[lesson-3-solution]: ./Code_Exercises/cppcon/solutions/sycl_02_hello_world.cpp
+
+[lesson-4-slides]: ./Lesson_Materials/Lesson-4-Managing-Data-in-SYCL/index.html
+[lesson-4-tutorial]: ./Code_Exercises/cppcon/docs/sycl_03_vector_add.md
+[lesson-4-source]: ./Code_Exercises/cppcon/source/sycl_03_vector_add.cpp
+[lesson-4-solution]: ./Code_Exercises/cppcon/solutions/sycl_03_vector_add.cpp
+
+[lesson-5-slides]: ./Lesson_Materials/Lesson-5-Handling-SYCL-Errors/index.html
+
