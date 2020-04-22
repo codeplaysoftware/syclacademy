@@ -16,18 +16,18 @@
 			<div class="slides">
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
-					## Launching SYCL Kernels
+					## SYCL Kernel Functions
 				</section>
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
 
-					* Learn about the SPMD model of describing parallelism
 					* Learn about the SYCL execution model
-					* Learn how to declare a SYCL kernel function and invoke over an nd-range
-					* Learn about the rules and restrictions on SYCL kernel functions
-					* Learn how to define a SYCL kernel function as a lambda or a function object
-					* Learn how to pre-compile a SYCL kernel function
+					* Learn about the SIMT model for describing parallelism
+					* Learn how to define and invoke SYCL kernel functions
+					* Learn about the rules and restrictions on kernel functions
+					* Learn how to use both lambdas and function objects
+					* Learn how to manually compile a kernel function
 				</section>
 				<!--Slide 3-->
 				<section class="hbox" data-markdown>
@@ -38,9 +38,9 @@
 					<div class="container">
 						<div class="col-left" data-markdown>
 							* SYCL kernel functions are executed by **work-items**
-							* You can think of a work-item as like a thread of execution
-							* Though the way work-items are executed in SYCL is different to how threads are executed in C++
-							* These work-items can be run on OS threads, GPU processing elements, etc, depending on the device
+							* You can think of a work-item as a thread of execution
+							* Each work-item will execute a SYCL kernel function from start to end
+							* A work-item can run on CPU threads, SIMD lanes, GPU threads, or any other kind of processing element
 						</div>
 						<div class="col-right" data-markdown>
 							![Work Item](../common-revealjs/images/workitem.png "Work-Item")
@@ -54,6 +54,7 @@
 						<div class="col" data-markdown>
 							* Work-items are collected together into **work-groups**
 							* The size of work-groups is generally relative to what is optimal on the device being targeted
+							* It can also be affected by the resources used by each work-item
 						</div>
 						<div class="col" data-markdown>
 							![Work Group](../common-revealjs/images/workgroup.png "Work-Group")
@@ -81,7 +82,7 @@
 							* An nd-range can be 1, 2 or 3 dimensions
 							* An nd-range has two components
 							  * The **global-range** describes the total number of workitems in each dimension
-							  * The **local-range** describes the number of work-items in a work-group in dimension
+							  * The **local-range** describes the number of work-items in a work-group in each dimension
 						</div>
 						<div class="col" data-markdown>
 							![ND-Range](../common-revealjs/images/ndrange-example.png "ND-Range")

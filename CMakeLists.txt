@@ -16,6 +16,9 @@ project (SYCLAcademy)
 option(SYCL_ACADEMY_USE_COMPUTECPP "Configure to compile with ComputeCpp" OFF)
 option(SYCL_ACADEMY_USE_DPCPP "Configure to compile with DPC++" OFF)
 option(SYCL_ACADEMY_USE_HIPSYCL "Configure to compile with hipSYCL" OFF)
+option(SYCL_ACADEMY_ENABLE_SOLUTIONS "Include solution files in project" OFF)
+
+# Variables
 
 set(SYCL_ACADEMY_INSTALL_ROOT CACHE STRING "NOT-FOUND")
 

@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(Exercise_2 source)
-add_sycl_executable(Exercise_2 solution)
+if (SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(Exercise_2 solution)
+endif()
