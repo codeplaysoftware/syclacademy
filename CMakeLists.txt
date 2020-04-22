@@ -75,13 +75,13 @@ endif()
 # hipSYCL setup
 
 if (SYCL_ACADEMY_USE_HIPSYCL)
-  # TODO(Gordon)
+  find_package(hipSYCL CONFIG REQUIRED PATHS ${SYCL_ACADEMY_INSTALL_ROOT}/lib/cmake)
 endif()
 
 # Exercises
 
 enable_testing()
-add_subdirectory(External/Catch2)
+add_subdirectory(External/catch2)
 
 add_subdirectory(Code_Exercises)
 
