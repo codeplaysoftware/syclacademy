@@ -88,11 +88,14 @@ TEST_CASE("naive", "sycl_05_transpose") {
                 outputMatBuf.template get_access<cl::sycl::access::mode::write>(
                     cgh);
 
+            const auto width = inputMat.width();
+            const auto height = inputMat.height();
+                
             cgh.parallel_for<naive>(
-                cl::sycl::range<2>(inputMat.width(), inputMat.height()),
-                [=](cl::sycl::id<2> idx) {
-                  auto rowMajorId = (idx[1] * inputMat.width()) + idx[0];
-                  auto columnMajorId = (idx[0] * inputMat.height()) + idx[1];
+                cl::sycl::range<2>(width, height),
+                [=](cl::sycl::id<1> idx) {
+                  auto rowMajorId = (idx[1] * width) + idx[0];
+                  auto columnMajorId = (idx[0] * height) + idx[1];
 
                   outputMatAcc[rowMajorId] = inputMatAcc[columnMajorId];
                 });
