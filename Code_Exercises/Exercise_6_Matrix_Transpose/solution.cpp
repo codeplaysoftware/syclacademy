@@ -90,7 +90,7 @@ TEST_CASE("naive", "sycl_05_transpose") {
 
             cgh.parallel_for<naive>(
                 cl::sycl::range<2>(inputMat.width(), inputMat.height()),
-                [=](cl::sycl::id<1> idx) {
+                [=](cl::sycl::id<2> idx) {
                   auto rowMajorId = (idx[1] * inputMat.width()) + idx[0];
                   auto columnMajorId = (idx[0] * inputMat.height()) + idx[1];
 

@@ -136,7 +136,7 @@ TEST_CASE("coalesced", "sycl_04_grayscale") {
               cgh);
 
           cgh.parallel_for<coalesced>(
-            cl::sycl::range<2>(width, height), [=](cl::sycl::id<1> idx) {
+            cl::sycl::range<2>(width, height), [=](cl::sycl::id<2> idx) {
               auto linearId =
                 (idx[0] * height * channels) + (idx[1] * channels);
 
