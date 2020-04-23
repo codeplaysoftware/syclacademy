@@ -56,5 +56,8 @@ int main() {
     });
   });
 
+  /* Make sure that the queue has finished all work before terminating. */
+  myQueue.wait();
+  
   return 0;
 }
