@@ -1,17 +1,11 @@
 /*
-Copyright 2019 Gordon Brown
+ SYCL Academy (c)
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ SYCL Academy is licensed under a Creative Commons
+ Attribution-ShareAlike 4.0 International License.
 
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+ You should have received a copy of the license along with this
+ work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
 #define CATCH_CONFIG_MAIN
@@ -30,14 +24,14 @@ TEST_CASE("grayscale", "sycl_04_grayscale") {
   int width, height, channels;
 
   auto inputFile =
-      std::string("<path-to-repo>/cppcon-parallelism-class/resources/dogs.png");
+    std::string("<path-to-repo>/cppcon-parallelism-class/resources/dogs.png");
   auto outputFile = std::string(
-      "<path-to-repo>/cppcon-parallelism-class/resources/"
-      "dogs_grayscale."
-      "png");
+    "<path-to-repo>/cppcon-parallelism-class/resources/"
+    "dogs_grayscale."
+    "png");
 
-  unsigned char *rawInputData =
-      stbi_load(inputFile.c_str(), &width, &height, &channels, 4);
+  unsigned char* rawInputData =
+    stbi_load(inputFile.c_str(), &width, &height, &channels, 4);
 
   auto size = width * height * channels;
 
@@ -53,7 +47,7 @@ TEST_CASE("grayscale", "sycl_04_grayscale") {
 
   // ...
 
-  unsigned char *rawOutputData = new unsigned char[size];
+  unsigned char* rawOutputData = new unsigned char[size];
   for (int i = 0; i < (size); ++i) {
     rawOutputData[i] = static_cast<unsigned char>(imageData[i]);
   }

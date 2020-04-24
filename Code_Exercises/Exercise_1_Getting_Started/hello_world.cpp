@@ -28,8 +28,8 @@ int main() {
    * their own selectors to choose whatever kind of device they might need. */
   cl::sycl::queue myQueue(selector);
   std::cout << "Running on "
-            << myQueue.get_device().get_info<cl::sycl::info::device::name>()
-            << "\n";
+    << myQueue.get_device().get_info<cl::sycl::info::device::name>()
+    << "\n";
 
   /* C++ 11 lambda functions can be used to submit work to the queue.
    * They set up data transfers, kernel compilation and the actual
@@ -53,11 +53,11 @@ int main() {
       /* We use the stream operator on the stream object we created above
        * to print to stdout from the device. */
       os << "Hello, World!\n";
+      });
     });
-  });
 
   /* Make sure that the queue has finished all work before terminating. */
   myQueue.wait();
-  
+
   return 0;
 }

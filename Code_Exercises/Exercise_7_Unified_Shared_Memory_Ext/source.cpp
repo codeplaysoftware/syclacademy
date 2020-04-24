@@ -13,6 +13,6 @@
 
 #include <CL/sycl.hpp>
 
-TEST_CASE("hello_world", "sycl_02_hello_world") {
+TEST_CASE("parallel_for_usm", "sycl_07_unified_shared_memory_ext") {
   REQUIRE(true);
 }

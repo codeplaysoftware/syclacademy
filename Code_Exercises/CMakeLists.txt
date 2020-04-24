@@ -65,3 +65,8 @@ add_subdirectory(Exercise_3_Hello_World)
 add_subdirectory(Exercise_4_Vector_Add)
 add_subdirectory(Exercise_5_Image_Grayscale)
 add_subdirectory(Exercise_6_Matrix_Transpose)
+
+# Only include USM exercise when using ComputeCpp or DPC++
+if(SYCL_ACADEMY_USE_COMPUTECPP OR SYCL_ACADEMY_USE_DPCPP)
+  add_subdirectory(Exercise_7_Unified_Shared_Memory_Ext)
+endif()

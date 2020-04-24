@@ -94,8 +94,8 @@
 					<div class="container">
 						<div class="col" data-markdown>
 							* Each invocation in the iteration space of an nd-range is a work-item
-							* Each invocation knows which work-item it is and can query certain information about its position in the iteration space 
-							* An nd-range has two components
+							* Each invocation knows which work-item it is on and can query certain information about its position in the nd-range
+							* Each work-item has the following:
 							  * **Global range**: {12, 12}
 							  * **Global id**: {6, 5}
 							  * **Group range**: {3, 3}
@@ -124,7 +124,7 @@
 					<div class="container">
 						<div class="col" data-markdown>
 							* Multiple work-items will generally execute concurrently
-							* On vector hardware this done in lock-step, which means the same hardware instructions
+							* On vector hardware this is often done in lock-step, which means the same hardware instructions
 							* The number of work-items that will execute concurrently can vary from one device to another
 							* Work-items will be batched along with other work-items in the same work-group
 							* The order work-items and workgroups are executed in is implementation defined
@@ -160,7 +160,7 @@
 				</section>
 				<!--Slide 13-->
 				<section class="hbox" data-markdown>
-					## SYCL is an SPMD Progamming Model
+					## SYCL is an SIMT Progamming Model
 				</section>
 				<!--Slide 14-->
 				<section>
@@ -182,7 +182,7 @@ calc(in, out);
 							</code></pre>
 						</div>
 						<div class="col">
-							Parallel SPMD code
+							Parallel SIMT code
 							<code><pre>
 void calc(int *in, int *out, int id) { 
   // function is described in terms of 
@@ -201,7 +201,7 @@ parallel_for(calc, in, out, 1024);
 				</section>
 				<!--Slide 15-->
 				<section class="hbox" data-markdown>
-					## Invoking SYCL Kernel Functions
+					## Enqueueing SYCL Kernel Functions
 				</section>
 				<!--Slide 16-->
 				<section>
@@ -421,23 +421,34 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(range&lt1&gt(1024),
 					</div>
 				</section>
 				<!--Slide 22-->
-				<section>
-					SYCL Kernels
-					<div class=container data-markdown>
-						* SYCL Kernel Functions
-						  * Must be defined using a C++ lambda or function object, they cannot be a function pointer or std::function
-						  * Must always capture or store members by-value 
-						  * Captures or stored members must be standard-layout
-						* Kernel Function Naming
-						  * SYCL kernel functions declared with a lambda must be named using a forward declarable C++ type, declared in global scope 
-						  * SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name
-					</div>
+				<section class="hbox" data-markdown>
+					## SYCL kernel function rules and restrictions
 				</section>
 				<!--Slide 23-->
+				<section>
+					SYCL Kernel Function Rules
+					<div class=container data-markdown>
+						* Must be defined using a C++ lambda or function object, they cannot be a function pointer or std::function
+						* Must always capture or store members by-value
+						* SYCL kernel functions declared with a lambda must be named using a forward declarable C++ type, declared in global scope 
+						* SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name
+					</div>
+				</section>
+				<!--Slide 24-->
+				<section>
+					SYCL Kernel Function Restrictions
+					<div class=container data-markdown>
+						* No dynamic allocation
+						* No dynamic polymorphism
+						* No function pointers
+						* No recursion
+					</div>
+				</section>
+				<!--Slide 25-->
 				<section class="hbox" data-markdown>
 					## SYCL kernels as function objects
 				</section>
-				<!--Slide 24-->
+				<!--Slide 26-->
 				<section>
 					<div class="container">
 						<div class="col-left-3">
@@ -473,7 +484,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
-				<!--Slide 25-->
+				<!--Slide 27-->
 				<section>
 					<div class="container">
 						<div class="col">
@@ -503,7 +514,7 @@ void operator()(id&lt1&gt i){
 						</div>
 					</div>
 				</section>
-				<!--Slide 26-->
+				<!--Slide 28-->
 				<section>
 					<div class="container">
 						<div class="col-left-3">
@@ -561,11 +572,11 @@ struct add {
 						</div>
 					</div>
 				</section>
-				<!--Slide 27-->
+				<!--Slide 29-->
 				<section class="hbox" data-markdown>
 				## Pre-Compiling SYCL Kernel Functions
 				</section>
-				<!--Slide 28-->
+				<!--Slide 30-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -597,13 +608,14 @@ int main(int argc, char *argv[]) {
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>
-							* When you invoke a SYCL kernel function the runtime has to justin-time compile the kernel for the device it’s being executed on
-							* This means the first time a kernel function is invoked will take longer than subsequent invocations
+							* When you emqueue a SYCL kernel function the runtime has to just-in-time compile the kernel for the device that the queue is targeting
+							* This means the first time a kernel function is enqueued will take longer
 							* However you can avoid this by pre-compiling the kernel
+							* Pre-compiling kernels also gives you more control over how the kernel is compiled
 						</div>
 					</div>
 				</section>
-				<!--Slide 29-->
+				<!--Slide 31-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -639,7 +651,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
-				<!--Slide 30-->
+				<!--Slide 32-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -651,7 +663,7 @@ int main(int argc, char *argv[]) {
       async_handler{});
 
     program addProgram(gpuQueue.get_context());
-    <mark>addProgram.compile_with_kernel_type&ltadd&gt();</mark>
+    <mark>addProgram.build_with_kernel_type&ltadd&gt();</mark>
 
     buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
     buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
@@ -676,7 +688,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
-				<!--Slide 31-->
+				<!--Slide 33-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -687,7 +699,7 @@ int main(int argc, char *argv[]) {
     queue gpuQueue(gpu_selector{}, async_handler{});
 
     program addProgram(gpuQueue.get_context());
-    addProgram.compile_with_kernel_type&ltadd&gt();
+    addProgram.build_with_kernel_type&ltadd&gt();
     <mark>auto addKernel = addProgram.get_kernel&ltadd&gt();</mark>
 
     buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
@@ -714,7 +726,7 @@ int main(int argc, char *argv[]) {
 						</div>
 					</div>
 				</section>
-				<!--Slide 32-->
+				<!--Slide 34-->
 				<section>
 										<div class="container">
 						<div class="col-left-3">
@@ -725,7 +737,7 @@ int main(int argc, char *argv[]) {
     queue gpuQueue(gpu_selector{}, async_handler{});
 
     program addProgram(gpuQueue.get_context());
-    addProgram.compile_with_kernel_type&ltadd&gt();
+    addProgram.build_with_kernel_type&ltadd&gt();
     auto addKernel = addProgram.get_kernel&ltadd&gt();
 
     buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
@@ -750,6 +762,10 @@ int main(int argc, char *argv[]) {
 							* Finally the kernel object can then be passed to parallel_for in order to specify that the invocation should use the precompiled kernel
 						</div>
 					</div>
+				</section>
+				<!--Slide 35-->
+				<section class="hbox" data-markdown>
+					## Questions
 				</section>
 			</div>
 		</div>

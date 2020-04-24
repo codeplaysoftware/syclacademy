@@ -28,7 +28,6 @@
 					* Learn about different ways to access the data
 					* Learn about execution ordering using data dependencies
 					* Learn about how SYCL synchronizes data
-					* Understand the SPMD model of describing parallelism
 				</section>
 				<!--Slide 3-->
 				<section class="hbox" data-markdown>
@@ -231,9 +230,9 @@ gpuQueue.submit([&](handler &cgh){
 					<div class="container">
 						<div class="col" data-markdown>
 							* Accessors using the access::target **global_buffer** and **constant_buffer** will allocate memory on the device in the **global** and **constant** address space respectively
-							* These access targets must be constructed using a buffer inside a command group
+							* Accessors of these access targets must be constructed using a buffer
 							* A useful shortcut to construct an accessor with the access::target **global_buffer** is to use the **get_access** member function of the buffer
-							* Element type must be the same
+							* Element type and dimensionality must be the same
 						</div>
 						<div class="col" data-markdown>
 							![Buffer Accessors](../common-revealjs/images/buffer-accessors.png "Buffer Accessors")
@@ -292,7 +291,7 @@ gpuQueue.submit([&](handler &cgh){
 					<div class="hbox" data-markdown>
 						* If a command group has accessors to the same buffer with conflicting access modes they are resolved into one 
 						  * read & write => ```read_write```
-						  * ```read_write``` & ```discard_write``` => ```discard_read_write```
+						  * ```read_write``` & ```discard_write``` => ```read_write```
 						* Within the SYCL kernel function there are still multiple accessors, but they alias to the same memory address
 					</div>
 				</section>
@@ -316,8 +315,8 @@ gpuQueue.submit([&](handler &cgh){
 						<div class="col-right-2" data-markdown>
 							* Here **inA** and **inB** both point to bufI but one is access::mode::read and one is access::mode::write
 							* So the SYCL runtime will treat them both as access::mode::read_write
-							* Both will point to a single allocation of global memory on the device
-							* This optimization can be useful for generic programming
+							* Both will point to a single allocation of global memory on the devices
+							* The runtime will resolve the data dependency into access::mode::read_write
 						</div>
 					</div>
 				</section>
@@ -336,8 +335,8 @@ gpuQueue.submit([&](handler &cgh){
 					    * For dimensions > 1, linear address is calculated in row major 
 					* Nested subscript operators can be called for each dimension taking a **size_t**
 					  * E.g. a 3-dimensional accessor: acc[x][y][z] = …
-					* A pointer to the underlying memory can be retrieved by calling **get_pointer**
-					  * This returns a **global_ptr**, which is a wrapper class for pointers to global memory
+					* A pointer to memory can be retrieved by calling **get_pointer**
+					  * This returns a **multi_ptr**, which is a wrapper class for pointers to the memory in the relevant memory space
 					</div>
 				</section>
 				<!--Slide 29-->
@@ -394,6 +393,12 @@ gpuQueue.submit([&](handler &cgh){
 							* We then access the pointer using the linearized id by calling the **get_linear_id** member function on the **item** class
 							* Again this linearization is calculated in row major
 						</div>
+					</div>
+				</section>
+				<!--Slide 31-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
 					</div>
 				</section>
 			</div>

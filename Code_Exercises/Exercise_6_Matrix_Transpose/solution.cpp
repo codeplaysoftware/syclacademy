@@ -1,17 +1,11 @@
 /*
-Copyright 2019 Gordon Brown
+ SYCL Academy (c)
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ SYCL Academy is licensed under a Creative Commons
+ Attribution-ShareAlike 4.0 International License.
 
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+ You should have received a copy of the license along with this
+ work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
 #define CATCH_CONFIG_MAIN
@@ -35,7 +29,7 @@ static constexpr int WORK_GROUP_HEIGHT = 16;
 
 template <typename T, int W, int H>
 class matrix {
- public:
+public:
   void print() const noexcept {
     for (int r = 0; r < H; ++r) {
       for (int c = 0; c < W; ++c) {
@@ -46,11 +40,11 @@ class matrix {
     std::cout << "\n";
   }
 
-  T *data() noexcept { return data_; }
+  T* data() noexcept { return data_; }
 
-  T *begin() noexcept { return data_; }
+  T* begin() noexcept { return data_; }
 
-  T *end() noexcept { return &(data_[W * H]); }
+  T* end() noexcept { return &(data_[W * H]); }
 
   size_t size() const noexcept { return W * H; }
 
@@ -58,7 +52,7 @@ class matrix {
 
   size_t height() const noexcept { return H; }
 
- private:
+private:
   T data_[W * H];
 };
 
@@ -79,31 +73,31 @@ TEST_CASE("naive", "sycl_05_transpose") {
     cl::sycl::buffer<float, 1> outputMatBuf(outputMat.data(), outputMat.size());
 
     cppcon::benchmark(
-        [&]() {
-          defaultQueue.submit([&](cl::sycl::handler &cgh) {
-            auto inputMatAcc =
-                inputMatBuf.template get_access<cl::sycl::access::mode::read>(
-                    cgh);
-            auto outputMatAcc =
-                outputMatBuf.template get_access<cl::sycl::access::mode::write>(
-                    cgh);
+      [&]() {
+        defaultQueue.submit([&](cl::sycl::handler& cgh) {
+          auto inputMatAcc =
+            inputMatBuf.template get_access<cl::sycl::access::mode::read>(
+              cgh);
+          auto outputMatAcc =
+            outputMatBuf.template get_access<cl::sycl::access::mode::write>(
+              cgh);
 
-            const auto width = inputMat.width();
-            const auto height = inputMat.height();
-                
-            cgh.parallel_for<naive>(
-                cl::sycl::range<2>(width, height),
-                [=](cl::sycl::id<1> idx) {
-                  auto rowMajorId = (idx[1] * width) + idx[0];
-                  auto columnMajorId = (idx[0] * height) + idx[1];
+          const auto width = inputMat.width();
+          const auto height = inputMat.height();
 
-                  outputMatAcc[rowMajorId] = inputMatAcc[columnMajorId];
-                });
+          cgh.parallel_for<naive>(
+            cl::sycl::range<2>(width, height),
+            [=](cl::sycl::id<1> idx) {
+              auto rowMajorId = (idx[1] * width) + idx[0];
+              auto columnMajorId = (idx[0] * height) + idx[1];
+
+              outputMatAcc[rowMajorId] = inputMatAcc[columnMajorId];
+            });
           });
 
-          defaultQueue.wait_and_throw();
-        },
-        100, "naive");
+        defaultQueue.wait_and_throw();
+      },
+      100, "naive");
   }
 
   // inputMat.print();
@@ -129,48 +123,48 @@ TEST_CASE("local_mem", "sycl_05_transpose") {
     cl::sycl::buffer<float, 1> outputMatBuf(outputMat.data(), outputMat.size());
 
     cppcon::benchmark(
-        [&]() {
-          defaultQueue.submit([&](cl::sycl::handler &cgh) {
-            auto inputMatAcc =
-                inputMatBuf.template get_access<cl::sycl::access::mode::read>(
-                    cgh);
-            auto outputMatAcc =
-                outputMatBuf.template get_access<cl::sycl::access::mode::write>(
-                    cgh);
+      [&]() {
+        defaultQueue.submit([&](cl::sycl::handler& cgh) {
+          auto inputMatAcc =
+            inputMatBuf.template get_access<cl::sycl::access::mode::read>(
+              cgh);
+          auto outputMatAcc =
+            outputMatBuf.template get_access<cl::sycl::access::mode::write>(
+              cgh);
 
-            auto scratchpad =
-                cl::sycl::accessor<float, 1, cl::sycl::access::mode::read_write,
-                                   cl::sycl::access::target::local>(
-                    cl::sycl::range<1>(WORK_GROUP_WIDTH * WORK_GROUP_HEIGHT),
-                    cgh);
+          auto scratchpad =
+            cl::sycl::accessor<float, 1, cl::sycl::access::mode::read_write,
+            cl::sycl::access::target::local>(
+              cl::sycl::range<1>(WORK_GROUP_WIDTH * WORK_GROUP_HEIGHT),
+              cgh);
 
-            cgh.parallel_for<local_mem>(
-                cl::sycl::nd_range<2>(
-                    cl::sycl::range<2>(inputMat.width(), inputMat.height()),
-                    cl::sycl::range<2>(WORK_GROUP_WIDTH, WORK_GROUP_HEIGHT)),
-                [=](cl::sycl::nd_item<2> item) {
-                  auto columnMajorId =
-                      (item.get_global_id(1) * item.get_global_range(0)) +
-                      item.get_global_id(0);
+          cgh.parallel_for<local_mem>(
+            cl::sycl::nd_range<2>(
+              cl::sycl::range<2>(inputMat.width(), inputMat.height()),
+              cl::sycl::range<2>(WORK_GROUP_WIDTH, WORK_GROUP_HEIGHT)),
+            [=](cl::sycl::nd_item<2> item) {
+              auto columnMajorId =
+                (item.get_global_id(1) * item.get_global_range(0)) +
+                item.get_global_id(0);
 
-                  auto rowMajorLocalId =
-                      (item.get_local_id(0) * item.get_local_range(1)) +
-                      item.get_local_id(1);
-                  auto columnMajorLocalId =
-                      (item.get_local_id(1) * item.get_local_range(0)) +
-                      item.get_local_id(0);
+              auto rowMajorLocalId =
+                (item.get_local_id(0) * item.get_local_range(1)) +
+                item.get_local_id(1);
+              auto columnMajorLocalId =
+                (item.get_local_id(1) * item.get_local_range(0)) +
+                item.get_local_id(0);
 
-                  scratchpad[columnMajorLocalId] = inputMatAcc[columnMajorId];
+              scratchpad[columnMajorLocalId] = inputMatAcc[columnMajorId];
 
-                  item.barrier(cl::sycl::access::fence_space::global_and_local);
+              item.barrier(cl::sycl::access::fence_space::global_and_local);
 
-                  outputMatAcc[columnMajorId] = scratchpad[rowMajorLocalId];
-                });
+              outputMatAcc[columnMajorId] = scratchpad[rowMajorLocalId];
+            });
           });
 
-          defaultQueue.wait_and_throw();
-        },
-        100, "local_mem");
+        defaultQueue.wait_and_throw();
+      },
+      100, "local_mem");
   }
 
   // inputMat.print();

@@ -8,7 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(Exercise_2 source)
+add_sycl_executable(Exercise_7 source)
 if (SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(Exercise_2 solution)
+  add_sycl_executable(Exercise_7 solution)
 endif()

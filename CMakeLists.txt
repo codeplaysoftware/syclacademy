@@ -8,7 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-cmake_minimum_required (VERSION 3.7.2)
+cmake_minimum_required (VERSION 3.14)
 project (SYCLAcademy)
 
 # Options
@@ -69,7 +69,7 @@ endif()
 # DPC++ setup
 
 if (SYCL_ACADEMY_USE_DPCPP)
-  # TODO(Gordon)
+  # TODO
 endif()
 
 # hipSYCL setup
@@ -84,4 +84,3 @@ enable_testing()
 add_subdirectory(External/catch2)
 
 add_subdirectory(Code_Exercises)
-
