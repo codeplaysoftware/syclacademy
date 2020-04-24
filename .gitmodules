@@ -1,6 +1,6 @@
 [submodule "External/computecpp-sdk"]
 	path = External/computecpp-sdk
-	url = git@github.com:codeplaysoftware/computecpp-sdk.git
+	url = https://github.com/codeplaysoftware/computecpp-sdk.git
 [submodule "External/catch2"]
 	path = External/catch2
 	url = https://github.com/catchorg/Catch2.git
