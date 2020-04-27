@@ -113,9 +113,15 @@ For hipSYCL:
 ```
 # Add -DHIPSYCL_GPU_ARCH=<arch> to the cmake arguments when compiling for GPUs.
 # <arch> is e.g. sm_60 for NVIDIA Pascal GPUs, gfx900 for AMD Vega 56/64, and gfx906 for Radeon VII.
-cmake -SYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_PLATFORM=<cpu|cuda|rocm> ..
+cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_PLATFORM=<cpu|cuda|rocm> ..
 make Sample_hello_world
 ./Code_Exercises/Exercise_1_Getting_Started/Sample_hello_world
+```
+alternatively, without cmake:
+```
+cd Code_Exercises/Exercise_1_Getting_Started
+HIPSYCL_PLATFORM=<cpu|cuda|rocm> HIPSYCL_GPU_ARCH=<arch-when-compiling-for-gpu> /path/to/hipsycl/bin/syclcc -o sycl-ex-1 -I../../External/Catch2/single_include source.cpp
+./sycl-ex-1
 ```
 
 If you saw the following message:
