@@ -40,6 +40,7 @@ and the statement size respectively.
 Then use the stream you constructed within the SYCL kernel function to print
 “Hello world!” using the `<<` operator.
 
+
 4.) Try another command
 
 Instead of `single_task` try another command for defining a SYCL kernel function
@@ -71,8 +72,13 @@ make Exercise_3_source
 
 For hipSYCL:
 ```
-cmake -SYCL_ACADEMY_USE_HIPSYCL=ON ..
+# Add -DHIPSYCL_GPU_ARCH=<arch> to the cmake arguments when compiling for GPUs.
+# <arch> is e.g. sm_60 for NVIDIA Pascal GPUs, gfx900 for AMD Vega 56/64, and gfx906 for Radeon VII.
+cmake -SYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_PLATFORM=<cpu|cuda|rocm> ..
 make Exercise_3_source
 ./Code_Exercises/Exercise_3_Hello_World/Exercise_3_source
+```
+
+*Note:* Printing from kernels is still experimental on ROCm, so you might get an empty output when using the hipSYCL ROCm backend. In this case, try using the CPU backend instead.
 
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf
