@@ -13,6 +13,6 @@
 
 #include <CL/sycl.hpp>
 
-TEST_CASE("hello_world", "sycl_02_hello_world") {
+TEST_CASE("hello_world", "sycl_03_hello_world") {
   REQUIRE(true);
 }

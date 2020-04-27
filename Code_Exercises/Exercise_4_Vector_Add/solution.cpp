@@ -44,7 +44,7 @@ void parallel_add(std::vector<T>& inputA, std::vector<T>& inputB,
     });
 }
 
-TEST_CASE("add_floats", "sycl_03_vector_add") {
+TEST_CASE("add_floats", "sycl_04_vector_add") {
   const int size = 1024;
 
   std::vector<float> inputA(size);
@@ -62,7 +62,7 @@ TEST_CASE("add_floats", "sycl_03_vector_add") {
   }
 }
 
-TEST_CASE("intermediate_buffer", "sycl_03_vector_add") {
+TEST_CASE("intermediate_buffer", "sycl_04_vector_add") {
   const int size = 1024;
 
   std::vector<float> inputA(size);

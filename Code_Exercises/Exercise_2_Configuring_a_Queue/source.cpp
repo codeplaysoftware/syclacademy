@@ -13,6 +13,6 @@
 
 #include <CL/sycl.hpp>
 
-TEST_CASE("hello_world", "sycl_02_hello_world") {
+TEST_CASE("default_selector", "sycl_02_configuring_a_queue") {
   REQUIRE(true);
 }

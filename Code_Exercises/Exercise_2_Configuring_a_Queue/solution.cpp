@@ -23,7 +23,7 @@ struct gpu_selector : public cl::sycl::device_selector {
   }
 };
 
-TEST_CASE("default_selector", "sycl_01_configuring_a_queue") {
+TEST_CASE("default_selector", "sycl_02_configuring_a_queue") {
   try {
     cl::sycl::queue defaultQueue;
 
@@ -39,7 +39,7 @@ TEST_CASE("default_selector", "sycl_01_configuring_a_queue") {
   REQUIRE(true);
 }
 
-TEST_CASE("gpu_selector", "sycl_01_configuring_a_queue") {
+TEST_CASE("gpu_selector", "sycl_02_configuring_a_queue") {
   try {
     cl::sycl::queue gpuQueue(gpu_selector{});
 
@@ -54,7 +54,7 @@ TEST_CASE("gpu_selector", "sycl_01_configuring_a_queue") {
   REQUIRE(true);
 }
 
-TEST_CASE("print_info", "sycl_01_configuring_a_queue") {
+TEST_CASE("print_info", "sycl_02_configuring_a_queue") {
   try {
     cl::sycl::queue defaultQueue;
 

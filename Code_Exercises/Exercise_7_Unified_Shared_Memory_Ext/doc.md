@@ -1,6 +1,6 @@
-# Application Development with SYCL
+# SYCL Academy
 
-### Exercise 6: Unified Shared Memory (extension)
+### Exercise 7: Unified Shared Memory (extension)
 
 ---
 

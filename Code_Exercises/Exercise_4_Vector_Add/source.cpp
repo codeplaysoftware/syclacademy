@@ -13,6 +13,6 @@
 
 #include <CL/sycl.hpp>
 
-TEST_CASE("hello_world", "sycl_02_hello_world") {
+TEST_CASE("add_floats", "sycl_04_vector_add") {
   REQUIRE(true);
 }

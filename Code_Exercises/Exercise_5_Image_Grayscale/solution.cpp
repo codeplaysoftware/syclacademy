@@ -24,15 +24,13 @@ class naive;
 class coalesced;
 class vectorised;
 
-TEST_CASE("naive", "sycl_04_grayscale") {
+TEST_CASE("naive", "sycl_05_grayscale") {
   int width, height, channels;
 
   auto inputFile =
-    std::string("<path-to-repo>/cppcon-parallelism-class/resources/dogs.png");
-  auto outputFile = std::string(
-    "<path-to-repo>/cppcon-parallelism-class/resources/"
-    "dogs_grayscale_naive."
-    "png");
+    std::string("<path-to-exercise-directory>/dogs.png");
+  auto outputFile =
+    std::string("<path-to-exercise-directory>/dogs_grayscale_naive.png");
 
   unsigned char* rawInputData =
     stbi_load(inputFile.c_str(), &width, &height, &channels, 4);
@@ -91,15 +89,13 @@ TEST_CASE("naive", "sycl_04_grayscale") {
   REQUIRE(true);
 }
 
-TEST_CASE("coalesced", "sycl_04_grayscale") {
+TEST_CASE("coalesced", "sycl_05_grayscale") {
   int width, height, channels;
 
   auto inputFile =
-    std::string("<path-to-repo>/cppcon-parallelism-class/resources/dogs.png");
-  auto outputFile = std::string(
-    "<path-to-repo>/cppcon-parallelism-class/resources/"
-    "dogs_grayscale_coalesced."
-    "png");
+    std::string("<path-to-exercises-directory>/dogs.png");
+  auto outputFile =
+    std::string("<path-to-exercises-directory>/dogs_grayscale_coalesced.png");
 
   unsigned char* rawInputData =
     stbi_load(inputFile.c_str(), &width, &height, &channels, 4);
@@ -162,15 +158,13 @@ TEST_CASE("coalesced", "sycl_04_grayscale") {
   REQUIRE(true);
 }
 
-TEST_CASE("vectorise", "sycl_04_grayscale") {
+TEST_CASE("vectorise", "sycl_05_grayscale") {
   int width, height, channels;
 
   auto inputFile =
-    std::string("<path-to-repo>/cppcon-parallelism-class/resources/dogs.png");
-  auto outputFile = std::string(
-    "<path-to-repo>/cppcon-parallelism-class/resources/"
-    "dogs_grayscale_vectorised."
-    "png");
+    std::string("<path-to-exercises-directory>/dogs.png");
+  auto outputFile =
+    std::string("<path-to-exercises-directory>/dogs_grayscale_vectorised.png");
 
   unsigned char* rawInputData =
     stbi_load(inputFile.c_str(), &width, &height, &channels, 4);

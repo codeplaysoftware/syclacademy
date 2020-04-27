@@ -20,15 +20,13 @@
 
 #include <CL/sycl.hpp>
 
-TEST_CASE("grayscale", "sycl_04_grayscale") {
+TEST_CASE("grayscale", "sycl_05_grayscale") {
   int width, height, channels;
 
   auto inputFile =
-    std::string("<path-to-repo>/cppcon-parallelism-class/resources/dogs.png");
-  auto outputFile = std::string(
-    "<path-to-repo>/cppcon-parallelism-class/resources/"
-    "dogs_grayscale."
-    "png");
+    std::string("<path-to-exercise-directory>/dogs.png");
+  auto outputFile =
+  std::string("<path-to-exercises-directory>/dogs_grayscale.png");
 
   unsigned char* rawInputData =
     stbi_load(inputFile.c_str(), &width, &height, &channels, 4);

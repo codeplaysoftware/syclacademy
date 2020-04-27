@@ -14,7 +14,7 @@ project (SYCLAcademy)
 # Options
 
 option(SYCL_ACADEMY_USE_COMPUTECPP "Configure to compile with ComputeCpp" OFF)
-option(SYCL_ACADEMY_USE_DPCPP "Configure to compile with DPC++" OFF)
+# option(SYCL_ACADEMY_USE_DPCPP "Configure to compile with DPC++" OFF)
 option(SYCL_ACADEMY_USE_HIPSYCL "Configure to compile with hipSYCL" OFF)
 option(SYCL_ACADEMY_ENABLE_SOLUTIONS "Include solution files in project" OFF)
 
@@ -26,21 +26,19 @@ set(SYCL_IMPLEMENTATIONS_USED 0)
 if(SYCL_ACADEMY_USE_COMPUTECPP)
   math(EXPR SYCL_IMPLEMENTATIONS_USED ${SYCL_IMPLEMENTATIONS_USED}+1)
 endif()
-if(SYCL_ACADEMY_USE_DPCPP)
-  math(EXPR SYCL_IMPLEMENTATIONS_USED ${SYCL_IMPLEMENTATIONS_USED}+1)
-endif()
+# if(SYCL_ACADEMY_USE_DPCPP)
+#   math(EXPR SYCL_IMPLEMENTATIONS_USED ${SYCL_IMPLEMENTATIONS_USED}+1)
+# endif()
 if(SYCL_ACADEMY_USE_HIPSYCL)
   math(EXPR SYCL_IMPLEMENTATIONS_USED ${SYCL_IMPLEMENTATIONS_USED}+1)
 endif()
 if (${SYCL_IMPLEMENTATIONS_USED} EQUAL 0)
   message(FATAL_ERROR "No SYCL implementation specified, please set either "
-  "SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_DPCPP or "
-  "SYCL_ACADEMY_USE_HIPSYCL to ON.")
+  "SYCL_ACADEMY_USE_COMPUTECPP or SYCL_ACADEMY_USE_HIPSYCL to ON.")
 endif()
 if (${SYCL_IMPLEMENTATIONS_USED} GREATER 1)
   message(FATAL_ERROR "Multiple SYCL implementations specified, please only "
-  "set one of SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_DPCPP or "
-  "SYCL_ACADEMY_USE_HIPSYCL to ON.")
+  "set one of SYCL_ACADEMY_USE_COMPUTECPP or  SYCL_ACADEMY_USE_HIPSYCL to ON.")
 endif()
 
 # Common setup
@@ -69,7 +67,7 @@ endif()
 # DPC++ setup
 
 if (SYCL_ACADEMY_USE_DPCPP)
-  # TODO
+  # Not implemented
 endif()
 
 # hipSYCL setup

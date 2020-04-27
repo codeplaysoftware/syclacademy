@@ -15,7 +15,7 @@
 
 class hello_world;
 
-TEST_CASE("hello_world", "sycl_02_hello_world") {
+TEST_CASE("hello_world", "sycl_03_hello_world") {
   cl::sycl::default_selector selector;
 
   cl::sycl::queue myQueue(selector);
@@ -36,7 +36,7 @@ TEST_CASE("hello_world", "sycl_02_hello_world") {
 
 class print_ids;
 
-TEST_CASE("print_ids", "sycl_02_hello_world") {
+TEST_CASE("print_ids", "sycl_03_hello_world") {
   cl::sycl::default_selector selector;
 
   cl::sycl::queue myQueue(selector);

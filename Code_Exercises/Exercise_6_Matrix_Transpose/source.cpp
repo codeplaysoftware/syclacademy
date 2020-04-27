@@ -51,7 +51,7 @@ private:
   T data_[W * H];
 };
 
-TEST_CASE("transpose", "sycl_05_transpose") {
+TEST_CASE("transpose", "sycl_06_matrix_transpose") {
   auto inputMat = matrix<float, WIDTH, HEIGHT>{};
   auto outputMat = matrix<float, WIDTH, HEIGHT>{};
 
