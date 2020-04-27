@@ -63,12 +63,7 @@ add_subdirectory(Exercise_1_Getting_Started)
 add_subdirectory(Exercise_2_Configuring_a_Queue)
 add_subdirectory(Exercise_3_Hello_World)
 add_subdirectory(Exercise_4_Vector_Add)
-
-# Only include Grayscale exercise when using ComputeCpp
-if(SYCL_ACADEMY_USE_COMPUTECPP)
 add_subdirectory(Exercise_5_Image_Grayscale)
-endif()
-
 add_subdirectory(Exercise_6_Matrix_Transpose)
 
 # Only include USM exercise when using ComputeCpp

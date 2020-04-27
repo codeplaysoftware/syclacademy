@@ -48,7 +48,7 @@ support both academic and training style teaching environments.
 | 2 | SYCL Topology Discover & Queue Creation | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
 | 3 | SYCL Kernel Functions | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
 | 4 | Managing Data in SYCL | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
-| 5 | Image Grayscale (Optional) | NA | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | No |
+| 5 | Image Grayscale (Optional) | NA | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | Yes |
 | 6 | Matrix Transpose (Optional) | NA | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
 | 7 | Unified Shared Memory Extension (Optional) | NA | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes | No |
 
@@ -83,9 +83,11 @@ all of the exercises.
 |----------------|---------------------|-------------------|------------------|
 | ComputeCpp | Windows 10 Visual Studio 2019 (64bit) <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.0.0 |
 | DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA) | 2021.1-beta05	|
-| hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)* <br> Nvidia GPU (CUDA) | Latest build |
+| hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)* <br> Nvidia GPU (CUDA) | Latest master |
 
-\* Only the Vega 10 and Vega 20 devices are officially supported by AMD.
+\* See [here][rocm-gpus] for the official list of GPUs supported by AMD for
+ROCm. We do not recommend using GPUs earlier than gfx9 (Vega 10 and Vega 20
+chips).
 
 ### Install SYCL implementations
 
@@ -107,8 +109,20 @@ already be installed and available in the path.
 
 #### Installing hipSYCL
 
-To set up hipSYCL download the [repository packages][hip-sycl-download] and
-install them.
+You will need a hipSYCL build from April 26th 2020 or newer. The easiest way to
+install a recent distribution of hipSYCL is to use the
+[daily package repositories][hipsycl-repositories-detail]. Binary packages are
+provided for Ubuntu 18.04, CentOS 7 and Arch Linux. See
+[here][hipsycl-repositories] for an explanation of the packages that you need.
+
+If you do not need the ROCm backend, a recent distribution can also be installed
+using the [spack][spack] package manager:
+```
+spack install hipsycl@master +cuda
+```
+If you do not need the CUDA backend, you can remove `+cuda`.
+
+Of course, you can also build hipSYCL [from source manually][hipsycl-building].
 
 ### Pre-requisites
 
@@ -157,6 +171,16 @@ always be required.
 
 This will enable building the solutions for each exercise as well as the source
 files. This is disabled by default.
+
+#### Additional cmake arguments for hipSYCL
+
+When building with hipSYCL, cmake will additionally require you to specify the
+target platform using `-DHIPSYCL_PLATFORM=cpu|rocm|cuda` and, when compiling for
+GPU, the target architecture using `-DHIPSYCL_GPU_ARCH=arch`.
+* For NVIDIA GPUs, `arch` is of the form `sm_XX`. For example, `sm_60` for
+Pascal GPUs (GeForce GTX 1000 series). 
+* When compiling for AMD GPUs, `arch` is of the form `gfxXXX`. For example,
+`gfx900` for Vega 10 chips (Vega 56 and Vega 64) or `gfx906` (Radeon VII).
 
 ### Compiling directly (DPC++ only)
 
@@ -252,8 +276,14 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [computecpp-download]: https://developer.codeplay.com
 [computecpp-getting-started]: https://developer.codeplay.com/products/computecpp/ce/guides/getting-started?
 [dpcpp-getting-started]: https://software.intel.com/en-us/articles/how-to-install-oneapi-products-and-run-data-parallel-cpp-code-samples
+
+[hipsycl-repositories]: https://github.com/illuhad/hipSYCL#repositories
+[hipsycl-repositories-detail]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories
 [hipsycl-download]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories
 [hipsycl-getting-started]: https://github.com/illuhad/hipSYCL#building-and-installing-hipsycl
+[hipsycl-building]: https://github.com/illuhad/hipSYCL#manual-installation
+[rocm-gpus]: https://github.com/RadeonOpenCompute/ROCm#supported-gpus
+[spack]: https://github.com/spack/spack
 
 [lesson-1-slides]: ./Lesson_Materials/Lesson-1-Introduction-to-SYCL/index.html
 [lesson-1-exercise]: ./Code_Exercises/Exercise_1_Getting_Started/doc.md
