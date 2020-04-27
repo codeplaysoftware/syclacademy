@@ -52,3 +52,24 @@ dimensionality is 1) and an `id`.
 
 You can construct a temporary `buffer` that doesn't copy back on destruction by
 initializing it with just a `range` and no host pointer.
+
+#### Build And Execution Hints
+
+For For DPC++ (using the Intel DevCloud):
+```
+dpcpp -o sycl-ex-4 -I../External/catch2/ ../Code_Exercises/Exercise_4_Vector_Add/source.cpp
+./sycl-ex-4
+```
+
+For ComputeCpp:
+```
+cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
+make Exercise_4_source
+./Code_Exercises/EExercise_4_Vector_Add/Exercise_4_source
+```
+
+For hipSYCL:
+```
+cmake -SYCL_ACADEMY_USE_HIPSYCL=ON ..
+make Exercise_4_source
+./Code_Exercises/Exercise_4_Vector_Add/Exercise_4_source

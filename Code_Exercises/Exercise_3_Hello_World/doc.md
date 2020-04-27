@@ -54,4 +54,25 @@ an `nd_range` must be an `nd_item`.
 Instead of a 1-dimensional range for your SYCL kernel function, try a 2 or
 3-dimensional range.
 
+#### Build And Execution Hints
+
+For For DPC++ (using the Intel DevCloud):
+```
+dpcpp -o sycl-ex-3 -Iyour/path/to/External/catch2/ ../Code_Exercises/Exercise_3_Hello_World/source.cpp
+./sycl-ex-3
+```
+
+For ComputeCpp:
+```
+cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
+make Exercise_3_source
+./Code_Exercises/Exercise_3_Hello_World/Exercise_3_source
+```
+
+For hipSYCL:
+```
+cmake -SYCL_ACADEMY_USE_HIPSYCL=ON ..
+make Exercise_3_source
+./Code_Exercises/Exercise_3_Hello_World/Exercise_3_source
+
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf
