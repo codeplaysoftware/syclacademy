@@ -200,7 +200,10 @@ or
 
 Once that's done you can invoke the DPC++ compiler as follows:
 
-`dpcpp -o a.out source.cpp`
+`dpcpp -I<syclacademy_root>/External/Catch2/single_include -o a.out source.cpp`
+
+Where `<syclacademy_root>` is the path to the root directory of where you cloned
+this repository.
 
 ## Online Interactive Tutorial
 
