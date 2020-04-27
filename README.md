@@ -188,15 +188,22 @@ If you are using DPC++ there is no CMake integration, but it is very simple to
 use the DPC++ compiler directly.
 
 First you have to ensure that your environment is configured to use DPC++ (note
-if you are using the Intel DevCloud then you don't need to do this step). Simply
-call the `setvars.sh` which when is available in `/opt/intel/inteloneapi` when
-installed as root or sudo and `~/intel/inteloneapi/` otherwise.
+if you are using the Intel DevCloud then you don't need to do this step).
+
+On Linux simply call the `setvars.sh` which when is available in
+`/opt/intel/inteloneapi` when installed as root or sudo and
+`~/intel/inteloneapi/` otherwise.
 
 `source /opt/intel/inteloneapi/setvars.sh`
 
 or
 
 `source ~/intel/inteloneapi/setvars.sh`
+
+On Windows the script is located in  `<dpc++_install_root>\setvars.bat`
+
+Where `<dpc++_install_root>` is wherever the `inteloneapi` directory is
+installed.
 
 Once that's done you can invoke the DPC++ compiler as follows:
 
