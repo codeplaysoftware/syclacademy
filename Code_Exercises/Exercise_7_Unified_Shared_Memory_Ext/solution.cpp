@@ -61,7 +61,6 @@ void parallel_add(std::vector<T>& inputA, std::vector<T>& inputB,
   auto fillOutput = usmQueue.fill(outputPtr, 0, size);
 
   {
-    // TODO(Gordon): Switch to usm_wrapper
 #ifdef SYCL_ACADEMY_USING_COMPUTECPP
     usm_wrapper<T> inputAPtr = usm_wrapper<T>{ inputAPtr };
     usm_wrapper<T> inputBPtr = usm_wrapper<T>{ inputBPtr };

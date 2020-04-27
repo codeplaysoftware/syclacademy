@@ -36,8 +36,9 @@ sec. 4.6.1.2) and see which device those choose.
 
 Create a device selector using the template below, implementing the function
 call operator, using various device and platform info queries like the one we
-used earlier to query the device name (see SYCL 1.2.1 specification, sec.
-4.6.4.2) and then use that device selector in the queue constructor:
+used earlier to query the device name (see
+[SYCL 1.2.1 specification][sycl-specification], sec. 4.6.4.2) and then use that
+device selector in the queue constructor:
 
 ```
 class my_device_selector : public device_selector {
@@ -75,5 +76,6 @@ For hipSYCL:
 cmake -SYCL_ACADEMY_USE_HIPSYCL=ON ..
 make Exercise_2_source
 ./Code_Exercises/Exercise_2_Configuring_a_Queue/Exercise_2_source
+```
 
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf

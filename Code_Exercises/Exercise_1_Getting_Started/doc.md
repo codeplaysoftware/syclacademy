@@ -1,14 +1,16 @@
-# IWOCL & SYCLcon 2020: An Introduction to SYCL
+# SYCL Academy
 
-### Exercise 0: Setting up your SYCL environment
+### Exercise 1: Getting Started
 
 ---
 
 For this exercise we will make some assumptions that either:
 
-* You have followed the pre-tutorial instructions to set up a SYCL compiler of your choice on your own machine
+* You have followed the pre-tutorial instructions to set up a SYCL compiler of
+your choice on your own machine
 or
-* You will use the Intel DevCloud environment for compiling and executing the SYCL applications used in the tutorial
+* You will use the Intel DevCloud environment for compiling and executing the
+SYCL applications used in the tutorial
 
 In this exercise you will learn:
 * How to validate your SYCL environment
@@ -28,14 +30,16 @@ If you have not already done so, go to the
 Complete your details and submit the form to gain access to the Intel DevCloud.
 
 Select the "Connnect" option in the top navigation.
-You can now use JupyterLab for one-click login, and selecting a "terminal" gives you command line access to the machine.
+You can now use JupyterLab for one-click login, and selecting a "terminal" gives
+you command line access to the machine.
 There are other ways to connect if you prefer them, for example SSH.
 
 #### Validating your environment
 
 ##### For DPC++ (using the Intel DevCloud)
 
-The easiest way to check everything is set up as expected is to compile and run some code.
+The easiest way to check everything is set up as expected is to compile and run
+some code.
 
 Run the following command and follow the instructions and terminal output:
 
@@ -47,8 +51,10 @@ Assuming there are no errors we can assume that your environment is set up corre
 
 ##### For ComputeCpp
 
-ComputeCpp includes a utility called "computecpp_info" which lists all the devices on your machine and outputs which are setup with the correct drivers. 
-Open a console and run the executable located in the 'bin' folder of the ComputeCpp release package:
+ComputeCpp includes a utility called "computecpp_info" which lists all the
+devices on your machine and outputs which are setup with the correct drivers. 
+Open a console and run the executable located in the 'bin' folder of the
+ComputeCpp release package:
 
 ```
 ./computecpp_info
@@ -56,21 +62,25 @@ Open a console and run the executable located in the 'bin' folder of the Compute
 
 Look for the lines that say:
 ```
-  Device is supported                     : YES - Tested internally by Codeplay Software Ltd.
+  Device is supported                     : YES - Tested internally by Codeplay
+  Software Ltd.
 ```
 
-You can also add the option --verbose to display further information about the devices.
+You can also add the option --verbose to display further information about the
+devices.
 
 From this output you can confirm your environment is setup correctly.
 
 ##### For hipSYCL
 
-You will need to have followed the compilation instructions from the hipSYCL README file to confirm your setup is working.
+You will need to have followed the compilation instructions from the hipSYCL
+README file to confirm your setup is working.
 
 
 #### Compile a SYCL application
 
-Once you have confirmed your environment is setup and available you are ready to compile your first SYCL application from source code.
+Once you have confirmed your environment is setup and available you are ready to
+compile your first SYCL application from source code.
 
 First fetch the tutorial samples from GitHub.
 

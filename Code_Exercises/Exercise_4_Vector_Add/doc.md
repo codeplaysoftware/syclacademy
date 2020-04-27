@@ -65,7 +65,7 @@ For ComputeCpp:
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
 make Exercise_4_source
-./Code_Exercises/EExercise_4_Vector_Add/Exercise_4_source
+./Code_Exercises/Exercise_4_Vector_Add/Exercise_4_source
 ```
 
 For hipSYCL:
