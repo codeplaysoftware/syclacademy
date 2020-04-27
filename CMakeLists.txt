@@ -79,6 +79,6 @@ endif()
 # Exercises
 
 enable_testing()
-add_subdirectory(External/catch2)
+add_subdirectory(External/Catch2)
 
 add_subdirectory(Code_Exercises)
