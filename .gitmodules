@@ -1,9 +1,9 @@
 [submodule "External/computecpp-sdk"]
 	path = External/computecpp-sdk
 	url = https://github.com/codeplaysoftware/computecpp-sdk.git
-[submodule "External/Catch2"]
-	path = External/Catch2
-	url = https://github.com/catchorg/Catch2.git
 [submodule "External/stb"]
 	path = External/stb
 	url = https://github.com/nothings/stb.git
+[submodule "External/Catch2"]
+	path = External/Catch2
+	url = https://github.com/catchorg/Catch2.git
