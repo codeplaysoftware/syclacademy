@@ -60,26 +60,27 @@ void parallel_add(std::vector<T>& inputA, std::vector<T>& inputB,
   auto copyInputB = usmQueue.memcpy(inputBPtr, inputB.data(), sizeInBytes);
   auto fillOutput = usmQueue.fill(outputPtr, 0, size);
 
-  {
+
+  usmQueue.submit([&](handler &cgh) {
+    cgh.depends_on(copyInputA);
+    cgh.depends_on(copyInputB);
+    cgh.depends_on(fillOutput);
+
 #ifdef SYCL_ACADEMY_USING_COMPUTECPP
-    usm_wrapper<T> inputAPtr = usm_wrapper<T>{ inputAPtr };
-    usm_wrapper<T> inputBPtr = usm_wrapper<T>{ inputBPtr };
-    usm_wrapper<T> outputPtr = usm_wrapper<T>{ outputPtr };
-#endif  // SYCL_ACADEMY_USING_COMPUTECPP
+    auto inAPtr = usm_wrapper<T>{inputAPtr};
+    auto inBPtr = usm_wrapper<T>{inputBPtr};
+    auto outPtr = usm_wrapper<T>{outputPtr};
+#else
+    auto inAPtr = inputAPtr;
+    auto inBPtr = inputBPtr;
+    auto outPtr = outputPtr;
+#endif // SYCL_ACADEMY_USING_COMPUTECPP
 
-    usmQueue.submit([&](handler& cgh) {
-
-      cgh.depends_on(copyInputA);
-      cgh.depends_on(copyInputB);
-      cgh.depends_on(fillOutput);
-
-      cgh.parallel_for<add<T>>(range<1>(size), [=](id<1> idx) {
-        auto index = idx[0];
-        outputPtr[index] = inputAPtr[index] + inputBPtr[index];
-        });
-
-      }).wait();
-  }
+    cgh.parallel_for<add<T>>(range<1>(size), [=](id<1> idx) {
+      auto index = idx[0];
+      outPtr[index] = inAPtr[index] + inBPtr[index];
+    });
+  }).wait();
 
   usmQueue.memcpy(output.data(), outputPtr, sizeInBytes).wait();
 }
