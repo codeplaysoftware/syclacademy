@@ -50,7 +50,7 @@ TEST_CASE("print_ids", "sycl_03_hello_world") {
     cgh.parallel_for<print_ids>(cl::sycl::range<1>(1024),
       [=](cl::sycl::id<1> idx) {
         if (idx[0] == 999) {
-          os << "I am on " << idx << "\n";
+          os << "I am on " << idx[0] << "\n";
         }
       });
     });
