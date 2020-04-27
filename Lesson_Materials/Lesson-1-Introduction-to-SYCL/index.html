@@ -22,12 +22,11 @@
 				</section>
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
-				    ## Learning Objectives
-
-		            * Learn about the SYCL 1.2.1 specification and it's implementations 
-					* Learn about the major features that SYCL provides 
-					* Learn about the components of a SYCL implementation 
-					* Learn about the anatomy of a typical SYCL application 
+					## Learning Objectives
+					* Learn about the SYCL 1.2.1 specification and it's implementations
+					* Learn about the major features that SYCL provides
+					* Learn about the components of a SYCL implementation
+					* Learn about the anatomy of a typical SYCL application
 					* Learn where to find useful resources for SYCL
                 </section>
 				<!--Slide 3-->
@@ -220,18 +219,8 @@
 
 <mark>#include &ltCL/sycl.hpp&gt </mark>
 using namespace cl::sycl;
-class add;
 
 int main(int argc, char *argv[]) { 
-
-
-
-
-
-
-
-
-
 
 }
 						</code></pre>
@@ -250,18 +239,10 @@ int main(int argc, char *argv[]) {
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
-class add;
 
 int main(int argc, char *argv[]) { 
 
-
-
-
-
   <mark>queue gpuQueue{gpu_selector{}};</mark>
-
-
-
 
 }
 						</code></pre>
@@ -285,19 +266,12 @@ int main(int argc, char *argv[]) {
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl; 
-class add;
 
 int main(int argc, char *argv[]) { 
 
   queue gpuQueue{gpu_selector{}};
 
-
-
   <mark>gpuQueue.submit([&](handler &cgh){ </mark>
-
-
-
-
 
   });
 }
@@ -324,23 +298,15 @@ int main(int argc, char *argv[]) {
 						<code><pre>
 #include &ltCL/sycl.hpp&gt 
 using namespace cl::sycl; 
-class add;
 
 int main(int argc, char *argv[]) { 
   <mark>std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … };</mark>
 
   queue gpuQueue{gpu_selector{}};
 
-
-
   gpuQueue.submit([&](handler &cgh){
 
-
-
-
-
   });
-
 }
 						</code></pre>
 					</div>
@@ -357,7 +323,6 @@ int main(int argc, char *argv[]) {
 						<code><pre>
 #include &ltCL/sycl.hpp&gt 
 using namespace cl::sycl; 
-class add;
 
 int main(int argc, char *argv[]) { 
   std::vector&ltfloat&gt dA{ … }, dB{ … }, dO{ … }; // psuedo code
@@ -370,12 +335,7 @@ int main(int argc, char *argv[]) {
 
   gpuQueue.submit([&](handler &cgh){
 
-
-
-
-
   });
-
 }
 						</code></pre>
 					</div>
@@ -392,24 +352,21 @@ int main(int argc, char *argv[]) {
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl; 
-class add;
 
 int main(int argc, char *argv[]) { 
   std::vector<float> dA{ … }, dB{ … }, dO{ … };
 
   queue gpuQueue{gpu_selector{}};
 
-  buffer<float, 1> bufA(dA.data(), range<1>(dA.size())); 
-  buffer<float, 1> bufB(dB.data(), range<1>(dB.size())); 
-  buffer<float, 1> bufO(dO.data(), range<1>(dO.size()));
+  <mark>{</mark>
+    buffer<float, 1> bufA(dA.data(), range<1>(dA.size())); 
+    buffer<float, 1> bufB(dB.data(), range<1>(dB.size())); 
+    buffer<float, 1> bufO(dO.data(), range<1>(dO.size()));
 
-  gpuQueue.submit([&](handler &cgh)<mark>{</mark>
+    gpuQueue.submit([&](handler &cgh){
 
-
-
-
-
-  <mark>});</mark>
+    });
+  <mark>}</mark>
 }
 						</code></pre>
 					</div>
@@ -427,24 +384,25 @@ int main(int argc, char *argv[]) {
 						<code><pre>
 #include &ltCL/sycl.hpp&gt
 using namespace cl::sycl;
-class add;
 
 int main(int argc, char *argv[]) { 
   std::vector<float> dA{ … }, dB{ … }, dO{ … };
 
   queue gpuQueue{gpu_selector{}};
 
-  buffer<float, 1> bufA(dA.data(), range<1>(dA.size())); 
-  buffer<float, 1> bufB(dB.data(), range<1>(dB.size())); 
-  buffer<float, 1> bufO(dO.data(), range<1>(dO.size()));
+  {
+    buffer<float, 1> bufA(dA.data(), range<1>(dA.size())); 
+    buffer<float, 1> bufB(dB.data(), range<1>(dB.size())); 
+    buffer<float, 1> bufO(dO.data(), range<1>(dO.size()));
 
-  gpuQueue.submit([&](handler &cgh){
+    gpuQueue.submit([&](handler &cgh){
 
-    <mark>auto inA = bufA.get_access<access::mode::read>(cgh);</mark>
-    <mark>auto inB = bufB.get_access<access::mode::read>(cgh);</mark>
-    <mark>auto out = bufO.get_access<access::mode::write>(cgh);</mark>
+      <mark>auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);</mark>
+      <mark>auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);</mark>
+      <mark>auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);</mark>
 
-  });
+	});
+  }
 }
 						</code></pre>
 					</div>
@@ -469,20 +427,22 @@ int main(int argc, char *argv[]) {
 
   queue gpuQueue{gpu_selector{}};
 
-  buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
-  buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
-  buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+  {
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
-  gpuQueue.submit([&](handler &cgh){
+    gpuQueue.submit([&](handler &cgh){
 
-    auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
-    auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
-    auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
+      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
+      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
 
-    <mark>cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()),</mark>
-      <mark>[=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; });</mark>
+      <mark>cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()),</mark>
+        <mark>[=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; });</mark>
 
-  });
+	});
+  }
 }
 						</code></pre>
 					</div>
@@ -509,20 +469,22 @@ int main(int argc, char *argv[]) {
 
   queue gpuQueue{gpu_selector{}};
 
-  buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
-  buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
-  buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+  {
+    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
-  gpuQueue.submit([&](handler &cgh){
+    gpuQueue.submit([&](handler &cgh){
 
-    auto inA = bufA.get_access<access::mode::read>(cgh);
-    auto inB = bufB.get_access<access::mode::read>(cgh);
-    auto out = bufO.get_access<access::mode::write>(cgh);
+      auto inA = bufA.get_access<access::mode::read>(cgh);
+      auto inB = bufB.get_access<access::mode::read>(cgh);
+      auto out = bufO.get_access<access::mode::write>(cgh);
 
-    cgh.parallel_for<mark>&ltadd&gt</mark>(range&lt1&gt(dA.size()),
-      [=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; });
+      cgh.parallel_for<mark>&ltadd&gt</mark>(range&lt1&gt(dA.size()),
+        [=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; });
 
-  });
+    });
+  }
 }
 						</code></pre>
 					</div>
@@ -549,22 +511,24 @@ int main(int argc, char *argv[]) {
   <mark>try{</mark>
     queue gpuQueue{gpu_selector{}, <mark>async_handler{}</mark>};
 
-    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
-    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
-    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+	{
+      buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
+      buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
+      buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
-    gpuQueue.submit([&](handler &cgh){
+      gpuQueue.submit([&](handler &cgh){
 
-      auto inA = bufA.get_access<access::mode::read>(cgh);
-      auto inB = bufB.get_access<access::mode::read>(cgh);
-      auto out = bufO.get_access<access::mode::write>(cgh);
+        auto inA = bufA.get_access<access::mode::read>(cgh);
+        auto inB = bufB.get_access<access::mode::read>(cgh);
+        auto out = bufO.get_access<access::mode::write>(cgh);
 
-      cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()),
-        [=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; });
+        cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()),
+          [=](id&lt1&gt i){ out[i] = inA[i] + inB[i]; });
 
-    });
-    <mark>gpuQueue.wait_and_throw();</mark>
-  <mark>} catch (...) { /* handle errors */ }</mark>
+      });
+      <mark>gpuQueue.wait_and_throw();</mark>
+    <mark>} catch (...) { /* handle errors */ }</mark>
+  }
 }
 						</code></pre>
 					</div>
@@ -579,8 +543,12 @@ int main(int argc, char *argv[]) {
 					## Where to Get Started with SYCL
 					
 					* Visit https://www.khronos.org/sycl/ to find the latest SYCL specifications
-					* Download ComputeCpp, a conformant implementation of SYCL v1.2.1 and find learning resources at https://developer.codeplay.com
+					* Checkout the documentation provided with one of the SYCL implementations.
 					* Visit https://sycl.tech to find out about all the SYCL implementations, news and videos
+				</section>
+				<!--Slide 28-->
+				<section data-markdown>
+					## Questions
 				</section>
 			</div>
 		</div>
