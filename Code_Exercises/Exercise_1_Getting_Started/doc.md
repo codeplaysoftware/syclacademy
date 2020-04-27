@@ -49,7 +49,10 @@ Assuming there are no errors we can assume that your environment is set up corre
 
 ComputeCpp includes a utility called "computecpp_info" which lists all the devices on your machine and outputs which are setup with the correct drivers. 
 Open a console and run the executable located in the 'bin' folder of the ComputeCpp release package:
-> ./computecpp_info
+
+```
+./computecpp_info
+```
 
 Look for the lines that say:
 ```
@@ -85,7 +88,7 @@ cd build
 
 For For DPC++ (using the Intel DevCloud):
 ```
-dpcpp -o sycl-test -Iyour/path/to/External/catch2/ ../Code_Exercises/Exercise_1_Getting_Started/hello_world.cpp
+dpcpp -o sycl-test ../Code_Exercises/Exercise_1_Getting_Started/hello_world.cpp
 ./sycl-test
 ```
 

@@ -57,7 +57,7 @@ initializing it with just a `range` and no host pointer.
 
 For For DPC++ (using the Intel DevCloud):
 ```
-dpcpp -o sycl-ex-4 -I../External/catch2/ ../Code_Exercises/Exercise_4_Vector_Add/source.cpp
+dpcpp -o sycl-ex-4 -I../External/Catch2/single_include ../Code_Exercises/Exercise_4_Vector_Add/source.cpp
 ./sycl-ex-4
 ```
 

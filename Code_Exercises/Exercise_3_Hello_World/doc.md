@@ -58,7 +58,7 @@ Instead of a 1-dimensional range for your SYCL kernel function, try a 2 or
 
 For For DPC++ (using the Intel DevCloud):
 ```
-dpcpp -o sycl-ex-3 -Iyour/path/to/External/catch2/ ../Code_Exercises/Exercise_3_Hello_World/source.cpp
+dpcpp -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_3_Hello_World/source.cpp
 ./sycl-ex-3
 ```
 

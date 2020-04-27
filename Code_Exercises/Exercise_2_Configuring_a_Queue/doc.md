@@ -59,7 +59,7 @@ score will never be chosen.
 
 For For DPC++ (using the Intel DevCloud):
 ```
-dpcpp -o sycl-ex-2 -Iyour/path/to/External/catch2/ ../Code_Exercises/Exercise_2_Configuring_a_Queue/source.cpp
+dpcpp -o sycl-ex-2 -I../External/Catch2/single_include ../Code_Exercises/Exercise_2_Configuring_a_Queue/source.cpp
 ./sycl-ex-2
 ```
 
