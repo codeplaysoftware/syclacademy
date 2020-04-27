@@ -13,7 +13,7 @@ learning about SYCL below are a list of useful resources:
 
 *  Read a description of SYCL on the [Khronos website SYCL page](https://www.khronos.org/sycl/).
 *  Go to the Khronos website to find [a list of SYCL resources](https://www.khronos.org/sycl/resources).
-* Check out the [SYCL 1.2.1 reference guide](https://www.khronos.org/files/sycl/sycl-12-reference-card.pdf).
+*  Check out the [SYCL 1.2.1 reference guide](https://www.khronos.org/files/sycl/sycl-12-reference-card.pdf).
 *  Browse SYCL news, blog posts, videos, projects and more on the [sycl.tech community website](https://sycl.tech/)
 *  Get a list of the [available SYCL implementations](https://sycl.tech/#get-sycl)
 
@@ -54,10 +54,10 @@ support both academic and training style teaching environments.
 
 ### How to use the Materials
 
-To use these materials simply close this repository.
+To use these materials simply clone this repository.
 
 The lectures are written in reveal.js, and can be found in "Lesson_Materials",
-in the sub-directory for each topic. To open them simply open the "index.html"
+in the sub-directory for each topic. To view them simply open the "index.html"
 file in your browser. Your browser will have a "Full Screen" mode that can be
 used to run the presentation, use the right and left cursors to move forward and
 backward in the presentation.
@@ -95,7 +95,7 @@ dependencies they require.
 #### Installing ComputeCpp
 
 To set up ComputeCpp download the [ComputeCpp CE package][computecpp-download]
-and follow the [getting stared instructions][computecpp-getting-started].
+and follow the [getting started instructions][computecpp-getting-started].
 
 #### Installing DPC++
 
@@ -249,7 +249,7 @@ ENV CXX=g++-8
 
 SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
-[computecpp-download]: https://www.codeplay.com/products/computesuite/computecpp
+[computecpp-download]: https://developer.codeplay.com
 [computecpp-getting-started]: https://developer.codeplay.com/products/computecpp/ce/guides/getting-started?
 [dpcpp-getting-started]: https://software.intel.com/en-us/articles/how-to-install-oneapi-products-and-run-data-parallel-cpp-code-samples
 [hipsycl-download]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories

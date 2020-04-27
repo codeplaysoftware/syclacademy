@@ -55,4 +55,25 @@ Remember that the value returned from the device selector's function call
 operator will represent the score for each device, and a device with a negative
 score will never be chosen. 
 
+#### Build And Execution Hints
+
+For For DPC++ (using the Intel DevCloud):
+```
+dpcpp -o sycl-ex-2 -Iyour/path/to/External/catch2/ ../Code_Exercises/Exercise_2_Configuring_a_Queue/source.cpp
+./sycl-ex-2
+```
+
+For ComputeCpp:
+```
+cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
+make Exercise_2_source
+./Code_Exercises/Exercise_2_Configuring_a_Queue/Exercise_2_source
+```
+
+For hipSYCL:
+```
+cmake -SYCL_ACADEMY_USE_HIPSYCL=ON ..
+make Exercise_2_source
+./Code_Exercises/Exercise_2_Configuring_a_Queue/Exercise_2_source
+
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf
