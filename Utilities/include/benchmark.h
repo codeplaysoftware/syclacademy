@@ -8,7 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-# TODO(Gordon) Create target for Utilities
+// TODO(Gordon) Create target for Utilities
 
 #ifndef __BENCHMARK_H__
 #define __BENCHMARK_H__
