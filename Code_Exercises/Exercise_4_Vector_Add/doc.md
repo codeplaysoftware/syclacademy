@@ -70,6 +70,10 @@ make Exercise_4_source
 
 For hipSYCL:
 ```
-cmake -SYCL_ACADEMY_USE_HIPSYCL=ON ..
+# Add -DHIPSYCL_GPU_ARCH=<arch> to the cmake arguments when compiling for GPUs.
+# <arch> is e.g. sm_60 for NVIDIA Pascal GPUs, gfx900 for AMD Vega 56/64, and gfx906 for Radeon VII.
+cmake -SYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_PLATFORM=<cpu|cuda|rocm> ..
 make Exercise_4_source
 ./Code_Exercises/Exercise_4_Vector_Add/Exercise_4_source
+```
+

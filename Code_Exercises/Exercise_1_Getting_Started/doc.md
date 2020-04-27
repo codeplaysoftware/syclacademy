@@ -111,7 +111,9 @@ make Sample_hello_world
 
 For hipSYCL:
 ```
-cmake -SYCL_ACADEMY_USE_HIPSYCL=ON ..
+# Add -DHIPSYCL_GPU_ARCH=<arch> to the cmake arguments when compiling for GPUs.
+# <arch> is e.g. sm_60 for NVIDIA Pascal GPUs, gfx900 for AMD Vega 56/64, and gfx906 for Radeon VII.
+cmake -SYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_PLATFORM=<cpu|cuda|rocm> ..
 make Sample_hello_world
 ./Code_Exercises/Exercise_1_Getting_Started/Sample_hello_world
 ```
@@ -123,3 +125,5 @@ Hello, World!
 ```
 
 Then you have completed this first exercise.
+
+*When using hipSYCL:* Note that printing from kernels in ROCm requires a very new software stack and is still experimental, so on hipSYCL you might get an empty output when compiling for AMD GPUs. In this case, try using the CPU backend.
