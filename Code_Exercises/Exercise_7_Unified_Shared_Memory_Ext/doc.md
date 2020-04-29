@@ -4,10 +4,13 @@
 
 ---
 
-In this first exercise you will learn:
+In this exercise you will learn:
 * How to allocate memory a region of unified shared memory on a device.
 * How to perform copy and fill operations on unified shared memory regions.
 * How to enqueue SYCL kernels using unified shared memory.
+
+**Note** the solution file for ComputeCpp is called solution.cpp, and for 
+DPC++ is called solution_dpcpp.cpp currently.
 
 ---
 
