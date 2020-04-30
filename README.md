@@ -295,20 +295,20 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [rocm-gpus]: https://github.com/RadeonOpenCompute/ROCm#supported-gpus
 [spack]: https://github.com/spack/spack
 
-[lesson-1-slides]: ./Lesson_Materials/Lesson-1-Introduction-to-SYCL/index.html
+[lesson-1-slides]: ./Lesson_Materials/Lesson-1-Introduction-to-SYCL/
 [lesson-1-exercise]: ./Code_Exercises/Exercise_1_Getting_Started/doc.md
 
-[lesson-2-slides]: ./Lesson_Materials/Lesson-2-SYCL-Topology-Discovery-and-Queue-Creation/index.html
+[lesson-2-slides]: ./Lesson_Materials/Lesson-2-SYCL-Topology-Discovery-and-Queue-Creation/
 [lesson-2-exercise]: ./Code_Exercises/Exercise_2_Configuring_a_Queue/doc.md
 [lesson-2-source]: ./Code_Exercises/Exercise_2_Configuring_a_Queue/source.cpp
 [lesson-2-solution]: ./Code_Exercises/Exercise_2_Configuring_a_Queue/solution.cpp
 
-[lesson-3-slides]: ./Lesson_Materials/Lesson-3-SYCL-Kernel-Functions/index.html
+[lesson-3-slides]: ./Lesson_Materials/Lesson-3-SYCL-Kernel-Functions/
 [lesson-3-exercise]: ./Code_Exercises/Exercise_3_Hello_World/doc.md
 [lesson-3-source]: ./Code_Exercises/Exercise_3_Hello_World/source.cpp
 [lesson-3-solution]: ./Code_Exercises/Exercise_3_Hello_World/solution.cpp
 
-[lesson-4-slides]: ./Lesson_Materials/Lesson-4-Managing-Data-in-SYCL-Applications/index.html
+[lesson-4-slides]: ./Lesson_Materials/Lesson-4-Managing-Data-in-SYCL-Applications/
 [lesson-4-exercise]: ./Code_Exercises/Exercise_4_Vector_Add/doc.md
 [lesson-4-source]: ./Code_Exercises/Exercise_4_Vector_Add/source.cpp
 [lesson-4-solution]: ./Code_Exercises/Exercise_4_Vector_Add/solution.cpp
