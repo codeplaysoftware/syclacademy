@@ -6,14 +6,51 @@
 		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
 		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
 		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
 	</head>
 	<body>
-		<span class='overlay-image bottom-left'>SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</span>
-		<span class='overlay-image bottom-right'><img src="../common-revealjs/images/codeplay.png" alt="Codeplay Software"></span>
-		<span class='overlay-image top-left'><img src="../common-revealjs/images/sycl_academy.png" alt="SYCL Academy"></span>
-		<span class='overlay-image top-right'><img src="../common-revealjs/images/sycl_logo.png" alt="SYCL"></span>
 		<div class="reveal">
 			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
 				    ## Configuring a SYCL Queue
@@ -86,7 +123,7 @@ auto defaultContext = context{};
 						    ![SYCL](../common-revealjs/images/context-1.png "SYCL-Context")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* A default constructed context object will use the **default_selector** to choose a device
 							* It will then create a context for all devices that share a platform with the chosen device
 					</div>
@@ -105,7 +142,7 @@ auto intelContext = context{intelSelector};
 						    ![SYCL](../common-revealjs/images/context-2.png "SYCL-Context")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* A context object can be constructed from a device selector
 							* This will use the device selector to choose a device and then create a context for all devices that share a platform with the chosen device
 					</div>
@@ -123,7 +160,7 @@ auto intelContext = context{intelPlatform};
 						    ![SYCL](../common-revealjs/images/context-3.png "SYCL-Context")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* A context object can also be constructed from a platform
 							* This will create a context for all devices associated with that platform
 					</div>
@@ -141,7 +178,7 @@ auto intelGPUContext = context{intelGPUDevice};
 						    ![SYCL](../common-revealjs/images/context-4.png "SYCL-Context")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* Further, a context object can be constructed from a device
 							* This will create a context for only that device
 					</div>
@@ -163,7 +200,7 @@ auto defaultQueue = queue{};
 						    ![SYCL](../common-revealjs/images/queue-4.png "SYCL-Queue")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* A default constructed queue object will use the **default_selector** to choose a device
 							* It will then create a queue for the chosen device, creating an implicit context for all devices that share a platform with the chosen device
 					</div>
@@ -182,7 +219,7 @@ auto intelGPUQeuue = queue{intelGPUSelector};
 						    ![SYCL](../common-revealjs/images/queue-4.png "SYCL-Queue")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* A queue object can be constructed from a device selector which is used to choose a device
 							* It will then create a queue for the chosen device, creating an implicit context for all devices that share a platform with the chosen device
 					</div>
@@ -201,7 +238,7 @@ auto intelGPUQeuue = queue{intelContext, intelGPUSel};
 						    ![SYCL](../common-revealjs/images/queue-5.png "SYCL-Queue")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* A queue object can be constructed from a context
 							* A device selector must also be provided which is used to choose a device
 							* It will then create a queue for the chosen device, using the context provided
@@ -222,7 +259,7 @@ auto intelGPUQeuue = queue{intelGPUDevice};
 						    ![SYCL](../common-revealjs/images/queue-5.png "SYCL-Queue")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* A queue object can be constructed from a device
 							* This will create a queue for only that device
 					</div>
@@ -238,7 +275,7 @@ auto intelGPUQeuue = queue{intelGPUDevice};
 							![SYCL](../common-revealjs/images/queue-6.png "SYCL-Queue")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* In SYCL work is submitted via a queue object
 							* This is done using the **submit** member function
 							* This will submit a command group to the SYCL scheduler for execution on the device associated with the queue
@@ -251,7 +288,7 @@ auto intelGPUQeuue = queue{intelGPUDevice};
 							![SYCL](../common-revealjs/images/queue-7.png "SYCL-Queue")
 						</div>
 					</div>
-					<div class="smaller-size-font" data-markdown>
+					<div class="bottom-bullets" data-markdown>
 							* The same scheduler is used for all queues in order to share dependency information
 					</div>
 				</section>
