@@ -42,15 +42,15 @@ matter.
 Each of the lessons are designed to be self contained modules in order to
 support both academic and training style teaching environments.
 
-| Lesson | Title | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
-|--------|-------|--------|----------|--------|----------|------------|-------|---------|
-| 1 | Introduction to SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | NA | NA | Yes | Yes | Yes |
-| 2 | SYCL Topology Discover & Queue Creation | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
-| 3 | SYCL Kernel Functions | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
-| 4 | Managing Data in SYCL | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
-| 5 | Image Grayscale (Optional) | NA | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | Yes |
-| 6 | Matrix Transpose (Optional) | NA | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
-| 7 | Unified Shared Memory Extension (Optional) | NA | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes | No |
+| Lesson | Title | Slides | Video | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
+|--------|-------|--------|----------|--------|----------|------------|-------|---------|---------|
+| 1 | Introduction to SYCL | [slides][lesson-1-slides] | [video][lesson-1-video] | [exercise][lesson-1-exercise] | NA | NA | Yes | Yes | Yes |
+| 2 | SYCL Topology Discover & Queue Creation | [slides][lesson-2-slides] | [video][lesson-2-video] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
+| 3 | SYCL Kernel Functions | [slides][lesson-3-slides] | [video][lesson-3-video] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
+| 4 | Managing Data in SYCL | [slides][lesson-4-slides] | [video][lesson-4-video] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
+| 5 | Image Grayscale (Optional) | NA | TBD | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | Yes |
+| 6 | Matrix Transpose (Optional) | NA | TBD | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
+| 7 | Unified Shared Memory Extension (Optional) | NA | TBD | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes | No |
 
 ### How to use the Materials
 
@@ -297,21 +297,25 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
 [lesson-1-slides]: ./Lesson_Materials/Lesson-1-Introduction-to-SYCL/
 [lesson-1-exercise]: ./Code_Exercises/Exercise_1_Getting_Started/doc.md
+[lesson-1-video]: https://youtu.be/1RqdVEDY5vg
 
 [lesson-2-slides]: ./Lesson_Materials/Lesson-2-SYCL-Topology-Discovery-and-Queue-Creation/
 [lesson-2-exercise]: ./Code_Exercises/Exercise_2_Configuring_a_Queue/doc.md
 [lesson-2-source]: ./Code_Exercises/Exercise_2_Configuring_a_Queue/source.cpp
 [lesson-2-solution]: ./Code_Exercises/Exercise_2_Configuring_a_Queue/solution.cpp
+[lesson-2-video]: https://youtu.be/C443O1LhUQs
 
 [lesson-3-slides]: ./Lesson_Materials/Lesson-3-SYCL-Kernel-Functions/
 [lesson-3-exercise]: ./Code_Exercises/Exercise_3_Hello_World/doc.md
 [lesson-3-source]: ./Code_Exercises/Exercise_3_Hello_World/source.cpp
 [lesson-3-solution]: ./Code_Exercises/Exercise_3_Hello_World/solution.cpp
+[lesson-3-video]: https://youtu.be/pLw_WXKDvj4
 
 [lesson-4-slides]: ./Lesson_Materials/Lesson-4-Managing-Data-in-SYCL-Applications/
 [lesson-4-exercise]: ./Code_Exercises/Exercise_4_Vector_Add/doc.md
 [lesson-4-source]: ./Code_Exercises/Exercise_4_Vector_Add/source.cpp
 [lesson-4-solution]: ./Code_Exercises/Exercise_4_Vector_Add/solution.cpp
+[lesson-4-video]: https://youtu.be/UFNhgPOLNwI
 
 [lesson-5-exercise]: ./Code_Exercises/Exercise_5_Image_Grayscale/doc.md
 [lesson-5-source]: ./Code_Exercises/Exercise_5_Image_Grayscale/source.cpp
