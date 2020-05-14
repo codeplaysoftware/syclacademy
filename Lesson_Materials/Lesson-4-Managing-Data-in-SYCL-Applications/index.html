@@ -283,7 +283,7 @@ gpuQueue.submit([&](handler &cgh){
 						<div class="col" data-markdown>
 							* Accessors using the access::target **host_buffer** will make the data available immediately on the host
 							* This access targets must be constructed using a buffer outside of a command group
-							* A useful shortcut to construct an accessor with the access::target **global_buffer** is to use the **get_access** member function of the buffer
+							* A useful shortcut to construct an accessor with the access::target **host_buffer** is to use the **get_access** member function of the buffer
 							* Note that a host accessor will block other accessors until it’s destroyed
 						</div>
 						<div class="col" data-markdown>
