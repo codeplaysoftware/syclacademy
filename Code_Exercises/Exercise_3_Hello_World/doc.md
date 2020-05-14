@@ -59,8 +59,9 @@ Instead of a 1-dimensional range for your SYCL kernel function, try a 2 or
 For For DPC++ (using the Intel DevCloud):
 ```
 dpcpp -o sycl-ex-3 -Iyour/path/to/External/catch2/single_include ../Code_Exercises/Exercise_3_Hello_World/source.cpp
-./sycl-ex-3
 ```
+
+Then follow the instructions in the [main README][devcloud-execution] to submit your job to the queue.
 
 For ComputeCpp:
 ```
@@ -76,3 +77,4 @@ make Exercise_3_source
 ./Code_Exercises/Exercise_3_Hello_World/Exercise_3_source
 
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf
+[devcloud-execution]: https://github.com/codeplaysoftware/syclacademy#compiling-directly-dpc-only

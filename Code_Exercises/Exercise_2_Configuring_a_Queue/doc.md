@@ -60,8 +60,9 @@ score will never be chosen.
 For For DPC++ (using the Intel DevCloud):
 ```
 dpcpp -o sycl-ex-2 -Iyour/path/to/External/catch2/single_include ../Code_Exercises/Exercise_2_Configuring_a_Queue/source.cpp
-./sycl-ex-2
 ```
+
+Then follow the instructions in the [main README][devcloud-execution] to submit your job to the queue.
 
 For ComputeCpp:
 ```
@@ -77,3 +78,4 @@ make Exercise_2_source
 ./Code_Exercises/Exercise_2_Configuring_a_Queue/Exercise_2_source
 
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf
+[devcloud-execution]: https://github.com/codeplaysoftware/syclacademy#compiling-directly-dpc-only

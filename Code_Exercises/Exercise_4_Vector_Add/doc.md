@@ -60,6 +60,7 @@ For For DPC++ (using the Intel DevCloud):
 dpcpp -o sycl-ex-4 -Iyour/path/to/External/catch2/single_include ../Code_Exercises/Exercise_4_Vector_Add/source.cpp
 ./sycl-ex-4
 ```
+Then follow the instructions in the [main README][devcloud-execution] to submit your job to the queue.
 
 For ComputeCpp:
 ```
@@ -73,3 +74,5 @@ For hipSYCL:
 cmake -SYCL_ACADEMY_USE_HIPSYCL=ON ..
 make Exercise_4_source
 ./Code_Exercises/Exercise_4_Vector_Add/Exercise_4_source
+
+[devcloud-execution]: https://github.com/codeplaysoftware/syclacademy#compiling-directly-dpc-only
