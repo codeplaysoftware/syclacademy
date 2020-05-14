@@ -59,9 +59,15 @@ Instead of a 1-dimensional range for your SYCL kernel function, try a 2 or
 
 For For DPC++ (using the Intel DevCloud):
 ```
+<<<<<<< HEAD
+dpcpp -o sycl-ex-3 -Iyour/path/to/External/catch2/single_include ../Code_Exercises/Exercise_3_Hello_World/source.cpp
+=======
 dpcpp -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_3_Hello_World/source.cpp
 ./sycl-ex-3
+>>>>>>> master
 ```
+
+Then follow the instructions in the [main README][devcloud-execution] to submit your job to the queue.
 
 For ComputeCpp:
 ```
@@ -88,3 +94,7 @@ HIPSYCL_PLATFORM=<cpu|cuda|rocm> HIPSYCL_GPU_ARCH=<arch-when-compiling-for-gpu> 
 *Note:* Printing from kernels is still experimental on ROCm, so you might get an empty output when using the hipSYCL ROCm backend. In this case, try using the CPU backend instead.
 
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf
+<<<<<<< HEAD
+[devcloud-execution]: https://github.com/codeplaysoftware/syclacademy#compiling-directly-dpc-only
+=======
+>>>>>>> master

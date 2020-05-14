@@ -60,9 +60,15 @@ score will never be chosen.
 
 For For DPC++ (using the Intel DevCloud):
 ```
+<<<<<<< HEAD
+dpcpp -o sycl-ex-2 -Iyour/path/to/External/catch2/single_include ../Code_Exercises/Exercise_2_Configuring_a_Queue/source.cpp
+=======
 dpcpp -o sycl-ex-2 -I../External/Catch2/single_include ../Code_Exercises/Exercise_2_Configuring_a_Queue/source.cpp
 ./sycl-ex-2
+>>>>>>> master
 ```
+
+Then follow the instructions in the [main README][devcloud-execution] to submit your job to the queue.
 
 For ComputeCpp:
 ```
@@ -90,3 +96,7 @@ HIPSYCL_PLATFORM=<cpu|cuda|rocm> HIPSYCL_GPU_ARCH=<arch-when-compiling-for-gpu> 
 
 
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf
+<<<<<<< HEAD
+[devcloud-execution]: https://github.com/codeplaysoftware/syclacademy#compiling-directly-dpc-only
+=======
+>>>>>>> master

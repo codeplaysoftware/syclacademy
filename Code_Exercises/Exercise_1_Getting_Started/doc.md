@@ -99,8 +99,15 @@ cd build
 For For DPC++ (using the Intel DevCloud):
 ```
 dpcpp -o sycl-test ../Code_Exercises/Exercise_1_Getting_Started/hello_world.cpp
-./sycl-test
 ```
+
+On the Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only available through the job queue.
+Please refer to the [example][devcloud-job-submission].
+
+Wrap the binary into a script `job_submission` and run:
+
+`qsub job_submission`
 
 For ComputeCpp:
 ```

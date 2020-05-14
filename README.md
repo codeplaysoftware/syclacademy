@@ -212,6 +212,14 @@ Once that's done you can invoke the DPC++ compiler as follows:
 Where `<syclacademy_root>` is the path to the root directory of where you cloned
 this repository.
 
+On the Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only available through the job queue.
+Please refer to the [example][devcloud-job-submission].
+
+Wrap the binary into a script `job_submission` and run:
+
+`qsub job_submission`
+
 ## Online Interactive Tutorial
 
 Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/introduction-to-sycl/introduction-to-sycl-2) tutorial introduces the concepts of SYCL. The website also provides the ability to compile and execute SYCL code from your web browser.
@@ -286,9 +294,13 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [computecpp-download]: https://developer.codeplay.com
 [computecpp-getting-started]: https://developer.codeplay.com/products/computecpp/ce/guides/getting-started?
 [dpcpp-getting-started]: https://software.intel.com/en-us/articles/how-to-install-oneapi-products-and-run-data-parallel-cpp-code-samples
+<<<<<<< HEAD
+[devcloud-job-submission]: https://devcloud.intel.com/oneapi/learn/advanced-queue/basic-job-submission#command-file-job-script-
+=======
 
 [hipsycl-repositories]: https://github.com/illuhad/hipSYCL#repositories
 [hipsycl-repositories-detail]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories
+>>>>>>> master
 [hipsycl-download]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories
 [hipsycl-getting-started]: https://github.com/illuhad/hipSYCL#building-and-installing-hipsycl
 [hipsycl-building]: https://github.com/illuhad/hipSYCL#manual-installation
