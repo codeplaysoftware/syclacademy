@@ -58,9 +58,18 @@ Instead of a 1-dimensional range for your SYCL kernel function, try a 2 or
 #### Build And Execution Hints
 
 For For DPC++ (using the Intel DevCloud):
+
 ```
 dpcpp -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_3_Hello_World/source.cpp
-./sycl-ex-3
+```
+
+In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
+Please refer to the [example][devcloud-job-submission].
+
+So wrap the binary into a script `job_submission` and run:
+```
+qsub job_submission
 ```
 
 For ComputeCpp:
@@ -88,3 +97,4 @@ HIPSYCL_PLATFORM=<cpu|cuda|rocm> HIPSYCL_GPU_ARCH=<arch-when-compiling-for-gpu> 
 *Note:* Printing from kernels is still experimental on ROCm, so you might get an empty output when using the hipSYCL ROCm backend. In this case, try using the CPU backend instead.
 
 [sycl-specification]: https://www.khronos.org/registry/SYCL/specs/sycl-1.2.1.pdf
+[devcloud-job-submission]: https://devcloud.intel.com/oneapi/learn/advanced-queue/basic-job-submission#command-file-job-script-
