@@ -58,7 +58,15 @@ initializing it with just a `range` and no host pointer.
 For For DPC++ (using the Intel DevCloud):
 ```
 dpcpp -o sycl-ex-4 -I../External/Catch2/single_include ../Code_Exercises/Exercise_4_Vector_Add/source.cpp
-./sycl-ex-4
+```
+
+In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
+Please refer to the [example][devcloud-job-submission].
+
+So wrap the binary into a script `job_submission` and run:
+```
+qsub job_submission
 ```
 
 For ComputeCpp:
@@ -82,3 +90,5 @@ cd Code_Exercises/Exercise_4_Vector_Add
 HIPSYCL_PLATFORM=<cpu|cuda|rocm> HIPSYCL_GPU_ARCH=<arch-when-compiling-for-gpu> /path/to/hipsycl/bin/syclcc -o sycl-ex-4 -I../../External/Catch2/single_include source.cpp
 ./sycl-ex-4
 ```
+
+[devcloud-job-submission]: https://devcloud.intel.com/oneapi/learn/advanced-queue/basic-job-submission#command-file-job-script-

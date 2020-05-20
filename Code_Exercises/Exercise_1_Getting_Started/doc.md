@@ -99,7 +99,15 @@ cd build
 For For DPC++ (using the Intel DevCloud):
 ```
 dpcpp -o sycl-test ../Code_Exercises/Exercise_1_Getting_Started/hello_world.cpp
-./sycl-test
+```
+
+In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
+Please refer to the [example][devcloud-job-submission].
+
+So wrap the binary into a script `job_submission` and run:
+```
+qsub job_submission
 ```
 
 For ComputeCpp:
@@ -133,3 +141,5 @@ Hello, World!
 Then you have completed this first exercise.
 
 *When using hipSYCL:* Note that printing from kernels in ROCm requires a very new software stack and is still experimental, so on hipSYCL you might get an empty output when compiling for AMD GPUs. In this case, try using the CPU backend.
+
+[devcloud-job-submission]: https://devcloud.intel.com/oneapi/learn/advanced-queue/basic-job-submission#command-file-job-script-
