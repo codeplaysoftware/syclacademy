@@ -17,6 +17,21 @@ learning about SYCL below are a list of useful resources:
 *  Browse SYCL news, blog posts, videos, projects and more on the [sycl.tech community website](https://sycl.tech/)
 *  Get a list of the [available SYCL implementations](https://sycl.tech/#get-sycl)
 
+### How to use the Materials
+
+To use these materials simply clone this repository.
+
+The lectures are written in reveal.js, and can be found in "Lesson_Materials",
+in the sub-directory for each topic. To view them simply open the "index.html"
+file in your browser. Your browser will have a "Full Screen" mode that can be
+used to run the presentation, use the right and left cursors to move forward and
+backward in the presentation.
+
+The exercises can be found in "Code_Exercises" in the sub-directory for each
+topic. Each exercise has a markdown document instructing what to do in the
+exercise, a source file to start with and a solution file to provide an
+example implementation to compare against.
+
 ## Contributing to SYCL Academy
 
 Contributions to the materials are very gratefully received and this can be done
@@ -49,21 +64,6 @@ support both academic and training style teaching environments.
 | 5 | Image Grayscale (Optional) | NA | TBD | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | Yes |
 | 6 | Matrix Transpose (Optional) | NA | TBD | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
 | 7 | Unified Shared Memory Extension (Optional) | NA | TBD | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes | No |
-
-### How to use the Materials
-
-To use these materials simply clone this repository.
-
-The lectures are written in reveal.js, and can be found in "Lesson_Materials",
-in the sub-directory for each topic. To view them simply open the "index.html"
-file in your browser. Your browser will have a "Full Screen" mode that can be
-used to run the presentation, use the right and left cursors to move forward and
-backward in the presentation.
-
-The exercises can be found in "Code_Exercises" in the sub-directory for each
-topic. Each exercise has a markdown document instructing what to do in the
-exercise, a source file to start with and a solution file to provide an
-example implementation to compare against.
 
 ## Building the Exercises
 
