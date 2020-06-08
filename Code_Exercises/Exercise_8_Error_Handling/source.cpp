@@ -8,14 +8,11 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <CL/sycl.hpp>
 
 class error_handling;
 
-TEST_CASE("error_handling", "sycl_08_error_handling") {
+int main {
    cl::sycl::default_selector device_selector;
 
    cl::sycl::queue queue(device_selector);
@@ -27,5 +24,5 @@ TEST_CASE("error_handling", "sycl_08_error_handling") {
      });
    }
 
-  REQUIRE(true);
+   return 1;
 }
