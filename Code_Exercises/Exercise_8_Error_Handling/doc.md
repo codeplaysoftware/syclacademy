@@ -24,7 +24,7 @@ Add a synchronous exception handler to the SYCL code.
 
 2. ) Catch and asynchronous exceptions
 
-Asynchronous  errors,  such  as  an  error  occurring  duringexecution of a 
+Asynchronous  errors,  such  as  an  error  occurring  during execution of a 
 kernel on a device, are reported via user-supplied asynchronous error-handlers.
 
 This time add an asynchronous exception handler to the SYCL code. Then 
