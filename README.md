@@ -61,9 +61,16 @@ support both academic and training style teaching environments.
 | 2 | SYCL Topology Discover & Queue Creation | [slides][lesson-2-slides] | [video][lesson-2-video] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
 | 3 | SYCL Kernel Functions | [slides][lesson-3-slides] | [video][lesson-3-video] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
 | 4 | Managing Data in SYCL | [slides][lesson-4-slides] | [video][lesson-4-video] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
-| 5 | Image Grayscale (Optional) | NA | TBD | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | Yes |
-| 6 | Matrix Transpose (Optional) | NA | TBD | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
-| 7 | Unified Shared Memory Extension (Optional) | NA | TBD | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes | No |
+| 5 | Data Dependencies in SYCL | [slides][lesson-5-slides] | NA | NA | NA | NA | NA | NA | NA |
+| 6 | Handling SYCL Errors | [slides][lesson-6-slides] | [video][lesson-6-video] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
+
+Additional Exercises
+
+| Exercise | Title | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
+|--------|-------|--------|----------|--------|----------|------------|-------|
+| 1 | Image Grayscale | [exercise][additional-exercises-1] | [source][additional-exercises-1-source] | [solution][additional-exercises-1-solution] | Yes | Yes | Yes |
+| 2 | Matrix Transpose |[exercise][additional-exercises-2] | [source][additional-exercises-2-source] | [solution][additional-exercises-2-solution] | Yes | Yes | Yes |
+| 3 | Unified Shared Memory Extension (Optional) | [exercise][additional-exercises-3] | [source][additional-exercises-3-source] | [solution][additional-exercises-3-solution] | Yes | Yes | No |
 
 ## Building the Exercises
 
@@ -295,6 +302,7 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
 [lesson-1-slides]: ./Lesson_Materials/Lesson-1-Introduction-to-SYCL/
 [lesson-1-exercise]: ./Code_Exercises/Exercise_1_Getting_Started/doc.md
+[lesson-1-source]: ./Code_Exercises/Exercise_1_Getting_Started/hello_world.cpp
 [lesson-1-video]: https://youtu.be/1RqdVEDY5vg
 
 [lesson-2-slides]: ./Lesson_Materials/Lesson-2-SYCL-Topology-Discovery-and-Queue-Creation/
@@ -315,14 +323,23 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-4-solution]: ./Code_Exercises/Exercise_4_Vector_Add/solution.cpp
 [lesson-4-video]: https://youtu.be/UFNhgPOLNwI
 
-[lesson-5-exercise]: ./Code_Exercises/Exercise_5_Image_Grayscale/doc.md
-[lesson-5-source]: ./Code_Exercises/Exercise_5_Image_Grayscale/source.cpp
-[lesson-5-solution]: ./Code_Exercises/Exercise_5_Image_Grayscale/solution.cpp
+[lesson-5-slides]: ./Lesson_Materials/Lesson-5-Data-Dependencies-in-SYCL/
 
-[lesson-6-exercise]: ./Code_Exercises/Exercise_6_Matrix_Transpose/doc.md
-[lesson-6-source]: ./Code_Exercises/Exercise_6_Matrix_Transpose/source.cpp
-[lesson-6-solution]: ./Code_Exercises/Exercise_6_Matrix_Transpose/solution.cpp
+[lesson-6-slides]: ./Lesson_Materials/Lesson-6-Handling-SYCL-Errors/
+[lesson-6-exercise]: ./Code_Exercises/Exercise_8_Error_Handling/doc.md
+[lesson-6-source]: ./Code_Exercises/Exercise_8_Error_Handling/source.cpp
+[lesson-6-solution]: ./Code_Exercises/Exercise_8_Error_Handling/solution.cpp
+[lesson-6-video]: https://youtu.be/Dwp9c_lNvSY
 
-[lesson-7-exercise]: ./Code_Exercises/Exercise_7_Unified_Shared_Memory_Ext/doc.md
-[lesson-7-source]: ./Code_Exercises/Exercise_7_Unified_Shared_Memory_Ext/source.cpp
-[lesson-7-solution]: ./Code_Exercises/Exercise_7_Unified_Shared_Memory_Ext/solution.cpp
+[additional-exercises-1]: ./Code_Exercises/Exercise_5_Image_Grayscale/doc.md
+[additional-exercises-1-source]: ./Code_Exercises/Exercise_5_Image_Grayscale/source.cpp
+[additional-exercises-1-solution]: ./Code_Exercises/Exercise_5_Image_Grayscale/solution.cpp
+
+[additional-exercises-2]: ./Code_Exercises/Exercise_6_Matrix_Transpose/doc.md
+[additional-exercises-2-source]: ./Code_Exercises/Exercise_6_Matrix_Transpose/source.cpp
+[additional-exercises-2-solution]: ./Code_Exercises/Exercise_6_Matrix_Transpose/solution.cpp
+
+[additional-exercises-3]: ./Code_Exercises/Exercise_7_Unified_Shared_Memory_Ext/doc.md
+[additional-exercises-3-source]: ./Code_Exercises/Exercise_7_Unified_Shared_Memory_Ext/source.cpp
+[additional-exercises-3-solution]: ./Code_Exercises/Exercise_7_Unified_Shared_Memory_Ext/solution.cpp
+
