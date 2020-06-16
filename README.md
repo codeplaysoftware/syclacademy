@@ -43,7 +43,7 @@ Pull Request so that they can be reviewed and merged in a timely manner.
 Codeplay Software Ltd., Heidelberg University.
 
 ## Supporting Organizations
-Abertay University, Universidad de Concepcion, TU Dresden, University of Edinburgh, University of Glasgow, Heriot Watt University, Universitat Innsbruck, Universidad de Málaga, University of Salerno and University of the West of Scotland.
+Abertay University, Universidad de Concepcion, TU Dresden, University of Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt University, Universitat Innsbruck, Universidad de Málaga, University of Salerno and University of the West of Scotland.
 
 ## Lesson Curriculum
 
