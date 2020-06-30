@@ -12,7 +12,7 @@
 
 class error_handling;
 
-int main {
+int main() {
    cl::sycl::default_selector device_selector;
 
    cl::sycl::queue queue(device_selector);
