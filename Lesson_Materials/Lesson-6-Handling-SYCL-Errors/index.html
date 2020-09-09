@@ -228,7 +228,7 @@ int main(int argc, char *argv[]) {
     });
   ...
     gpuQueue.wait_and_throw(); 
-  } catch (<mark>std::exception e</mark>) { 
+  } catch (<mark>std::exception const& e</mark>) { 
     <mark>std::cout << “Exception caught: ” << e.what() 
      << std::endl;</mark>
   }
@@ -252,7 +252,7 @@ int main(int argc, char *argv[]) {
     });
   ...
     gpuQueue.wait_and_throw(); 
-  } catch (std::exception e) { 
+  } catch (std::exception const& e) { 
     std::cout << “Exception caught: ” << e.what();
     <mark>std:: cout << “ With OpenCL error code: ”</mark> 
      <mark><< e.get_cl_code() << std::endl;</mark>
@@ -277,7 +277,7 @@ int main(int argc, char *argv[]) {
     });
   ...
     gpuQueue.wait_and_throw(); 
-  } catch (std::exception e) { 
+  } catch (std::exception const& e) { 
     <mark>if (e.has_context()) {</mark>
 	  <mark>if (e.get_context() == gpuContext) {</mark>
 	    <mark>/* handle error */</mark>
@@ -341,7 +341,7 @@ int main(int argc, char *argv[]) {
       cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
        [=](id&lt1&gt i){out[i] = inA[i] + inB[i];}); 
     });
-    gpuQueue.wait_and_throw();
+    hostQueue.wait_and_throw();
   } catch (...) { /* handle errors */ }
 }
 							</code></pre>

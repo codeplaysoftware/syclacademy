@@ -9,6 +9,7 @@
 */
 
 #include <CL/sycl.hpp>
+#include <iostream>
 
 class error_handling;
 
