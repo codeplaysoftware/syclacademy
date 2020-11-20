@@ -190,7 +190,7 @@ TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
               item.barrier(cl::sycl::access::fence_space::global_and_local);
 
               outputMatAcc[columnMajorId] = scratchpad[rowMajorLocalId];
-              outputMatAcc[rowMajorId] = scratchpad[columnMajorLocalId]; // POSSIBLE FIX
+              outputMatAcc[rowMajorId] = scratchpad[columnMajorLocalId];
             });
           });
 
