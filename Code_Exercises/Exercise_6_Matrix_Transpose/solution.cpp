@@ -56,6 +56,27 @@ private:
   T data_[W * H];
 };
 
+namespace{
+   using test_matrix_t =  matrix<float, WIDTH, HEIGHT>;
+   
+   test_matrix_t calc_expected(test_matrix_t& input)
+   {
+       test_matrix_t result{};
+       
+       auto width = input.width();
+       auto height = input.height();
+       auto p_result = result.data();
+       auto p_input = input.data();
+       for(decltype(height) h=0;h<height;++h)
+       {
+           for(decltype(width) w=0;w<width;++w)
+           {
+               p_result[w*height+h] = p_input[h*width+w];
+           }
+       }
+       return result;
+   }
+}
 TEST_CASE("naive", "sycl_06_matrix_transpose") {
   auto inputMat = matrix<float, WIDTH, HEIGHT>{};
   auto outputMat = matrix<float, WIDTH, HEIGHT>{};
@@ -63,6 +84,7 @@ TEST_CASE("naive", "sycl_06_matrix_transpose") {
   std::iota(inputMat.begin(), inputMat.end(), 0.0f);
   std::fill(outputMat.begin(), outputMat.end(), 0.0f);
 
+  auto expectedMat = calc_expected(inputMat);
   // inputMat.print();
   // outputMat.print();
 
@@ -102,8 +124,11 @@ TEST_CASE("naive", "sycl_06_matrix_transpose") {
 
   // inputMat.print();
   // outputMat.print();
-
-  REQUIRE(true);
+  for(auto out_it = outputMat.begin(),exp_it = expectedMat.begin();out_it != outputMat.end();++out_it,++exp_it)
+  {
+      REQUIRE(*out_it == *exp_it);
+  }
+  //REQUIRE(true);
 }
 
 TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
@@ -113,6 +138,7 @@ TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
   std::iota(inputMat.begin(), inputMat.end(), 0.0f);
   std::fill(outputMat.begin(), outputMat.end(), 0.0f);
 
+  auto expectedMat = calc_expected(inputMat);
   // inputMat.print();
   // outputMat.print();
 
@@ -147,6 +173,11 @@ TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
                 (item.get_global_id(1) * item.get_global_range(0)) +
                 item.get_global_id(0);
 
+             // auto rowMajorId =
+             //   (item.get_global_id(0) * item.get_global_range(1)) +
+             //   item.get_global_id(1); // POSSIBLE FIX
+
+
               auto rowMajorLocalId =
                 (item.get_local_id(0) * item.get_local_range(1)) +
                 item.get_local_id(1);
@@ -159,6 +190,7 @@ TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
               item.barrier(cl::sycl::access::fence_space::global_and_local);
 
               outputMatAcc[columnMajorId] = scratchpad[rowMajorLocalId];
+              //outputMatAcc[rowMajorId] = scratchpad[columnMajorLocalId]; // POSSIBLE FIX
             });
           });
 
@@ -167,6 +199,10 @@ TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
       100, "local_mem");
   }
 
+  for(auto out_it = outputMat.begin(),exp_it = expectedMat.begin();out_it != outputMat.end();++out_it,++exp_it)
+  {
+      REQUIRE(*out_it == *exp_it);
+  }
   // inputMat.print();
   // outputMat.print();
 
