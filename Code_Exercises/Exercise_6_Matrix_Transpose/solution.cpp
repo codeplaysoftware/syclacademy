@@ -173,9 +173,9 @@ TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
                 (item.get_global_id(1) * item.get_global_range(0)) +
                 item.get_global_id(0);
 
-             // auto rowMajorId =
-             //   (item.get_global_id(0) * item.get_global_range(1)) +
-             //   item.get_global_id(1); // POSSIBLE FIX
+              auto rowMajorId =
+                (item.get_global_id(0) * item.get_global_range(1)) +
+                item.get_global_id(1);
 
 
               auto rowMajorLocalId =
