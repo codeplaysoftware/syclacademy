@@ -53,7 +53,7 @@ each accompanied by a tutorial for getting hands on experience with the subject
 matter.
 
 Each of the lessons are designed to be self contained modules in order to
-support both academic and training style teaching environments.
+support both academic and training style teaching environments. A playlist of the video content is [also available](https://youtube.com/playlist?list=PLCssnq0MpRdM-IUAYtNSPYck6u3oz7OZQ).
 
 | Lesson | Title | Slides | Video | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
 |--------|-------|--------|----------|--------|----------|------------|-------|---------|---------|
