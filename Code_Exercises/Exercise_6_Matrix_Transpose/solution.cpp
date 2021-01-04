@@ -147,9 +147,10 @@ TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
                 (item.get_global_id(1) * item.get_global_range(0)) +
                 item.get_global_id(0);
 
-              auto rowMajorLocalId =
-                (item.get_local_id(0) * item.get_local_range(1)) +
-                item.get_local_id(1);
+              auto rowMajorId =
+                (item.get_global_id(0) * item.get_global_range(1)) +
+                item.get_global_id(1);
+
               auto columnMajorLocalId =
                 (item.get_local_id(1) * item.get_local_range(0)) +
                 item.get_local_id(0);
@@ -158,7 +159,7 @@ TEST_CASE("local_mem", "sycl_06_matrix_transpose") {
 
               item.barrier(cl::sycl::access::fence_space::global_and_local);
 
-              outputMatAcc[columnMajorId] = scratchpad[rowMajorLocalId];
+              outputMatAcc[rowMajorId] = scratchpad[columnMajorLocalId];
             });
           });
 
