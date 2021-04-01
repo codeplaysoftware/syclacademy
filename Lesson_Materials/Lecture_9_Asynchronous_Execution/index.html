@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## Asynchronous Execution
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about how commands are enqueued asynchronously
+					* Learn about the different reasons for synchronization
+					* Learn about the different ways to perform synchronization
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Asynchronous execution
+					</div>
+					<div class="container" data-markdown>
+						* All command submitted to a `queue` are done so asynchronously.
+						* The functions return immediately and the command is run in a background thread.
+						* This includes individual commands like `memcpy` and collections of commands derived from a command group.
+						* This means you have to synchronize with those commands.
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container" data-markdown>
+						There are a number of reasons why you need to synchronize with commands
+					</div>
+					<div class="container" data-markdown>
+						* Await completion of a kernel function.
+						* Await the results of a computation.
+						* Await error conditions which come from a failure to execute any of the commands.
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization with kernel functions
+					</div>
+					<div class="container" data-markdown>
+						There are two ways ways to synchronize with kernel functions.
+					</div>
+					<div class="container" data-markdown>
+						* Calling `wait` on an `event` object returned from enqueuing a kernel function command, either via a command group or a shortcut function.
+						* Calling `wait` or `wait_and_throw` on the `queue` itself.
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with kernel functions (buffers/accessors)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+buf = sycl::buffer(data, sycl::range{1024});
+
+gpuQueue.submit([&](sycl::handler &cgh){
+  auto acc = buf.get_access(cgh);
+      
+  cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+    [=](sycl::id&lt;1&gt; idx){
+    acc[idx] = /* some computation */
+  });
+})<mark>.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Calling `wait` on an `event` object returned from enqueuing a command group will wait for the commands from that command group to complete.
+							* This is how we have synchronized in our examples so far.
+							* This effectively creates a blocking operations that will complete in place by immediately synchronizing.
+						</div>
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with kernel functions (buffers/accessors)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+buf = sycl::buffer(data, sycl::range{1024});
+
+gpuQueue.submit([&](sycl::handler &cgh){
+  auto acc = buf.get_access(cgh);
+      
+  cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+    [=](sycl::id&lt;1&gt; idx){
+    acc[idx] = /* some computation */
+  });
+});
+
+<mark>gpuQueue.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Calling `wait` or `wait_and_throw` on a `queue` will wait for all commands enqueued to it to complete.
+							* Note that command groups do not create commands to copy data back to the host application.
+						</div>
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with kernel functions (USM)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+auto devicePtr   = usm_wrapper&lt;int&gt;(
+  malloc_device&lt;int&gt;(1024, gpuQueue));
+
+gpuQueue.memcpy(devicePtr, data, sizeof(int))<mark>.wait();</mark>
+
+gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+  [=](sycl::id&lt;1&gt; idx){
+  devicePtr[idx] = /* some computation */
+})<mark>.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Calling `wait` on an `event` object returned from functions such as `memcpy` or the `queue` shortcuts will wait for that specific command to complete.
+							* Again this is how we have synchronized in our examples so far.
+						</div>
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with kernel functions (USM)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+auto devicePtr   = usm_wrapper&lt;int&gt;(
+  malloc_device&lt;int&gt;(1024, gpuQueue));
+
+gpuQueue.memcpy(devicePtr, data, sizeof(int));
+
+<mark>gpuQueue.wait();</mark>
+
+gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+  [=](sycl::id&lt;1&gt; idx){
+  devicePtr[idx] = /* some computation */
+});
+
+<mark>gpuQueue.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Again calling `wait` or `wait_and_throw` on a `queue` will wait for all commands enqueued to it to complete.
+							* Note you generally don't want to call `wait` on the `queue` after every command, instead you want to create dependencies between commands, which we cover in the next lecture.
+						</div>
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with data
+					</div>
+					<div class="container" data-markdown>
+						There are multiple ways ways to synchronize with data, but it differs depending on the data management model you are using.
+					</div>
+					<div class="container" data-markdown>
+						* When using the USM data management model you can synchronize the same way you would for kernel functions, calling `wait` on an `event` or the `queue`.
+						* When using the buffer/access data management model command groups don't automatically copy data back so there are other ways to synchronize with the data.
+						  * Creating a `host_accessor`.
+						  * Destroying the `buffer`.
+					</div>
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with data (USM)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+gpuQueue.memcpy(data, devicePtr, sizeof(int))<mark>.wait();</mark>
+							</code></pre>
+							<code class="code-100pc"><pre>
+gpuQueue.memcpy(data, devicePtr, sizeof(int));
+<mark>gpuQueue.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Simply call `wait` on the `event` returned from `memcpy`.
+							* Alternatively call `wait` on the `queue`.
+						</div>
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with data (buffer/accessor)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+buf = sycl::buffer(data, sycl::range{1024});
+
+gpuQueue.submit([&](sycl::handler &cgh){
+  auto acc = buf.get_access(cgh);
+									  
+  cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+    [=](sycl::id&lt;1&gt; idx){
+    acc[idx] = /* some computation */
+  });
+});
+
+{
+  <mark>auto hostAcc = buf.get_host_access(cgh);</mark>
+
+  <mark>acc[idx] = /* some computation */</mark>
+}
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* A `host_accessor` gives immediate access to the data managed by a `buffer` in the host application.
+							* This will wait for any kernel functions accessing the `buffer` to complete and then copying the data back to the host.
+							* It will also block any other `accessor` accessing a `buffer` until it is destroyed.
+							* Note that the data managed by the `buffer` may not be copied back to the original address on the host, in this case `data`.
+						</div>
+					</div>
+				</section>
+				<!--Slide 13-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with data (buffer/accessor)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+<mark>{</mark>
+  buf = sycl::buffer(data, sycl::range{1024});
+
+  gpuQueue.submit([&](sycl::handler &cgh){
+    auto acc = buf.get_access(cgh);
+									  
+    cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+      [=](sycl::id&lt;1&gt; idx){
+      acc[idx] = /* some computation */
+    });
+  });
+<mark>}</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* A `buffer` will also synchronize the data it manages on destruction.
+							* It will wait for any kernel functions accessing it to complete and copy the data back to the origin address before completing destruction.
+						</div>
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with errors
+					</div>
+					<div class="container" data-markdown>
+						* Errors are handled by a `queue` and any asynchronous errors can be produced during any of the synchronization methods we've looked at.
+						* The best way to ensure all errors are caught is to synchronize by calling `wait` or `wait_and_throw` on the the `queue`.
+					</div>
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_9_Synchronization/source
+					</div>
+					<div class="container" data-markdown>
+						Try out the different methods of synchronizing with a kernel function and the resulting data from the computation.
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>

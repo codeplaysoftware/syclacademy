@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox" data-markdown>
+					## Data Parallelism
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about task parallelism and data parallelism
+					* Learn about the SPMD model for describing data parallelism
+					* Learn about bulk execution and the SYCL execution model
+					* Learn about enqueuing kernel functions with `parallel_for`
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Task vs data parallelism
+					</div>
+					<div class="container" data-markdown>
+						![Work Item](./task_parallelism_data_parallelism.png "Task parallelism vs data parallelism")
+					</div>
+					<div class="container" data-markdown>
+						* **Task parallelism** is where you have several,
+						possibly distinct tasks executing in parallel.
+						  * In task parallelism you optimize for latency.
+						* **Data parallelism** is where you have teh same
+						task being performed on multiple elements of data.
+						  * In data parallelism you optimize for throughput.
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Vector processors
+					</div>
+					<div class="container" data-markdown>
+						* Many processors are vector processors, which means
+						they can naturally perform data parallelism.
+							* GPUs are designed to be parallel.
+							* CPUs have SIMD instructions  which perform the
+							same instruction on a number elements of data.
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col-left" data-markdown>
+							* In SYCL kernel functions are executed by 
+							 **work- items**.
+							* You can think of a work-item as a thread of 
+							execution.
+							* Each work-item will execute a SYCL kernel function from start to end.
+							* A work-item can run on CPU threads, SIMD lanes,
+							GPU threads, or any other kind of processing
+							element.
+						</div>
+						<div class="col-right" data-markdown>
+							![Work Item](../common-revealjs/images/workitem.png "Work-Item")
+						</div>
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Bulk execution
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							*  A SYCL kernel is executed across an **iteration
+							space**; made up of work-items.
+							* The iteration space can be 1, 2 or 3 dimensions.
+							* This iteration space is refereed to as the
+							 **global-range**.
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](./parallel_range.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Work-item execution
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							Typically an nd-range invocation SYCL will execute the SYCL kernel function on a very large number of work-items, often in the thousands.
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/ndrange-invocation.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Concurrent execution
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Multiple work-items will generally execute concurrently.
+							* On vector hardware this is often done in lock-step, which means the same hardware instructions.
+							* The number of work-items that will execute concurrently can vary from one device to another.
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/ndrange-lock-step.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SPMD model for describing data parallelism
+					</div>
+					<div class="container">
+						<div class="col">
+							Sequential CPU code
+							<code><pre>
+void calc(int *in, int *out) {
+  // all iterations are run in the same 
+  // thread in a loop 
+  for (int i = 0; i < 1024; i++){ 
+    out[i] = in[i] * in[i];
+  } 
+}
+
+// calc is invoked just once and all 
+// iterations are performed inline 
+calc(in, out);
+							</code></pre>
+						</div>
+						<div class="col">
+							Parallel SPMD code
+							<code><pre>
+void calc(int *in, int *out, int id) { 
+  // function is described in terms of 
+  // a single iteration 
+  out[id] = in[id] * in[id];
+}
+
+// parallel_for invokes calc multiple 
+// times in parallel 
+parallel_for(calc, in, out, 1024);
+
+
+							</code></pre>
+						</div>
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Parallel_for
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;/mark><T>(<mark>range{64, 64}</mark>, 
+                          [=](id&lt;2&gt; idx){
+  // SYCL kernel function is executed 
+  // on a range of work-items
+});
+							</code></pre>
+						</div>
+					</div>
+					<div class="container" data-markdown>
+					  * In SYCL kernel functions can be enqueued to execute over
+					  a range of work-items using `parallel_for`.
+					  * When using `parallel_for` you must also pass `range`
+					  which describes the number of iteration space to be
+					  executed over.
+					</div>
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Parallel_for
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+cgh.parallel_for<&lt;my_kernel&gt;/mark><T>(range{64, 64}, 
+                          [=](<mark>id&lt;2&gt; idx</mark>){
+  // SYCL kernel function is executed 
+  // on a range of work-items
+});
+							</code></pre>
+						</div>
+					</div>
+					<div class="container" data-markdown>
+					  * When using `parallel_for` you must also have the
+					  function object which represents the kernel function take
+					  an `id`.
+					  * This represents the current work-item being executed and
+					  it's position within the iteration space.
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section class="hbox" data-markdown>
+					## Questions
+				</section>
+				<!--Slide 13-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_6_Vector_Add/source
+					</div>
+					<div class="container" data-markdown>
+						Implement a SYCL application that adds two arrays of
+						values together in parallel using `parallel_for`.
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+	Reveal.initialize();
+	Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>

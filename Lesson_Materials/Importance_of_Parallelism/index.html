@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## Importance of Parallelism and Heterogeneity
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about the current landscape of processors
+					* Learn about the benefit of parallelism and heterogeneity
+					* Learn about the differences between a CPU and a GPU
+					* Learn about co-processors and how work is offloaded to them
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Imagine you need to dig a hole...
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./digging.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Imagine you need to dig a hole...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							Let's say you have three options:
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./digging.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Imagine you need to dig a hole...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							Let's say you have three options:
+							<br/>
+							* Simply dig faster with the one shovel you have.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./digging.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Imagine you need to dig a hole...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							Let's say you have three options:
+							<br/>
+							* Simply dig faster with the one shovel you have.
+							* Buy a better shovel that moves more dirt.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./digging.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Imagine you need to dig a hole...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							Let's say you have three options:
+							<br/>
+							* Simply dig faster with the one shovel you have.
+							* Buy a better shovel that moves more dirt.
+							* Hire additional people to help you dig.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./digging.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### This is analogous to processor design
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./digging_equals_processor.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### When you need a processor to run faster...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							You have three options:
+							<br/>
+							* Run at a higher clock speed.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./processor.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### When you need a processor to run faster...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							You have three options:
+							<br/>
+							* Run at a higher clock speed.
+							* Do more work on each clock cycle.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./processor.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### When you need a processor to run faster...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							You have three options:
+							<br/>
+							* Run at a higher clock speed.
+							* Do more work on each clock cycle.
+							* Have multiple processors work in parallel.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./processor.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### When you need a processor to run faster...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							You have three options:
+							<br/>
+							* **Run at a higher clock speed.**
+							* Do more work on each clock cycle.
+							* Have multiple processors work in parallel.
+						</div>
+						<div class="col" data-markdown>
+							Increase the clock speed of the processor by adding more transistors.
+						</div>
+					</div>
+				</section>
+				<!--Slide 13-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The problem...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./transistor_size_trend_with_arrow.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							The size of transistors have steadily decreased over the years.
+						</div>
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The problem...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./clock_frequency_trend_with_arrow.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							However in recent years the average CPU clock frequency has stopped increasing.
+							<br/>
+							This is often refereed to as the end of Moore's Law.
+						</div>
+					</div>
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Why is this?
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./clock_frequency_trend_with_arrow.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The problem is power...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Fitting more transistors on a single processors requires more power.
+							* This generates more hear.
+							* Cooling the device becomes the limiting factor in processor design.
+							* This applies to everything from HPC supercomputers to mobile phones.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./on_fire.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### When you need a processor to run faster...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							You have three options:
+							<br/>
+							* Run at a higher clock speed.
+							* **Do more work on each clock cycle.**
+							* Have multiple processors work in parallel.
+						</div>
+						<div class="col" data-markdown>
+							Utilize the clock cycles more efficiently to reduce the time where the processor is idle.
+						</div>
+					</div>
+				</section>
+				<!--Slide 18-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The problem...
+					</div>
+					<div class="container" data-markdown>
+						There are ways to more efficiently utilize the clock cycles of the processor:
+					</div>
+					<div class="container" data-markdown>
+						* Efficient scheduling of instructions.
+						* Out-of-order execution.
+						* Instruction-level parallelism.
+						* SIMD instructions.
+					</div>
+					<div class="container" data-markdown>
+						These are all important, however there is a limit to how much performance gain can be achieved.
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### When you need a processor to run faster...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							You have three options:
+							<br/>
+							* Run at a higher clock speed.
+							* Do more work on each clock cycle.
+							* **Have multiple processors work in parallel.**
+						</div>
+						<div class="col" data-markdown>
+							Having a larger number of smaller processors executing in parallel can provide significant performance gain.
+							<br/>
+							This is what we will focusing on in this class.
+						</div>
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The benefit of parallelism and heterogeneity.
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Take a typical Intel chip.
+							  * Here we're looking at the Intel i7 7th Gen (Kaby Lake).
+							* This has 4 x CPU Cores.
+							* Each core has hyperthreading and supports 8-wide AVX SIMD instructions.
+							* This also has an integrated GPU with 1280 processing elements.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./intel_chip_1.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 21-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The benefit of parallelism and heterogeneity.
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Serial C++ code alone only takes advantage of a very small amount of the available resources of the chip. 
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./intel_chip_2.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 22-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The benefit of parallelism and heterogeneity.
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Using vectorization allows you to fully utilize the resources of a single core.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./intel_chip_3.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 23-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The benefit of parallelism and heterogeneity.
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Using multi-threading allows you to fully utilise the resources of all CPU cores.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./intel_chip_4.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 24-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The benefit of parallelism and heterogeneity.
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Offloading allows you to utilise the resources of the GPU and therefore utilise the entire chip.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./intel_chip_5.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### So now you have multiple diggers...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							How do you manage them?
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./digging.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 26-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### So now you have multiple diggers...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							How do you manage them?
+							<br/>
+							* Make sure they all have work to do.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./digging.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 27-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### So now you have multiple diggers...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							How do you manage them?
+							<br/>
+							* Make sure they all have work to do.
+							* Make sure they are all working efficiently.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./digging.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 28-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### So now you have multiple diggers...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							How do you manage them?
+							<br/>
+							* Make sure they all have work to do.
+							* Make sure they are all working efficiently.
+							* make sure they coordinate with each other.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./digging.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 29-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### This also applies to parallel processors
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							How do you manage them?
+							<br/>
+							* Make sure they all have work to do.
+							* Make sure they are all working efficiently.
+							* Make sure they are coordinating with each other.
+						</div>
+						<div class="col" data-markdown>
+							![SYCL](./processor.png "SYCL")
+						</div>
+					</div>
+				</section>
+				<!--Slide 30-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Parallelism vs concurrency
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./parallelism_and_concurrency.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 31-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Parallelism vs concurrency
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./parallelism_and_concurrency.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* **Parallelism** is the act of doing operations at the same time.
+						* **Concurrency** is the interleaving and interdependency of operations running in parallel.
+						* Any parallel problem will lie on a spectrum of its level of concurrency.
+						* A problem which has no concurrency is often described as being **embarrassingly parallel**.
+					</div>
+				</section>
+				<!--Slide 32-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Different kinds of parallelism
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./kinds_of_parallelism.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 33-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Different kinds of parallelism
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./kinds_of_parallelism_highlighted.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 34-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Co-processors
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./co_processor.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* A co-processor is a processor which does not run a OS itself, instead is offloaded work from a CPU.
+							* The CPU which offloads to the co-processor is often referred to as the **host**.
+							* The co-processor being offloaded to is often referred to as the **device**.
+						</div>
+					</div>
+				</section>
+				<!--Slide 35-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Offloading to a co-processor
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./offloading_to_a_gpu_1.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							Heterogeneous programming models such as SYCL, OpenCL, CUDA or OpenMP allow you to offload code from the CPU application that will run on a co-processor such as a GPU.
+						</div>
+					</div>
+				</section>
+				<!--Slide 36-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Offloading to a co-processor
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./offloading_to_a_gpu_2.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 1. The host allocates memory on the device.
+						</div>
+					</div>
+				</section>
+				<!--Slide 37-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Offloading to a co-processor
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./offloading_to_a_gpu_3.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 2. The host copies data from the application in host memory to the allocated device memory.
+						</div>
+					</div>
+				</section>
+				<!--Slide 38-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Offloading to a co-processor
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./offloading_to_a_gpu_4.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 3. The host copies over and invokes a kernel (device function entry point) on the device.
+						</div>
+					</div>
+				</section>
+				<!--Slide 39-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Offloading to a co-processor
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./offloading_to_a_gpu_5.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 4. The host copies data from the allocated device memory back to host memory to be read by the host application.
+						</div>
+					</div>
+				</section>
+				<!--Slide 40-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./cpu_up_close_1.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 41-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_2.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 1. A CPU has a dedicated region of DDR memory.
+						</div>
+					</div>
+				</section>
+				<!--Slide 42-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_3.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 2. A CPU is connected to the DDR memory via a bus.
+						</div>
+					</div>
+				</section>
+				<!--Slide 43-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_4.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 3. a CPU has a number of cores, often capable of hyperthreading.
+						</div>
+					</div>
+				</section>
+				<!--Slide 44-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_5.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 4. A CPU has a number of caches of different levels which memory is loaded from the DDR memory via.
+						</div>
+					</div>
+				</section>
+				<!--Slide 45-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_6.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 5. Each CPU core has dedicated registers for storing the operands of instructions.
+						</div>
+					</div>
+				</section>
+				<!--Slide 46-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_7.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 1. Each CPU core has a number of standard ALUs (arithmetic logic units).
+						</div>
+					</div>
+				</section>
+				<!--Slide 47-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_8.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 2. The standard ALUs read from and write to standard registers.
+						</div>
+					</div>
+				</section>
+				<!--Slide 48-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_9.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 3. Each CPU core also has a number of SIMD ALUs.
+						</div>
+					</div>
+				</section>
+				<!--Slide 49-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Let's take a look at the CPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./cpu_up_close_10.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 4. The SIMD ALUs read from and write to SIMD registers.
+						</div>
+					</div>
+				</section>
+				<!--Slide 50-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Now let's take a look at the GPU...
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./gpu_up_close_1.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 51-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Now let's take a look at the GPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./gpu_up_close_2.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 1. A GPU has a dedicated region global memory.
+						</div>
+					</div>
+				</section>
+				<!--Slide 52-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Now let's take a look at the GPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./gpu_up_close_3.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 2. A GPU is connected to the global memory via a bus.
+						</div>
+					</div>
+				</section>
+				<!--Slide 53-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Now let's take a look at the GPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./gpu_up_close_4.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 3. A GPU is divided into a number of compute units.
+						</div>
+					</div>
+				</section>
+				<!--Slide 54-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Now let's take a look at the GPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./gpu_up_close_5.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 4. Each compute unit has a dedicated region of local memory.
+						</div>
+					</div>
+				</section>
+				<!--Slide 55-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Now let's take a look at the GPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./gpu_up_close_6.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 5. Each compute unit has a number of processor elements.
+						</div>
+					</div>
+				</section>
+				<!--Slide 56-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Now let's take a look at the GPU...
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./gpu_up_close_7.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* 6. Each processing element has a dedicated region of global memory.
+						</div>
+					</div>
+				</section>
+				<!--Slide 57-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### A note about this description
+					</div>
+					<div class="container" data-markdown>
+						Note that this is general model and doesn't account for architectures with shared memory such as integrated GPUs or SoCs.
+					</div>
+				</section>
+				<!--Slide 58-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### TODO: Latency vs Throughput ?
+					</div>
+				</section>
+				<!--Slide 59-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### CPU vs GPU
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							CPU
+						</div>
+						<div class="col" data-markdown>
+							GPU
+						</div>
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Small number of large processors.
+							* Flat memory model, with managed cache.
+							* More control structure and less processing units.
+							  * Can do more complex logic.
+							  * Requires more power.
+							* Optimized for latency.
+							  * Minimizes the time taken for one particular task.
+							* Flexible programming model.
+						</div>
+						<div class="col" data-markdown>
+							* Large number of small processors.
+							* Hierarchical memory model.
+							* More processing units and less control structure.
+							  * Can do less complex logic.
+							  * Consumes less power.
+							* Optimized for throughput.
+							  * Maximizes the amount of work done per unit of time.
+							* Restricted programming model.
+						</div>
+					</div>
+				</section>
+				<!--Slide 60-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>

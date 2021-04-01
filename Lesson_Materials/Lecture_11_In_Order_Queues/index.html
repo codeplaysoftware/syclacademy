@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## In Order Queues
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about out-of-order and in-order execution
+					* Learn about in-order queues and how to use them
+                </section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Out-of-order execution
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./out_of_order_execution.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* SYCL `queue`s are by default out-of-order.
+							* This means commands are allowed to be overlapped and re-ordered or executed concurrently providing dependencies are honoured to ensure consistency.
+						</div>
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### In-of-order execution
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./in_order_execution.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* SYCL `queue`s can be configured to be in-order.
+							* This mean commands must execute strictly in the order they were enqueued.
+						</div>
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Data flow with buffers and accessors
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+auto inOrderQueue = sycl::queue{gpu_selector{},
+  <mark>{sycl::property::queue::in_order{}}</mark>};
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* To create an in-order `queue` simply provide the `property::queue::in_order` property to the constructor.
+						</div>
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Using an in-order queue (buffer/accessor)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+buf = sycl::buffer(data, sycl::range{1024});
+
+inOrderQueue.submit([&](sycl::handler &cgh){
+  auto acc = buf.get_access(cgh);
+      
+  cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+    [=](sycl::id&lt;1&gt; idx){
+    acc[idx] = /* some computation */
+  });
+});
+
+inOrderQueue.submit([&](sycl::handler &cgh){
+  auto acc = buf.get_access(cgh);
+		
+  cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
+    [=](sycl::id&lt;1&gt; idx){
+    acc[idx] = /* some computation */
+  });
+});
+
+<mark>inOrderQueue.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* In the buffer/accessor model in-order `queue`s are used as normal.
+							* The main difference is now that the command groups will now always be executed in the order they are enqueued.
+						</div>
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Using an in-order queue (USM)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+auto devicePtr   = usm_wrapper&lt;int&gt;(
+  malloc_device&lt;int&gt;(1024, inOrderQueue));
+  
+  inOrderQueue.memcpy(devicePtr, data, sizeof(int));
+  
+  inOrderQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+  [=](sycl::id&lt;1&gt; idx){
+  devicePtr[idx] = /* some computation */
+});
+
+inOrderQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
+  [=](sycl::id&lt;1&gt; idx){
+  devicePtr[idx] = /* some computation */
+});
+
+inOrderQueue.memcpy(data, devicePtr, sizeof(int));
+
+<mark>inOrderQueue.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* In the USM model dependencies are greatly simplified.
+							* It's no longer necessary to chain the commands together with `event` as they execute in the order they are enqueued.
+							* Simply calling `wait` on the the `queue` is sufficient.
+						</div>
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_11_In_Order_Queue/source
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./in_order_diamond_data_flow.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						Take the diamond data flow graph we implemented in the last exercise and convert it to use an in-order `queue`.
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>

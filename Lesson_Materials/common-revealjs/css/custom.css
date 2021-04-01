@@ -103,3 +103,5 @@ section {
 .global-images > img:nth-of-type(2) { right: 20px; top: 10px;}
 .global-images > img:nth-of-type(3) { left: 20px; bottom: 10px; }
 .global-images > img:nth-of-type(4) { right: 20px; bottom: 10px;}
+
+.reveal section img { background:none; border:none; box-shadow:none; }
