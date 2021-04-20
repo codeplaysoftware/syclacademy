@@ -9,9 +9,8 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <SYCL/sycl.hpp>
+#include <catch2/catch.hpp>
 
 class kernel_a_1;
 class kernel_b_1;
@@ -25,7 +24,7 @@ class kernel_d_2;
 class usm_selector : public sycl::device_selector {
  public:
   int operator()(const sycl::device& dev) const {
-    if (dev.get_info<sycl::info::device::usm_device_allocations>()) {
+    if (dev.has(sycl::aspect::usm_device_allocations)) {
       return 1;
     }
     return -1;
@@ -123,6 +122,7 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
 
     auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
 
+#ifdef SYCL_ACADEMY_USE_COMPUTECPP
     auto devicePtrInA = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
     auto devicePtrInB = sycl::experimental::usm_wrapper<float>{
@@ -131,6 +131,12 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
         sycl::malloc_device<float>(dataSize, usmQueue)};
     auto devicePtrOut = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
+#else
+    auto devicePtrInA = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrInB = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrInC = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrOut = sycl::malloc_device<float>(dataSize, usmQueue);
+#endif
 
     auto e1 = usmQueue.memcpy(devicePtrInA, inA, sizeof(float) * dataSize);
     auto e2 = usmQueue.memcpy(devicePtrInB, inB, sizeof(float) * dataSize);
@@ -161,12 +167,9 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
               devicePtrInB[globalId] + devicePtrInC[globalId];
         });
 
-    usmQueue
-        .submit([&](sycl::handler& cgh) {
-          cgh.depends_on(e7);
-          cgh.memcpy(out, devicePtrOut, sizeof(float) * dataSize);
-        })
-        .wait();
+    auto e8 = usmQueue.memcpy(out, devicePtrOut, sizeof(float) * dataSize, e7);
+
+    e8.wait();
 
     sycl::free(devicePtrInA, usmQueue);
     sycl::free(devicePtrInB, usmQueue);

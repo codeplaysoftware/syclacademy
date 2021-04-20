@@ -9,9 +9,8 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <SYCL/sycl.hpp>
+#include <catch2/catch.hpp>
 
 TEST_CASE("empty_sycl_source_file", "compiling_with_sycl_solution") {
   REQUIRE(true);
