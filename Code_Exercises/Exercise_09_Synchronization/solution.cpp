@@ -9,9 +9,8 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <SYCL/sycl.hpp>
+#include <catch2/catch.hpp>
 
 class vector_add_1;
 class vector_add_2;
@@ -23,7 +22,7 @@ class vector_add_6;
 class usm_selector : public sycl::device_selector {
  public:
   int operator()(const sycl::device& dev) const {
-    if (dev.get_info<sycl::info::device::usm_device_allocations>()) {
+    if (dev.has(sycl::aspect::usm_device_allocations)) {
       return 1;
     }
     return -1;
@@ -182,12 +181,18 @@ TEST_CASE("usm_event_wait", "synchronization_solution") {
 
     auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
 
+#ifdef SYCL_ACADEMY_USE_COMPUTECPP
     auto devicePtrA = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
     auto devicePtrB = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
     auto devicePtrR = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
+#else
+    auto devicePtrA = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrB = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrR = sycl::malloc_device<float>(dataSize, usmQueue);
+#endif
 
     usmQueue.memcpy(devicePtrA, a,
                     sizeof(float) * dataSize)
@@ -243,12 +248,18 @@ TEST_CASE("usm_queue_wait", "synchronization_solution") {
 
     auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
 
+#ifdef SYCL_ACADEMY_USE_COMPUTECPP
     auto devicePtrA = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
     auto devicePtrB = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
     auto devicePtrR = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
+#else
+    auto devicePtrA = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrB = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrR = sycl::malloc_device<float>(dataSize, usmQueue);
+#endif
 
     usmQueue.memcpy(devicePtrA, a, sizeof(float) * dataSize);
     usmQueue.memcpy(devicePtrB, b, sizeof(float) * dataSize);
@@ -320,8 +331,7 @@ TEST_CASE("host_accessor", "synchronization_solution") {
       gpuQueue.wait();  // Synchronize
 
       {
-        auto hostAccR =
-            bufR.get_access<sycl::access::mode::read>();  // Copy-to-host
+        auto hostAccR = bufR.get_host_access(sycl::read_only);  // Copy-to-host
 
         for (int i = 0; i < dataSize; ++i) {
           REQUIRE(hostAccR[i] == i * 2);
