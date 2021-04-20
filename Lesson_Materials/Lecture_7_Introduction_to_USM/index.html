@@ -193,11 +193,13 @@
 						consistency and automatically manages dependencies.
 						  * Recommended when you need to iterate over or
 						  prototype your application.
-						  design of your application.
+						  * Recommended for maximum performance portability
+						  * Provides a lot of information to the SYCL runtime which can perform many optimizations automatically.
 						* The **USM** model provides a lower-level pointer-based
 						solution with fine grained control.
 						  * Recommended when porting existing C++ applications
 						  or using pointer-based structures.
+						  * User has responsibility for certain aspects relevant for performance (e.g. data transfers or data prefetches)
 					</div>
 				</section>
 				<!--Slide 12-->
