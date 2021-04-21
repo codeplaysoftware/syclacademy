@@ -9,8 +9,13 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <SYCL/sycl.hpp>
 #include <catch2/catch.hpp>
+
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+#include <CL/sycl.hpp>
+#else
+#include <SYCL/sycl.hpp>
+#endif
 
 class vector_add;
 
@@ -31,13 +36,13 @@ TEST_CASE("vector_add", "vector_add_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-    gpuQueue
+    defaultQueue
         .submit([&](sycl::handler& cgh) {
           auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
           auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
@@ -49,7 +54,7 @@ TEST_CASE("vector_add", "vector_add_solution") {
         })
         .wait();
 
-    gpuQueue.throw_asynchronous();
+    defaultQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
