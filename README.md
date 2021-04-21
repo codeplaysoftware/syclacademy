@@ -95,7 +95,7 @@ all of the exercises.
 |----------------|---------------------|-------------------|------------------|
 | ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.4.0 |
 | DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA) | 2021.1-beta05	|
-| hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)** <br> Nvidia GPU (CUDA) | Latest master |
+| hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)** <br> Nvidia GPU (CUDA) | Latest develop branch |
 
 \* See [here][troubleshooting-for-computecpp] for troubleshooting when using
 ComputeCpp with Visual Studio post toolset version 14.26.
@@ -124,18 +124,11 @@ already be installed and available in the path.
 
 #### Installing hipSYCL
 
-You will need a hipSYCL build from April 26th 2020 or newer. The easiest way to
+You will need a hipSYCL build from April 21st 2021 or newer. The easiest way to
 install a recent distribution of hipSYCL is to use the
 [daily package repositories][hipsycl-repositories-detail]. Binary packages are
 provided for Ubuntu 18.04, CentOS 7 and Arch Linux. See
 [here][hipsycl-repositories] for an explanation of the packages that you need.
-
-If you do not need the ROCm backend, a recent distribution can also be installed
-using the [spack][spack] package manager:
-```
-spack install hipsycl@master +cuda
-```
-If you do not need the CUDA backend, you can remove `+cuda`.
 
 Of course, you can also build hipSYCL [from source manually][hipsycl-building].
 
@@ -190,12 +183,16 @@ files. This is disabled by default.
 #### Additional cmake arguments for hipSYCL
 
 When building with hipSYCL, cmake will additionally require you to specify the
-target platform using `-DHIPSYCL_PLATFORM=cpu|rocm|cuda` and, when compiling for
-GPU, the target architecture using `-DHIPSYCL_GPU_ARCH=arch`.
-* For NVIDIA GPUs, `arch` is of the form `sm_XX`. For example, `sm_60` for
-Pascal GPUs (GeForce GTX 1000 series). 
-* When compiling for AMD GPUs, `arch` is of the form `gfxXXX`. For example,
-`gfx900` for Vega 10 chips (Vega 56 and Vega 64) or `gfx906` (Radeon VII).
+target platform using `-DHIPSYCL_TARGETS=<target specification>`. 
+`<target specification>` is a list of backends and devices to target, for example
+`-DHIPSYCL_TARGETS="omp;hip:gfx900,gfx906"` compiles for CPUs with the OpenMP backend
+and for AMD Vega 10 and Vega 20 GPUs using the HIP backend.
+Available backends are:
+* `omp` - OpenMP CPU backend
+* `cuda` - CUDA backend for NVIDIA GPUs. Requires specification of targets of the form sm_XY, e.g. sm_70 for Volta, sm_60 for Pascal
+* `hip`  - HIP backend for AMD GPUs. Requires specification of targets of the form gfxXYZ, e.g. gfx906 for Vega 20, gfx900 for Vega 10
+* `spirv` - use clang SYCL driver to generate spirv (experimental)
+
 
 ### Compiling directly (DPC++ only)
 
