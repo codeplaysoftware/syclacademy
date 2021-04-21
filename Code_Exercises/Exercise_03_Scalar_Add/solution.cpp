@@ -30,7 +30,7 @@ TEST_CASE("scalar_add", "scalar_add_solution") {
           auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
           auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
 
-          cgh.single_task<scalar_add>([=]() { accR[0] = accA[0] + accB[0]; });
+          cgh.single_task<scalar_add>([=] { accR[0] = accA[0] + accB[0]; });
         })
         .wait();
   }
