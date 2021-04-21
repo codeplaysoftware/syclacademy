@@ -11,7 +11,7 @@ exceptions.
 
 ### 1.) Catch synchronous exception handling
 
-Synchronous errors, such as failure to construct an object, are reported 
+Synchronous errors, such as failure to construct an object, are reported
 immediately  by  the  runtime  throwing  an  exception.
 
 To catch synchronous exceptions simply wrap your application in a try catch
@@ -20,7 +20,7 @@ the `what` member function.
 
 ### 2. ) Catch and asynchronous exceptions
 
-Asynchronous  errors,  such  as  an  error  occurring  during execution of a 
+Asynchronous  errors, such  as  an  error  occurring  during execution of a
 kernel on a device, are reported via user-supplied asynchronous error-handlers.
 
 To catch asynchronous exceptions create an async handler using a lambda
@@ -29,7 +29,7 @@ exceptions to be caught by the surrounding try-catch block.
 
 ## Build and execution hints
 
-```
+```sh
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
 make handling_errors_source
 ./Code_Exercises/Exercise_4_Handling_errors/handling_errors_source
