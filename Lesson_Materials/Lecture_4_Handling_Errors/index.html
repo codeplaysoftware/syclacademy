@@ -70,7 +70,8 @@
 					</div>
 					<div class="section" data-markdown>
 						* In SYCL errors are handled by throwing exceptions.
-						*  It is crucial that these errors are handled otherwise your application could silently fail.
+						* It is crucial that these errors are handled,
+							otherwise your application could fail in unpredictable ways.
 						* In SYCL there are two kinds of error:
 						  * Synchronous errors (thrown in user thread) .
 						  * Asynchronous errors (thrown by the SYCL scheduler).
@@ -92,53 +93,59 @@
 					</div>
 					<div class="hbox" >
 						<code class="code-60pc"><pre>
-class add_kernel;
+class add;
 
-int a = 18, b = 24, r = 0;
+int main() {
+  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
+    queue gpuQueue(gpu_selector{});
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
-auto bufA = sycl::buffer{&a, sycl::range{1}};
-auto bufB = sycl::buffer{&b, sycl::range{1}};
-auto bufR = sycl::buffer{&r, sycl::range{1}};
+    gpuQueue.submit([&](handler &cgh) {
+      auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufR, cgh, write_only};
 
-gpuQueue.submit([&](handler &cgh){
-
-  auto accA = bufA.get_access(cgh);
-  auto accB = bufB.get_access(cgh);
-  auto accR = bufR.get_access(cgh);
-
-  cgh.single_task&lt;add_kernel&gt;([=]() {
-    accR[0] = accA[0] + accB[0];
-  }); 
-}).wait();
+      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
+        out[i] = inA[i] + inB[i];
+      });
+  }).wait();
+}
 						</code></pre>
 					</div>
 					<div class="bottom-bullets" data-markdown>
-							* If errors are not handled, the application can fail silently.
+					* If errors are not handled, the application can fail:
+						* SYCL 1.2.1 application will fail silently.
+						* SYCL 2020 provides a default async handler that will call `std::terminate`
+							when an asynchronous error is thrown.
 					</div>
 				</section>
 				<!--Slide 6-->
 				<section>
 					<div class="hbox">
 						<code class="code-60pc"><pre>
-int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
-  <mark>try{</mark>
+class add;
+
+int main() {
+  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
+  <mark>try {</mark>
     queue gpuQueue(gpu_selector{});
 
-    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
-    gpuQueue.submit([&](handler &cgh){
-      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh); 
-      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh); 
-      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+    gpuQueue.submit([&](handler &cgh) {
+      auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufR, cgh, write_only};
 
-      cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), [=](id&lt1&gt i){
+      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
-      }); 
-	}).wait();
-	
+      });
+    }).wait();
+
   <mark>} catch (...) { /* handle errors */ }</mark>
 }
 						</code></pre>
@@ -152,25 +159,27 @@ int main(int argc, char *argv[]) {
 				<section>
 					<div class="hbox">
 						<code class="code-60pc"><pre>
-int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
+class add;
+
+int main() {
+  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
     queue gpuQueue(gpu_selector{}, <mark>async_handler{}</mark>);
 
-    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
-    gpuQueue.submit([&](handler &cgh){
-      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh); 
-      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh); 
-      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+    gpuQueue.submit([&](handler &cgh) {
+      auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufR, cgh, write_only};
 
-      cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), [=](id&lt1&gt i){
+      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
-      }); 
-	}).wait();
-	
+      });
+    }).wait();
+  
     <mark>gpuQueue.throw_asynchronous();</mark>
   } catch (...) { /* handle errors */
 }
@@ -188,25 +197,27 @@ int main(int argc, char *argv[]) {
 				<section>
 					<div class="hbox">
 						<code class="code-60pc"><pre>
-int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
+class add;
+
+int main() {
+  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
-    queue gpuQueue(gpu_selector{}, <mark>[=](sycl::exception_list eL) { 
-      for (auto e : eL) { std::rethrow_exception(e); } 
+    queue gpuQueue(gpu_selector{}, <mark>[=](exception_list eL) { 
+      for (auto e : eL) { std::rethrow_exception(e); }
     }</mark>);
 
-    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
-    gpuQueue.submit([&](handler &cgh){ // Command group submitted to queue
-      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh); 
-      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh); 
-      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+    gpuQueue.submit([&](handler &cgh) {
+      auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufR, cgh, write_only};
 
-      cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), [=](id&lt1&gt i){
+      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
-      }); 
+      });
     }).wait();
 
     gpuQueue.throw_asynchronous();
@@ -224,17 +235,17 @@ int main(int argc, char *argv[]) {
 				<section>
 						<div class="hbox">
 							<code class="code-60pc"><pre>
-int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
-  try { 
-    queue gpuQueue(gpu_selector{}, [=](sycl::exception_list eL) {
-      for (auto e : eL) { std::rethrow_exception(e); } 
-    }).wait();
+int main() {
+  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
+  try {
+    queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
+      for (auto e : eL) { std::rethrow_exception(e); }
+    });
 
     ...
 
-    gpuQueue.throw_asynchronous(); 
-  } catch (<mark>std::exception e</mark>) { 
+    gpuQueue.throw_asynchronous();
+  } catch (const <mark>std::exception</mark>& e) {
     <mark>std::cout << “Exception caught: ” << e.what() 
      << std::endl;</mark>
   }
@@ -250,17 +261,17 @@ int main(int argc, char *argv[]) {
 				<section>
 						<div class="hbox">
 							<code class="code-60pc"><pre>
-int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
-  try { 
-    queue gpuQueue(gpu_selector{}, [=](sycl::exception_list eL) {
-      for (auto e : eL) { std::rethrow_exception(e); } 
-    }).wait();
+int main() {
+  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
+  try {
+    queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
+      for (auto e : eL) { std::rethrow_exception(e); }
+    });
 
     ...
 
-    gpuQueue.throw_asynchronous(); 
-  } catch (std::exception e) { 
+    gpuQueue.throw_asynchronous();
+  } catch (const <mark>sycl::exception</mark>& e) {
     std::cout << “Exception caught: ” << e.what();
     <mark>std:: cout << “ With OpenCL error code: ”</mark> 
      <mark><< e.get_cl_code() << std::endl;</mark>
@@ -269,23 +280,31 @@ int main(int argc, char *argv[]) {
 							</code></pre>
 						</div>
 						<div class="bottom-bullets" data-markdown>
-							* If the exception has an OpenCL error code associated with it this can be retrieved by calling the <mark>get_cl_code</mark> member function
-							* If there is no OpenCL error code this will return <mark>CL_SUCCESS</mark>
+              * In SYCL 1.2.1, if the exception has an OpenCL error code associated with it
+              this can be retrieved by calling the `get_cl_code` member function
+              * If there is no OpenCL error code this will return `CL_SUCCESS`
+              * SYCL 2020 provides the `error_category_for` templated free function
+                that allows checking for the category of the exception
+                depending on the backend used (e.g. `backend::opencl`),
+                and `e.code().value()` will correspond to the backend error code.
 						</div>
 				</section>
 				<!--Slide 11-->
 				<section>
 						<div class="hbox">
 							<code class="code-60pc"><pre>
-int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
-  try { 
-    queue gpuQueue(gpu_selector{}, [=](sycl::exception_list eL) {
-      for (auto e : eL) { std::rethrow_exception(e); } 
-    });
+int main() {
+  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
+
+  queue gpuQueue(gpu_selector{}, [=](exception_list eL) {
+    for (auto e : eL) { std::rethrow_exception(e); }
+  });
+  context gpuContext = gpuQueue.get_context();
+
+  try {
   ...
-    gpuQueue.wait_and_throw(); 
-  } catch (std::exception e) { 
+    gpuQueue.wait_and_throw();
+  } catch (const sycl::exception& e) {
     <mark>if (e.has_context()) {</mark>
       <mark>if (e.get_context() == gpuContext) {</mark>
         <mark>/* handle error */</mark>
@@ -309,8 +328,11 @@ int main(int argc, char *argv[]) {
 				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
-						* In SYCL there are a number of different exception types that inherit from `std::exception`
-						  * E.g. runtime_error, kernel_error
+						* In SYCL 1.2.1 there are a number of different exception types that inherit from `std::exception`
+						  * E.g. `runtime_error`, `kernel_error`
+						* SYCL 2020 only has a single `sycl::exception` type
+							which provides different error codes
+							* E.g. `errc::runtime`, `errc::kernel`
 					</div>
 				</section>
 				<!--Slide 14-->
@@ -322,31 +344,39 @@ int main(int argc, char *argv[]) {
 				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
-						*  Every SYCL implementation is required to provide a host device
+						* Every SYCL 1.2.1 implementation is required to provide a host device
 						  * This device executes native C++ code but is guaranteed to emulate the SYCL execution and memory model
 						* This means you can debug a SYCL kernel function by switching to the host device and using a standard C++ debugger
 						  * For example gdb
+						* SYCL 2020 only guarantees that a device will always be available,
+							and users can query the `host_debuggable` device aspect
+							to check whether they can use the same functionality
+							as the SYCL 1.2.1 host device
 					</div>
 				</section>
 				<!--Slide 16-->
 				<section>
 					<div class="hbox">
 						<code class="code-60pc"><pre>
-int main(int argc, char *argv[]) {
-  std::vector&ltfloat&gt dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
+class add;
+
+int main() {
+  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
-    queue <mark>hostQueue(host_selector{}</mark>, async_handler{});
-    buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-    buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-    buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+    queue <mark>hostQueue(aspect_selector&lt;aspect::host_debuggable&gt;()</mark>, async_handler{});
 
-    <mark>hostQueue</mark>.submit([&](handler &cgh){
-      auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh); 
-      auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh); 
-      auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
-      cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-       [=](id&lt1&gt i){out[i] = inA[i] + inB[i];}); 
+    gpuQueue.submit([&](handler &cgh) {
+      auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufR, cgh, write_only};
+
+      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
+        out[i] = inA[i] + inB[i];
+      });
     });
     gpuQueue.wait_and_throw();
   } catch (...) { /* handle errors */ }
@@ -355,7 +385,11 @@ int main(int argc, char *argv[]) {
 					</div>
 					<div class="bottom-bullets" data-markdown>
 						* Any SYCL application can be debugged on the host device by switching the queue for a host queue
-						* By replacing the device selector for the host_selector will ensure that the queue submits all work to the host device
+						* Replacing the device selector for the `aspect_selector`
+							will ensure that the queue submits all work to the device
+							with the requested aspects,
+							in this case a host debuggable device
+						* In SYCL 1.2.1, `host_selector` would be used instead, deprecated in SYCL 2020
 					</div>
 				</section>
 				<!--Slide 17-->
