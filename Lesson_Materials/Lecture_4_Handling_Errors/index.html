@@ -363,7 +363,7 @@ class add;
 int main() {
   std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
-    queue <mark>hostQueue(host_selector{}</mark>, async_handler{});
+    queue <mark>hostQueue(aspect_selector&lt;aspect::host_debuggable&gt;()</mark>, async_handler{});
 
     buffer bufA{dA};
     buffer bufB{dB};
@@ -385,10 +385,11 @@ int main() {
 					</div>
 					<div class="bottom-bullets" data-markdown>
 						* Any SYCL application can be debugged on the host device by switching the queue for a host queue
-						* Replacing the device selector for the host_selector
-							will ensure that the queue submits all work to the host device
-						* SYCL 2020 provides an `aspect_selector`,
-							which allows you to specify which aspects are required from the chosen device
+						* Replacing the device selector for the `aspect_selector`
+							will ensure that the queue submits all work to the device
+							with the requested aspects,
+							in this case a host debuggable device
+						* In SYCL 1.2.1, `host_selector` would be used instead, deprecated in SYCL 2020
 					</div>
 				</section>
 				<!--Slide 17-->
