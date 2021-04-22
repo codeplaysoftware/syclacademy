@@ -350,7 +350,7 @@ auto devicePtr   = usm_wrapper&lt;int&gt;(
     devicePtr[idx] = /* some computation */
 });
 
-<mark>auto e4</mark> = gpuQueue..memcpy(data, devicePtr, sizeof(int),
+<mark>auto e4</mark> = gpuQueue.memcpy(data, devicePtr, sizeof(int),
   <mark>e3</mark>);
 
 <mark>e4.wait();</mark>
@@ -359,7 +359,6 @@ auto devicePtr   = usm_wrapper&lt;int&gt;(
 						<div class="col" data-markdown>
 							* Each command enqueued to the `queue` produces an `event` object which can be used to synchronize with the completion of that command.
 							* Passing those `event` objects when enqueueing other commands creates dependencies.
-							* Note that `memcpy` doesn't have an overload which takes an `event` so you have to create a command group and call `depends_on` to create a dependency.
 						</div>
 					</div>
 				</section>
