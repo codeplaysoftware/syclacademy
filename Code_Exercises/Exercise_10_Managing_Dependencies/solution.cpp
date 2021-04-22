@@ -9,8 +9,13 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <SYCL/sycl.hpp>
 #include <catch2/catch.hpp>
+
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+#include <CL/sycl.hpp>
+#else
+#include <SYCL/sycl.hpp>
+#endif
 
 class kernel_a_1;
 class kernel_b_1;
@@ -49,14 +54,14 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
 
     auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
     auto bufInB = sycl::buffer{inB, sycl::range{dataSize}};
     auto bufInC = sycl::buffer{inC, sycl::range{dataSize}};
     auto bufOut = sycl::buffer{out, sycl::range{dataSize}};
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto acc = bufInA.get_access<sycl::access::mode::read_write>(cgh);
 
       cgh.parallel_for<kernel_a_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
@@ -64,7 +69,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto accIn = bufInA.get_access<sycl::access::mode::read>(cgh);
       auto accOut = bufInB.get_access<sycl::access::mode::write>(cgh);
 
@@ -73,7 +78,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto accIn = bufInA.get_access<sycl::access::mode::read>(cgh);
       auto accOut = bufInC.get_access<sycl::access::mode::write>(cgh);
 
@@ -82,7 +87,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto accInA = bufInB.get_access<sycl::access::mode::read>(cgh);
       auto accInB = bufInC.get_access<sycl::access::mode::read>(cgh);
       auto accOut = bufOut.get_access<sycl::access::mode::write>(cgh);
@@ -92,7 +97,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    gpuQueue.wait_and_throw();
+    defaultQueue.wait_and_throw();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }

@@ -9,8 +9,13 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <SYCL/sycl.hpp>
 #include <catch2/catch.hpp>
+
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+#include <CL/sycl.hpp>
+#else
+#include <SYCL/sycl.hpp>
+#endif
 
 class vector_add;
 

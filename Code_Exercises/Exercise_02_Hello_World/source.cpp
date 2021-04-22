@@ -11,8 +11,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#include <SYCL/sycl.hpp>
-
 TEST_CASE("hello_world", "hello_world_source") {
   REQUIRE(true);
 }

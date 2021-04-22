@@ -9,11 +9,18 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <SYCL/sycl.hpp>
 #include <catch2/catch.hpp>
+
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+#include <CL/sycl.hpp>
+#else
+#include <SYCL/sycl.hpp>
+#endif
 
 class scalar_add;
 
+// Example device selector, looks for an Intel GPU, you may want to write a
+// different device selector for the device you are looking for on your machine.
 class intel_gpu_selector : public sycl::device_selector {
  public:
   virtual int operator()(const sycl::device& dev) const {

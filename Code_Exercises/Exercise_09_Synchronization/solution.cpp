@@ -9,8 +9,13 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <SYCL/sycl.hpp>
 #include <catch2/catch.hpp>
+
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+#include <CL/sycl.hpp>
+#else
+#include <SYCL/sycl.hpp>
+#endif
 
 class vector_add_1;
 class vector_add_2;
@@ -46,13 +51,13 @@ TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-    gpuQueue
+    defaultQueue
         .submit([&](sycl::handler& cgh) {
           auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
           auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
@@ -64,7 +69,7 @@ TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
         })
         .wait();  // Synchronize
 
-    gpuQueue.throw_asynchronous();
+    defaultQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {  // Copy back
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
@@ -91,13 +96,13 @@ TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
       auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
       auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
@@ -107,7 +112,7 @@ TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
           [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
     });
 
-    gpuQueue.wait_and_throw();          // Synchronize
+    defaultQueue.wait_and_throw();      // Synchronize
   } catch (const sycl::exception& e) {  // Copy back
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
@@ -134,14 +139,14 @@ TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
 
     {
       auto bufA = sycl::buffer{a, sycl::range{dataSize}};
       auto bufB = sycl::buffer{b, sycl::range{dataSize}};
       auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-      gpuQueue.submit([&](sycl::handler& cgh) {
+      defaultQueue.submit([&](sycl::handler& cgh) {
         auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
         auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
         auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
@@ -152,7 +157,7 @@ TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
       });
     }  // Synchronize and copy-back
 
-    gpuQueue.throw_asynchronous();
+    defaultQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
@@ -311,14 +316,14 @@ TEST_CASE("host_accessor", "synchronization_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
 
     {
       auto bufA = sycl::buffer{a, sycl::range{dataSize}};
       auto bufB = sycl::buffer{b, sycl::range{dataSize}};
       auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-      gpuQueue.submit([&](sycl::handler& cgh) {
+      defaultQueue.submit([&](sycl::handler& cgh) {
         auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
         auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
         auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
@@ -328,7 +333,7 @@ TEST_CASE("host_accessor", "synchronization_solution") {
             [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
       });
 
-      gpuQueue.wait();  // Synchronize
+      defaultQueue.wait();  // Synchronize
 
       {
         auto hostAccR = bufR.get_host_access(sycl::read_only);  // Copy-to-host
@@ -340,7 +345,7 @@ TEST_CASE("host_accessor", "synchronization_solution") {
 
     }  // Copy-back
 
-    gpuQueue.throw_asynchronous();
+    defaultQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }

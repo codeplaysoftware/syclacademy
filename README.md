@@ -97,7 +97,7 @@ all of the exercises.
 | DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA) | 2021.1-beta05	|
 | hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)** <br> Nvidia GPU (CUDA) | Latest develop branch |
 
-\* See [here][troubleshooting-for-computecpp] for troubleshooting when using
+\* See [here](troubleshooting-for-computecpp) for troubleshooting when using
 ComputeCpp with Visual Studio post toolset version 14.26.
 
 \*\* See [here][rocm-gpus] for the official list of GPUs supported by AMD for
