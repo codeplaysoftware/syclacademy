@@ -37,18 +37,18 @@ Remember to declare a class for your kernel name in the global namespace.
 Also remember to call `wait` on the `event` returned from `submit` to await the
 completion of the kernel function.
 
-### 4.) Stream “Hello World!” to stdout
+### 4.) Stream "Hello World!" to stdout
 
 Create a `stream` object within the command group scope. The parameters to the
 constructor of the `stream` class are the total buffer size, the work-item
 buffer size and the `handler`.
 
 Then use the stream you constructed within the SYCL kernel function to print
-`“Hello world!”` using the `<<` operator.
+`"Hello world!"` using the `<<` operator.
 
 ## Build and execution hints
 
-```
+```sh
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
 make hello_world_source
 ./Code_Exercises/Exercise_2_Hello_World/hello_world_source
