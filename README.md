@@ -87,13 +87,13 @@ all of the exercises.
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
 | ComputeCpp | Windows 10 Visual Studio 2019 (64bit) <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.0.0 |
-| DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux* 8, CentOS* 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA) | 2021.2	|
+| DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux* 8, CentOS* 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.2	|
 | hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)* <br> Nvidia GPU (CUDA) | Latest master |
 
 \* See [here][rocm-gpus] for the official list of GPUs supported by AMD for
 ROCm. We do not recommend using GPUs earlier than gfx9 (Vega 10 and Vega 20
 chips).
-
+\** supported in open source project only
 ### Install SYCL implementations
 
 First you'll need to install your chosen SYCL implementation and any
@@ -108,9 +108,9 @@ and follow the [getting started instructions][computecpp-getting-started].
 
 To set up DPC++ follow the [getting started instructions][dpcpp-getting-started].
 
-You can also use a [Docker* image of oneAPI][docker-container-oneapi].
+You can also use a [Docker* image][docker-container-oneapi].
 
-If you are using the Intel DevCloud [intel-devcloud] then the latest version of DPC++ will
+If you are using the [Intel DevCloud][intel-devcloud] then the latest version of DPC++ will
 already be installed and available in the path.
 
 #### Installing hipSYCL
