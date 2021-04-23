@@ -93,7 +93,7 @@ all of the exercises.
 \* See [here][rocm-gpus] for the official list of GPUs supported by AMD for
 ROCm. We do not recommend using GPUs earlier than gfx9 (Vega 10 and Vega 20
 chips).
-\** supported in open source project only
+<br>\** supported in open source project only
 ### Install SYCL implementations
 
 First you'll need to install your chosen SYCL implementation and any
