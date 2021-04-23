@@ -106,8 +106,7 @@ and follow the [getting started instructions][computecpp-getting-started].
 
 #### Installing DPC++
 
-To set up DPC++ follow the
-[getting started instructions][dpcpp-getting-started].
+To set up DPC++ follow the [getting started instructions][dpcpp-getting-started].
 
 You can also use a [Docker* image of oneAPI][docker-container-oneapi].
 
@@ -292,8 +291,8 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [computecpp-getting-started]: https://developer.codeplay.com/products/computecpp/ce/guides/getting-started?
 [dpcpp-getting-started]: https://software.intel.com/content/www/us/en/develop/articles/installation-guide-for-intel-oneapi-toolkits.html
 [intel-devcloud]: https://intelsoftwaresites.secure.force.com/devcloud/oneapi
-[docker-container-oneapi] https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-intel-oneapi-base-linux/top/using-containers.html
-[oneAPI-system-requirements] https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-base-toolkit-system-requirements.html
+[docker-container-oneapi]: https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-intel-oneapi-base-linux/top/using-containers.html
+[oneAPI-system-requirements]: https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-base-toolkit-system-requirements.html
 
 [hipsycl-repositories]: https://github.com/illuhad/hipSYCL#repositories
 [hipsycl-repositories-detail]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories
