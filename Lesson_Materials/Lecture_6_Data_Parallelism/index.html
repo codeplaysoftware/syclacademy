@@ -210,7 +210,7 @@ parallel_for(calc, in, out, 1024);
 					<div class="container">
 						<div class="col">
 							<code><pre>
-cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;/mark><T>(<mark>range{64, 64}</mark>, 
+cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>range{64, 64}</mark>, 
                           [=](id&lt;2&gt; idx){
   // SYCL kernel function is executed 
   // on a range of work-items
@@ -234,7 +234,7 @@ cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;/mark><T>(<mark>range{64, 64}</mar
 					<div class="container">
 						<div class="col">
 							<code><pre>
-cgh.parallel_for<&lt;my_kernel&gt;/mark><T>(range{64, 64}, 
+cgh.parallel_for&lt;my_kernel&gt;(range{64, 64}, 
                           [=](<mark>id&lt;2&gt; idx</mark>){
   // SYCL kernel function is executed 
   // on a range of work-items
@@ -248,6 +248,47 @@ cgh.parallel_for<&lt;my_kernel&gt;/mark><T>(range{64, 64},
 					  an `id`.
 					  * This represents the current work-item being executed and
 					  it's position within the iteration space.
+					</div>
+				</section>
+								<!--Slide 12-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Expressing parallelism
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
+  [=](<mark>id&lt1&gt idx</mark>){
+    /* kernel function code */
+});
+							</code></pre>
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
+  [=](<mark>item&lt1&gt item</mark>){
+    /* kernel function code */
+});
+							</code></pre>
+							<code><pre>
+							
+cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024), 
+  range&lt1&gt(32))</mark>,[=](<mark>nd_item&lt1&gt ndItem</mark>){
+    /* kernel function code */
+});
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Overload taking a **range** object specifies the global range, runtime decides local range
+							* An **id** parameter represents the index within the global range
+							____________________________________________________________________________________________
+							* Overload taking a **range** object specifies the global range, runtime decides local range
+							* An **item** parameter represents the global range and the index within the global range
+							____________________________________________________________________________________________
+							* Overload taking an **nd_range** object specifies the global and local range
+							* An **nd_item** parameter represents the global and local range and index
+						</div>
 					</div>
 				</section>
 				<!--Slide 12-->

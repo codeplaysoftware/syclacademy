@@ -11,7 +11,11 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+#include <CL/sycl.hpp>
+#else
 #include <SYCL/sycl.hpp>
+#endif
 
 class kernel_a_1;
 class kernel_b_1;
@@ -25,7 +29,7 @@ class kernel_d_2;
 class usm_selector : public sycl::device_selector {
  public:
   int operator()(const sycl::device& dev) const {
-    if (dev.get_info<sycl::info::device::usm_device_allocations>()) {
+    if (dev.has(sycl::aspect::usm_device_allocations)) {
       return 1;
     }
     return -1;
@@ -50,14 +54,14 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
 
     auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
     auto bufInB = sycl::buffer{inB, sycl::range{dataSize}};
     auto bufInC = sycl::buffer{inC, sycl::range{dataSize}};
     auto bufOut = sycl::buffer{out, sycl::range{dataSize}};
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto acc = bufInA.get_access<sycl::access::mode::read_write>(cgh);
 
       cgh.parallel_for<kernel_a_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
@@ -65,7 +69,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto accIn = bufInA.get_access<sycl::access::mode::read>(cgh);
       auto accOut = bufInB.get_access<sycl::access::mode::write>(cgh);
 
@@ -74,7 +78,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto accIn = bufInA.get_access<sycl::access::mode::read>(cgh);
       auto accOut = bufInC.get_access<sycl::access::mode::write>(cgh);
 
@@ -83,7 +87,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
       auto accInA = bufInB.get_access<sycl::access::mode::read>(cgh);
       auto accInB = bufInC.get_access<sycl::access::mode::read>(cgh);
       auto accOut = bufOut.get_access<sycl::access::mode::write>(cgh);
@@ -93,7 +97,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    gpuQueue.wait_and_throw();
+    defaultQueue.wait_and_throw();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
@@ -123,6 +127,7 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
 
     auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
 
+#ifdef SYCL_ACADEMY_USE_COMPUTECPP
     auto devicePtrInA = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
     auto devicePtrInB = sycl::experimental::usm_wrapper<float>{
@@ -131,6 +136,12 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
         sycl::malloc_device<float>(dataSize, usmQueue)};
     auto devicePtrOut = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, usmQueue)};
+#else
+    auto devicePtrInA = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrInB = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrInC = sycl::malloc_device<float>(dataSize, usmQueue);
+    auto devicePtrOut = sycl::malloc_device<float>(dataSize, usmQueue);
+#endif
 
     auto e1 = usmQueue.memcpy(devicePtrInA, inA, sizeof(float) * dataSize);
     auto e2 = usmQueue.memcpy(devicePtrInB, inB, sizeof(float) * dataSize);
@@ -161,12 +172,9 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
               devicePtrInB[globalId] + devicePtrInC[globalId];
         });
 
-    usmQueue
-        .submit([&](sycl::handler& cgh) {
-          cgh.depends_on(e7);
-          cgh.memcpy(out, devicePtrOut, sizeof(float) * dataSize);
-        })
-        .wait();
+    auto e8 = usmQueue.memcpy(out, devicePtrOut, sizeof(float) * dataSize, e7);
+
+    e8.wait();
 
     sycl::free(devicePtrInA, usmQueue);
     sycl::free(devicePtrInB, usmQueue);

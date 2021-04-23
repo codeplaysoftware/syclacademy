@@ -297,12 +297,12 @@ auto acc = buf.get_access&lt;access::mode::read_write&gt;(cgh);
 							<code><pre>
 gpuQueue.submit([&](handler &cgh){
   auto in = bufA.get_access&lt;<mark>access::mode::read</mark>&gt;(cgh);
-  auto out = bufO.get_access&lt;<mark>access::mode::write</mark>&gt;(cgh);
+  auto out = bufA.get_access&lt;<mark>access::mode::write</mark>&gt;(cgh);
 });
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>
-							* Here **in** and **out** both point to bufI but one is access::mode::read and one is access::mode::write.
+							* Here **in** and **out** both point to bufA but one is access::mode::read and one is access::mode::write.
 							* So the SYCL runtime will treat them both as `access::mode::read_write`.
 							* Both will point to a single allocation of global memory on the device(s).
 							* The runtime will resolve the data dependency into `access::mode::read_write`.
@@ -320,7 +320,7 @@ gpuQueue.submit([&](handler &cgh){
   auto inA = buf.get_access&ltaccess::mode::read&gt(cgh);
   auto inB = buf.get_access&ltaccess::mode::read&gt(cgh);
   auto inO = buf.get_access&ltaccess::mode::write&gt(cgh);
-  cgh.single_task&lt;add&gt;([=](){
+  cgh.single_task&lt;add&gt;([=]{
     <mark>out[0] = inA[0] + inB[0];</mark>
   }); 
 });

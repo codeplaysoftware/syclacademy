@@ -11,7 +11,11 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+#include <CL/sycl.hpp>
+#else
 #include <SYCL/sycl.hpp>
+#endif
 
 class scalar_add;
 
@@ -31,7 +35,7 @@ TEST_CASE("scalar_add", "scalar_add_solution") {
           auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
           auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
 
-          cgh.single_task<scalar_add>([=]() { accR[0] = accA[0] + accB[0]; });
+          cgh.single_task<scalar_add>([=] { accR[0] = accA[0] + accB[0]; });
         })
         .wait();
   }
