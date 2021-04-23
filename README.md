@@ -87,7 +87,7 @@ all of the exercises.
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
 | ComputeCpp | Windows 10 Visual Studio 2019 (64bit) <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.0.0 |
-| DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA) | 2021.1-beta05	|
+| DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux* 8, CentOS* 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA) | 2021.2	|
 | hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)* <br> Nvidia GPU (CUDA) | Latest master |
 
 \* See [here][rocm-gpus] for the official list of GPUs supported by AMD for
@@ -109,7 +109,9 @@ and follow the [getting started instructions][computecpp-getting-started].
 To set up DPC++ follow the
 [getting started instructions][dpcpp-getting-started].
 
-If you are using the Intel DevCloud then the latest version of DPC++ will
+You can also use a [Docker* image of oneAPI][docker-container-oneapi].
+
+If you are using the Intel DevCloud [intel-devcloud] then the latest version of DPC++ will
 already be installed and available in the path.
 
 #### Installing hipSYCL
@@ -195,27 +197,25 @@ use the DPC++ compiler directly.
 First you have to ensure that your environment is configured to use DPC++ (note
 if you are using the Intel DevCloud then you don't need to do this step).
 
-On Linux simply call the `setvars.sh` which when is available in
-`/opt/intel/inteloneapi` when installed as root or sudo and
-`~/intel/inteloneapi/` otherwise.
+On Linux simply call the `setvars.sh` which is available in `/opt/intel/oneapi` 
+for sudo or root users and ~/intel/oneapi/ when installed as a normal user.
 
-`source /opt/intel/inteloneapi/setvars.sh`
+For root or sudo installations:
+`source /opt/intel/oneapi/setvars.sh`
 
-or
-
-`source ~/intel/inteloneapi/setvars.sh`
+For normal user installations:
+`source ~/intel/oneapi/setvars.sh`
 
 On Windows the script is located in  `<dpc++_install_root>\setvars.bat`
 
-Where `<dpc++_install_root>` is wherever the `inteloneapi` directory is
-installed.
+Where `<dpc++_install_root>` is wherever the `oneAPI` directory is installed.
 
 Once that's done you can invoke the DPC++ compiler as follows:
 
 `dpcpp -I<syclacademy_root>/External/Catch2/single_include -o a.out source.cpp`
 
 Where `<syclacademy_root>` is the path to the root directory of where you cloned
-this repository.
+this repository. Note that on Windows you need to add the option /EHsc to avoid exception handling error. 
 
 ## Online Interactive Tutorial
 
@@ -290,7 +290,10 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
 [computecpp-download]: https://developer.codeplay.com
 [computecpp-getting-started]: https://developer.codeplay.com/products/computecpp/ce/guides/getting-started?
-[dpcpp-getting-started]: https://software.intel.com/en-us/articles/how-to-install-oneapi-products-and-run-data-parallel-cpp-code-samples
+[dpcpp-getting-started]: https://software.intel.com/content/www/us/en/develop/articles/installation-guide-for-intel-oneapi-toolkits.html
+[intel-devcloud]: https://intelsoftwaresites.secure.force.com/devcloud/oneapi
+[docker-container-oneapi] https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-intel-oneapi-base-linux/top/using-containers.html
+[oneAPI-system-requirements] https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-base-toolkit-system-requirements.html
 
 [hipsycl-repositories]: https://github.com/illuhad/hipSYCL#repositories
 [hipsycl-repositories-detail]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories
