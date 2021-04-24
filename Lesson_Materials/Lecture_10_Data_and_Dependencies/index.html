@@ -146,24 +146,24 @@
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-buf = sycl::buffer(data, sycl::range{1024});
+sycl::buffer buf {data, sycl::range{1024}};
 
-gpuQueue.submit([&](sycl::handler &cgh){
-  auto acc = buf.get_access(cgh);
-      
+gpuQueue.submit([&](sycl::handler &cgh) {
+  sycl::accessor acc {buf, cgh};
+
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
+    [=](sycl::id&lt;1&gt; idx) {
+      acc[idx] = /* some computation */
+    });
 });
 
-gpuQueue.submit([&](sycl::handler &cgh){
+gpuQueue.submit([&](sycl::handler &cgh) {
   auto acc = buf.get_access(cgh);
-		
+
   cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
+    [=](sycl::id&lt;1&gt; idx) {
+      acc[idx] = /* some computation */
+    });
 });
 
 gpuQueue.wait();
@@ -184,24 +184,24 @@ gpuQueue.wait();
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-<mark>buf = sycl::buffer(data, sycl::range{1024});</mark>
+<mark>sycl::buffer buf {data, sycl::range{1024}};</mark>
 
-gpuQueue.submit([&](sycl::handler &cgh){
-  auto acc = buf.get_access(cgh);
-      
+gpuQueue.submit([&](sycl::handler &cgh) {
+  sycl::accessor acc {buf, cgh};
+
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
+    [=](sycl::id&lt;1&gt; idx) {
+      acc[idx] = /* some computation */
+    });
 });
 
-gpuQueue.submit([&](sycl::handler &cgh){
+gpuQueue.submit([&](sycl::handler &cgh) {
   auto acc = buf.get_access(cgh);
-		
+
   cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
+    [=](sycl::id&lt;1&gt; idx) {
+      acc[idx] = /* some computation */
+    });
 });
 
 gpuQueue.wait();
@@ -223,24 +223,24 @@ gpuQueue.wait();
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-buf = sycl::buffer(data, sycl::range{1024});
+sycl::buffer buf {data, sycl::range{1024}};
 
-gpuQueue.submit([&](sycl::handler &cgh){
-  <mark>auto acc = buf.get_access(cgh);</mark>
-	  
+gpuQueue.submit([&](sycl::handler &cgh) {
+  <mark>sycl::accessor acc {buf, cgh};</mark>
+
   cgh.parallel_for&lt;my_kernel&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
+    [=](sycl::id&lt;1&gt; idx) {
+      acc[idx] = /* some computation */
+    });
 });
 
-gpuQueue.submit([&](sycl::handler &cgh){
+gpuQueue.submit([&](sycl::handler &cgh) {
   <mark>auto acc = buf.get_access(cgh);</mark>
-		
+
   cgh.parallel_for&lt;my_kernel&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
+    [=](sycl::id&lt;1&gt; idx) {
+      acc[idx] = /* some computation */
+    });
 });
 
 gpuQueue.wait();
@@ -263,22 +263,22 @@ gpuQueue.wait();
 							<code class="code-100pc"><pre>
 buf = sycl::buffer(data, sycl::range{1024});
 
-gpuQueue.submit([&](sycl::handler &cgh){
-  auto acc = buf.get_access(<mark>cgh</mark>);
-	  
+gpuQueue.submit([&](sycl::handler &cgh) {
+  sycl::accessor acc {buf, <mark>cgh</mark>};
+
   cgh.parallel_for&lt;my_kernel&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
+    [=](sycl::id&lt;1&gt; idx) {
+      acc[idx] = /* some computation */
+    });
 });
 
-gpuQueue.submit([&](sycl::handler &cgh){
+gpuQueue.submit([&](sycl::handler &cgh) {
   auto acc = buf.get_access(<mark>cgh</mark>);
-		
+
   cgh.parallel_for&lt;my_kernel&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
+    [=](sycl::id&lt;1&gt; idx) {
+      acc[idx] = /* some computation */
+    });
 });
 
 gpuQueue.wait();
@@ -300,18 +300,18 @@ gpuQueue.wait();
 							<code class="code-100pc"><pre>
 auto devicePtr   = usm_wrapper&lt;int&gt;(
   malloc_device&lt;int&gt;(1024, gpuQueue));
-  
+
 auto e1 = gpuQueue.memcpy(devicePtr, data, sizeof(int));
-  
+
 auto e2 = gpuQueue.parallel_for&lt;kernel_a&gt;(
-  sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx){
+  sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx) {
     devicePtr[idx] = /* some computation */
-});
+  });
 
 auto e3 = gpuQueue.parallel_for&lt;kernel_b&gt;(
-  sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx){
+  sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx) {
     devicePtr[idx] = /* some computation */
-});
+  });
 
 auto e4 = gpuQueue.memcpy(data, devicePtr, sizeof(int),
   e3);
@@ -337,18 +337,18 @@ e4.wait();
 							<code class="code-100pc"><pre>
 auto devicePtr   = usm_wrapper&lt;int&gt;(
   malloc_device&lt;int&gt;(1024, gpuQueue));
-  
+
 <mark>auto e1</mark> = gpuQueue.memcpy(devicePtr, data, sizeof(int));
-  
+
 <mark>auto e2</mark> = gpuQueue.parallel_for&lt;kernel_a&gt;(
-  sycl::range{1024}, <mark>e1</mark>, [=](sycl::id&lt;1&gt; idx){
+  sycl::range{1024}, <mark>e1</mark>, [=](sycl::id&lt;1&gt; idx) {
     devicePtr[idx] = /* some computation */
-});
+  });
 
 <mark>auto e3</mark> = gpuQueue.parallel_for&lt;kernel_b&gt;(
-  sycl::range{1024}, <mark>e2</mark>, [=](sycl::id&lt;1&gt; idx){
+  sycl::range{1024}, <mark>e2</mark>, [=](sycl::id&lt;1&gt; idx) {
     devicePtr[idx] = /* some computation */
-});
+  });
 
 <mark>auto e4</mark> = gpuQueue.memcpy(data, devicePtr, sizeof(int),
   <mark>e3</mark>);
@@ -372,18 +372,18 @@ auto devicePtr   = usm_wrapper&lt;int&gt;(
 							<code class="code-100pc"><pre>
 auto devicePtr   = usm_wrapper&lt;int&gt;(
   malloc_device&lt;int&gt;(1024, gpuQueue));
-  
+
 <mark>auto e1 = gpuQueue.memcpy(devicePtr, data, sizeof(int));</mark>
-  
+
 auto e2 = gpuQueue.parallel_for&lt;kernel_a&gt;(
-  sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx){
+  sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx) {
     devicePtr[idx] = /* some computation */
-});
+  });
 
 auto e3 = gpuQueue.parallel_for&lt;kernel_b&gt;(
-  sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx){
+  sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx) {
     devicePtr[idx] = /* some computation */
-});
+  });
 
 auto e4 = gpuQueue.memcpy(data, devicePtr, sizeof(int),
   e3);
@@ -424,22 +424,22 @@ e4.wait();
 bufA = sycl::buffer(dataA, sycl::range{1024});
 bufB = sycl::buffer(dataB, sycl::range{1024}); 
 
-gpuQueue.submit([&](sycl::handler &cgh){
+gpuQueue.submit([&](sycl::handler &cgh) {
   <mark>auto accA = bufA.get_access(cgh);</mark>
-      
+
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
+    [=](sycl::id&lt;1&gt; idx) {
       accB[idx] = /* some computation */
-  });
+    });
 });
 
-gpuQueue.submit([&](sycl::handler &cgh){
+gpuQueue.submit([&](sycl::handler &cgh) {
   <mark>auto accB = bufB.get_access(cgh);</mark>
-  
+
   cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
+    [=](sycl::id&lt;1&gt; idx) {
       accB[idx] = /* some computation */
-  });
+    });
 });
 
 gpuQueue.wait();
@@ -466,10 +466,10 @@ auto devicePtrB = usm_wrapper&lt;int&gt;(malloc_device&lt;int&gt;(1024, gpuQueue
 <mark>auto e1</mark> = gpuQueue.memcpy(devicePtrA, dataA, sizeof(int));
 auto e2 = gpuQueue.memcpy(devicePtrB, dataB, sizeof(int));
   
-<mark>auto e3</mark> = gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024}, <mark>e1</mark>, [=](sycl::id&lt;1&gt; idx){
+<mark>auto e3</mark> = gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024}, <mark>e1</mark>, [=](sycl::id&lt;1&gt; idx) {
   devicePtr[idx] = /* some computation */ });
 
-auto e4 = gpuQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx){
+auto e4 = gpuQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx) {
   devicePtr[idx] = /* some computation */ });
 
 <mark>auto e5</mark> = gpuQueue.memcpy(dataA), devicePtrA, sizeof(int), <mark>e3</mark>);
@@ -497,10 +497,12 @@ auto devicePtrB = usm_wrapper&lt;int&gt;(malloc_device&lt;int&gt;(1024, gpuQueue
 auto e1 = gpuQueue.memcpy(devicePtrA, dataA, sizeof(int));
 <mark>auto e2</mark> = gpuQueue.memcpy(devicePtrB, dataB, sizeof(int));
   
-auto e3 = gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx){
+auto e3 = gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx) {
   devicePtr[idx] = /* some computation */ });
 
-<mark>auto e4</mark> = gpuQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024}, <mark>e2</mark>, [=](sycl::id&lt;1&gt; idx){
+<mark>auto e4</mark> =
+  gpuQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024}, <mark>e2</mark>,
+  [=](sycl::id&lt;1&gt; idx) {
   devicePtr[idx] = /* some computation */ });
 
 auto e5 = gpuQueue.memcpy(dataA), devicePtrA, sizeof(int), e3);
