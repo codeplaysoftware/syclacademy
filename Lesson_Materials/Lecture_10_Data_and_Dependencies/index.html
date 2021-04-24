@@ -298,8 +298,8 @@ gpuQueue.wait();
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, gpuQueue));
+auto devicePtr =
+  sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
 
 auto e1 = gpuQueue.memcpy(devicePtr, data, sizeof(int));
 
@@ -313,8 +313,8 @@ auto e3 = gpuQueue.parallel_for&lt;kernel_b&gt;(
     devicePtr[idx] = /* some computation */
   });
 
-auto e4 = gpuQueue.memcpy(data, devicePtr, sizeof(int),
-  e3);
+auto e4 = gpuQueue.memcpy(data, devicePtr,
+                          sizeof(int), e3);
 
 e4.wait();
 							</code></pre>
@@ -335,8 +335,8 @@ e4.wait();
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, gpuQueue));
+auto devicePtr =
+  sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
 
 <mark>auto e1</mark> = gpuQueue.memcpy(devicePtr, data, sizeof(int));
 
@@ -350,8 +350,8 @@ auto devicePtr   = usm_wrapper&lt;int&gt;(
     devicePtr[idx] = /* some computation */
   });
 
-<mark>auto e4</mark> = gpuQueue.memcpy(data, devicePtr, sizeof(int),
-  <mark>e3</mark>);
+<mark>auto e4</mark> = gpuQueue.memcpy(data, devicePtr,
+                          sizeof(int), <mark>e3</mark>);
 
 <mark>e4.wait();</mark>
 							</code></pre>
@@ -370,8 +370,8 @@ auto devicePtr   = usm_wrapper&lt;int&gt;(
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, gpuQueue));
+auto devicePtr =
+  sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
 
 <mark>auto e1 = gpuQueue.memcpy(devicePtr, data, sizeof(int));</mark>
 
@@ -385,8 +385,8 @@ auto e3 = gpuQueue.parallel_for&lt;kernel_b&gt;(
     devicePtr[idx] = /* some computation */
   });
 
-auto e4 = gpuQueue.memcpy(data, devicePtr, sizeof(int),
-  e3);
+auto e4 = gpuQueue.memcpy(data, devicePtr,
+                          sizeof(int), e3);
 
 e4.wait();
 							</code></pre>
@@ -421,8 +421,8 @@ e4.wait();
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-bufA = sycl::buffer(dataA, sycl::range{1024});
-bufB = sycl::buffer(dataB, sycl::range{1024}); 
+sycl::buffer bufA {dataA, sycl::range{1024}};
+sycl::buffer bufB {dataB, sycl::range{1024}};
 
 gpuQueue.submit([&](sycl::handler &cgh) {
   <mark>auto accA = bufA.get_access(cgh);</mark>
@@ -460,12 +460,12 @@ gpuQueue.wait();
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-auto devicePtrA = usm_wrapper&lt;int&gt;(malloc_device&lt;int&gt;(1024, gpuQueue));
-auto devicePtrB = usm_wrapper&lt;int&gt;(malloc_device&lt;int&gt;(1024, gpuQueue));
-  
+auto devicePtrA = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
+auto devicePtrB = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
+
 <mark>auto e1</mark> = gpuQueue.memcpy(devicePtrA, dataA, sizeof(int));
 auto e2 = gpuQueue.memcpy(devicePtrB, dataB, sizeof(int));
-  
+
 <mark>auto e3</mark> = gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024}, <mark>e1</mark>, [=](sycl::id&lt;1&gt; idx) {
   devicePtr[idx] = /* some computation */ });
 
@@ -491,12 +491,12 @@ auto e6 = gpuQueue.memcpy(dataB, devicePtrB, sizeof(int), e4);
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-auto devicePtrA = usm_wrapper&lt;int&gt;(malloc_device&lt;int&gt;(1024, gpuQueue));
-auto devicePtrB = usm_wrapper&lt;int&gt;(malloc_device&lt;int&gt;(1024, gpuQueue));
-  
+auto devicePtrA = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
+auto devicePtrB = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
+
 auto e1 = gpuQueue.memcpy(devicePtrA, dataA, sizeof(int));
 <mark>auto e2</mark> = gpuQueue.memcpy(devicePtrB, dataB, sizeof(int));
-  
+
 auto e3 = gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx) {
   devicePtr[idx] = /* some computation */ });
 
