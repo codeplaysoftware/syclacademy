@@ -73,7 +73,8 @@ endif()
 # hipSYCL setup
 
 if (SYCL_ACADEMY_USE_HIPSYCL)
-  find_package(hipSYCL CONFIG REQUIRED PATHS ${SYCL_ACADEMY_INSTALL_ROOT}/lib/cmake)
+  set(hipSYCL_DIR ${SYCL_ACADEMY_INSTALL_ROOT}/lib/cmake/hipSYCL)
+  find_package(hipSYCL CONFIG REQUIRED PATHS)
 endif()
 
 # Exercises

@@ -88,7 +88,7 @@
 						* In SYCL there are two models for managing data:
 						  * The buffer/accessor model.
 						  * The USM model.
-						* Which model you choose can have affect how you enqueue kernel functions.
+						* Which model you choose can have an effect on how you enqueue kernel functions.
 						* For now we are going to focus on the buffer/accessor model.
 					</div>
 				</section>
@@ -207,7 +207,8 @@ gpuQueue.submit([&](handler &cgh){
 					</div>
 					<div class="container" data-markdown>
 						* Once `submit` has created a command group it will submit it to the scheduler.
-						* The scheduler will then execute the commands on the target device once any dependencies and requirements are satisfied.
+						* The scheduler will then execute the commands on the target device
+							once all dependencies and requirements are satisfied.
 					</div>
 				</section>
 				<!--Slide 11-->
@@ -228,7 +229,7 @@ gpuQueue.submit([&](handler &cgh){
 				<!--Slide 12-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Enqueuing a SYCL Kernel Functions
+						#### Enqueuing SYCL Kernel Functions
 					</div>
 					<div class="container">
 						<div class="col">
@@ -275,9 +276,6 @@ gpuQueue.submit([&](handler &cgh){
 				</section>
 				<!--Slide 14-->
 				<section>
-					<div class="hbox" data-markdown>
-						#### Enqueuing a SYCL Kernel Functions
-					</div>
 					<div class="container">
 						<div class="col">
 							<code><pre>
@@ -300,9 +298,6 @@ gpuQueue.submit([&](handler &cgh){
 				</section>
 				<!--Slide 15-->
 				<section>
-					<div class="hbox" data-markdown>
-						#### Enqueuing a SYCL Kernel Functions
-					</div>
 					<div class="container">
 						<div class="col">
 							<code><pre>
@@ -319,6 +314,8 @@ gpuQueue.submit([&](handler &cgh){
 						<div class="col" data-markdown>
 							* The template parameter passed to `single_task` is used to name the kernel function.
 							* This is necessary when defining kernel functions with lambdas to allow the host and device compilers to communicate.
+							* SYCL 2020 allows kernel lambdas to be unnamed,
+								but not all implementations support that yet.
 						</div>
 					</div>
 				</section>
@@ -385,8 +382,8 @@ struct my_kernel {
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* As well as defining SYCL kernels using lambda expressions.
-							* You can also define a SYCL kernel using a regular C++ function object
+							* As well as defining SYCL kernels using lambda expressions,
+								You can also define a SYCL kernel using a regular C++ function object.
 						</div>
 					</div>
 				</section>
@@ -466,7 +463,7 @@ gpuQueue.submit([&](handler &cgh){
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* Here we construct a `stream` in our command group function with a buffer size of `1024` and a work-item size fo `128`.
+							* Here we construct a `stream` in our command group function with a buffer size of `1024` and a work-item size of `128`.
 							* This means that the total text that the stream can receive is 1024 bytes.
 						</div>
 					</div>

@@ -164,10 +164,10 @@
 							![SYCL](./sycl_targets.png "SYCL-Targets")
 						</div>
 						<div class="col" data-markdown>
-							* SYCL can target any device supported by its back-end
+							* SYCL can target any device supported by its backend
 							* SYCL can target a number of different backends
 							
-							While the current specification is limited to OpenCL, some implementations are already supporting other non-OpenCL back-ends
+							SYCL has been designed to be implemented on top of a variety of backends. Current implementations support backends such as OpenCL, CUDA, HIP, OpenMP and others.
 						</div>
 					</div>
 					<aside class="notes">
@@ -191,8 +191,8 @@
 					<div class="hbox" data-markdown>
 						#### SYCL implementations
 					</div>
-					<div class="container" data-markdown>
-						![SYCL Implementations](https://raw.githubusercontent.com/illuhad/hipSYCL/master/doc/img/sycl-targets.png "SYCL-Implementations")
+					<div class="container" data-markdown style="transform: scale(0.5); height: 600px;">
+						![SYCL Implementations](https://raw.githubusercontent.com/illuhad/hipSYCL/develop/doc/img/sycl-targets.png "SYCL-Implementations")
 						Image referenced from the hipSYCL project (https://github.com/illuhad/hipSYCL)
 					</div>
 				</section>
@@ -254,7 +254,7 @@
 						</div>
 						<div class="col" data-markdown>
 							* The back-end interface is where the SYCL runtime calls down into a back-end in order to execute on a particular device  
-							* The standard back-end is OpenCL but some implementations support other interfaces
+							* Many implementations provide OpenCL backends, but some provide additional or different backends.
 						</div>
 					</div>
 				</section>

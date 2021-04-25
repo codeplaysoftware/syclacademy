@@ -11,7 +11,11 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+#include <CL/sycl.hpp>
+#else
 #include <SYCL/sycl.hpp>
+#endif
 
 class scalar_add;
 
@@ -34,9 +38,9 @@ TEST_CASE("handling_errors", "handling_errors_source") {
 
       defaultQueue
           .submit([&](sycl::handler& cgh) {
-            auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-            auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-            auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+            auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+            auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+            auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
             cgh.single_task<scalar_add>([=]() { accR[0] = accA[0] + accB[0]; });
           })
