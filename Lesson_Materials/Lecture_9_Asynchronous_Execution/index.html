@@ -114,7 +114,7 @@
 buf = sycl::buffer(data, sycl::range{1024});
 
 gpuQueue.submit([&](sycl::handler &cgh){
-  auto acc = buf.get_access(cgh);
+  auto acc = sycl::accessor{buf, cgh};
       
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
@@ -141,7 +141,7 @@ gpuQueue.submit([&](sycl::handler &cgh){
 buf = sycl::buffer(data, sycl::range{1024});
 
 gpuQueue.submit([&](sycl::handler &cgh){
-  auto acc = buf.get_access(cgh);
+  auto acc = sycl::accessor{buf, cgh};
       
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
@@ -259,7 +259,7 @@ gpuQueue.memcpy(data, devicePtr, sizeof(int));
 buf = sycl::buffer(data, sycl::range{1024});
 
 gpuQueue.submit([&](sycl::handler &cgh){
-  auto acc = buf.get_access(cgh);
+  auto acc = sycl::accessor{buf, cgh};
 									  
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
@@ -294,7 +294,7 @@ gpuQueue.submit([&](sycl::handler &cgh){
   buf = sycl::buffer(data, sycl::range{1024});
 
   gpuQueue.submit([&](sycl::handler &cgh){
-    auto acc = buf.get_access(cgh);
+    auto acc = sycl::accessor{buf, cgh};
 									  
     cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
       [=](sycl::id&lt;1&gt; idx){
