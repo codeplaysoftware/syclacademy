@@ -127,13 +127,7 @@ already be installed and available in the path.
 
 #### Installing hipSYCL
 
-You will need a hipSYCL build from April 21st 2021 or newer. The easiest way to
-install a recent distribution of hipSYCL is to use the
-[daily package repositories][hipsycl-repositories-detail]. Binary packages are
-provided for Ubuntu 18.04, CentOS 7 and Arch Linux. See
-[here][hipsycl-repositories] for an explanation of the packages that you need.
-
-Of course, you can also build hipSYCL [from source manually][hipsycl-building].
+You will need a hipSYCL build from April 21st 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install hipSYCL.
 
 ### Pre-requisites
 
@@ -330,11 +324,7 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [docker-container-oneapi]: https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-intel-oneapi-base-linux/top/using-containers.html
 [oneAPI-system-requirements]: https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-base-toolkit-system-requirements.html
 
-[hipsycl-repositories]: https://github.com/illuhad/hipSYCL#repositories
-[hipsycl-repositories-detail]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories
-[hipsycl-download]: https://github.com/illuhad/hipSYCL/blob/master/install/scripts/README.md#installing-from-repositories
-[hipsycl-getting-started]: https://github.com/illuhad/hipSYCL#building-and-installing-hipsycl
-[hipsycl-building]: https://github.com/illuhad/hipSYCL#manual-installation
+[hipsycl-installing]: https://github.com/illuhad/hipSYCL/blob/develop/doc/installing.md
 [rocm-gpus]: https://github.com/RadeonOpenCompute/ROCm#supported-gpus
 [spack]: https://github.com/spack/spack
 
