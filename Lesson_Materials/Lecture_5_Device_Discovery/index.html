@@ -266,7 +266,7 @@ auto chosenDevice = default_selector_v.select_device();
 					</div>
 					<div class="container">
 						<code><pre>
-struct gpu_selector : <mark>public device_selector</mark> {
+struct my_gpu_selector : <mark>public device_selector</mark> {
 
   <mark>int operator()(const device& dev) const override {</mark>
 
@@ -276,6 +276,7 @@ struct gpu_selector : <mark>public device_selector</mark> {
 					</div>
 					<div class="hbox" data-markdown>
 						* A device selector must inherit from the `device_selector` class.
+							* In SYCL 2020 it can be any callable object.
 						* A device selector must have a function call operator which takes a reference to a device.
 					</div>
 				</section>
@@ -286,7 +287,7 @@ struct gpu_selector : <mark>public device_selector</mark> {
 					</div>
 					<div class="container">
 						<code><pre>
-struct gpu_selector : public device_selector {
+struct my_gpu_selector : public device_selector {
 
   int operator()(const device& dev) const override {
     <mark>if (dev.is_gpu()){</mark>
@@ -311,20 +312,20 @@ struct gpu_selector : public device_selector {
 					</div>
 					<div class="container">
 						<code><pre>
-struct gpu_selector : public device_selector {
+struct my_gpu_selector : public device_selector {
 
   int operator()(const device& dev) const override {
     if (dev.is_gpu()){ 
-	  return 1; 
-	} 
-	else { 
-	  return -1; 
-	}
+      return 1; 
+    } 
+    else { 
+      return -1; 
+    }
   }
 };
 
 int main(int argc, char *argv[]) {
-  <mark>auto gpuQueue = queue{gpu_selector_v};</mark>
+  <mark>auto gpuQueue = queue{my_gpu_selector};</mark>
 
 }
 						</code></pre>
