@@ -224,93 +224,123 @@ auto buf = sycl::buffer{&var, sycl::range{1}};
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-auto acc = accessor&lt;float, 1, access::mode::read_write, access::target::global_buffer&gt;(buf, cgh);
+auto acc = accessor{buf, cgh};
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
-						* When creating an `accessor` you have to specify the various template parameters.
-						  * The element type should be the same as the `buffer`.
-						  * The dimensionality should be the same as the
-						  `buffer`.
-						  * The `access::mode` will specify how you wish to
-						  access the data.
-						  * The `access::target` should be `global_buffer`.
-						* When constructing an `accessor` you have to provide
-						  the `buffer` being accessed and the `handler` associated with he command group you are within.
+						* There are many ways to construct an `accessor`.
+						* The `accessor` class supports CTAD so it's not
+						nessesary to specify all of the template arguments.
+						* The most common way to construct an `accessor` is from
+						a `buffer` and a `handler` associated with the command
+						group function you are within.
+						  * The element type and dimensionality are infered from
+						  the `buffer`.
+						  * The `access::target` is defaulted to
+						  `access::target::global_buffer`.
+						  * The `access::mode` is defaulted to
+						  `access::mode::read_write`.
 					</div>
 				</section>
 				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### get_access
+						#### Specifying the access mode
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-auto acc = buf.get_access&lt;access::mode::read_write&gt;(cgh);
+auto readAcc = accessor{bufA, cgh, read_only};
+auto writeAcc = accessor{bufB, cgh, write_only};
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
-						* Alternatively the `buffer` class provides the
-						`get_access` member function as a shortcut.
-						  * This infers the element type and dimensionality
-						  from the `buffer` and assumes the `access::target` is
-						  `global_buffer`.
-						* You just need to specify the `access::mode` and
-						provide the `handler` as before.
-						* `get_access` can be replaced by accessor CTAD
+						* When constructing an `accessor` you will likely also
+						want to specify the `access::mode`
+						* You can do this by passing one of the CTAD tags:
+						  * `read_only` will result in `access::mode::read`.
+						  * `write_only` will result in `access::mode::write`.
 					</div>
 				</section>
 				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Access modes
+						#### Specifying no initialization
 					</div>
 					<div class="container">
-						<div class="col" data-markdown>
-							* A **read** `accessor` instructs the SYCL runtime that the SYCL kernel function will read the data – cannot be written to within a SYCL kernel function.
-							* A **write** `accessor` instructs the SYCL runtime that the SYCL kernel function will modify the data – creating a dependency for future command groups.
-							* A **discard_*** `accessor` instructs the SYCL runtime that the SYCL kernel function does not need the initial values of the data – removing the dependency on previous command groups.
-						</div>
-						<div class="col" data-markdown>
-							![Buffer Accessors](../common-revealjs/images/accessors.png "Buffer Accessors")
-						</div>
+						<code class="code-100pc"><pre>
+auto acc = accessor{buf, cgh, no_init};
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* When constructing an `accessor` you may also want to
+						discard the original data of a `buffer`.
+						* You can do this by passing the `no_init` property.
 					</div>
 				</section>
 				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Access resolution
+						#### Access modes
 					</div>
-					<div class="hbox" data-markdown>
-						* If a command group has accessors to the same buffer with conflicting access modes they are resolved into one:
-						  * read & write => ```read_write```.
-						  * ```read_write``` & ```discard_write``` => ```read_write```.
-						* Within the SYCL kernel function there are still multiple accessors, but they alias to the same memory address.
+					<div class="container" data-markdown>
+						* A **read** `accessor` instructs the SYCL runtime that
+						the SYCL kernel function will read the data – cannot be
+						written to within a SYCL kernel function.
+						* A **write** `accessor` instructs the SYCL runtime that
+						the SYCL kernel function will modify the data – creating
+						a dependency for future command groups.
+						* A **no_init** `accessor` instructs the SYCL runtime
+						that the SYCL kernel function does not need the initial
+						values of the data – removing the dependency on previous
+						command groups.
 					</div>
 				</section>
 				<!--Slide 17-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Access resolution
+						#### Accessor resolution
+					</div>
+					<div class="container" data-markdown>
+						* If a command group has more than one `accessor` to the
+						same `buffer` with conflicting `access::mode` they are
+						resolved into one:
+						  * read & write => read_write.
+						* If a command group has more than one `accessor` to the
+						same `buffer` all must have the `no_init` property for
+						it to apply.
+						* Within the SYCL kernel function there are still
+						multiple `accessor`s, but they alias to the same memory
+						address.
+					</div>
+				</section>
+				<!--Slide 18-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Accessor resolution
 					</div>
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
 gpuQueue.submit([&](handler &cgh){
-  auto in = accessor{bufA, cgh, read_only};
-  auto out = accessor{bufB, cgh, write_only};
+  auto in = accessor{buf, cgh, read_only};
+  auto out = accessor{buf, cgh, write_only};
 });
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>
-							* Here **in** and **out** both point to bufA but one is access::mode::read and one is access::mode::write.
-							* So the SYCL runtime will treat them both as `access::mode::read_write`.
-							* Both will point to a single allocation of global memory on the device(s).
-							* The runtime will resolve the data dependency into `access::mode::read_write`.
+							* Here `in` and `out` both point to `buf` but one is
+							`access::mode::read` and one is
+							`access::mode::write`.
+							* So the SYCL runtime will treat them both as
+							`access::mode::read_write`.
+							* Both will point to a single allocation of global
+							memory on the device(s).
+							* The runtime will resolve the data dependency into
+							`access::mode::read_write`.
 						</div>
 					</div>
 				</section>
-				<!--Slide 18-->
+				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### operator[]
@@ -336,13 +366,13 @@ gpuQueue.submit([&](handler &cgh){
 						  * This operator can take an `id` or a `size_t`.
 					</div>
 				</section>
-				<!--Slide 19-->
+				<!--Slide 20-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Questions
 					</div>
 				</section>
-				<!--Slide 20-->
+				<!--Slide 21-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
