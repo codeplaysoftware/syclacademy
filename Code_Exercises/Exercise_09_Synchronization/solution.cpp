@@ -59,9 +59,9 @@ TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
 
     defaultQueue
         .submit([&](sycl::handler& cgh) {
-          auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-          auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-          auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+          auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+          auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+          auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
           cgh.parallel_for<vector_add_1>(
               sycl::range{dataSize},
@@ -103,9 +103,9 @@ TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
     defaultQueue.submit([&](sycl::handler& cgh) {
-      auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-      auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-      auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+      auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+      auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+      auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
       cgh.parallel_for<vector_add_2>(
           sycl::range{dataSize},
@@ -147,9 +147,9 @@ TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
       auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
       defaultQueue.submit([&](sycl::handler& cgh) {
-        auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-        auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-        auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+        auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+        auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+        auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
         cgh.parallel_for<vector_add_3>(
             sycl::range{dataSize},
@@ -324,9 +324,9 @@ TEST_CASE("host_accessor", "synchronization_solution") {
       auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
       defaultQueue.submit([&](sycl::handler& cgh) {
-        auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-        auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-        auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+        auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+        auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+        auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
         cgh.parallel_for<vector_add_6>(
             sycl::range{dataSize},
