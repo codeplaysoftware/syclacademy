@@ -105,12 +105,12 @@ int main() {
     gpuQueue.submit([&](handler &cgh) {
       auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufR, cgh, write_only};
+      auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
-  }).wait();
+    }).wait();
 }
 						</code></pre>
 					</div>
@@ -139,9 +139,9 @@ int main() {
     gpuQueue.submit([&](handler &cgh) {
       auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufR, cgh, write_only};
+      auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -173,9 +173,9 @@ int main() {
     gpuQueue.submit([&](handler &cgh) {
       auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufR, cgh, write_only};
+      auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -213,9 +213,9 @@ int main() {
     gpuQueue.submit([&](handler &cgh) {
       auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufR, cgh, write_only};
+      auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -348,13 +348,18 @@ int main() {
 						  * This device executes native C++ code but is guaranteed to emulate the SYCL execution and memory model
 						* This means you can debug a SYCL kernel function by switching to the host device and using a standard C++ debugger
 						  * For example gdb
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
 						* SYCL 2020 only guarantees that a device will always be available,
 							and users can query the `host_debuggable` device aspect
 							to check whether they can use the same functionality
 							as the SYCL 1.2.1 host device
 					</div>
 				</section>
-				<!--Slide 16-->
+				<!--Slide 17-->
 				<section>
 					<div class="hbox">
 						<code class="code-60pc"><pre>
@@ -372,9 +377,9 @@ int main() {
     gpuQueue.submit([&](handler &cgh) {
       auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufR, cgh, write_only};
+      auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(dA.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     });
