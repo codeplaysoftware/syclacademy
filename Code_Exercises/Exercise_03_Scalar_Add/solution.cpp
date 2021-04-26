@@ -30,10 +30,10 @@ TEST_CASE("scalar_add", "scalar_add_solution") {
     auto bufR = sycl::buffer{&r, sycl::range{1}};
 
     defaultQueue
-        .submit([&](sycl::handler& cgh) {
-          auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-          auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-          auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+        .submit([&](sycl::handler &cgh) {
+          auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+          auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+          auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
           cgh.single_task<scalar_add>([=] { accR[0] = accA[0] + accB[0]; });
         })
