@@ -71,7 +71,7 @@
 						#### What is USM?
 					</div>
 					<div class="container" data-markdown>
-						Unified shared memory (USM) provides is an alternative pointer-based data management model to the accessor-buffer model.
+						Unified shared memory (USM) provides an alternative pointer-based data management model to the accessor-buffer model
 					</div>
 					<div class="container" data-markdown>
 						* Unified virtual address space
@@ -90,9 +90,9 @@
 							![SYCL](./unified_virtual_address_space.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
-							* USM memory allocations return pointers which are consistent between the host application and kernel functions on a device.
-							* Representing data between the host and device(s) does not require creating accessors.
-							* Pointer-based API more familiar to C or C++ programmers.
+							* USM memory allocations return pointers which are consistent between the host application and kernel functions on a device
+							* Representing data between the host and device(s) does not require creating accessors
+							* Pointer-based API more familiar to C or C++ programmers
 						</div>
 					</div>
 				</section>
@@ -106,9 +106,9 @@
 							![SYCL](./pointer_based_structures.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
-							* Data is moved between the host and device(s) in a span of memory in bytes rather than a buffer of a specific type.
-							* Pointers within that region of memory can freely point to any other address in that region.
-							* Easier to port existing C or C++ code to use SYCL.
+							* Data is moved between the host and device(s) in a span of memory in bytes rather than a buffer of a specific type
+							* Pointers within that region of memory can freely point to any other address in that region
+							* Easier to port existing C or C++ code to use SYCL
 						</div>
 					</div>
 				</section>
@@ -122,9 +122,9 @@
 							![SYCL](./explicit_data_movement.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
-							* Memory is allocated and data is moved using explicit routines.
-							* Moving data between the host and device(s) does not require accessors or submitting command groups.
-							* The SYCL runtime will not perform any data dependency analysis, dependencies between commands must be managed manually.
+							* Memory is allocated and data is moved using explicit routines
+							* Moving data between the host and device(s) does not require accessors or submitting command groups
+							* The SYCL runtime will not perform any data dependency analysis, dependencies between commands must be managed manually
 						</div>
 					</div>
 				</section>
@@ -138,8 +138,8 @@
 							![SYCL](./shared_memory.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
-							* Some platforms will support variants of USM where memory allocations share the same memory region between the host and device(s).
-							* No explicit routines are required to move the data between the host and device(s).
+							* Some platforms will support variants of USM where memory allocations share the same memory region between the host and device(s)
+							* No explicit routines are required to move the data between the host and device(s)
 						</div>
 					</div>
 				</section>
@@ -149,12 +149,12 @@
 						#### USM allocation types
 					</div>
 					<div class="container" data-markdown>
-						USM has three different kinds of memory allocation.
+						USM has three different kinds of memory allocation
 					</div>
 					<div class="container" data-markdown>
-						* A **host** allocation is allocated in host memory.
-						* A **device** allocation is allocation in device memory.
-						* A **shared** allocation is allocated in shared memory and can migrate back and forth.
+						* A **host** allocation is allocated in host memory
+						* A **device** allocation is allocation in device memory
+						* A **shared** allocation is allocated in shared memory and can migrate back and forth
 					</div>
 				</section>
 				<!--Slide 9-->
@@ -163,7 +163,7 @@
 						#### USM variants
 					</div>
 					<div class="container" data-markdown>
-						USM has four variants which a platform can support with varying levels of support.
+						USM has four variants which a platform can support with varying levels of support
 					</div>
 					<div class="container" data-markdown>
 						![SYCL](./usm_variants.png "SYCL")
@@ -175,8 +175,8 @@
 						#### Querying for support
 					</div>
 					<div class="container" data-markdown>
-						Each SYCL platform and it's device(s) will support
-						different variants of USM and different kinds of memory allocation.
+						Each SYCL platform and its device(s) will support
+						different variants of USM and different kinds of memory allocation
 					</div>
 				</section>
 				<!--Slide 11-->
@@ -190,15 +190,15 @@
 					</div>
 					<div class="container" data-markdown>
 						* The **buffer/accessor** provides guaranteed
-						consistency and automatically manages dependencies.
+						consistency and automatically manages dependencies
 						  * Recommended when you need to iterate over or
-						  prototype your application.
+						  prototype your application
 						  * Recommended for maximum performance portability
-						  * Provides a lot of information to the SYCL runtime which can perform many optimizations automatically.
+						  * Provides a lot of information to the SYCL runtime which can perform many optimizations automatically
 						* The **USM** model provides a lower-level pointer-based
-						solution with fine grained control.
+						solution with fine grained control
 						  * Recommended when porting existing C++ applications
-						  or using pointer-based structures.
+						  or using pointer-based structures
 						  * User has responsibility for certain aspects relevant for performance (e.g. data transfers or data prefetches)
 					</div>
 				</section>
@@ -217,7 +217,7 @@
 						Code_Exercises/Exercise_7_USM_Selector/source
 					</div>
 					<div class="container" data-markdown>
-						Implement a device selector that chooses a device in your system which supports explicit USM and device allocations.
+						Implement a device selector that chooses a device in your system which supports explicit USM and device allocations
 					</div>
 				</section>
 			</div>
