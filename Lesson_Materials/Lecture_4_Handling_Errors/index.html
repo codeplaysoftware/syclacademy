@@ -98,16 +98,16 @@ class add;
 int main() {
   std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
     queue gpuQueue(gpu_selector{});
-    buffer bufA{dA};
-    buffer bufB{dB};
-    buffer bufO{dO};
+	auto bufA = sycl::buffer{&dA, sycl::range{1}};
+    auto bufB = sycl::buffer{&dB, sycl::range{1}};
+    auto bufO = sycl::buffer{&dO, sycl::range{1}};
 
     gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
-      auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufO, cgh, write_only};
+	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
+      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
+      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -132,16 +132,16 @@ int main() {
   <mark>try {</mark>
     queue gpuQueue(gpu_selector{});
 
-    buffer bufA{dA};
-    buffer bufB{dB};
-    buffer bufO{dO};
+    auto bufA = sycl::buffer{&dA, sycl::range{1}};
+    auto bufB = sycl::buffer{&dB, sycl::range{1}};
+    auto bufO = sycl::buffer{&dO, sycl::range{1}};
 
     gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
-      auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufO, cgh, write_only};
+	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
+      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
+      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -166,16 +166,16 @@ int main() {
   try{
     queue gpuQueue(gpu_selector{}, <mark>async_handler{}</mark>);
 
-    buffer bufA{dA};
-    buffer bufB{dB};
-    buffer bufO{dO};
+    auto bufA = sycl::buffer{&dA, sycl::range{1}};
+    auto bufB = sycl::buffer{&dB, sycl::range{1}};
+    auto bufO = sycl::buffer{&dO, sycl::range{1}};
 
     gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
-      auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufO, cgh, write_only};
+	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
+      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
+      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -206,16 +206,16 @@ int main() {
       for (auto e : eL) { std::rethrow_exception(e); }
     }</mark>);
 
-    buffer bufA{dA};
-    buffer bufB{dB};
-    buffer bufO{dO};
+    auto bufA = sycl::buffer{&dA, sycl::range{1}};
+    auto bufB = sycl::buffer{&dB, sycl::range{1}};
+    auto bufO = sycl::buffer{&dO, sycl::range{1}};
 
     gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
-      auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufO, cgh, write_only};
+	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
+      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
+      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -370,20 +370,20 @@ int main() {
   try{
     queue <mark>hostQueue(aspect_selector&lt;aspect::host_debuggable&gt;()</mark>, async_handler{});
 
-    buffer bufA{dA};
-    buffer bufB{dB};
-    buffer bufO{dO};
+    auto bufA = sycl::buffer{&dA, sycl::range{1}};
+    auto bufB = sycl::buffer{&dB, sycl::range{1}};
+    auto bufO = sycl::buffer{&dO, sycl::range{1}};
 
-    gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
-      auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufO, cgh, write_only};
+    hostQueue.submit([&](handler &cgh) {
+	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
+      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
+      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     });
-    gpuQueue.wait_and_throw();
+    hostQueue.wait_and_throw();
   } catch (...) { /* handle errors */ }
 }
 						</code></pre>

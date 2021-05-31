@@ -314,8 +314,7 @@ gpuQueue.submit([&](handler &cgh){
 						<div class="col" data-markdown>
 							* The template parameter passed to `single_task` is used to name the kernel function.
 							* This is necessary when defining kernel functions with lambdas to allow the host and device compilers to communicate.
-							* SYCL 2020 allows kernel lambdas to be unnamed,
-								but not all implementations support that yet.
+							* SYCL 2020 allows kernel lambdas to be unnamed, but not all implementations support that yet.
 						</div>
 					</div>
 				</section>
@@ -353,6 +352,7 @@ gpuQueue.submit([&](handler &cgh){
 							<code><pre>
 class my_kernel;
 
+queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 
   cgh.single_task&lt;my_kernel&gt;([=]() {
@@ -402,6 +402,7 @@ struct my_kernel {
 };
 							</code></pre>
 							<code><pre>
+queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 								
   cgh.single_task(<mark>my_kernel{}</mark>); 
@@ -452,6 +453,7 @@ stream::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
 							<code><pre>
 class my_kernel;
 
+queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 
   <mark>auto os = sycl::stream(1024, 128, cgh);</mark>
@@ -478,6 +480,7 @@ gpuQueue.submit([&](handler &cgh){
 							<code><pre>
 class my_kernel;
 
+queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 
   auto os = sycl::stream(1024, 128, cgh);

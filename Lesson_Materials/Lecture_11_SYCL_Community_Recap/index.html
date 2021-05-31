@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/iwocl_logo.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## The SYCL Community And Projects
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Easing Migration To SYCL
+					</div>
+					<div class="container">
+						<div class="container" data-markdown>
+						![SYCL](./migration.jpg "Migration")
+						</div>
+						<div class="hbox" data-markdown>
+						*  An existing ecosystem of libraries, frameworks and tools
+						*  Many organizations are actively developing open source projects
+						*  Everyone can benefit from this effort
+						</div>
+					</div>
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Migrating from CUDA
+					</div>
+					<div class="container">
+						<div class="container" data-markdown>
+							![SYCL](./dpcpp_compatibility.png "Compatibility Tool")
+						</div>
+						<div class="hbox" data-markdown>
+							**Semi-automatic porting**
+							
+							*  The DPC++ Compatibility tool can be used to assist in porting code from CUDA to SYCL
+							*  The tool generally does ~90% of the job
+							 
+							**Step by Step Migration**
+							*  DPC++ also provides interoperability with CUDA kernel code
+						</div>
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						#### SYCL Libraries
+					</div>
+					<div class="hbox" data-markdown>
+						A few of the libraries that are being actively developed
+						*  **SLATE** - Linear Algebra for Exascale (DoE)
+						*  **VecMem** - Vectorized data model base (CERN)
+						*  **SYCL-BLAS** - Linear Algebra Operations (Codeplay)
+						*  **oneMKL** - Math libraries (Intel)
+						*  **Cabana** - Particle-based simulations (Argonne National Lab)
+						*  **oneDNN** - Neural network operations (Intel)
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						#### Frameworks Using SYCL
+					</div>
+					<div class="container">
+						<div class="container" data-markdown>
+							![SYCL](./sycl_frameworks_list.png "SYCL Frameworks")
+						</div>
+						<div class="hbox" data-markdown>
+							A few of the frameworks that are most actively being developed
+							*  Kokkos - Programming Model for portable performance (Oak Ridge National Lab)
+							*  Alpaka - Abstraction for Parallel Kernel Acceleration (HZDR)
+							*  TaskFlow - Parallel Task Programming (University of Utah)
+							*  AMREX - Block Structured AMR (LBNL)
+						</div>
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						#### SYCL Benchmarks
+					</div>
+					<div class="hbox" data-markdown>
+						A few of the benchmarks that are most actively being developed
+						*  BabelStream - (University of Bristol)
+						*  SYCL Bench - (University of Salerno, Heidelberg and Innsbruck)
+						*  Direct Programming Benchmarks - (Argonne National Lab)
+						*  Parallel Research Kernels - (Jeff Hammond)
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						#### Performance Portability Research
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./sycl_research.png "SYCL Research")
+						Take a look at https://sycl.tech to find projects, research and other information
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## Learning Recap
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Part 1: Queues, Buffers, Accessors, USM
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+// Submitting work
+class my_kernel
+<mark>gpuQueue.submit(([&](handler &cgh)</mark>{ 
+   cgh.single_task<my_kernel>([=]() { 
+      /* kernel code */ }); 
+}).wait(); 
+
+
+
+// Buffers are used to manage memory for the accelerator device
+auto buf = <mark>sycl::buffer</mark>{&var, sycl::range{1}};
+
+
+// You can also use Unified Shared Memory
+auto devicePtr = <mark>malloc_device<int>(1, myQueue);</mark>
+
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* In SYCL all work is submitted via commands to a queue
+							* Buffers and Accessors, and Unified Shared Memory are used to manage memory for the accelerator device
+						</div>
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Part 2: Errors and Device Selectors
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-90pc"><pre>
+// Set up an asynchronous handler for exceptions
+queue gpuQueue(gpu_selector{}, <mark>async_handler{}</mark>);
+
+…
+
+// Tell the queue to throw asynchronous exceptions
+ gpuQueue.<mark>throw_asynchronous();</mark>
+
+
+
+
+// Buffers are used to manage memory for the accelerator device
+class intel_gpu_selector : public <mark>sycl::device_selector </mark>{
+ public:
+  virtual int operator()(const sycl::device& dev) const {
+    if (dev.get_info<sycl::info::device::device_type>() ==
+        sycl::info::device_type::gpu) {
+      auto vendorName = dev.get_info<sycl::info::device::vendor>();
+      if (std::strstr(vendorName.c_str(), "Intel") != nullptr) {
+        return 1;
+      }
+    }
+    return -1;
+  }
+};
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Asynchronous errors must be dealt with a bit differently to synchronous errors
+							* Device selectors allow us to programmatically decide what accelerator device to choose to run on
+						</div>
+					</div>
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Part 3: Parallel_For and Synchronization
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-90pc"><pre>
+// A kernel using parallel for
+<mark>cgh.parallel_for<my_kernel></mark>(range{64, 64}, [=](id<2> idx){ 
+   // SYCL kernel function is executed 
+   // on a range of work-items 
+}); 
+
+
+
+
+
+// Using wait to synchronize
+gpuQueue.submit([&](sycl::handler &cgh){
+  auto acc = buf.get_access(cgh);
+      
+  cgh.parallel_for<kernel_a>(sycl::range{1024},
+    [=](sycl::id<1> idx){
+    acc[idx] = /* some computation */
+  });
+})<mark>.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* The easiest pattern used to parallelize some code is parallel_for
+							* Commands are submitted asynchronously so synchronization of these commands is needed
+						</div>
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						#### Open Source Materials
+					</div>
+					<div class="hbox" data-markdown>
+						* The materials used for this training are available on GitHub
+						* You can continue to ask questions on Discord
+						* Please complete the survey so we can improve the training
+						
+						https://github.com/codeplaysoftware/syclacademy/tree/iwocl21
+						
+						https://www.surveymonkey.co.uk/r/TB6MHW3
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
