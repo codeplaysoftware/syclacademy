@@ -162,7 +162,7 @@
 					<div class="container">
 						<code class="code-100pc"><pre>
 template &lt;typename dataT, int dimensions&gt;
-buffer;
+sycl::buffer;
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -182,6 +182,7 @@ buffer;
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
+int var = 42;
 auto buf = sycl::buffer{&var, sycl::range{1}};
 						</code></pre>
 					</div>
@@ -224,7 +225,7 @@ auto buf = sycl::buffer{&var, sycl::range{1}};
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-auto acc = accessor{buf, cgh};
+auto acc = sycl::accessor{bufA, cgh};
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -249,8 +250,8 @@ auto acc = accessor{buf, cgh};
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-auto readAcc = accessor{bufA, cgh, read_only};
-auto writeAcc = accessor{bufB, cgh, write_only};
+auto readAcc = sycl::accessor{bufA, cgh, sycl::read_only};
+auto writeAcc = sycl::accessor{bufB, cgh, sycl::write_only};
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -268,7 +269,7 @@ auto writeAcc = accessor{bufB, cgh, write_only};
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-auto acc = accessor{buf, cgh, no_init};
+auto acc = sycl::accessor{buf, cgh, sycl::no_init};
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -322,8 +323,8 @@ auto acc = accessor{buf, cgh, no_init};
 						<div class="col-left-3">
 							<code><pre>
 gpuQueue.submit([&](handler &cgh){
-  auto in = accessor{buf, cgh, read_only};
-  auto out = accessor{buf, cgh, write_only};
+  auto in = sycl::accessor{buf, cgh, sycl::read_only};
+  auto out = sycl::accessor{buf, cgh, sycl::write_only};
 });
 							</code></pre>
 						</div>
@@ -348,9 +349,9 @@ gpuQueue.submit([&](handler &cgh){
 					<div class="container">
 						<code class="code-100pc"><pre>
 gpuQueue.submit([&](handler &cgh){
-  auto inA = accessor{bufA, cgh, read_only};
-  auto inB = accessor{bufB, cgh, read_only};
-  auto inO = accessor{bufO, cgh, write_only};
+  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
+  auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
+  auto inO = sycl::accessor{bufO, cgh, sycl::write_only};
   cgh.single_task&lt;add&gt;([=]{
     <mark>out[0] = inA[0] + inB[0];</mark>
   }); 

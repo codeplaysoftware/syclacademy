@@ -98,14 +98,14 @@ class add;
 int main() {
   std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
     queue gpuQueue(gpu_selector{});
-	auto bufA = sycl::buffer{&dA, sycl::range{1}};
-    auto bufB = sycl::buffer{&dB, sycl::range{1}};
-    auto bufO = sycl::buffer{&dO, sycl::range{1}};
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
-      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
-      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
+      auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufO, cgh, write_only};
 
       cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
@@ -132,14 +132,14 @@ int main() {
   <mark>try {</mark>
     queue gpuQueue(gpu_selector{});
 
-    auto bufA = sycl::buffer{&dA, sycl::range{1}};
-    auto bufB = sycl::buffer{&dB, sycl::range{1}};
-    auto bufO = sycl::buffer{&dO, sycl::range{1}};
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
-      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
-      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
+	  auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufO, cgh, write_only};
 
       cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
@@ -166,14 +166,14 @@ int main() {
   try{
     queue gpuQueue(gpu_selector{}, <mark>async_handler{}</mark>);
 
-    auto bufA = sycl::buffer{&dA, sycl::range{1}};
-    auto bufB = sycl::buffer{&dB, sycl::range{1}};
-    auto bufO = sycl::buffer{&dO, sycl::range{1}};
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
-      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
-      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
+	  auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufO, cgh, write_only};
 
       cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
@@ -206,14 +206,14 @@ int main() {
       for (auto e : eL) { std::rethrow_exception(e); }
     }</mark>);
 
-    auto bufA = sycl::buffer{&dA, sycl::range{1}};
-    auto bufB = sycl::buffer{&dB, sycl::range{1}};
-    auto bufO = sycl::buffer{&dO, sycl::range{1}};
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
-      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
-      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
+	  auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufO, cgh, write_only};
 
       cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
@@ -370,14 +370,14 @@ int main() {
   try{
     queue <mark>hostQueue(aspect_selector&lt;aspect::host_debuggable&gt;()</mark>, async_handler{});
 
-    auto bufA = sycl::buffer{&dA, sycl::range{1}};
-    auto bufB = sycl::buffer{&dB, sycl::range{1}};
-    auto bufO = sycl::buffer{&dO, sycl::range{1}};
+    buffer bufA{dA};
+    buffer bufB{dB};
+    buffer bufO{dO};
 
     hostQueue.submit([&](handler &cgh) {
-	  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
-      auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
-      auto out = sycl::accessor{bufO, cgh, sycl::write_only};
+	  auto inA = accessor{bufA, cgh, read_only};
+      auto inB = accessor{bufB, cgh, read_only};
+      auto out = accessor{bufO, cgh, write_only};
 
       cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
