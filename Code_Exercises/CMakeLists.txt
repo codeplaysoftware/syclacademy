@@ -8,9 +8,13 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# TODO(Gordon): Generalize this to support other implementations
-function(add_sycl_executable_computecpp prefix source)
+function(add_sycl_executable prefix source)
   add_executable("${prefix}_${source}" "${source}.cpp")
+  target_compile_definitions("${prefix}_${source}" PUBLIC
+    -DSYCL_LANGUAGE_VERSION=2020)
+  if(${SYCL_ACADEMY_USE_COMPUTECPP})
+    target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_ACADEMY_USE_COMPUTECPP)
+  endif()
   target_include_directories("${prefix}_${source}" PRIVATE
     ${PROJECT_SOURCE_DIR}/Utilities/include ${PROJECT_SOURCE_DIR}/External/stb)
   target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads)
@@ -30,44 +34,13 @@ function(add_sycl_executable_dpcpp prefix source)
   # Not implemented
 endfunction()
 
-# Note: This is copy-pasted from the ComputeCpp function,
-# we may want to refactor this into a single function.
-function(add_sycl_executable_hipsycl prefix source)
-  add_executable("${prefix}_${source}" "${source}.cpp")
-  target_include_directories("${prefix}_${source}" PRIVATE
-    ${PROJECT_SOURCE_DIR}/Utilities/include ${PROJECT_SOURCE_DIR}/External/stb)
-  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads)
-  target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
-  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON)
-
-  add_sycl_to_target(
-    TARGET "${prefix}_${source}"
-    SOURCES "${source}.cpp"
-  )
-    
-  add_test(${prefix}_${source} ${prefix}_${source})
-endfunction()
-
-function(add_sycl_executable prefix source)
-  if (SYCL_ACADEMY_USE_COMPUTECPP)
-    add_sycl_executable_computecpp(${prefix} ${source})
-  elseif(SYCL_ACADEMY_USE_DPCPP)
-    add_sycl_executable_dpcpp(${prefix} ${source})
-  elseif(SYCL_ACADEMY_USE_HIPSYCL)
-    add_sycl_executable_hipsycl(${prefix} ${source})
-  endif()
-endfunction()
-
-add_subdirectory(Exercise_1_Getting_Started)
-add_subdirectory(Exercise_2_Configuring_a_Queue)
-add_subdirectory(Exercise_3_Hello_World)
-add_subdirectory(Exercise_4_Vector_Add)
-add_subdirectory(Exercise_5_Image_Grayscale)
-add_subdirectory(Exercise_6_Matrix_Transpose)
-add_subdirectory(Exercise_8_Error_Handling)
-
-# Only include USM exercise when using ComputeCpp
-if(SYCL_ACADEMY_USE_COMPUTECPP)
-  add_subdirectory(Exercise_7_Unified_Shared_Memory_Ext)
-endif()
+add_subdirectory(Exercise_01_Compiling_with_SYCL)
+add_subdirectory(Exercise_02_Hello_World)
+add_subdirectory(Exercise_03_Scalar_Add)
+add_subdirectory(Exercise_04_Handling_Errors)
+add_subdirectory(Exercise_05_Device_Selection)
+add_subdirectory(Exercise_06_Vector_Add)
+add_subdirectory(Exercise_07_USM_Selector)
+add_subdirectory(Exercise_08_USM_Vector_Add)
+add_subdirectory(Exercise_09_Synchronization)
+add_subdirectory(Exercise_10_Managing_Dependencies)
