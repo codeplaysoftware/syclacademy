@@ -49,7 +49,6 @@
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
 					<img src="../common-revealjs/images/trademarks.png" />
-					<img src="../common-revealjs/images/iwocl_logo.png" />
 				</div>
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
@@ -107,7 +106,7 @@ int main() {
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -137,11 +136,11 @@ int main() {
     buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
+	  auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -171,11 +170,11 @@ int main() {
     buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
+	  auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -211,11 +210,11 @@ int main() {
     buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
+	  auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -374,16 +373,16 @@ int main() {
     buffer bufB{dB};
     buffer bufO{dO};
 
-    gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
+    hostQueue.submit([&](handler &cgh) {
+	  auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     });
-    gpuQueue.wait_and_throw();
+    hostQueue.wait_and_throw();
   } catch (...) { /* handle errors */ }
 }
 						</code></pre>

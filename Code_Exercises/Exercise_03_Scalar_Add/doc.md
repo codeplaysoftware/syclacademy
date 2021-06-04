@@ -39,7 +39,7 @@ a host accessor, which behaves differently to a regular accessor.
 
 ### 4.) Declare your kernel
 
-Declare a SYCL kernel function using the `parallel_for` command with a range
+Declare a SYCL kernel function using the `single_task` command with a range
 matching the size of the `std::vector`s. The kernel function should use the
 `operator[]` of the `accessor` objects to read from the inputs and write the sum
 to the output.
