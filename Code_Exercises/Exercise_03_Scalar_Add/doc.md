@@ -5,47 +5,39 @@
 ---
 
 In this exercise you will learn how to create `buffer`s to manage data and
-`accessor`s to access teh data within a kernel function.
+`accessor`s to access the data within a kernel function.
 
 ---
 
-### 1.) Allocate your input and output vectors
+### 1.) Allocate your input and output
 
-Allocate memory on the host for your input and output data using `std::vector`s
-and initialize the input with values.
+Allocate memory on the host for your input and output data variables and assign
+values to the inputs.
 
 ### 2.) Construct buffers
 
 In SYCL buffers are used to manage data across the host and device(s).
 
-Construct a buffer to manage your input and output data. The template parameters
-for the the `buffer` class are the type and then the dimensionality. The
-parameters to construct a buffer are a pointer to the host data and a `range`.
-
-Remember the dimensionality of the `range` must match the dimensionality of the
-`buffer`.
+Construct a buffer to manage your input and output data. The parameters to
+construct a buffer are a pointer to the host data and a `1` dimensional `range`
+of `1` to represent a single value. The element type and dimensionality can be
+infered from the pointer and the `range`.
 
 ### 3.) Construct accessors
 
 In SYCL accessors are used to declare data dependencies to a SYCL kernel
 function as well as to access the data within a SYCL kernel function.
 
-Construct an accessor for your input and output buffers. The template parameter
-to `get_access` is the access mode that specifies how you wish to use the data
-managed by the buffer.
-
-Remember to pass the `handler` to `get_access`, if you don't this will construct
-a host accessor, which behaves differently to a regular accessor.
+Construct an accessor for each of the buffers to access the data of each within
+the kernel function. The paramters to constructt an `accessor` are the `buffer`
+and the `handler`.
 
 ### 4.) Declare your kernel
 
-Declare a SYCL kernel function using the `single_task` command with a range
-matching the size of the `std::vector`s. The kernel function should use the
-`operator[]` of the `accessor` objects to read from the inputs and write the sum
-to the output.
-
-Remember the `accessor`'s `operator[]` can take either a `size_t` (when the
-dimensionality is 1) and an `id`.
+Declare a SYCL kernel function using the `single_task` command provide a lambda
+as the kernel function. The kernel function should use the `operator[]` of the
+`accessor` objects to read from the inputs and write the sum to the output. As
+each `accessor` is only accessing a single element you can simply specify `0`.
 
 ### 5.) Try a temporary buffer
 
