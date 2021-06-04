@@ -2,7 +2,7 @@
 
 ![SYCL Academy](sycl_academy.png "SYCL Academy")
 
-This repository provides materials that can be used for teaching SYCL 1.2.1. The
+This repository provides materials that can be used for teaching SYCL. The
 materials are provided using the "Creative Commons Attribution Share Alike 4.0
 International" license.
 
@@ -13,7 +13,7 @@ learning about SYCL below are a list of useful resources:
 
 *  Read a description of SYCL on the [Khronos website SYCL page](https://www.khronos.org/sycl/).
 *  Go to the Khronos website to find [a list of SYCL resources](https://www.khronos.org/sycl/resources).
-*  Check out the [SYCL 1.2.1 reference guide](https://www.khronos.org/files/sycl/sycl-12-reference-card.pdf).
+*  Check out the [SYCL 2020 reference guide](https://www.khronos.org/registry/SYCL/).
 *  Browse SYCL news, blog posts, videos, projects and more on the [sycl.tech community website](https://sycl.tech/)
 *  Get a list of the [available SYCL implementations](https://sycl.tech/#get-sycl)
 
