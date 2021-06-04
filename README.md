@@ -19,11 +19,10 @@ learning about SYCL below are a list of useful resources:
 
 ### How to use the Materials
 
-To use these materials simply clone this repository, ensuring you are on the
-`iwocl21` branch and including submodules.
+To use these materials simply clone this repository including the required submodules.
 
 ```
-git clone --branch iwocl21 --recursive https://github.com/codeplaysoftware/syclacademy.git
+git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
 ```
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
@@ -45,7 +44,7 @@ Pull Request so that they can be reviewed and merged in a timely manner.
 
 ### List of Contributors
 
-Codeplay Software Ltd., Heidelberg University.
+Codeplay Software Ltd., Heidelberg University, Intel and Xilinx.
 
 ## Supporting Organizations
 Abertay University, Universidad de Concepcion, TU Dresden, University of
@@ -61,8 +60,9 @@ each accompanied by a tutorial for getting hands on experience with the subject
 matter.
 
 Each of the lessons are designed to be self contained modules in order to
-support both academic and training style teaching environments. A playlist of
-the video content is [also available][video-playlist]. Though note that these
+support both academic and training style teaching environments. 
+
+A playlist of video content is [also available][video-playlist]. Though note that these
 slides and exercises may have changed since these videos were created so they
 may not match completely.
 
@@ -86,8 +86,8 @@ The exercises can be built for ComputeCpp CE, DPC++ and hipSYCL.
 
 ### Supported Platforms
 
-Below is the supported platforms and devices for each SYCL implementations, see
-this before deciding which SYCL implementation to use.
+Below is a list of the supported platforms and devices for each SYCL implementations, 
+please check this before deciding which SYCL implementation to use.
 Make sure to also install the specified version to ensure that you can build
 all of the exercises.
 
@@ -219,7 +219,7 @@ Once that's done you can invoke the DPC++ compiler as follows:
 Where `<syclacademy_root>` is the path to the root directory of where you cloned
 this repository. Note that on Windows you need to add the option /EHsc to avoid exception handling error. 
 
-### Troubleshooting for ComputeCpp
+### Troubleshooting for ComputeCpp on Windows
 
 If you are using ComputeCpp with a more recent version of Visual Sutdio 2019
 which has a toolset version greater than 14.26 you may encounter compilation
@@ -250,70 +250,7 @@ on the command line as this makes configurating the toolset version easier.
 
 Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/introduction-to-sycl/introduction-to-sycl-2) tutorial introduces the concepts of SYCL. The website also provides the ability to compile and execute SYCL code from your web browser.
 
-## Setting up Computers for SYCL
 
-#### Machine Setup Instructions
-
-ComputeCpp, a SYCL v1.2.1 conformant implementation by Codeplay Software provides setup instructions on [developer.codeplay.com](https://developer.codeplay.com). There is more detailed information about what hardware is supported by ComputeCpp on the [Platform Support](https://developer.codeplay.com/products/computecpp/ce/guides/platform-support) page.
-
-Other SYCL implementations can be found on the SYCL community website [sycl.tech](https://sycl.tech).
-
-#### Setting up a Docker Container for Lab Machines
-
-In order to more easily deploy a SYCL implementation onto a bank of machines in a university lab for example, a Docker container can be used to deploy on these machines. This ensures all the dependencies that are needed are installed on each machine.
-
-An example of how to set up a Docker container:
-
-For Intel CPU or GPU
-* Download the OpenCL Drivers for Intel from the [Intel website](https://software.intel.com/en-us/articles/opencl-drivers)
-* Download the latest ComputeCpp release package from [developer.codeplay.com](https://developer.codeplay.com)
-
-Now create a DockerFile that uses these packages, an example of how this might be done is below. Please note this file is not tested or maintained regularly but shows the elements that need to be installed.
-
-```
-FROM ubuntu:18.04
-
-RUN apt-get update
-RUN apt-get install -y git
-RUN apt-get install -y ninja-build
-RUN apt-get install -y g++
-RUN apt-get install -y python3
-RUN apt-get install -y python3-pip
-RUN apt-get install -y software-properties-common
-
-RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
-RUN apt-get update
-
-RUN python3 -m pip install cmake
-
-# install Intel OpenCL drivers from downloaded package
-RUN tar -xvf l_opencl_p_18.1.0.015.tgz
-RUN cd l_opencl_p_18.1.0.015
-RUN chmod +x install.sh
-RUN ./install.sh
-
-# Download the Khronos OpenCL headers
-RUN git clone https://github.com/KhronosGroup/OpenCL-Headers.git
-RUN mv OpenCL-Headers/CL/ /opt/khronos/opencl/include
-
-# Set up the ICD Loader
-RUN mkdir -p /etc/OpenCL/vendors/ \
-    && echo "$OCL_LIB/libintelocl.so" > /etc/OpenCL/vendors/intel.icd
-
-# Create a directory for ComputeCpp
-RUN mkdir /usr/local/computecpp
-RUN cd /usr/local/computecpp
-
-# Copy the ComputeCpp release package and extract it to /usr/local/computecpp
-RUN cp Ubuntu-16.04-64bit.tar.gz . 
-RUN tar -xvf Ubuntu-16.04-64bit.tar.gz
-
-# Add the ComputeCpp location to the path on the machine
-ENV PATH=OCL_INC:OCL_LIB:/usr/local/computecpp/bin:/usr/local/computecpp/include:/usr/local/computecpp/lib:${PATH}
-
-ENV CC=gcc-8
-ENV CXX=g++-8
-```
 
 SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
