@@ -54,7 +54,11 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       }
     };
 
-    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+#else
+	auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+#endif
 
     auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
     auto bufInB = sycl::buffer{inB, sycl::range{dataSize}};
@@ -172,7 +176,13 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
               devicePtrInB[globalId] + devicePtrInC[globalId];
         });
 
-    auto e8 = usmQueue.memcpy(out, devicePtrOut, sizeof(float) * dataSize, e7);
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+    e7.wait();
+    auto e8 = usmQueue.memcpy(out, devicePtrOut, sizeof(float) * dataSize);
+#else
+	auto e8 = usmQueue.memcpy(out, devicePtrOut, sizeof(float) * dataSize, e7);
+#endif
+
 
     e8.wait();
 
