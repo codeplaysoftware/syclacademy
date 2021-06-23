@@ -12,5 +12,21 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("hello_world", "hello_world_source") {
+  
+  // Create a default SYCL queue for submitting events using sycl::queue{}
+  // the slides use a GPU queue, but we recommend default queue as this 
+  // will select the best device for you
+  // E.g. auto defaultQueue = sycl::queue{};
+
+  // use the default queue to submit a task
+  // This starts with  defaultQueue.submit(
+  
+  // Using sycl::stream and the single_task template function print hello world,
+  // to set up a stream use 
+  // auto os = sycl::stream{128, 128, cgh};
+  
+  // Submit the task using inside your queue.submit, see the slides for hints
+  // cgh.single_task<hello_world>([=]() { os << "Hello World!\n"; });
+
   REQUIRE(true);
 }

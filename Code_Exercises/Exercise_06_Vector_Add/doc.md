@@ -9,24 +9,9 @@ results to another array in parallel using `parallel_for`.
 
 ---
 
-### 1.) Create your queue
+### Write the kernel function
 
-Create a `queue` to enqueue your kernel function to, remember to handle errors.
-
-### 2. ) Create buffers
-
-Create `buffer`s to manage the data of the two input arrays and output array.
-
-Remember to ensure the `range` provided to the buffer if the size of the arrays.
-
-### 3. ) Create accessors
-
-Create `accessor`s to each of the `buffer`s within the command group function,
-the simplest way to do this is to call `get_access` on the `buffer`s.
-
-### 4. ) Write the kernel function
-
-Now enqueue parallel kernel function by calling `parallel_for` on the `handler`.
+Enqueue a parallel kernel function by calling `parallel_for` on the `handler`.
 
 This function takes a `range` specifying the number of iterations of the kernel
 function to invoke and the kernel function itself must take an `id` which
@@ -34,74 +19,6 @@ represents the current iteration.
 
 The `id` can be used in the `accessor` subscript operator to access or assign to
 the corresponding element of data that the accessor represents.
-
-# SYCL Academy
-
-## Exercise 1: Compiling with SYCL
-
----
-
-For this first exercise you simply need to install ComputeCpp and the SYCL
-Academy dependencies and then verify your installation by comping a source file
-for SYCL.
-
-### 1.) Installing ComputeCpp
-
-To install ComputeCpp follow the instructions in the README.md of the SYCL
-Academy repository for installing ComputeCpp and the necessary OpenCL drivers.
-
-### 2.) Verifying your environment
-
-ComputeCpp includes a tool called `computecpp_info` which lists all the
-devices available on your machine and displays which are setup with the correct
-drivers.
-
-Open a console and run the executable located in the 'bin' directory of the
-ComputeCpp release package:
-
-```
-./computecpp_info
-```
-
-Look for the lines that say:
-```
-  Device is supported                     : YES - Tested internally by Codeplay
-  Software Ltd.
-```
-
-You can also add the option --verbose to display further information about the
-devices.
-
-From this output you can confirm your environment is setup correctly.
-
-### 3.) Configuring the exercise project
-
-Once you have confirmed your environment is setup and available you are ready to
-compile your first SYCL application from source code.
-
-First fetch the tutorial samples from GitHub.
-
-Clone this repository ensuring that you include sub-modules.
-
-```
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
-```
-
-### 4.) Include the SYCL header file
-
-Then open the source file for this exercise and include the SYCL header file
-`"SYCL/sycl.hpp"`.
-
-Make sure before you do this you define `SYCL_LANGUAGE_VERSION` to `2020`, to
-enable support for the SYCL 2020 interface.
-
-Once that is done build your source file with your chosen build system.
-
-### 5.) Compile and run
-
-Once you've done that simply build the exercise with your chosen build system
-and invoke the executable.
-
 
 #### Build And Execution Hints
 
