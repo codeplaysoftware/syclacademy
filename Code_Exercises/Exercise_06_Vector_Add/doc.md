@@ -17,12 +17,12 @@ Create a `queue` to enqueue your kernel function to, remember to handle errors.
 
 Create `buffer`s to manage the data of the two input arrays and output array.
 
-Remember to ensure the `range` provided to the buffer if the size of the arrays.
+Remember to ensure the `range` provided to the buffer is the size of the arrays.
 
 ### 3. ) Create accessors
 
-Create `accessor`s to each of the `buffer`s within the command group function,
-the simplest way to do this is to call `get_access` on the `buffer`s.
+Create `accessor`s to each of the `buffer`s within the command group function.
+The simplest way to do this is to call `get_access` on the `buffer`s.
 
 ### 4. ) Write the kernel function
 
