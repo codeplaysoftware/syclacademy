@@ -50,9 +50,11 @@ TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
         std::rethrow_exception(e);
       }
     };
-
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+#else
     auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
-
+#endif
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
@@ -96,7 +98,11 @@ TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
       }
     };
 
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+#else
     auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+#endif
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
@@ -139,7 +145,11 @@ TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
       }
     };
 
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+#else
     auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+#endif
 
     {
       auto bufA = sycl::buffer{a, sycl::range{dataSize}};
@@ -316,7 +326,11 @@ TEST_CASE("host_accessor", "synchronization_solution") {
       }
     };
 
+#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+#else
     auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+#endif
 
     {
       auto bufA = sycl::buffer{a, sycl::range{dataSize}};
