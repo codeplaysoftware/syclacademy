@@ -22,7 +22,7 @@ learning about SYCL below are a list of useful resources:
 To use these materials simply clone this repository including the required submodules.
 
 ```
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
+git clone --branch isc21 --recursive  https://github.com/codeplaysoftware/syclacademy.git
 ```
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
@@ -113,7 +113,14 @@ dependencies they require.
 
 #### Installing ComputeCpp
 
-To set up ComputeCpp download the [ComputeCpp CE package][computecpp-download]
+There is a Docker container that can be used for an instant configured environment for ComputeCpp.
+Use these commands to fetch and run the container. Once run you can make commands via the command 
+line.
+
+`docker pull scottstraughan/sycl-academy:latest`
+`docker run -it --rm scottstraughan/sycl-academy:latest`
+
+To set up ComputeCpp on your actual machine download the [ComputeCpp CE package][computecpp-download]
 and follow the [getting started instructions][computecpp-getting-started].
 
 #### Installing DPC++
