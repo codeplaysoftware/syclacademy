@@ -9,12 +9,8 @@ In this exercise you will learn how to find a suitable device for using the USM 
 
 ### 1.) Create a device selector
 
-Create a custom device selector as you did in exercise 5.
-
-### 2.) Check for USM support
-
-Within this device selector check for whether the device being inspected has
-support for the USM device allocations.
+Create a custom device selector as you did in exercise 5. Within this device selector check for whether the 
+device being inspected has support for the USM device allocations. There are some hints in the source file.
 
 This can be querying for the `aspect::usm_device_allocations` aspect.
 
