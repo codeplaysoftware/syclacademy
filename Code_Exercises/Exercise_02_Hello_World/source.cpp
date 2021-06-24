@@ -15,7 +15,7 @@ TEST_CASE("hello_world", "hello_world_source") {
   
   // Create a default SYCL queue for submitting events using sycl::queue{}
   // the slides use a GPU queue, but we recommend default queue as this 
-  // will select the best device for you
+  // will select a device for you
   // E.g. auto defaultQueue = sycl::queue{};
 
   // use the default queue to submit a task

@@ -36,10 +36,10 @@ TEST_CASE("usm_selector", "usm_selector_source") {
       }
     };
 
-    // set up a queue using the USM device selector
-	// See Lesson 5 slide 17 for a hint, but also pass it 
-	// the asyncHandler to catch any exceptions
-	//auto usmQueue = 
+    // Set up a queue using the USM device selector
+    // See Lesson 5 slide 17 for a hint, but also pass it 
+    // the asyncHandler to catch any exceptions
+    // Start with auto usmQueue = and set up your queue
 
     usmQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {

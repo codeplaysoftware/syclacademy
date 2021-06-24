@@ -52,11 +52,11 @@ TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
     // E.g. auto devicePtrA = sycl::malloc_device<float>(dataSize, usmQueue);
 
     // Now write code to copy the memory of the variables being added below 
-	// to the device using USM memcpy
+    // to the device using USM memcpy
     // E.g. usmQueue.memcpy(devicePtrA, a, sizeof(float) * dataSize).wait();
 
     // Here is the kernel code
-	usmQueue
+    usmQueue
         .parallel_for<vector_add>(sycl::range{dataSize},
                                   [=](sycl::id<1> idx) {
                                     auto globalId = idx[0];
