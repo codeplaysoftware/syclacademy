@@ -96,7 +96,7 @@
 						#### Synchronization with kernel functions
 					</div>
 					<div class="container" data-markdown>
-						There are two ways ways to synchronize with kernel functions.
+						There are two ways to synchronize with kernel functions.
 					</div>
 					<div class="container" data-markdown>
 						* Calling `wait` on an `event` object returned from enqueuing a kernel function command, either via a command group or a shortcut function.
@@ -218,7 +218,8 @@ gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
 						#### Synchronizing with data
 					</div>
 					<div class="container" data-markdown>
-						There are multiple ways ways to synchronize with data, but it differs depending on the data management model you are using.
+						There are multiple ways to synchronize with data,
+						but it differs depending on the data management model you are using.
 					</div>
 					<div class="container" data-markdown>
 						* When using the USM data management model you can synchronize the same way you would for kernel functions, calling `wait` on an `event` or the `queue`.
@@ -276,9 +277,13 @@ gpuQueue.submit([&](sycl::handler &cgh){
 						</div>
 						<div class="col" data-markdown>
 							* A `host_accessor` gives immediate access to the data managed by a `buffer` in the host application.
-							* This will wait for any kernel functions accessing the `buffer` to complete and then copying the data back to the host.
-							* It will also block any other `accessor` accessing a `buffer` until it is destroyed.
-							* Note that the data managed by the `buffer` may not be copied back to the original address on the host, in this case `data`.
+							* This waits for any kernel functions accessing the `buffer`
+								to complete and then copy the data back to the host.
+							* It also blocks any other `accessor` accessing a `buffer`
+								until it is destroyed.
+							* Data managed by the `buffer` may not be copied back
+								to the original address on the host,
+								in this case `data`.
 						</div>
 					</div>
 				</section>
