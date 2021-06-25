@@ -72,7 +72,7 @@
 						* In SYCL errors are handled by throwing exceptions.
 						* It is crucial that these errors are handled,
 							otherwise your application could fail in unpredictable ways.
-						* In SYCL there are two kinds of error:
+						* In SYCL there are two kinds of errors:
 						  * Synchronous errors (thrown in user thread) .
 						  * Asynchronous errors (thrown by the SYCL scheduler).
 					</div>
@@ -186,7 +186,8 @@ int main() {
 						</code></pre>
 					</div>
 					<div class="bottom-bullets" data-markdown>
-							* Asynchronous errors errors that may have occurred will be thrown after a command group has been submitted to a `queue`.
+							* Asynchronous errors that may have occurred
+								will be thrown after a command group has been submitted to a `queue`.
 							  * To handle these errors you must provide an async handler when constructing the queue object.
 							* Then you must also call the `throw_asynchronous` or `wait_and_throw` member functions of the `queue`
 							class.
@@ -328,7 +329,8 @@ int main() {
 				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
-						* In SYCL 1.2.1 there are a number of different exception types that inherit from `std::exception`
+						* In SYCL 1.2.1 there are a number of different exception types
+							that inherit from `sycl::exception`
 						  * E.g. `runtime_error`, `kernel_error`
 						* SYCL 2020 only has a single `sycl::exception` type
 							which provides different error codes
