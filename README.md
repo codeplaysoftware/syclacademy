@@ -82,7 +82,7 @@ may not match completely.
 
 ## Building the Exercises
 
-The exercises can be built for ComputeCpp CE, DPC++ and hipSYCL.
+The exercises can be built for ComputeCpp CE (minimum v2.6.0), DPC++ and hipSYCL.
 
 ### Supported Platforms
 
