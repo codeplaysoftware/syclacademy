@@ -213,7 +213,7 @@ auto devices = device::get_devices();
 						<div class="col-right-1" data-markdown>
 							* To simplify the process of traversing the system topology SYCL provides device selectors.
 							* A device selector is is a C++ function object, derived from the `device_selector` class, which defines a heuristic for scoring devices.
-							* SYCL provides a number of standard device selectors, e.g. `default_selector_v`, `gpu_selector_v`, etc.
+							* SYCL provides a number of standard device selectors, e.g. `default_selector`, `gpu_selector`, etc.
 							* Users can also create their own device selectors.
 						</div>
 					</div>
@@ -226,7 +226,7 @@ auto devices = device::get_devices();
 					<div class="container">
 						<div class="col-left-1">
 							<code><pre>
-auto gpuDevice = gpu_selector_v.select_device();
+auto gpuDevice = gpu_selector.select_device();
 							</code></pre>
 						</div>
 						<div class="col-right-1" data-markdown>
@@ -247,7 +247,7 @@ auto gpuDevice = gpu_selector_v.select_device();
 					<div class="container">
 						<div class="col-left-1">
 							<code><pre>
-auto chosenDevice = default_selector_v.select_device();
+auto chosenDevice = default_selector.select_device();
 							</code></pre>
 						</div>
 						<div class="col-right-1" data-markdown>
@@ -255,7 +255,7 @@ auto chosenDevice = default_selector_v.select_device();
 						</div>
 					</div>
 					<div class="container" data-markdown>
-							* The `default_selector_v` is a standard device selector type.
+							* The `default_selector` is a standard device selector type.
 							* Chooses a device based on an implementation defined heuristic.
 					</div>
 				</section>

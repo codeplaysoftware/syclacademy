@@ -11,11 +11,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
 #include <CL/sycl.hpp>
-#else
-#include <SYCL/sycl.hpp>
-#endif
 
 class vector_add_1;
 class vector_add_2;
@@ -51,7 +47,7 @@ TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
       }
     };
 
-    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
@@ -96,7 +92,7 @@ TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
       }
     };
 
-    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
@@ -139,7 +135,7 @@ TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
       }
     };
 
-    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
 
     {
       auto bufA = sycl::buffer{a, sycl::range{dataSize}};
@@ -316,7 +312,7 @@ TEST_CASE("host_accessor", "synchronization_solution") {
       }
     };
 
-    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
 
     {
       auto bufA = sycl::buffer{a, sycl::range{dataSize}};

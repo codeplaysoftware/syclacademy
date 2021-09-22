@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## Coalesced Global Memory
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about coalesced global memory access
+					* Learn about the performance impact
+					* Learn about row-major vs column-major
+					* Learn about SoA vs AoS
+                </section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						* Reading from and writing to global memory is generally very expensive.
+						* It often involves copying data across an off-chip bus.
+						  * This means you generally want to avoid unnecessary accesses.
+						* Memory access operations is done in chunks.
+						  * This means accessing data this is physically close together in memory is more efficient.
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_1.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_2.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_3.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_4.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_5.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_6.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row-major vs Column-major
+					</div>
+					<div class="container" data-markdown>
+						* Coalescing global memory access is particularly important when wording in multiple dimensions.
+						* This is because when doing so you have to convert from a position in 2d space to a linear memory space.
+						* There are two ways to do this; generally referred to as row-major and column-major.
+					</div>
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row-major vs Column-major
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./row_major_column_major_1.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row-major vs Column-major
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./row_major_column_major_2.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 13-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row-major vs Column-major
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./row_major_column_major_3.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row-major vs Column-major
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./row_major_column_major_4.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row-major vs Column-major
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./row_major_column_major_5.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						* Another area this is a factor is when composing data structures.
+						* It's often instinctive to have struct representing a collection of data and then have an array of this - often referred to as Array of Structs (AoS).
+						* But for data parallel architectures such as a GPU it's more efficient to have sequential elements of the same type stored contiguously in memory - often referred to as Struct of Arrays (SoA).
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_1.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 18-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_2.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_3.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_4.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 21-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_5.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 22-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_6.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 23-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_7.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 24-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_8.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_9.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 26-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### AoS vs SoA
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./soa_vs_aos_10.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 27-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced image convolution performance
+					</div>
+					<div class="container"data-markdown>
+						![SYCL](./image_convolution_performance_coalesced.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 28-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
+					</div>
+				</section>
+				<!--Slide 29-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_16_Coalesced_Global_Memory/source
+					</div>
+					<div class="container" data-markdown>
+						Try inverting the dimensions when calculating the linear address in memory and measure the performance.
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
