@@ -17,7 +17,7 @@
 #include <benchmark.h>
 #include <image_conv.h>
 
-#include <SYCL/sycl.hpp>
+#include <CL/sycl.hpp>
 
 class image_convolution;
 
