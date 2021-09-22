@@ -70,7 +70,7 @@ cd build
 ### 4.) Include the SYCL header file
 
 Then open the source file for this exercise and include the SYCL header file
-`"SYCL/sycl.hpp"`.
+`"CL/sycl.hpp"`.
 
 Make sure before you do this you define `SYCL_LANGUAGE_VERSION` to `2020`, to
 enable support for the SYCL 2020 interface.
