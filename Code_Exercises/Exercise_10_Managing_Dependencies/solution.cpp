@@ -11,11 +11,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
 #include <CL/sycl.hpp>
-#else
-#include <SYCL/sycl.hpp>
-#endif
 
 class kernel_a_1;
 class kernel_b_1;
@@ -54,7 +50,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       }
     };
 
-    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
 
     auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
     auto bufInB = sycl::buffer{inB, sycl::range{dataSize}};
