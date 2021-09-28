@@ -79,8 +79,8 @@ may not match completely.
 | 09 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes | Yes |
 | 10 | Data and Dependencies | [slides][lesson-10-slides] | [exercise][lesson-10-exercise] | [source][lesson-10-source] | [solution][lesson-10-solution] | Yes | Yes | Yes |
 | 11 | In Order Queue | [slides][lesson-11-slides] | [exercise][lesson-11-exercise] | [source][lesson-11-source] | [solution][lesson-11-solution] | Yes | Yes | TBC |
-| 12 | Temporary Data | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes | TBC |
-| 13 | Load Balancing | [slides][lesson-13-slides] | [exercise][lesson-13-exercise] | [source][lesson-13-source] | [solution][lesson-13-solution] | Yes | Yes | TBC |
+| 12 | Advanced Data Flow | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes | TBC |
+| 13 | Multiple Devices | [slides][lesson-13-slides] | [exercise][lesson-13-exercise] | [source][lesson-13-source] | [solution][lesson-13-solution] | Yes | Yes | TBC |
 | 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes | TBC |
 | 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] | [source][lesson-15-source] | [solution][lesson-15-solution] | Yes | Yes | TBC |
 | 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes | TBC |
