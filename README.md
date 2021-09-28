@@ -331,12 +331,12 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-11-source]: ./Code_Exercises/Exercise_11_In_Order_Queue/source.cpp
 [lesson-11-solution]: ./Code_Exercises/Exercise_11_In_Order_Queue/solution.cpp
 
-[lesson-12-slides]: ./Lesson_Materials/Lecture_12_Temporary_Data/
+[lesson-12-slides]: ./Lesson_Materials/Lecture_12_Advanced_Data_Flow/
 [lesson-12-exercise]: ./Code_Exercises/Exercise_12_Temporary_Data/doc.md
 [lesson-12-source]: ./Code_Exercises/Exercise_12_Temporary_Data/source.cpp
 [lesson-12-solution]: ./Code_Exercises/Exercise_12_Temporary_Data/solution.cpp
 
-[lesson-13-slides]: ./Lesson_Materials/Lecture_13_Load_Balancing/
+[lesson-13-slides]: ./Lesson_Materials/Lecture_13_Multiple_Devices/
 [lesson-13-exercise]: ./Code_Exercises/Exercise_13_Load_Balancing/doc.md
 [lesson-13-source]: ./Code_Exercises/Exercise_13_Load_Balancing/source.cpp
 [lesson-13-solution]: ./Code_Exercises/Exercise_13_Load_Balancing/solution.cpp
