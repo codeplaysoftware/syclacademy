@@ -226,7 +226,7 @@ auto devices = device::get_devices();
 					<div class="container">
 						<div class="col-left-1">
 							<code><pre>
-auto gpuDevice = gpu_selector.select_device();
+auto gpuDevice = gpu_selector{}.select_device();
 							</code></pre>
 						</div>
 						<div class="col-right-1" data-markdown>
