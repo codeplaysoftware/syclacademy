@@ -31,8 +31,8 @@ offsets to account for the number of channels.
 #### ComputeCpp
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make vector_load_and_store_source
-./Code_Exercises/Exercise_17_Vectors/vectors_source
+make exercise_17_vectors_source
+./Code_Exercises/Exercise_17_Vectors/exercise_17_vectors_source
 ```
 #### DPC++
 ```
