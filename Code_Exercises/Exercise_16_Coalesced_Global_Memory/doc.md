@@ -27,8 +27,8 @@ Try using both of these and compare the execution time of each.
 #### ComputeCpp:
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make coalesced_global_memory_source
-./Code_Exercises/Exercise_16_Coalesced_Global_Memory/coalesced_global_memory_source
+make exercise_16_coalesced_global_memory_source
+./Code_Exercises/Exercise_16_Coalesced_Global_Memory/exercise_16_coalesced_global_memory_source
 ```
 #### DPC++:
 ```
