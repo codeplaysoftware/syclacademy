@@ -34,8 +34,8 @@ Compare the performance with local memory and without local memory.
 #### ComputeCpp
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make local_memory_tiling_source
-./Code_Exercises/Exercise_18_Local_Memory_Tiling/local_memory_tiling_source
+make exercise_18_local_memory_tiling_source
+./Code_Exercises/Exercise_18_Local_Memory_Tiling/exercise_18_local_memory_tiling_source
 ```
 #### DPC++
 ```
