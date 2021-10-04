@@ -55,8 +55,8 @@ filter data; `generate_filter` takes a `filter_type` and a width.
 #### ComputeCpp
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make image_convolution_reference
-./Code_Exercises/Exercise_15_Image_Convolution/image_convolution_reference
+make exercise_15_image_convolution_reference
+./Code_Exercises/Exercise_15_Image_Convolution/exercise_15_image_convolution_reference
 ```
 #### DPC++
 ```
