@@ -33,6 +33,6 @@ necessary to chain commands using `event`s.
 
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make in_order_queue_source
-./Code_Exercises/Exercise_11_In_Order_Queue/in_order_queue_source
+make exercise_11_in_order_queue_source
+./Code_Exercises/Exercise_11_In_Order_Queue/exercise_11_in_order_queue_source
 ```
