@@ -51,6 +51,6 @@ changing the `range` and `offset` of the two `buffer`s.
 
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make configuring_queues_source
-./Code_Exercises/Exercise_13_Load_Balancing/load_balancing_source
+make exercise_13_configuring_queues_source
+./Code_Exercises/Exercise_13_Load_Balancing/exercise_13_load_balancing_source
 ```
