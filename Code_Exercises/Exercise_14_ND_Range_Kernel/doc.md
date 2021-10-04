@@ -43,6 +43,6 @@ method of synchronization and copy back.
 
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make nd_range_kernel_source
-./Code_Exercises/Exercise_14_ND_Range_Kernel/nd_range_kernel_source
+make exercise_14_nd_range_kernel_source
+./Code_Exercises/Exercise_14_ND_Range_Kernel/exercise_14_nd_range_kernel_source
 ```
