@@ -22,8 +22,8 @@ Compare the performance of the various work-group sizes you try.
 #### ComputeCpp
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make work_group_sizes_source
-./Code_Exercises/Exercise_19_Work_Group_Sizes/work_group_sizes_source
+make exercise_19_work_group_sizes_source
+./Code_Exercises/Exercise_19_Work_Group_Sizes/exercise_19_work_group_sizes_source
 ```
 #### DPC++
 ```
