@@ -40,6 +40,6 @@ unnecessary copies you can simply not perform those copies.
 
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make temporary_data_source
-./Code_Exercises/Exercise_12_Temporary_Data/temporary_data_source
+make exercise_12_temporary_data_source
+./Code_Exercises/Exercise_12_Temporary_Data/exercise_12_temporary_data_source
 ```
