@@ -30,6 +30,7 @@ class usm_selector : public sycl::device_selector {
  public:
   int operator()(const sycl::device& dev) const {
     if (dev.has(sycl::aspect::usm_device_allocations)) {
+      if (dev.has(sycl::aspect::gpu)) return 2;
       return 1;
     }
     return -1;
