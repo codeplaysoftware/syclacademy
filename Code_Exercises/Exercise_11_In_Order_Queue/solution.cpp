@@ -158,8 +158,7 @@ TEST_CASE("usm_in_order_queue", "in_order_queue_solution") {
                                     auto globalId = idx[0];
                                     devicePtrInA[globalId] =
                                         devicePtrInA[globalId] * 2.0f;
-                                  })
-        .wait();
+                                  });
 
     inOrderQueue
         .parallel_for<kernel_b_2>(sycl::range{dataSize},
@@ -167,8 +166,7 @@ TEST_CASE("usm_in_order_queue", "in_order_queue_solution") {
                                     auto globalId = idx[0];
                                     devicePtrInB[globalId] +=
                                         devicePtrInA[globalId];
-                                  })
-        .wait();
+                                  });
 
     inOrderQueue
         .parallel_for<kernel_c_2>(sycl::range{dataSize},
@@ -176,8 +174,7 @@ TEST_CASE("usm_in_order_queue", "in_order_queue_solution") {
                                     auto globalId = idx[0];
                                     devicePtrInC[globalId] -=
                                         devicePtrInA[globalId];
-                                  })
-        .wait();
+                                  });
 
     inOrderQueue
         .parallel_for<kernel_d_2>(sycl::range{dataSize},
@@ -186,8 +183,7 @@ TEST_CASE("usm_in_order_queue", "in_order_queue_solution") {
                                     devicePtrOut[globalId] =
                                         devicePtrInB[globalId] +
                                         devicePtrInC[globalId];
-                                  })
-        .wait();
+                                  });
 
     inOrderQueue.memcpy(inA, devicePtrInA, sizeof(float) * dataSize);
     inOrderQueue.memcpy(inB, devicePtrInB, sizeof(float) * dataSize);
