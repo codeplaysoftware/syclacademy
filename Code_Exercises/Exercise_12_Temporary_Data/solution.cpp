@@ -27,7 +27,8 @@ class kernel_b_2;
 class usm_selector : public sycl::device_selector {
  public:
   int operator()(const sycl::device& dev) const {
-    if (dev.get_info<sycl::info::device::usm_device_allocations>()) {
+    if (dev.has(sycl::aspect::usm_device_allocations)) {
+      if (dev.has(sycl::aspect::gpu)) return 2;
       return 1;
     }
     return -1;
