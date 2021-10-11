@@ -102,8 +102,8 @@ all of the exercises.
 
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
-| ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.4.0 |
-| DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.2	|
+| ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.7.0 |
+| DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.4	|
 | hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> Nvidia GPU (CUDA) | Latest develop branch |
 
 \* See [here](troubleshooting-for-computecpp) for troubleshooting when using
