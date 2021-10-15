@@ -132,21 +132,11 @@ TEST_CASE("usm_in_order_queue", "in_order_queue_solution") {
 
     auto inOrderQueue = sycl::queue{
         usm_selector{}, asyncHandler, {sycl::property::queue::in_order{}}};
-#ifdef SYCL_ACADEMY_USING_COMPUTE_CPP
-    auto devicePtrInA = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, inOrderQueue)};
-    auto devicePtrInB = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, inOrderQueue)};
-    auto devicePtrInC = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, inOrderQueue)};
-    auto devicePtrOut = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, inOrderQueue)};
-#else
+    
     auto devicePtrInA = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrInB = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrInC = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrOut = sycl::malloc_device<float>(dataSize, inOrderQueue);
-#endif
 
     inOrderQueue.memcpy(devicePtrInA, inA, sizeof(float) * dataSize);
     inOrderQueue.memcpy(devicePtrInB, inB, sizeof(float) * dataSize);

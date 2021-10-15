@@ -49,18 +49,9 @@ TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
 
     auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
 
-#ifdef SYCL_ACADEMY_USE_COMPUTECPP
-    auto devicePtrA = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrB = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrR = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-#else
     auto devicePtrA = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrB = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrR = sycl::malloc_device<float>(dataSize, usmQueue);
-#endif
 
     usmQueue.memcpy(devicePtrA, a, sizeof(float) * dataSize).wait();
     usmQueue.memcpy(devicePtrB, b, sizeof(float) * dataSize).wait();

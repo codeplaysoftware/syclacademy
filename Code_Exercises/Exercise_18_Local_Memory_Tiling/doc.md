@@ -6,6 +6,9 @@
 In this exercise you will learn how to cache global memory into local memory in
 tiles according to work-groups in order to compare the performance difference. 
 
+If using ComputeCPP you need to ```#define STBI_NO_SIMD``` before the include ```#include <image_conv.h>```.
+
+
 ---
 
 ### 1.) Use local memory

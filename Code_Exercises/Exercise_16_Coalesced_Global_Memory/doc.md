@@ -7,6 +7,8 @@ In this exercise you will learn how to apply row-major and column-major when
 linearizing the global id in order to compare the performance difference due to
 coalesced global memory access.
 
+If using ComputeCPP you need to ```#define STBI_NO_SIMD``` before the include ```#include <image_conv.h>```.
+
 ---
 
 ### 1.) Evaluate global memory access

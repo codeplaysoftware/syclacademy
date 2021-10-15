@@ -6,6 +6,8 @@
 In this exercise you will learn how to use different work group sizes in order
 to compare the performance difference.
 
+If using ComputeCPP you need to ```#define STBI_NO_SIMD``` before the include ```#include <image_conv.h>```.
+
 ---
 
 ### 1.) Try different work-group sizes

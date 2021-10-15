@@ -6,6 +6,8 @@
 In this exercise you will learn how to use `vec` to explicitly vectorized your
 kernel function.
 
+If using ComputeCPP you need to ```#define STBI_NO_SIMD``` before the include ```#include <image_conv.h>```.
+
 ---
 
 ### 1.) Use vectors

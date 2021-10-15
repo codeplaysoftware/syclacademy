@@ -20,6 +20,7 @@
 #include <CL/sycl.hpp>
 #endif
 
+#define STBI_NO_SIMD 1
 #include <benchmark.h>
 #include <image_conv.h>
 

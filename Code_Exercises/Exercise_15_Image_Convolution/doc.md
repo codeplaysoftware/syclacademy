@@ -25,6 +25,8 @@ and has four channels (RGBA).
 The source for this example provides a stub which loads and write an image using
 the STB image library.
 
+If using ComputeCPP you need to ```#define STBI_NO_SIMD``` before the include ```#include <image_conv.h>```.
+
 ### 3.) Benchmarking
 
 The source also contains a call to a benchmarking utility that will print the

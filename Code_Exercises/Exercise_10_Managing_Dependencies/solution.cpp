@@ -128,21 +128,10 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
 
     auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
 
-#ifdef SYCL_ACADEMY_USE_COMPUTECPP
-    auto devicePtrInA = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrInB = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrInC = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrOut = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-#else
     auto devicePtrInA = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrInB = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrInC = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrOut = sycl::malloc_device<float>(dataSize, usmQueue);
-#endif
 
     auto e1 = usmQueue.memcpy(devicePtrInA, inA, sizeof(float) * dataSize);
     auto e2 = usmQueue.memcpy(devicePtrInB, inB, sizeof(float) * dataSize);

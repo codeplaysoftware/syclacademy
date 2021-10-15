@@ -14,6 +14,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#define STBI_NO_SIMD 1
 #include <benchmark.h>
 #include <image_conv.h>
 
@@ -41,7 +42,6 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
       inputImage.width(), inputImage.height(), inputImage.channels());
 
   auto filter = util::generate_filter(util::filter_type::blur, filterWidth);
-
   try {
     sycl::queue myQueue{sycl::gpu_selector{},
                         [](sycl::exception_list exceptionList) {
@@ -119,10 +119,11 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
           },
           100, "image convolution (coalesced)");
     }
+    /*
+  */
   } catch (sycl::exception e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
-
   util::write_image(outputImage, outputImageFile);
 
   REQUIRE(true);

@@ -106,18 +106,9 @@ TEST_CASE("usm_temporary_data", "temporary_data_solution") {
 
     auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
 
-#ifdef SYCL_ACADEMY_USING_COMPUTECPP
-    auto devicePtrIn = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrInt = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrOut = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-#else
     auto devicePtrIn = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrInt = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrOut = sycl::malloc_device<float>(dataSize, usmQueue);
-#endif
 
     auto e1 = usmQueue.memcpy(devicePtrIn, in, sizeof(float) * dataSize);
 
