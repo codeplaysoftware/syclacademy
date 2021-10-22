@@ -40,8 +40,8 @@ TEST_CASE("load_balancing", "load_balancing_solution") {
       }
     };
 
-    auto cpuDevice = sycl::cpu_selector().select_device();
-    auto gpuDevice = sycl::gpu_selector().select_device();
+    auto cpuDevice = sycl::device{sycl::cpu_selector{}};
+    auto gpuDevice = sycl::device{sycl::gpu_selector{}};
 
     auto devices = sycl::device::get_devices();
     for (auto dev : devices) std::cout << "Found available device: " << dev.get_info<sycl::info::device::name>() << '\n';
