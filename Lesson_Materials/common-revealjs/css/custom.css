@@ -105,3 +105,314 @@ section {
 .global-images > img:nth-of-type(4) { right: 20px; bottom: 10px;}
 
 .reveal section img { background:none; border:none; box-shadow:none; }
+
+
+
+
+/*
+ * October 28, 2021 - James Reinders - the following lines
+ * fixes printing in the Chrome browser
+ * you can either add ?print-pdf to have the logos,
+ *  but you'll find the logos are shifted on the even pages
+ *  something that has so far eluded me to fix
+ * or you can simply print, and you'll get all the pages
+ *  without the logos
+ * in the future, it might be nice to fix these
+ * but at least printing works again - it was completely not
+ * working before the addition of the following lines
+ *
+ * note - you'll need to flush your browser cache to get this
+ * file to reload into your browser
+ */
+
+html.print-pdf .aria-status {
+    display:none
+}
+@media print {
+    html {
+	background:#fff;
+	width:auto;
+	height:auto;
+	overflow:visible
+    }
+    html body {
+	background:#fff;
+	font-size:20pt;
+	width:auto;
+	height:auto;
+	border:0;
+	margin:0 5%;
+	padding:0;
+	overflow:visible;
+	float:none!important
+    }
+    html .controls,html .fork-reveal,html .nestedarrow,html .reveal .backgrounds,html .reveal .progress,html .reveal .slide-number,html .share-reveal,html .state-background {
+	display:none!important
+    }
+    html body,html li,html p,html td {
+	font-size:20pt!important;
+	color:#000
+    }
+    html h1,html h2,html h3,html h4,html h5,html h6 {
+	color:#000!important;
+	height:auto;
+	line-height:normal;
+	text-align:left;
+	letter-spacing:normal
+    }
+    html h1 {
+	font-size:28pt!important
+    }
+    html h2 {
+	font-size:24pt!important
+    }
+    html h3 {
+	font-size:22pt!important
+    }
+    html h4 {
+	font-size:22pt!important;
+	font-variant:small-caps
+    }
+    html h5 {
+	font-size:21pt!important
+    }
+    html h6 {
+	font-size:20pt!important;
+	font-style:italic
+    }
+    html a:link,html a:visited {
+	color:#000!important;
+	font-weight:700;
+	text-decoration:underline
+    }
+    html div,html ol,html p,html ul {
+	visibility:visible;
+	position:static;
+	width:auto;
+	height:auto;
+	display:block;
+	overflow:visible;
+	margin:0;
+	text-align:left!important
+    }
+    html .reveal pre,html .reveal table {
+	margin-left:0;
+	margin-right:0
+    }
+    html .reveal pre code {
+	padding:20px
+    }
+    html .reveal blockquote {
+	margin:20px 0
+    }
+    html .reveal .slides {
+	position:static!important;
+	width:auto!important;
+	height:auto!important;
+	left:0!important;
+	top:0!important;
+	margin-left:0!important;
+	margin-top:0!important;
+	padding:0!important;
+	zoom:1!important;
+	transform:none!important;
+	overflow:visible!important;
+	display:block!important;
+	text-align:left!important;
+	perspective:none;
+	perspective-origin:50% 50%
+    }
+    html .reveal .slides section {
+	visibility:visible!important;
+	position:static!important;
+	width:auto!important;
+	height:auto!important;
+	display:block!important;
+	overflow:visible!important;
+	left:0!important;
+	top:0!important;
+	margin-left:0!important;
+	margin-top:0!important;
+	padding:60px 20px!important;
+	z-index:auto!important;
+	opacity:1!important;
+	page-break-after:always!important;
+	transform-style:flat!important;
+	transform:none!important;
+	transition:none!important
+    }
+    html .reveal .slides section.stack {
+	padding:0!important
+    }
+    html .reveal section:last-of-type {
+	page-break-after:avoid!important
+    }
+    html .reveal section .fragment {
+	opacity:1!important;
+	visibility:visible!important;
+	transform:none!important
+    }
+    html .reveal section img {
+	display:block;
+	margin:15px 0;
+	background:#fff;
+	border:1px solid #666;
+	box-shadow:none
+    }
+    html .reveal section small {
+	font-size:.8em
+    }
+    html .reveal .hljs {
+	max-height:100%;
+	white-space:pre-wrap;
+	word-wrap:break-word;
+	word-break:break-word;
+	font-size:15pt
+    }
+    html .reveal .hljs .hljs-ln-numbers {
+	white-space:nowrap
+    }
+    html .reveal .hljs td {
+	font-size:inherit!important;
+	color:inherit!important
+		     
+    }
+    
+    html .container{
+	display: flex;
+	font-size: 0.6em;
+	padding: 0;
+	margin: 0;
+	justify-content: space-around;
+	align-items: center;
+	justify-content: center;
+	
+    }
+    
+    html .col { 
+	flex: 1;
+	margin: 0;
+	vertical-align:center;
+	
+    }
+    
+    html .col-left { 
+	flex: 1;
+	margin: 0;
+	flex-grow:5;
+	
+    }
+    
+    html .col-left-1 {	 
+	flex: 1;
+	margin: 0;
+	flex-grow:1;
+	vertical-align:center;
+	
+    }
+    
+    html .col-left-3 { 
+	flex: 1;
+	margin: 0;
+	flex-grow:3;
+	
+    }
+    
+    html .col-right {	 
+	flex: 1;
+	margin: 0;
+	flex-grow:1;
+	vertical-align:center;
+	
+    }
+    
+    html .col-right-1 {	 
+	flex: 1;
+	margin: 0;
+	flex-grow:1;
+	vertical-align:center;
+	
+    }
+    
+    html .col-right-2 {	 
+	flex: 1;
+	margin: 0;
+	flex-grow:2;
+	vertical-align:center;
+	
+    }
+    
+    html .bottom-bullets{
+	font-size: 50%;
+	
+    }
+    
+    code {
+	line-height: normal;
+	
+    }
+    
+    html .code-header{
+	font-size: 45%;
+	font-weight: bold;
+	
+    }
+    
+    html .code-60pc {
+	font-size: 60%;
+	
+    }
+    
+    html body {
+	background-size: 15%;
+	background-repeat: no-repeat;
+	background-position: 95% 96%, 95% 3%, 3% 3%, 3% 95%;
+	
+    }
+    
+    html section {
+	position: relative;
+	
+    }
+    
+    html .global-images {
+	position: relative;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999999999;
+	
+    }
+    
+    html .global-images > img {
+	width: 15%;
+	height: auto;
+	position: absolute;
+	z-index: 999999999999;
+	
+    }
+    
+    html .global-images > img:nth-of-type(1) {
+	left: 20px; top: 10px; 
+    }
+
+    html .global-images > img:nth-of-type(2) {
+	right: 20px; top: 10px;
+    }
+    
+    html .global-images > img:nth-of-type(3) {
+	left: 20px; bottom: 10px; 
+    }
+
+    html .global-images > img:nth-of-type(4) {
+	right: 20px; bottom: 10px;
+    }
+
+    html .reveal section img {
+	background:none; border:none; box-shadow:none; 
+    }
+
+}
