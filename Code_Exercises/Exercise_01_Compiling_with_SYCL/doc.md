@@ -62,7 +62,7 @@ First fetch the tutorial samples from GitHub.
 Clone this repository ensuring that you include sub-modules.
 
 ```
-git clone --branch iwocl21 --recursive https://github.com/codeplaysoftware/syclacademy.git
+git clone --branch --recursive https://github.com/codeplaysoftware/syclacademy.git
 mkdir build
 cd build
 ```
