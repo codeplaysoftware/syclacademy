@@ -91,7 +91,7 @@ may not match completely.
 
 ## Building the Exercises
 
-The exercises can be built for ComputeCpp CE (minimum v2.6.0), DPC++ and hipSYCL.
+The exercises can be built for ComputeCpp CE 2.7.0 ASP (not the standard 2.7.0 branch; see below), DPC++ and hipSYCL.
 
 ### Supported Platforms
 
@@ -102,7 +102,7 @@ all of the exercises.
 
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
-| ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.7.0 |
+| ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.7.0 ASP |
 | DPC++ | [Intel DevCloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.4	|
 | hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> Nvidia GPU (CUDA) | Latest develop branch |
 
@@ -263,7 +263,7 @@ Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/in
 
 SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
-[computecpp-download]: https://developer.codeplay.com
+[computecpp-download]: https://developer.codeplay.com/products/computecpp/ce/download/?experimental=true
 [computecpp-getting-started]: https://developer.codeplay.com/products/computecpp/ce/guides/getting-started?
 [dpcpp-getting-started]: https://software.intel.com/content/www/us/en/develop/articles/installation-guide-for-intel-oneapi-toolkits.html
 [intel-devcloud]: https://intelsoftwaresites.secure.force.com/devcloud/oneapi
