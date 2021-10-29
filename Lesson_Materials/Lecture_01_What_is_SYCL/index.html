@@ -59,7 +59,7 @@
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
-					* Learn about the SYCL specification and it's implementations
+					* Learn about the SYCL specification and its implementations
 					* Learn about the components of a SYCL implementation
 					* Learn about how a SYCL source file is compiled
 					* Learn where to find useful resources for SYCL
@@ -80,6 +80,18 @@
 					</aside>
 				</section>
 				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### What is SYCL?
+					</div>
+					<div class="container" data-markdown>
+						A first example of SYCL code. Elements will be explained in coming sections!
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./sycl_first_sample_code.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 5-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
@@ -102,7 +114,7 @@
 						Your kernel contains the code you want to execute on parallel hardware, i.e the bit you want to accelerate such as a vector addition
 					</aside>
 				</section>
-				<!--Slide 5-->
+				<!--Slide 6-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
@@ -122,7 +134,7 @@
 						
 					</aside>
 				</section>
-				<!--Slide 6-->
+				<!--Slide 7-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
@@ -148,7 +160,7 @@
 						Other models use language extensions such as pragmas, attributes or keywords to indicate device code
 					</aside>
 				</section>
-				<!--Slide 7-->
+				<!--Slide 8-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
@@ -173,7 +185,7 @@
 						Whilst the current specification of SYCL is bound to OpenCL, it is possible to support non-OpenCL back-ends. For example hipSYCL targets AMD's HIP interface and ComputeCpp targets NVidia's ptx instruction set
 					</aside>
 				</section>
-				<!--Slide 8-->
+				<!--Slide 9-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### SYCL specification
@@ -183,16 +195,14 @@
 						![SYCL](./sycl_spec_versions.png "SYCL-OpenCL")
 					</aside>
 				</section>
-				<!--Slide 9-->
+				<!--Slide 10-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### SYCL implementations
 					</div>
-					<div class="container" data-markdown>
-						![SYCL Implementations](./sycl-implementation-targets.jpg "SYCL-Implementations")
-					</div>
+                                        <img src="./sycl_implementation_targets.png" alt="SYCL-Implementations" height=700>
 				</section>
-				<!--Slide 10-->
+				<!--Slide 11-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### What a SYCL implementation looks like
@@ -211,7 +221,7 @@
 						* The device is the parallel unit used to execute the kernels, such as a GPU
 					</div>
 				</section>
-				<!--Slide 11-->
+				<!--Slide 12-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### What a SYCL implementation looks like
@@ -225,7 +235,7 @@
 							  * It loads kernels, tracks data dependencies and schedules commands
 						</div>
 				</section>
-				<!--Slide 12-->
+				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### What a SYCL implementation looks like
@@ -239,7 +249,7 @@
 							* The host device can be used to execute kernels without backend drivers and for debugging purposes
 						</div>
 				</section>
-				<!--Slide 13-->
+				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### What a SYCL implementation looks like
@@ -254,7 +264,7 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 14-->
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### What a SYCL implementation looks like
@@ -274,7 +284,7 @@
 						**IR** = Intermediate Representation 	**ISA** = Instruction Set Architecture
 					</div>
 				</section>
-				<!--Slide 15-->
+				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Std C++ compilation model
@@ -286,7 +296,7 @@
 						* This is the typical compilation model for a C++ source file.
 					</div>
 				</section>
-				<!--Slide 16-->
+				<!--Slide 17-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Std C++ compilation model
@@ -298,7 +308,7 @@
 						* So how do you compile a source file to also target the GPU?
 					</div>
 				</section>
-				<!--Slide 17-->
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Std C++ compilation model
@@ -311,7 +321,7 @@
 						* These are defined by submitting them to specific APIs.
 					</div>
 				</section>
-				<!--Slide 18-->
+				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Std C++ compilation model
@@ -324,7 +334,7 @@
 						* This produces a device IR such as SPIR, SPIR-V or PTX or ISA for a specific architecture containing the GPU code.
 					</div>
 				</section>
-				<!--Slide 19-->
+				<!--Slide 20-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Std C++ compilation model
@@ -336,7 +346,7 @@
 						* The CPU object is then linked with the device IR or ISA to form a single executable with both the CPU and GPU code.
 					</div>
 				</section>
-				<!--Slide 20-->
+				<!--Slide 21-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Std C++ compilation model
@@ -349,7 +359,7 @@
 						* This allows the host compiler (MSVC, Clang, Gcc) to be independent of the SYCL device compiler.
 					</div>
 				</section>
-				<!--Slide 21-->
+				<!--Slide 22-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Std C++ compilation model
@@ -362,7 +372,7 @@
 						* Where both the host compiler and SYCL device compiler are invoked from the same driver.
 					</div>
 				</section>
-				<!--Slide 22-->
+				<!--Slide 23-->
 				<section data-markdown>
 					## Where to Get Started with SYCL
 					
@@ -370,11 +380,11 @@
 					* Checkout the documentation provided with one of the SYCL implementations.
 					* Visit https://sycl.tech to find out about all the SYCL implementations, news and videos
 				</section>
-				<!--Slide 23-->
+				<!--Slide 24-->
 				<section data-markdown>
 					## Questions
 				</section>
-				<!--Slide 24-->
+				<!--Slide 25-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
