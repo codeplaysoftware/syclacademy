@@ -48,7 +48,7 @@ initializing it with just a `range` and no host pointer.
 
 For For DPC++ (using the Intel DevCloud):
 ```sh
-dpcpp -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
+clang++ -fsycl -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
 ./sycl-ex-3
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
