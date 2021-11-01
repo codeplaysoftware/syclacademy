@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Sback<!DOCTYPE html>
 
 <html>
 	<head>
@@ -245,8 +245,11 @@
 							![SYCL Host Device](./sycl_implementation_host_device.png "SYCL-Host-Device")
 						</div>
 						<div class="col" data-markdown>
-							* The host device is an emulated backend that is executed as native C++ code and emulates the SYCL execution and memory model 
-							* The host device can be used to execute kernels without backend drivers and for debugging purposes
+						  * There is no Host Device in SYCL (as of SYCL 2020)
+						  * SYCL 1.2.1 had a concept of a 'magical' host device - an emulated backend
+						  * SYCL 2020 implementations generally offer a CPU device
+						  * Often, the best debugging on a platform is using a CPU device
+						  * Yet, debugging off the CPU is important to discover offloading issues
 						</div>
 				</section>
 				<!--Slide 14-->
@@ -356,7 +359,7 @@
 					</div>
 					<div class="container" data-markdown>
 						* This is the multi-compiler compilation model.
-						* This allows the host compiler (MSVC, Clang, Gcc) to be independent of the SYCL device compiler.
+						* This allows the host compiler (MSVC, clang, icx, gcc) to be independent of the SYCL device compiler.
 					</div>
 				</section>
 				<!--Slide 22-->
