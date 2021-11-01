@@ -101,30 +101,30 @@
 						<div class="col">
 							Sequential CPU code
 							<code><pre>
-void calc(int *in, int *out) {
-  // all iterations are run in the same 
-  // thread in a loop 
-  for (int i = 0; i < 1024; i++){ 
+void calc(const int in[], int out[]) {
+  // all iterations are run in the same
+  // thread in a loop
+  for (int i = 0; i < 1024; i++){
     out[i] = in[i] * in[i];
-  } 
+  }
 }
 
-// calc is invoked just once and all 
-// iterations are performed inline 
+// calc is invoked just once and all
+// iterations are performed inline
 calc(in, out);
 							</code></pre>
 						</div>
 						<div class="col">
 							Parallel SPMD code
 							<code><pre>
-void calc(int *in, int *out, int id) { 
-  // function is described in terms of 
-  // a single iteration 
+void calc(const int in[], int out[], int id) {
+  // function is described in terms of
+  // a single iteration
   out[id] = in[id] * in[id];
 }
 
-// parallel_for invokes calc multiple 
-// times in parallel 
+// parallel_for invokes calc multiple
+// times in parallel
 parallel_for(calc, in, out, 1024);
 
 

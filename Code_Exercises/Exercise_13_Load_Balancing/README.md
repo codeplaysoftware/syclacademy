@@ -9,23 +9,13 @@ a task across two devices.
 
 ---
 
-### 1.) Create a context
+### 1.) Get two devices
 
-Retrieve two devices (if possible from the same platform), and then create
-`context`(s) from those devices.
-
-If both of the devices are from the same platform you can create a single
-`context` from both of the devices.
-
-If the devices are from different platforms you will have to create separate
-`context`s.
-
-Note if you only have one device available you can use the host device or
-use the same device twice
+Get two devices. If only host device is available then both devices may be identical, that is the host device.
 
 ### 2.) Create queues
 
-Then create a `queue` for each of the two devices.
+Then create a `queue` for each of the two devices. 
 
 ### 3. ) Split a task across the two queues
 

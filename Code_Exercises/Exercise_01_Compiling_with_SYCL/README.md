@@ -102,7 +102,7 @@ For ComputeCpp:
 ```sh
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
 make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_01_compiling_with_SYCL/exercise_01_compiling_with_sycl_source
+./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_compiling_with_sycl_source
 ```
 
 
@@ -113,7 +113,7 @@ For hipSYCL:
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
 cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
 make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_01_compiling_with_SYCL/exercise_01_compiling_with_sycl_source
+./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_compiling_with_sycl_source
 ```
 alternatively, without cmake:
 ```sh
