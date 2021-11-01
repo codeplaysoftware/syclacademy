@@ -87,7 +87,7 @@ and invoke the executable.
 
 For For DPC++ (using the Intel DevCloud):
 ```sh
-dpcpp -o sycl-ex-1 -I../External/Catch2/single_include ../Code_Exercises/Exercise_01_compiling_with_SYCL/source.cpp
+dpcpp -o sycl-ex-1 -I../External/Catch2/single_include ../Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
@@ -102,7 +102,7 @@ For ComputeCpp:
 ```sh
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
 make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_01_compiling_with_SYCL/exercise_01_compiling_with_sycl_source
+./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_Compiling_with_sycl_source
 ```
 
 
@@ -113,7 +113,7 @@ For hipSYCL:
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
 cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
 make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_01_compiling_with_SYCL/exercise_01_compiling_with_sycl_source
+./Code_Exercises/Exercise_01_compiling_with_SYCL/exercise_01_Compiling_with_sycl_source
 ```
 alternatively, without cmake:
 ```sh
