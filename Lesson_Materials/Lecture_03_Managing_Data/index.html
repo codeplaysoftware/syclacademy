@@ -350,7 +350,7 @@ gpuQueue.submit([&](handler &cgh){
 gpuQueue.submit([&](handler &cgh){
   auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
   auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
-  auto inO = sycl::accessor{bufO, cgh, sycl::write_only};
+  auto out = sycl::accessor{bufO, cgh, sycl::write_only};
   cgh.single_task&lt;add&gt;([=]{
     <mark>out[0] = inA[0] + inB[0];</mark>
   }); 
