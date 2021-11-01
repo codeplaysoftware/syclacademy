@@ -255,6 +255,20 @@ on the command line as this makes configurating the toolset version easier.
   ],
 ```
 
+## Working on the Exercises
+Once you have a working SYCL compiler, you are ready to start writing some SYCL code. To find the first exercise:
+```
+cd Code_Exercises/Exercise_01_Compiling_with_SYCL/
+```
+And read the README.md for further instructions. 
+
+Each exercise directory contains:
+* ```README.md```, which contains instructions of how to complete a given exercise, as well as directions for compilation.
+* ```source.cpp```, a placeholder file where your code implementation should be written. 
+* ```solution.cpp```, where a solution has been implemented in advance. 
+
+Once you have completed any given exercise make sure to compare your implementation against the corresponding ```solution.cpp```. 
+
 ## Online Interactive Tutorial
 
 Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/introduction-to-sycl/introduction-to-sycl-2) tutorial introduces the concepts of SYCL. The website also provides the ability to compile and execute SYCL code from your web browser.
