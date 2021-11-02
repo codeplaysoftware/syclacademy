@@ -428,7 +428,7 @@ gpuQueue.submit([&](sycl::handler &cgh) {
 
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx) {
-      accB[idx] = /* some computation */
+      accA[idx] = /* some computation */
     });
 });
 
