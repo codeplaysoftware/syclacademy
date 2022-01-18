@@ -12,5 +12,31 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("load_balancing", "load_balancing_source") {
-  REQUIRE(true);
+  constexpr size_t dataSize = 1024;
+  constexpr float ratio = 0.5f;
+  constexpr size_t dataSizeFirst = ratio * dataSize;
+  constexpr size_t dataSizeSecond = dataSize - dataSizeFirst;
+
+  float a[dataSize], b[dataSize], r[dataSize];
+  for (int i = 0; i < dataSize; ++i) {
+    a[i] = static_cast<float>(i);
+    b[i] = static_cast<float>(i);
+    r[i] = 0.0f;
+  }
+
+  // Task: run these two kernels on the SYCL device
+
+  // Vector add for first part
+  for (int i = 0; i < dataSizeFirst; ++i) {
+    r[i] = a[i] + b[i];
+  }
+
+  // Vector add for second part
+  for (int i = 0; i < dataSizeSecond; ++i) {
+    r[dataSizeFirst + i] = a[dataSizeFirst + i] + b[dataSizeFirst + i];
+  }
+
+  for (int i = 0; i < dataSize; ++i) {
+    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
+  }
 }

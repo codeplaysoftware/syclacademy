@@ -12,5 +12,6 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("image_convolution_work_group_sizes", "work_group_sizes_source") {
+  // Use your code from Exercise 18 to start
   REQUIRE(true);
 }

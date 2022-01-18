@@ -12,5 +12,6 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("in_order_queue", "in_order_queue_source") {
+  // Use the Exercise 10 solution to start
   REQUIRE(true);
 }

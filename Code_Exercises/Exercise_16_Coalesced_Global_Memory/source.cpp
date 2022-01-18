@@ -12,5 +12,6 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_source") {
+  // Use your code from Exercise 15 to start
   REQUIRE(true);
 }

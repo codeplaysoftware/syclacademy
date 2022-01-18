@@ -12,5 +12,6 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("image_convolution_vectorized", "vectors_source") {
+  // Use your code from Exercise 16 to start
   REQUIRE(true);
 }
