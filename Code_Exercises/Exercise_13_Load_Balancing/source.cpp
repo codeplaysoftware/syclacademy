@@ -24,7 +24,8 @@ TEST_CASE("load_balancing", "load_balancing_source") {
     r[i] = 0.0f;
   }
 
-  // Task: run these two kernels on the SYCL device
+  // Task: split the total work across two distinct SYCL devices
+  // You might split the work as in the two loops below.
 
   // Vector add for first part
   for (int i = 0; i < dataSizeFirst; ++i) {
