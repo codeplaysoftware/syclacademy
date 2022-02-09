@@ -13,5 +13,9 @@
 
 TEST_CASE("usm_selector", "usm_selector_source") {
 
+  // Task: create a queue to a device which supports USM allocations
+  // Remember to check for exceptions
+  auto usmQueue  = sycl::queue{};
+
   REQUIRE(true);
 }

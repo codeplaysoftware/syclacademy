@@ -12,5 +12,6 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("synchronization", "synchronization_source") {
+  // Use your code from Exercises 6 and 8 to start
   REQUIRE(true);
 }

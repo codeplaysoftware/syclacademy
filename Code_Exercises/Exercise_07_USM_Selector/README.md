@@ -21,7 +21,7 @@ This can be querying for the `aspect::usm_device_allocations` aspect.
 ### 3.) Create a queue
 
 Once you have a device selector which will choose a device which supports USM
-create a `queue` using it to select it's device, remember to handle errors.
+create a `queue` using it to select its device, remember to handle errors.
 
 
 #### Build And Execution Hints

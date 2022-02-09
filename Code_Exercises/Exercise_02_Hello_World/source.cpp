@@ -12,5 +12,11 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("hello_world", "hello_world_source") {
+
+  // Print "Hello World!\n"
+  std::cout << "Hello World!\n";
+
+  // Task: Have this message print from the SYCL device instead of the host
+
   REQUIRE(true);
 }

@@ -12,5 +12,12 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("scalar_add", "scalar_add_source") {
-  REQUIRE(true);
+
+  int a = 18, b = 24, r = 0;
+
+  // Task: Compute a+b on the SYCL device
+  r = a + b;
+
+
+  REQUIRE(r == 42);
 }
