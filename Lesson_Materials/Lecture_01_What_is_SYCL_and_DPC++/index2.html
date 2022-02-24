@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+				</div>
+				<!--Slide 24-->
+				<section data-markdown>
+					## DPC++ for CUDA
+					
+					* DPC++ is the oneAPI SYCL compiler.
+					* Device and host code is written in the same C++ file. (`*.cc, *.cpp`, etc.)
+				</section>
+                                <!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+                                        ## Check your Installation
+					</div>
+					<div class="container" data-markdown>
+* Check for available devices using `sycl-ls`
+					</div>
+<img src="./sycl-ls.png">
+				</section>
+				<!--Slide 27-->
+				<section data-markdown>
+                                        ## Using the DPC++ Compiler
+
+* To compile device code to SPIR-V: 
+    - `clang++ -fsycl myfile.cpp`.
+				</section>
+				<!--Slide 27-->
+				<section data-markdown>
+                                        ## Using the DPC++ Compiler
+
+* To compile device code for the CUDA backend: 
+    - `clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda myfile.cpp`.
+				</section>
+				<!--Slide 27-->
+				<section data-markdown>
+                                        ## Using the DPC++ Compiler
+
+* CUDA Arch flags can be used.
+    - `clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_80 myfile.cpp`.
+				</section>
+                                <!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+                                        ## DPC++ for CUDA 
+                                        Under the Hood
+					</div>
+<img src="./CUDA_compilation.png">
+				</section>
+                                <!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+                                        ## DPC++ for CUDA 
+                                        Under the Hood
+					</div>
+<img src="./CUDA_compilation.png">
+<div class="container" data-markdown>
+* DPC++ compilation subprocesses will be printed if the `-###` compiler flag is used. 
+    - `clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda myfile.cpp -###`
+</div>
+				</section>
+                                <!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+                                        ## DPC++ for CUDA 
+                                        Under the Hood
+					</div>
+<img src="./CUDA_compilation.png">
+<div class="container" data-markdown>
+* Temporary files can be saved by using the `--save-temps` flag. Must be done from within an empty directory.
+    - `clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda ../myfile.cpp --save-temps`
+</div>
+				</section>
+                                <!--Slide 25-->
+                                <!--Slide 25-->
+				<section data-markdown>
+## Specifying the Device at Runtime
+* SYCL_DEVICE_FILTER can be used to select devices at runtime.
+    - `SYCL_DEVICE_FILTER=cuda ./a.out`
+    - `SYCL_DEVICE_FILTER=host ./a.out`
+				</section>
+				<!--Slide 24-->
+				<section data-markdown>
+					## Questions
+				</section>
+				<!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_1_Compiling_with_SYCL/source
+					</div>
+					<div class="container" data-markdown>
+						Configure your environment for using SYCL and compile a source file with the SYCL compiler. Specify the runtime device using `SYCL_DEVICE_FILTER`.
+					</div>
+				</section>
+                                
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
