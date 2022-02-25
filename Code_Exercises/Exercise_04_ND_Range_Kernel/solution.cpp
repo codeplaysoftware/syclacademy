@@ -28,7 +28,7 @@
  * auto e = q.submit([&](sycl::handler &cgh){
  *   sycl::accessor<T, 1, sycl::access::mode::read_write,
  *                  sycl::access::target::local>
- *       local_mem(sycl::range<1>(workgroup_sz), cgh);})
+ *       local_mem(sycl::range<1>(workgroup_sz), cgh);
  *
  *     cgh.parallel_for( ... );
  *   });
