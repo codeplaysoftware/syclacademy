@@ -39,24 +39,16 @@
 #include <iostream>
 
 template <typename T>
-void finite_diff_serial(T *in_array, T *out_array, const size_t sz) {
+void flip_array(T *in_array, T *out_array, const size_t sz) {
   for (auto i = 0u; i < sz; i++) {
-    if (i == 0) {
-      out_array[i] = (in_array[i] + static_cast<T>(0.8) * in_array[i + 1]) / 2;
-    } else if (i == sz - 1) {
-      out_array[i] = (in_array[i] + static_cast<T>(0.8) * in_array[i - 1]) / 2;
-    } else {
-      out_array[i] = (static_cast<T>(0.8) * in_array[i - 1] + in_array[i] +
-                      static_cast<T>(0.8) * in_array[i + 1]) /
-                     3;
-    }
+    out_array[i] = in_array[sz - 1 - i];
   }
 }
 
 template <typename T> void check_arrays(T *a, T *b, const size_t sz, T *eps) {
   for (auto i = 0u; i < sz; i++) {
-    if (abs(a[i] - b[i]) > eps)
-      std::cout << "a[" << i << "] - b[" << i << "] > eps for i = " << i
+    if (a[i] != b[i])
+      std::cout << "a[" << i << "] != b[" << i << "] " 
                 << "\na[i] = " << a[i] << "\tb[i] = " << b[i] << '\n';
   }
 }
@@ -67,7 +59,7 @@ int main() {
 
   float a[dataSize], result1[dataSize], result2[dataSize];
   for (int i = 0; i < dataSize; ++i) {
-    a[i] = static_cast<float>(i % 32);
+    a[i] = static_cast<float>(i);
   }
 
   // Task
@@ -80,19 +72,18 @@ int main() {
 
   // Use q.submit
 
-  // Make a local accessor of size workgroup_sz + 2
+  // Make a local accessor of size workgroup_sz
 
   // Use cgh.parallel_for to define a kernel with an nd_range
 
-  // Within the kernel, load shared memory with values from global memory. be
-  // careful with endpoints.
+  // Within the kernel, load local memory with values from global memory. 
 
-  // Compute the average and store it in dev_result
+  // Store the output from the value in shared memory
 
   // Memcpy back to host
 
-  finite_diff_serial(a, result1, dataSize);
+  flip_array(a, result1, dataSize);
 
   // Check result
-  check_arrays(result1, result2, dataSize, 1e-8f);
+  check_arrays(result1, result2, dataSize);
 }
