@@ -46,11 +46,16 @@ void flip_array(T *in_array, T *out_array, const size_t sz) {
 }
 
 template <typename T> void check_arrays(T *a, T *b, const size_t sz) {
+  bool no_errors = true;
   for (auto i = 0u; i < sz; i++) {
-    if (a[i] != b[i])
+    if (a[i] != b[i]) {
       std::cout << "a[" << i << "] != b[" << i << "] "
                 << "\na[i] = " << a[i] << "\tb[i] = " << b[i] << '\n';
+      no_errors = false;
+    }
   }
+  if (no_errors)
+    std::cout << "Flip completed successfully!\n";
 }
 
 int main() {
@@ -68,9 +73,9 @@ int main() {
 
   // Construct a queue 
 
-  // Allocate memory on device
+  // Allocate memory on device for devPtrIn and devPtrOut
 
-  // Transfer memory to device
+  // Transfer memory to device to devPtrIn
 
   // Use q.submit
 
@@ -78,9 +83,9 @@ int main() {
 
   // Use cgh.parallel_for to define a kernel with an nd_range
 
-  // Within the kernel, load local memory with values from global memory.
+  // Within the kernel, load local memory with values from devPtrIn.
 
-  // Store the flipped array back into global memory
+  // Store the flipped array back into devPtrOut
 
   // Memcpy back to host
 
