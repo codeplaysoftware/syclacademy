@@ -64,7 +64,7 @@ int main() {
 
   // Task
   // ~~~~~
-  // Implement finite_diff_serial in a parallel_for using an nd_range
+  // Implement flip_array in a parallel_for using an nd_range
 
   // Allocate memory on device
 
