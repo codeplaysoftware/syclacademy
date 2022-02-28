@@ -14,6 +14,6 @@ clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda solution.cpp
 
 To run:
 ```
-SYCL_DEVICE_FILTER=somedevice ./a.out
+SYCL_DEVICE_FILTER=cuda ./a.out
 ```
 ---

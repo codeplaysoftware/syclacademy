@@ -59,10 +59,10 @@
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
-					* Learn about queues and how to submit work to them
+					* Learn about queues and how to submit work to them.
 					* Learn how to allocate, transfer and free memory using USM.
-					* Learn how to define kernel functions
-					* Learn about the rules and restrictions on kernel functions
+					* Learn how to define kernel functions.
+					* Learn about the rules and restrictions on kernel functions.
 					* Learn how to print from kernels to the console.
                 </section>
 				<!--Slide 3-->
@@ -168,7 +168,7 @@ T* malloc_device(size_t count, const queue& syclQueue,  const property_list &pro
 						* A USM device allocation is performed by calling one of the `malloc_device` functions.
 						* Both of these functions allocate the specified region of memory on the `device` associated with the specified `queue`.
 						* The pointer returned is only accessible in a kernel function running on that `device`.
-						* Synchronous exception if the device does not have aspect::usm_device_allocations
+						* Synchronous exception if the device does not have aspect::usm_device_allocations.
 						* This is a blocking operation.
 						* Calls the underlying `cudaMalloc` if using CUDA backend.
 					</div>

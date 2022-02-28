@@ -9,7 +9,7 @@
  * auto q = sycl::queue{};
  *
  * // Allocate device memory
- * auto * devPtr = malloc_device<T>(mycount, q);
+ * auto * devPtr = malloc_device<int>(mycount, q);
  *
  * // Memcpy
  * auto event1 = q.memcpy(dst, src, sizeof(T)*n, {dep_event1, dep_event2});
@@ -18,7 +18,10 @@
  * sycl::free(ptr, q);
  *
  * // single task
- * auto event2 = q.single_task(global_range, {event1, event2}, lambda);
+ * auto event1 = q.single_task({event1, event2}, lambda);
+ * auto event2 = q.single_task({event1, event2}, [=]() {
+ *  devPtrA[0] = devPtrB[0] * 78;
+ * });
  *
  * Make sure to call `wait` or explicitly pass dependent events
  */

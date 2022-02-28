@@ -4,12 +4,12 @@ The purpose of this exercise is to compile some SYCL code.
 
 Write a simple code using the examples in `solution.cpp` and compile with
 ```
-clang++ -fsycl solution.cpp
+clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda solution.cpp
 ```
 
 Try to run the code on different devices using 
 ```
-SYCL_DEVICE_FILTER=somedevice ./a.out
+SYCL_DEVICE_FILTER=cuda ./a.out
 ```
 
 Use the quick reference guide in `solution.cpp` to output the device name
