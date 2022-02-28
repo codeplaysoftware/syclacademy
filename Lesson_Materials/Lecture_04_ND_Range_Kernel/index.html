@@ -385,7 +385,7 @@ q.submit([&](sycl::handler &cgh) {
 						<div class="col" data-markdown>
 							* SYCL local memory is called shared memory in CUDA.
 							* To use local memory you must use an accessor. This is compatible with USM or `buffer/accessor` memory mode This is compatible with USM or `buffer/accessor` memory model.
-							* Instead of directly enqueueing tasks to the `queue`, you must `submit` tasks, and use the `sycl::handler` to take care of memory accesses, as well as `single_task` or `parallel_for` submissions.
+							* Instead of directly enqueueing tasks to the `queue`, you must `submit` a command group, and use the `sycl::handler` to allocate the local memory, and invoke `single_task` or `parallel_for` from the `sycl::handler`.
 							* You can only have one command (`memcpy`, `single_task`, `parallel_for`, ...) within each `submit`.
 						</div>
 					</div>
