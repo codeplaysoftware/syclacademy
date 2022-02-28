@@ -66,6 +66,8 @@ int main() {
   // ~~~~~
   // Implement flip_array in a parallel_for using an nd_range
 
+  // Construct a queue 
+
   // Allocate memory on device
 
   // Transfer memory to device
