@@ -3,7 +3,7 @@
 This exercise aims to give an intro to ND ranges and a first example
 of shared memory usage.
 
- ---
+---
 
 Compile with 
 
