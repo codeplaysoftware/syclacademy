@@ -80,7 +80,7 @@ int main() {
 
   // Within the kernel, load local memory with values from global memory.
 
-  // Store the output from the value in shared memory
+  // Store the flipped array back into global memory
 
   // Memcpy back to host
 
