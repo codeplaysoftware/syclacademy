@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox" data-markdown>
+					## Debugging and Profiling
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn some tips to help debug in SYCL.
+					* Learn how to profile SYCL code for CUDA backend.
+					* Learn about coalesced global memory access.
+					* Learn some optimization tips.
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL exceptions
+					</div>
+					<div class="section" data-markdown>
+						* In SYCL errors are handled by throwing exceptions.
+						* It is crucial that these errors are handled,
+							otherwise your application could fail in unpredictable ways.
+						* In SYCL there are two kinds of error:
+						  * Synchronous errors (thrown in user thread) .
+						  * Asynchronous errors (thrown by the SYCL scheduler).
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL exceptions
+					</div>
+					<div class="section" data-markdown>
+					* Asynchronous SYCL exceptions will only appear when `wait()` is called on a queue or event.
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Debugging Strategies
+					</div>
+					<div class="section" data-markdown>
+						* If using default constructed queues, use `SYCL_DEVICE_FILTER` to run code on the host. 
+						* `SYCL_QUEUE_THREAD_POOL_SIZE=1` also ensures that kernel code is executing completely serially.
+						* Standard tools like GDB (compile with `-g`), valgrind can be used to debug SYCL code.
+						* In-kernel `printf`s are a great way to debug code from device.
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Debugging Strategies
+					</div>
+					<div class="hbox" data-markdown>
+							<code><pre>
+SYCL_DEVICE_FILTER=host SYCL_QUEUE_THREAD_POOL_SIZE=1 gdb ./a.out
+SYCL_DEVICE_FILTER=host SYCL_QUEUE_THREAD_POOL_SIZE=1 valgrind ./a.out
+							</code></pre>
+							</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						* Memory access patterns can significantly affect performance. 
+						* Especially important when reading or writing to global memory.
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_3.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_4.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_5.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_6.png "SYCL")
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Caution: Index Flipping
+					</div>
+					<div class="hbox" data-markdown>
+						* SYCL ranges, nd_ranges are row major.
+						* In SYCL, for some kind of 2 dimensional range, a workitem with `sycl::id(i, j)` is neighbors with a workitem with `sycl::id(i, j+1)`.
+						* This is unlike CUDA, where threads `(i, j)` and `(i+1, j)` are neighbors.
+						* Calculating a linear index manually is not recommended. Better to use `get_local_linear_id()`, `get_global_linear_id()`.
+						</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row major data, column major memory access
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./rowcol.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row major data, row major memory access
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./rowcol2.png "SYCL")
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Optimization Strategies
+					</div>
+					<div class="hbox" data-markdown>
+						* Test different work group sizes
+						* Minimize memory transfers.
+						* Prefer `malloc_device` over `malloc_shared`.
+						* Inline functions called from kernels.
+						* Use local memory where possible.
+						* Keep work groups converged where possible.
+						* Use the `sycl::native` namespace (e.g. `sycl::native::sin`), if the native accuracy is tolerable.
+							</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Profiling SYCL code
+					</div>
+					<div class="hbox" data-markdown>
+						TODO use this
+							</div>
+				</section>
+				<!--Slide 25-->
+				<section class="hbox" data-markdown>
+					## Questions
+				</section>
+				<!--Slide 26-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_04_ND_Range_Kernel/source
+					</div>
+					<div class="container" data-markdown>
+						Implement a SYCL application that will reverse the order of an array using `parallel_for`, with an ND range and local memory.
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+	Reveal.initialize();
+	Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>

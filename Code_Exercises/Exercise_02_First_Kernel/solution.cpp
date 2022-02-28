@@ -15,7 +15,7 @@
  * auto event1 = q.memcpy(dst, src, sizeof(T)*n, {dep_event1, dep_event2});
  *
  * // Free memory
- * free(ptr);
+ * sycl::free(ptr, q);
  *
  * // single task
  * auto event2 = q.single_task(global_range, {event1, event2}, lambda);

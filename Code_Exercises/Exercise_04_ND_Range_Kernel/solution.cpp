@@ -15,7 +15,7 @@
  * auto event1 = q.memcpy(dst, src, sizeof(T)*n, {dep_event1, dep_event2});
  *
  * // Free memory
- * free(ptr);
+ * sycl::free(ptr, q);
  *
  * // ND range
  * auto my_nd = nd_range(sycl::range(global_range), sycl::range(wkgroup_sz));
@@ -45,10 +45,10 @@ void flip_array(T *in_array, T *out_array, const size_t sz) {
   }
 }
 
-template <typename T> void check_arrays(T *a, T *b, const size_t sz, T *eps) {
+template <typename T> void check_arrays(T *a, T *b, const size_t sz) {
   for (auto i = 0u; i < sz; i++) {
     if (a[i] != b[i])
-      std::cout << "a[" << i << "] != b[" << i << "] " 
+      std::cout << "a[" << i << "] != b[" << i << "] "
                 << "\na[i] = " << a[i] << "\tb[i] = " << b[i] << '\n';
   }
 }
@@ -76,7 +76,7 @@ int main() {
 
   // Use cgh.parallel_for to define a kernel with an nd_range
 
-  // Within the kernel, load local memory with values from global memory. 
+  // Within the kernel, load local memory with values from global memory.
 
   // Store the output from the value in shared memory
 

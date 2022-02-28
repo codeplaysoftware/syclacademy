@@ -15,7 +15,7 @@
  * auto event1 = q.memcpy(dst, src, sizeof(T)*n, {dep_event1, dep_event2});
  *
  * // Free memory
- * free(ptr);
+ * sycl::free(ptr, q);
  *
  * // parallel_for
  * auto event2 = q.parallel_for(global_range, {event1, event2}, lambda);
@@ -48,9 +48,12 @@ int main() {
   // Transfer memory back to device
 
   // Check result
+  bool correct_result = true;
   for (int i = 0; i < dataSize; ++i) {
     if (r[i] != static_cast<float>(i) * 2.0f) {
-      std::cout << "r[i] != i * 2 for i = " << i << "r[i] = " << r[i] << '\n';
+      std::cout << "r[i] != i * 2 for i = " << i << "\tr[i] = " << r[i] << '\n';
+      correct_result = false;
     }
   }
+  if (correct_result) std::cout << "Got correct result!\n";
 }
