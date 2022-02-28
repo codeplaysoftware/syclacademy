@@ -25,4 +25,3 @@ SYCL_DEVICE_FILTER=cuda ./a.out
 elements in memory.
 * Inline functions when possible.
 * Check different workgroup sizes and choose an optimal workgroup size.
-* 
