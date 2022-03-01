@@ -1,4 +1,4 @@
-# Exercise 6: Vector Add
+# Exercise 3: Vector Add
 
 ---
 
