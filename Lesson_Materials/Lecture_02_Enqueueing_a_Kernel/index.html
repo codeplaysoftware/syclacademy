@@ -1,0 +1,529 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+				</div>
+				<!--Slide 1-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Enqueuing a Kernel
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about queues and how to submit work to them.
+					* Learn how to allocate, transfer and free memory using USM.
+					* Learn how to define kernel functions.
+					* Learn about the rules and restrictions on kernel functions.
+					* Learn how to print from kernels to the console.
+                </section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The queue
+					</div>
+					<div class="container" data-markdown>
+						* In SYCL all work is submitted via commands to a `queue`.
+						* The `queue` has an associated device that any commands enqueued to it will target.
+						* There are several different ways to construct a `queue`.
+						* The most straight forward is to default construct one.
+						* This will have the SYCL runtime choose a device for you.
+					</div>
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### The queue
+					</div>
+					<div class="container" data-markdown>
+						* The SYCL specification says that work submitted to a given `queue`, can be executed in any given order.
+						* It is necessary to define a given task's dependencies, or call `wait()` on `sycl::event`s returned from enqueued tasks.
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Constructing Queues
+					</div>
+					<div class="container">
+						<code class="code"><pre>
+int main() {
+  
+  // Constructs a queue with a default device. 
+  // Device can be specified at runtime using 
+  // SYCL_DEVICE_FILTER
+  auto q1 = sycl::queue{}; 
+
+  // Constructs a queue with a gpu, if one is available. 
+  // Throws a runtime error if no gpus available
+  auto q2 = sycl::queue{gpu_selector{}};
+
+  std::cout &lt;&lt; "q1 using device " 
+    &lt;&lt; q1.get_device().get_info&lt;sycl::info::device::name&gt;() 
+    &lt;&lt; '\n';
+  
+  std::cout &lt;&lt; "q2 using device " 
+    &lt;&lt; q2.get_device().get_info&lt;sycl::info::device::name&gt;() 
+    &lt;&lt; '\n';
+        
+}
+                                                        </pre></code>
+					</div>
+                                </section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Memory Models
+					</div>
+					<div class="container" data-markdown>
+						* In SYCL there are two models for managing data:
+						  * The buffer/accessor model.
+						  * The USM (unified shared memory) model.
+						* Which model you choose can have an effect on how you enqueue kernel functions.
+						* For now we are going to focus on the USM model.
+					</div>
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### USM Types
+					</div>
+					<div class="container" data-markdown>
+						* There are different ways USM memory can be allocated; host, device and shared.
+						* We're going to focus on explicit USM, with shared and device allocations.
+					</div>
+				</section>
+				<!--Slide 3A-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### USM Allocation Types
+					</div>
+					<div class="container"data-markdown>
+					  ![SYCL](./Figure6-1bookUSMtypes.png "SYCL")
+					  (from book)
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Malloc_device
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void* malloc_device(size_t numBytes, const queue& syclQueue, const property_list &propList = {});
+
+template &lt;typename T&gt;
+T* malloc_device(size_t count, const queue& syclQueue,  const property_list &propList = {});
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* A USM device allocation is performed by calling one of the `malloc_device` functions.
+						* Both of these functions allocate the specified region of memory on the `device` associated with the specified `queue`.
+						* The pointer returned is only accessible in a kernel function running on that `device`.
+						* Synchronous exception if the device does not have aspect::usm_device_allocations.
+						* This is a blocking operation.
+						* Calls the underlying `cudaMalloc` if using CUDA backend.
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Malloc_shared
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void* malloc_shared(size_t numBytes, const queue& syclQueue, const property_list &propList = {});
+
+template &lt;typename T&gt;
+T* malloc_shared(size_t count, const queue& syclQueue,  const property_list &propList = {});
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* Both of these functions allocate the specified region of memory on the `device` associated with the specified `queue`, as well as host.
+						* The pointer returned is accessible in CPU code as well as `device` kernel code, for the `device` attached to the `queue`.
+						* Synchronous exception if the device does not have aspect::usm_device_allocations
+						* This is a blocking operation.
+						* Calls the underlying `cudaMallocManaged` if using CUDA backend.
+						* Convenient API but potentially slower than `malloc_device` with explicit `memcpy`s.
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Free
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void free(void* ptr, queue& syclQueue);
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* In order to prevent memory leaks USM device allocations must be free by calling the `free` function.
+						* The `queue` must be the same as was used to allocate the memory.
+						* This is a blocking operation.
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Memcpy
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vector<event> &depEvents);
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* Data can be copied to and from a USM device allocation by calling the `queue`'s `memcpy` member function.
+						* The source and destination can be either a host application pointer or a USM device allocation.
+						* This is an asynchronous operation enqueued to the `queue`.
+						* An `event` is returned which can be used to synchronize with the completion of copy operation.
+						* May depend on other events via `depEvents`
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Memset & fill
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+event queue::memset(void* ptr, int value, size_t numBytes, const std::vector<event> &depEvents);
+
+event queue::fill(void* ptr, const T& pattern, size_t count, const std::vector<event> &depEvents);
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* The additional `queue` member functions `memset` and `fill` provide operations for initializing the data of a USM device allocation.
+						* The member function `memset` initializes each byte of the data with the value interpreted as an unsigned char.
+						* The member function `fill` initializes the data with a recurring pattern.
+						* These are also asynchronous operations.
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Enqueueing a Kernel
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+template &lt;typename KernelName, typename KernelType&gt;
+event queue::single_task(const KernelType &KernelFunc);
+
+template &lt;typename KernelName, typename KernelType, int Dims&gt;
+event queue::parallel_for(range&lt;Dims&gt; GlobalRange, const KernelType &KernelFunc);
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* Kernels take the form of function objects or Lambdas.
+						* The `queue` provides member functions which allow you to invoke a `single_task` or a `parallel_for`.
+						* These can only be used when using the USM data management model.
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Putting it all together - SHARED USM
+					</div>
+					<div class="container" data-markdown>
+						We start with a basic SYCL application which used shared USM and invokes a kernel function with `single_task`.
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+T square_number(T x){
+  	
+  auto q = sycl::queue{};
+
+  T * sharedPtr = malloc_shared&lt;T&gt;(1, q);
+  sharedPtr[0] = x;
+  
+  q.single_task([=](){
+      (*sharedPtr) *= (*sharedPtr);
+    });
+  }).wait();
+
+  return sharedPtr[0];
+}
+						</pre></code>
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Putting it all together - MALLOC DEVICE
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+int square_number(T x){
+	
+  auto q = sycl::queue{};
+
+  <mark>auto *devicePtr = malloc_device&lt;T&gt;(1, myQueue);</mark>
+  
+  q.memcpy(devicePtr, &x, sizeof(T));
+
+  q.single_task([=](){
+      (*devicePtr) *= (*DevicePtr);
+  });
+
+  q.memcpy(&x, devicePtr, sizeof(T));
+  
+  return x;
+}
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						We allocate USM device memory by calling `malloc_device`.
+						Here we use the template variant and specify type `int`.
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Putting it all together - Managing Dependencies
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+int square_number(T x){
+	
+  auto q = sycl::queue{};
+
+  auto *devicePtr = malloc_device&lt;T&gt;(1, myQueue);
+  
+  q.memcpy(devicePtr, &x, sizeof(T))<mark>.wait()</mark>;
+
+  q.single_task([=](){
+      (*devicePtr) *= (*DevicePtr);
+    });
+  })<mark>.wait()</mark>;
+
+  q.memcpy(&x, devicePtr, sizeof(T))<mark>.wait()</mark>;
+  
+  return x;
+}
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+					* Since operations like `memcpy`, `single_task`, and `parallel_for` execute asynchronously, it is important to ensure that tasks have completed before their results are needed.
+					* Using `wait()` will only allow for sequential execution of tasks in a queue. DAG only one task wide.
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Putting it all together - Managing Dependencies
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+int square_number(T x){
+	
+  auto q = sycl::queue{};
+
+  auto *devicePtr = malloc_device&lt;T&gt;(1, myQueue);
+  
+  auto e1 = q.memcpy(devicePtr, &x, sizeof(T));
+
+  auto e2 = q.single_task(<mark>{e1}</mark>, [=](){
+      (*devicePtr) *= (*DevicePtr);
+    });
+
+  auto e3 = q.memcpy(&x, devicePtr, sizeof(T), <mark>{e2}</mark>);
+  
+  e3.<mark>.wait()</mark>;
+  
+  return x;
+}
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+					* You can also define an operation's dependent events, which allows construction of any execution DAG. This allows for concurrent execution of tasks.
+					</div>
+				</section>
+				<section>
+					<div class="container" data-markdown>
+					## Control Flow
+					* Here we can see the control flow difference between synchronizing using `wait()` and using explicit dependencies.
+					</div>
+					<img src="./dags.png">
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL kernel function rules
+					</div>
+					<div class="container" data-markdown>
+						* Must be defined using a C++ lambda or function object, they cannot be a function pointer or std::function.
+						* Must always capture or store members by-value.
+						* SYCL kernel functions declared with a lambda must be named using a forward declarable C++ type, declared in global scope.
+						* SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name.
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL kernel function restrictions
+					</div>
+					<div class="container" data-markdown>
+						* No dynamic allocation
+						* No dynamic polymorphism
+						* No function pointers
+						* No recursion
+					</div>
+				</section>
+				<!--Slide 18-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Kernels as function objects
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+sycl::queue gpuQueue;
+gpuQueue.single_task([=]() {
+    /* kernel code */
+}).wait();
+							</pre></code>
+						</div>
+						<div class="col" data-markdown>
+							* All the examples of SYCL kernel functions up until now have been defined using lambda expressions.
+						</div>
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Kernels as function objects
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+struct my_kernel { 
+  void operator()(){ 
+    /* kernel function */
+  }
+};
+							</pre></code>
+						</div>
+						<div class="col" data-markdown>
+							* As well as defining SYCL kernels using lambda expressions,
+								You can also define a SYCL kernel using a regular C++ function object.
+						</div>
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Kernels as function objects
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+struct my_kernel { 
+  void operator()(){ 
+    /* kernel function */
+  }
+};
+							</pre></code>
+							<code><pre>
+sycl::queue gpuQueue;
+gpuQueue.single_task(<mark>my_kernel{}</mark>).wait();
+							</pre></code>
+						</div>
+						<div class="col" data-markdown>
+							* To use a C++ function object you simply construct an instance of the type and pass it to `single_task`.
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Kernel Printf
+					</div>
+					<div class="container" data-markdown>
+						* DPC++ provides an extension to allow in-kernel `printf`s. This is useful for debugging.
+					</div>
+				</section>
+				<!--Slide 23-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Kernel Printf
+					</div>
+					<div class="container">
+							<code><pre>
+sycl::queue gpuQueue;
+gpuQueue.single_task([=]() {
+	printf("Hello, World!\n");
+}).wait();
+							</pre></code>
+					</div>
+				</section>
+				<!--Slide 23-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_2_Hello_World/source.cpp
+					</div>
+					<div class="container" data-markdown>
+						Implement a SYCL application which enqueues a kernel function to a device and streams "Hello world!" to the console.
+					</div>
+				</section>
+			</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>

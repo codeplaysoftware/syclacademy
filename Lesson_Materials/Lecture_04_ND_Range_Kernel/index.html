@@ -1,0 +1,501 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox" data-markdown>
+					## ND Range Kernels
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about the SYCL execution and memory model
+					* Learn how to enqueue an nd-range kernel functions
+					* Learn how to use local memory.
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col-left" data-markdown>
+							* SYCL kernel functions are executed by **work-items**
+							* You can think of a work-item as a thread of execution
+							* Each work-item will execute a SYCL kernel function from start to end
+							* A work-item can run on CPU threads, SIMD lanes, GPU threads, or any other kind of processing element
+						</div>
+						<div class="col-right" data-markdown>
+							![Work Item](../common-revealjs/images/workitem.png "Work-Item")
+						</div>
+
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Work-items are collected together into **work-groups**
+							* The size of work-groups is generally relative to what is optimal on the device being targeted
+							* It can also be affected by the resources used by each work-item
+						</div>
+						<div class="col" data-markdown>
+							![Work Group](../common-revealjs/images/workgroup.png "Work-Group")
+						</div>
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* SYCL kernel functions are invoked within an **nd-range**
+							* An nd-range has a number of work-groups and subsequently a number of work-items
+							* Work-groups always have the same number of work-items
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/ndrange.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* The nd-range describes an **iteration space**; how the work-items and work-groups are composed
+							* An nd-range can be 1, 2 or 3 dimensions
+							* An nd-range has two components
+							  * The **global-range** describes the total number of workitems in each dimension
+							  * The **local-range** describes the number of work-items in a work-group in each dimension
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/ndrange-example.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Each invocation in the iteration space of an nd-range is a work-item
+							* Each invocation knows which work-item it is on and can query certain information about its position in the nd-range
+							* Each work-item has the following:
+							  * **Global range**: {12, 12}
+							  * **Global id**: {6, 5}
+							  * **Group range**: {3, 3}
+							  * **Group id**: {1, 1}
+							  * **Local range**: {4, 4}
+							  * **Local id**: {2, 1}
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/ndrange-example-work-item.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							Typically an nd-range invocation SYCL will execute the SYCL kernel function on a very large number of work-items, often in the thousands
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/ndrange-invocation.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Multiple work-items will generally execute concurrently
+							* On vector hardware this is often done in lock-step, which means the same hardware instructions
+							* The number of work-items that will execute concurrently can vary from one device to another
+							* Work-items will be batched along with other work-items in the same work-group
+							* The order work-items and workgroups are executed in is implementation defined
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/ndrange-lock-step.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Work-items in a work-group can be synchronized using a work-group barrier
+							  * All work-items within a work-group must reach the barrier before any can continue on
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/work-group-0.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* SYCL does not support synchronizing across all work-items in the nd-range
+							* The only way to do this is to split the computation into separate SYCL kernel functions
+						</div>
+						<div class="col" data-markdown>
+							![ND-Range](../common-revealjs/images/work-group-0-1.png "ND-Range")
+						</div>
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL memory model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Each work-item can access a dedicated region of **private memory**
+							* A work-item cannot access the private memory of another work-item
+						</div>
+						<div class="col" data-markdown>
+							![Private Memory](../common-revealjs/images/workitem-privatememory.png "Private Memory")
+						</div>
+
+					</div>
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL memory model
+					</div>
+					<div class="container">
+						<div class="col-left-3" data-markdown>
+							![Local Memory](../common-revealjs/images/workitem-localmemory.png "Local Memory")
+						</div>
+						<div class="col-right-2" data-markdown>
+							* Each work-item can access a dedicated region of **local memory** accessible to all work-items in a work-group
+							* A work-item cannot access the local memory of another workgroup
+						</div>
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL memory model
+					</div>
+					<div class="container">
+						<div class="col-left-3" data-markdown>
+							![Constant Memory](../common-revealjs/images/workitem-constantmemory.png "Constant Memory")
+						</div>
+						<div class="col-right-2" data-markdown>
+							* Each work-item can access a single region of **global memory** that's accessible to all work-items in a ND-range
+							* Each work-item can also access a region of global memory reserved as **constant memory**, which is read-only
+						</div>
+
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL memory model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Each memory region has a different size and access latency 
+							* Global / constant memory is larger than local memory and local memory is larger than private memory
+							* Private memory is faster than local memory and local memory is faster than global / constant memory
+						</div>
+						<div class="col" data-markdown>
+							![Memory Regions](../common-revealjs/images/memory-regions.png "Memory Regions")
+						</div>
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Expressing parallelism
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+							
+q.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
+  [=](<mark>id&lt1&gt idx</mark>){
+    /* kernel function code */
+});
+							</code></pre>
+							<code><pre>
+							
+q.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
+  [=](<mark>item&lt1&gt item</mark>){
+    /* kernel function code */
+});
+							</code></pre>
+							<code><pre>
+							
+q.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024), 
+  range&lt1&gt(32))</mark>,[=](<mark>nd_item&lt1&gt ndItem</mark>){
+    /* kernel function code */
+});
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Overload taking a **range** object specifies the global range, runtime decides local range
+							* An **id** parameter represents the index within the global range
+							____________________________________________________________________________________________
+							* Overload taking a **range** object specifies the global range, runtime decides local range
+							* An **item** parameter represents the global range and the index within the global range
+							____________________________________________________________________________________________
+							* Overload taking an **nd_range** object specifies the global and local range
+							* An **nd_item** parameter represents the global and local range and index
+						</div>
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Expressing parallelism
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+auto global_range=sycl::range&lt;2&gt;<mark>(1024, 64)</mark>;
+auto wkgroup_sz=sycl::range&lt;2&gt;<mark>(64, 64)</mark>;
+
+// <mark>OK</mark> - local range divides global range 
+// component wise
+auto my_nd = sycl::ndrange(global_range, wkgroup_sz); 
+
+q.parallel_for&ltkernel&gt(my_nd,[=](<mark>nd_item&lt1&gt ndItem</mark>){
+    /* kernel function code */
+});
+							</code></pre>
+							<code><pre>
+auto global_range=sycl::range&lt;2&gt;<mark>(1000)</mark>;
+auto wkgroup_sz=sycl::range&lt;2&gt;<mark>(64)</mark>;
+
+// <mark>Not OK</mark> - local range doesn't divide divide 
+// global range component-wise
+auto my_nd = sycl::ndrange(global_range, wkgroup_sz); 
+
+q.parallel_for&ltkernel&gt(my_nd,[=](<mark>nd_item&lt1&gt ndItem</mark>){
+    /* kernel function code */
+});
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* On most hardware, `global_range[i]` must be a multiple of `local_range[i]`.
+							* For Nvidia hardware, workgroup sizes are best chosen from 8, 16, 32, 64, 128, 256, 512, 1024.
+						</div>
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Using Local Memory
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+
+q.submit([&](sycl::handler &cgh) {
+  
+  // Local memory is declared using accessors 
+  // with the template parameter
+  // sycl::access::target::local
+  sycl::accessor&lt;T, 1, 
+    sycl::access::mode::read_write, 
+    <mark>sycl::access::target::local&gt;</mark>
+    local_mem(sycl::range<1>(local_mem_sz), 
+  	cgh);  
+
+  cgh.parallel_for(my_ndrange, my_depEvs, 
+    my_kernel);
+});
+							
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* SYCL local memory is called shared memory in CUDA.
+							* To use local memory you must use an accessor. This is compatible with USM or `buffer/accessor` memory mode This is compatible with USM or `buffer/accessor` memory model.
+							* Instead of directly enqueueing tasks to the `queue`, you must `submit` a command group, and use the `sycl::handler` to allocate the local memory, and invoke `single_task` or `parallel_for` from the `sycl::handler`.
+							* You can only have one command (`memcpy`, `single_task`, `parallel_for`, ...) within each `submit`.
+						</div>
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Using Local Memory
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+
+q.submit([&](sycl::handler &cgh) {
+  
+  // Local memory is declared using accessors 
+  // with the template parameter
+  // sycl::access::target::local
+  sycl::accessor&lt;T, 1, 
+    sycl::access::mode::read_write, 
+    <mark>sycl::access::target::local&gt;</mark>
+    local_mem(sycl::range<1>(local_mem_sz), 
+  	cgh);  
+
+  cgh.parallel_for(my_ndrange, my_depEvs, [=](sycl::nd_item i) {
+	  
+	  local_mem[5] = /* */
+
+  }
+  });
+});
+							
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* You can treat accessors like pointers from within kernels. Use the `[]` operator.
+						</div>
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### ND_item member functions
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+
+q.submit([&](sycl::handler &cgh) {
+  
+  // Local memory is declared using accessors 
+  // with the template parameter
+  // sycl::access::target::local
+  sycl::accessor&lt;T, 1, 
+    sycl::access::mode::read_write, 
+    <mark>sycl::access::target::local&gt;</mark>
+    local_mem(sycl::range<1>(local_mem_sz), 
+  	cgh);  
+
+  cgh.parallel_for(my_ndrange, my_depEvs, [=](sycl::nd_item i) {
+	  
+	  // ND item member functions
+	  auto globalIdx = i.<mark></mark>get_global_linear_id()</mark>;
+	  auto localIdx = i.<mark></mark>get_local_linear_id()</mark>;
+	  auto groupIdx = i.<mark></mark>get_local_linear_id()</mark>;
+	  
+	  local_mem[localIdx] = /* */
+
+	  i.<mark>barrier()</mark>;
+
+  }
+  });
+});
+							
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Some useful member functions of `nd_item` include:
+							    * `get_global_linear_id()`
+							    * `get_local_linear_id()`
+							    * `get_group_linear_id()`
+							    * `barrier()`
+						</div>
+					</div>
+				</section>
+				<!--Slide 25-->
+				<section class="hbox" data-markdown>
+					## Questions
+				</section>
+				<!--Slide 26-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_04_ND_Range_Kernel/source.cpp
+					</div>
+					<div class="container" data-markdown>
+						Implement a SYCL application that will reverse the order of an array using `parallel_for`, with an ND range and local memory.
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+	Reveal.initialize();
+	Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
