@@ -1,4 +1,4 @@
-# Exercise 2: First SYCL kernels. Using depencies.
+# Exercise 2: First SYCL kernels. Using dependencies.
 
 This exercise aims to give an intro to USM functions, single tasks, as well 
 as the concept of data dependencies and synchronization.
