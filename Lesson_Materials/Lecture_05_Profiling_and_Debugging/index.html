@@ -108,6 +108,10 @@ SYCL_DEVICE_FILTER=host SYCL_QUEUE_THREAD_POOL_SIZE=1 valgrind ./a.out
 							</code></pre>
 							</div>
 				</section>
+				<!--Slide 1-->
+				<section class="hbox" data-markdown>
+					## Optimization
+				</section>
 				<!--Slide 6-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -202,8 +206,34 @@ SYCL_DEVICE_FILTER=host SYCL_QUEUE_THREAD_POOL_SIZE=1 valgrind ./a.out
 						#### Profiling SYCL code
 					</div>
 					<div class="hbox" data-markdown>
-						TODO use this
-							</div>
+					* Standard Nvidia CLI tools are still available.
+					* For complex code, it is beneficial to name individual kernels.
+					  * `q.parallel_for&lt;class my_reduce_kernel&gt;(...)`
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### NSYS
+					</div>
+					<div class="hbox" data-markdown>
+					* Can be used for tracing.
+					* For timings, use:
+						* `nsys-profile --stats=true ./a.out`
+					</div>
+					<img src="./nsys.png">
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### NCU
+					</div>
+					<div class="container">
+					<div class="col" data-markdown>
+					* Can be used for detailed kernel analysis.
+					* Example command:
+						* `ncu --log-file my_ncu_output.csv --print-kernel-base mangled --details-all --csv ./a.out`
+					</div>
+					<div class="col">
+					<img src="./ncu.png"></div></div>
 				</section>
 				<!--Slide 25-->
 				<section class="hbox" data-markdown>
