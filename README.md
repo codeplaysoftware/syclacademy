@@ -19,10 +19,11 @@ learning about SYCL below are a list of useful resources:
 
 ### How to use the Materials
 
-To use these materials simply clone this repository including the required submodules.
+This branch contains specific materials for the NERSC Perlmutter workshop.
+To use these materials simply clone this repository with the correct branch.
 
 ```
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
+git clone --recursive --branch perlmutter-workshop https://github.com/codeplaysoftware/syclacademy.git
 ```
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
@@ -62,9 +63,6 @@ matter.
 Each of the lessons are designed to be self contained modules in order to
 support both academic and training style teaching environments. 
 
-A playlist of video content is [also available][video-playlist]. Though note that these
-slides and exercises may have changed since these videos were created so they
-may not match completely.
 
 | Lesson | Title | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
 |--------|-------|--------|----------|--------|----------|------------|-------|---------|
