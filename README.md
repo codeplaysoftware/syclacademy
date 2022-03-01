@@ -120,7 +120,7 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-1-source]: ./Code_Exercises/Exercise_01_Hello_SYCL/source.cpp
 [lesson-1-solution]: ./Code_Exercises/solutions/ex1_solution.cpp
 
-[lesson-2-slides]: ./Lesson_Materials/Lecture_02_Enqueuing_a_Kernel/
+[lesson-2-slides]: ./Lesson_Materials/Lecture_02_Enqueueing_a_Kernel/
 [lesson-2-exercise]: ./Code_Exercises/Exercise_02_First_Kernel/README.md
 [lesson-2-source]: ./Code_Exercises/Exercise_02_First_Kernel/source.cpp
 [lesson-2-solution]: ./Code_Exercises/solutions/ex2_solution.cpp
