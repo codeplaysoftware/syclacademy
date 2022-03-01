@@ -9,7 +9,7 @@ results to another array in parallel using `parallel_for`.
 
 To compile:
 ```
-clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda solution.cpp
+clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda source.cpp
 ```
 
 To run:

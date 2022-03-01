@@ -10,7 +10,7 @@ heuristics to make code run faster.
 Compile with 
 
 ```
-clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda solution.cpp
+clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda source.cpp
 ```
 
 To run:
