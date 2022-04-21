@@ -23,7 +23,6 @@
 #include <benchmark.h>
 #include <image_conv.h>
 
-
 class image_convolution;
 
 inline constexpr util::filter_type filterType = util::filter_type::blur;
@@ -31,10 +30,8 @@ inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
 TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
-  const char* inputImageFile =
-      "../Images/dogs.png";
-  const char* outputImageFile =
-      "../Images/blurred_dogs.png";
+  const char *inputImageFile = "../Images/dogs.png";
+  const char *outputImageFile = "../Images/blurred_dogs.png";
 
   auto inputImage = util::read_image(inputImageFile, halo);
 
@@ -85,7 +82,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
 
       util::benchmark(
           [&]() {
-            myQueue.submit([&](sycl::handler& cgh) {
+            myQueue.submit([&](sycl::handler &cgh) {
               auto inputAcc =
                   inBufVec.get_access<sycl::access::mode::read>(cgh);
               auto outputAcc =
@@ -101,31 +98,31 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {
                     auto globalId = item.get_global_id();
-                    globalId = sycl::id{globalId[1], globalId[0]};
+                    auto groupId = item.get_group().get_group_id();
                     auto localId = item.get_local_id();
+                    auto globalGroupOffset = groupId * localRange;
 
-                    auto haloOffset = sycl::id(halo, halo);
-                    auto src = (globalId + haloOffset);
-                    auto dest = globalId;
-                    auto temp = localId + halo;
+                    for (auto i = localId[0]; i < scratchpadRange[0];
+                         i += localRange[0]) {
+                      for (auto j = localId[1]; j < scratchpadRange[0];
+                           j += localRange[1]) {
+                        scratchpad[i][j] =
+                            inputAcc[globalGroupOffset + sycl::range(i, j)];
+                      }
+                    }
 
-                    scratchpad[temp] = inputAcc[src];
-
-                    sycl::group_barrier(item.get_group());
+                    item.barrier();
 
                     auto sum = sycl::float4{0.0f, 0.0f, 0.0f, 0.0f};
 
                     for (int r = 0; r < filterWidth; ++r) {
                       for (int c = 0; c < filterWidth; ++c) {
-                        auto srcOffset = sycl::id(temp[0] + (r - halo),
-                                                  temp[1] + ((c - halo)));
-                        auto filterOffset = sycl::id(r, c);
-
-                        sum += scratchpad[srcOffset] * filterAcc[filterOffset];
+                        auto idx = sycl::range(r, c);
+                        sum += scratchpad[localId + idx] * filterAcc[idx];
                       }
                     }
 
-                    outputAcc[dest] = sum;
+                    outputAcc[globalId] = sum;
                   });
             });
 
