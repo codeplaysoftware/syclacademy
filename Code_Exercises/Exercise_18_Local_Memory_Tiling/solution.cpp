@@ -104,7 +104,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
 
                     for (auto i = localId[0]; i < scratchpadRange[0];
                          i += localRange[0]) {
-                      for (auto j = localId[1]; j < scratchpadRange[0];
+                      for (auto j = localId[1]; j < scratchpadRange[1];
                            j += localRange[1]) {
                         scratchpad[i][j] =
                             inputAcc[globalGroupOffset + sycl::range(i, j)];
