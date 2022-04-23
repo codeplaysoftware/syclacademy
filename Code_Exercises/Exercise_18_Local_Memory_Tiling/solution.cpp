@@ -81,7 +81,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
           filterRange / sycl::range(1, channels));
 
       util::benchmark(
-          [&]() {
+          [&] {
             myQueue.submit([&](sycl::handler &cgh) {
               auto inputAcc =
                   inBufVec.get_access<sycl::access::mode::read>(cgh);
