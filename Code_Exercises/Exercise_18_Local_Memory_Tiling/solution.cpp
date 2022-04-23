@@ -30,8 +30,8 @@ inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
 TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
-  const char *inputImageFile = "../Images/dogs.png";
-  const char *outputImageFile = "../Images/blurred_dogs.png";
+  constexpr auto inputImageFile = "../Images/dogs.png";
+  constexpr auto outputImageFile = "../Images/blurred_dogs.png";
 
   auto inputImage = util::read_image(inputImageFile, halo);
 
