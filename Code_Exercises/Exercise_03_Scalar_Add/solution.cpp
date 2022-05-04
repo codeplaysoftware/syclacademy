@@ -8,18 +8,23 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #if __has_include(<SYCL/sycl.hpp>)
 #include <SYCL/sycl.hpp>
 #else
 #include <CL/sycl.hpp>
 #endif
 
+#include <iostream>
+
 class scalar_add;
 
-TEST_CASE("scalar_add", "scalar_add_solution") {
+using T = float;
+
+constexpr T value = 23;
+
+int main {
+	
+  // Buffers
   int a = 18, b = 24, r = 0;
 
   auto defaultQueue = sycl::queue{};
@@ -39,6 +44,29 @@ TEST_CASE("scalar_add", "scalar_add_solution") {
         })
         .wait();
   }
+  
+  // USM
+  T a = 0;
 
-  REQUIRE(r == 42);
+  auto q = sycl::queue{};
+
+  auto devPtr = sycl::malloc_device<T>(1, q);
+
+  q.fill(devPtr, value, 1).wait();
+
+  q.memcpy(&a, devPtr, sizeof(T)).wait();
+
+  if (a == value) {
+    std::cout << "Got expected answer: 23\n";
+  } else {
+    std::cout << "Got unexpected answer: " << a << '\n';
+  }
+
+
 }
+
+  
+
+
+
+
