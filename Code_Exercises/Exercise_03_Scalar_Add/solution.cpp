@@ -16,7 +16,8 @@
 
 #include <iostream>
 
-class scalar_add;
+class buffer_scalar_add;
+class usm_scalar_add;
 constexpr size_t dataSize = 1024;
 
 using T = float;
@@ -40,7 +41,7 @@ int main () {
           auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
           auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
-          cgh.single_task<scalar_add>([=] { accR[0] = accA[0] + accB[0]; });
+          cgh.single_task<buffer_scalar_add>([=] { accR[0] = accA[0] + accB[0]; });
         })
         .wait();
 	if (r == value) {
@@ -61,23 +62,22 @@ int main () {
   q.fill(rPtr, value, 0).wait();
 
   {
-    q.memcpy(&a, aPtr, sizeof(T)).wait();
-    q.memcpy(&b, bPtr, sizeof(T)).wait();
-    q.memcpy(&r, rPtr, sizeof(T)).wait();
+    q.memcpy(aPtr, &a, sizeof(T)).wait();
+    q.memcpy(bPtr, &b, sizeof(T)).wait();
+    q.memcpy(rPtr, &r, sizeof(T)).wait();
+    
+    q.submit([&](sycl::handler &cgh) {
+          cgh.single_task<usm_scalar_add>([=] { rPtr[0] = aPtr[0] + bPtr[0]; });
+        })
+        .wait();
 
-    q.parallel_for<scalar_add>(sycl::range{dataSize},
-      [=](sycl::id<1> idx) {
-        auto globalId = idx[0];
-        rPtr[globalId] = aPtr[globalId] +
-          bPtr[globalId];
-      }).wait();
-  }
-  q.memcpy(r, rPtr, sizeof(int) * dataSize).wait();
+  q.memcpy(&r, rPtr, sizeof(T)).wait();
 
   sycl::free(aPtr, q);
   sycl::free(bPtr, q);
   sycl::free(rPtr, q);
   
+  }
   if (r == value) {
     std::cout << "Got expected answer: 42\n";
   } else {
