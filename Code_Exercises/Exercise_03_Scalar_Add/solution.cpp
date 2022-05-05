@@ -44,11 +44,11 @@ int main () {
           cgh.single_task<buffer_scalar_add>([=] { accR[0] = accA[0] + accB[0]; });
         })
         .wait();
-	if (r == value) {
+  }
+  if (r == value) {
       std::cout << "Got expected answer: 42\n";
-    } else {
+  } else {
       std::cout << "Got unexpected answer: " << a << '\n';
-    }
   }
   
   // USM
