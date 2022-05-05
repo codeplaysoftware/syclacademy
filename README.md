@@ -113,12 +113,12 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-3-source]: ./Code_Exercises/Exercise_03_Scalar_Add/source.cpp
 [lesson-3-solution]: ./Code_Exercises/Exercise_03_Scalar_Add/solution.cpp
 
-[lesson-14-slides]: ./Lesson_Materials/Lecture_14_ND_Range_Kernel/
-[lesson-14-exercise]: ./Code_Exercises/Exercise_14_ND_Range_Kernel/README.md
-[lesson-14-source]: ./Code_Exercises/Exercise_14_ND_Range_Kernel/source.cpp
-[lesson-14-solution]: ./Code_Exercises/Exercise_14_ND_Range_Kernel/solution.cpp
+[lesson-14-slides]: ./Lesson_Materials/Lecture_04_ND_Range_Kernel/
+[lesson-14-exercise]: ./Code_Exercises/Exercise_04_ND_Range_Kernel/README.md
+[lesson-14-source]: ./Code_Exercises/Exercise_04_ND_Range_Kernel/source.cpp
+[lesson-14-solution]: ./Code_Exercises/Exercise_04_ND_Range_Kernel/solution.cpp
 
-[lesson-15-slides]: ./Lesson_Materials/Lecture_15_Image_Convolution/
-[lesson-15-exercise]: ./Code_Exercises/Exercise_15_Image_Convolution/README.md
-[lesson-15-source]: ./Code_Exercises/Exercise_15_Image_Convolution/source.cpp
-[lesson-15-solution]: ./Code_Exercises/Exercise_15_Image_Convolution/reference.cpp
+[lesson-15-slides]: ./Lesson_Materials/Lecture_05_Image_Convolution/
+[lesson-15-exercise]: ./Code_Exercises/Exercise_05_Image_Convolution/README.md
+[lesson-15-source]: ./Code_Exercises/Exercise_05_Image_Convolution/source.cpp
+[lesson-15-solution]: ./Code_Exercises/Exercise_05_Image_Convolution/reference.cpp
