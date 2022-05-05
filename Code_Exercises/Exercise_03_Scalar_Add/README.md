@@ -37,24 +37,17 @@ aren't guaranteed to get the expected result.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
-
-```sh
-dpcpp -o sycl-ex-3 ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
-
-./sycl-ex-3
-```
-
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
-Please refer to the [guide][devcloud-job-submission].
-
-So wrap the binary into a script `job_submission` and run:
+There is a script provided in the folder for this exercise to compile and run your code. 
 
 ```sh
-qsub job_submission
+qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 ```
+Once the job has finished, in the same folder will be a file with a name similar to `run.sh.o1898955`
+If you open this file you will see the program output from your SYCL code.
 
+Refer to the [guide][devcloud-job-submission] for further information on the possibilities.
 
 
 [devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

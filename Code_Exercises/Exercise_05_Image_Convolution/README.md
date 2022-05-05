@@ -51,14 +51,16 @@ The image convolution support code provides a `filter_type` enum which allows
 you to choose between `identity` and `blur`. The utility for generating the
 filter data; `generate_filter` takes a `filter_type` and a width.
 
-## Build and execution hints
-#### ComputeCpp
+#### Build And Execution Hints
+
+In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
+There is a script provided in the folder for this exercise to compile and run your code. 
+
+```sh
+qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 ```
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_15_image_convolution_reference
-./Code_Exercises/Exercise_15_Image_Convolution/exercise_15_image_convolution_reference
-```
-#### DPC++
-```
-clang++ -fsycl -I../../External/Catch2/single_include -I../../Utilities/include/ -I../../External/stb reference.cpp
-```
+Once the job has finished, in the same folder will be a file with a name similar to `run.sh.o1898955`
+If you open this file you will see the program output from your SYCL code.
+
+Refer to the [guide][devcloud-job-submission] for further information on the possibilities.
