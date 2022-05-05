@@ -27,15 +27,14 @@ int main {
   // Buffers
   int a = 18, b = 24, r = 0;
 
-  auto defaultQueue = sycl::queue{};
+  auto q = sycl::queue{};
 
   {
     auto bufA = sycl::buffer{&a, sycl::range{1}};
     auto bufB = sycl::buffer{&b, sycl::range{1}};
     auto bufR = sycl::buffer{&r, sycl::range{1}};
 
-    defaultQueue
-        .submit([&](sycl::handler &cgh) {
+    q.submit([&](sycl::handler &cgh) {
           auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
           auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
           auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
@@ -43,11 +42,14 @@ int main {
           cgh.single_task<scalar_add>([=] { accR[0] = accA[0] + accB[0]; });
         })
         .wait();
+	if (r == value) {
+      std::cout << "Got expected answer: 42\n";
+    } else {
+      std::cout << "Got unexpected answer: " << a << '\n';
+    }
   }
   
   // USM
-  auto q = sycl::queue{};
-
   auto aPtr = sycl::malloc_device<T>(1, q);
   auto bPtr = sycl::malloc_device<T>(1, q);
   auto rPtr = sycl::malloc_device<T>(1, q);
@@ -61,15 +63,14 @@ int main {
     q.memcpy(&b, bPtr, sizeof(T)).wait();
     q.memcpy(&r, rPtr, sizeof(T)).wait();
 
-    defaultQueue
-        .submit([&](sycl::handler &cgh) {
+    q.submit([&](sycl::handler &cgh) {
           cgh.single_task<scalar_add>([=] { rPtr = aPtr + bPtr; });
         })
         .wait();
   }
   
   if (rPtr == value) {
-    std::cout << "Got expected answer: 23\n";
+    std::cout << "Got expected answer: 42\n";
   } else {
     std::cout << "Got unexpected answer: " << a << '\n';
   }

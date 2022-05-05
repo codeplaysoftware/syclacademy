@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 3: Scalar Add
+## Exercise 3: Scalar Add using Buffers and USM
 
 ---
 
@@ -17,18 +17,16 @@ device allocation.
 
 ## Instructions
 
-1. Initialize 2 buffers to point to ints a, b
-2. Use a `single_task` within a q.submit to multiply `a` by 2.
-3. Use another `single_task` within another q.submit to multiply `b` by 100.
-4. Use another `single_task` within another q.submit to add `a` and `b` 
+1. Initialize 2 buffers to point to ints a, b.
+2. Use another `single_task` within another q.submit to add `a` and `b` 
 together and store the value in `a`.
-5. Allow the buffers to destruct and check that `a` contains the correct answer.
+3. Allow the buffers to destruct and check that `a` contains the correct answer.
 
 
 ## USM
 
 1. Allocate an int on device.
-2. Fill the int
+2. Fill the int.
 3. Memcpy the int back to host memory.
 4. Free the allocated int.
 
