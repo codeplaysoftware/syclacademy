@@ -49,6 +49,7 @@
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
 					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/iwocl22.png" />
 				</div>
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
@@ -523,72 +524,13 @@ event queue::fill(void* ptr, const T& pattern, size_t count, const std::vector<e
 						* These are also asynchronous operations.
 					</div>
 				</section>
-				<!--Slide 3-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### The queue
-					</div>
-					<div class="container" data-markdown>
-						* In SYCL all work is submitted via commands to a `queue`.
-						* The `queue` has an associated device that any commands enqueued to it will target.
-						* There are several different ways to construct a `queue`.
-						* The most straight forward is to default construct one.
-						* This will have the SYCL runtime choose a device for you.
-					</div>
-				</section>
-				<!--Slide 3-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### The queue
-					</div>
-					<div class="container" data-markdown>
-						* The SYCL specification says that work submitted to a given `queue`, can be executed in any given order.
-						* It is necessary to define a given task's dependencies, or call `wait()` on `sycl::event`s returned from enqueued tasks.
-					</div>
-				</section>
-				<!--Slide 8-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Constructing Queues
-					</div>
-					<div class="container">
-						<code class="code"><pre>
-int main() {
-  
-  // Constructs a queue with a default device. 
-  // Device can be specified at runtime using 
-  // SYCL_DEVICE_FILTER
-  auto q1 = sycl::queue{}; 
-
-  // Constructs a queue with a gpu, if one is available. 
-  // Throws a runtime error if no gpus available
-  auto q2 = sycl::queue{gpu_selector{}};
-
-  std::cout &lt;&lt; "q1 using device " 
-    &lt;&lt; q1.get_device().get_info&lt;sycl::info::device::name&gt;() 
-    &lt;&lt; '\n';
-  
-  std::cout &lt;&lt; "q2 using device " 
-    &lt;&lt; q2.get_device().get_info&lt;sycl::info::device::name&gt;() 
-    &lt;&lt; '\n';
-        
-}
-                                                        </pre></code>
-					</div>
-                </section>
-				<!--Slide 20-->
-				<section>
-					<div class="hbox" data-markdown>
-						## Questions
-					</div>
-				</section>
 				<!--Slide 21-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
 					</div>
 					<div class="container" data-markdown>
-						Code_Exercises/Exercise_3_Scalar_Add/source
+						Code_Exercises/Exercise_03_Scalar_Add
 					</div>
 					<div class="container" data-markdown>
 						Implement a SYCL application that adds two variables
