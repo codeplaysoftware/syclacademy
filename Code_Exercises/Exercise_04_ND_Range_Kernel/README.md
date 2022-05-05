@@ -5,14 +5,6 @@ In this exercise you will learn how to enqueue ND range kernel functions.
 
 ---
 
-Compile with 
-
-```
-dpcpp -o nd-range.o source.cpp
-
-./nd-range.o
-```
-
 ### 1.) Use items in parallel_for
 
 Using the application from any exercise so far or creating a new one, enqueue a
@@ -44,3 +36,17 @@ by calling the `get_global_id` member function.
 
 Feel free to use either the buffer/accessor model and feel free to use any
 method of synchronization and copy back.
+
+#### Build And Execution Hints
+
+In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
+There is a script provided in the folder for this exercise to compile and run your code. 
+
+```sh
+qsub -l nodes=1:gpu:ppn=2 -d . run.sh
+```
+Once the job has finished, in the same folder will be a file with a name similar to `run.sh.o1898955`
+If you open this file you will see the program output from your SYCL code.
+
+Refer to the [guide][devcloud-job-submission] for further information on the possibilities.
