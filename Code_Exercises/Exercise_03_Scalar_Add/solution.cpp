@@ -17,12 +17,13 @@
 #include <iostream>
 
 class scalar_add;
+constexpr size_t dataSize = 1024;
 
 using T = float;
 
 constexpr T value = 42;
 
-int main {
+int main () {
 	
   // Buffers
   int a = 18, b = 24, r = 0;
@@ -50,6 +51,7 @@ int main {
   }
   
   // USM
+  r = 0;
   auto aPtr = sycl::malloc_device<T>(1, q);
   auto bPtr = sycl::malloc_device<T>(1, q);
   auto rPtr = sycl::malloc_device<T>(1, q);
@@ -63,13 +65,20 @@ int main {
     q.memcpy(&b, bPtr, sizeof(T)).wait();
     q.memcpy(&r, rPtr, sizeof(T)).wait();
 
-    q.submit([&](sycl::handler &cgh) {
-          cgh.single_task<scalar_add>([=] { rPtr = aPtr + bPtr; });
-        })
-        .wait();
+    q.parallel_for<scalar_add>(sycl::range{dataSize},
+      [=](sycl::id<1> idx) {
+        auto globalId = idx[0];
+        rPtr[globalId] = aPtr[globalId] +
+          bPtr[globalId];
+      }).wait();
   }
+  q.memcpy(r, rPtr, sizeof(int) * dataSize).wait();
+
+  sycl::free(aPtr, q);
+  sycl::free(bPtr, q);
+  sycl::free(rPtr, q);
   
-  if (rPtr == value) {
+  if (r == value) {
     std::cout << "Got expected answer: 42\n";
   } else {
     std::cout << "Got unexpected answer: " << a << '\n';
@@ -77,9 +86,3 @@ int main {
 
 
 }
-
-  
-
-
-
-
