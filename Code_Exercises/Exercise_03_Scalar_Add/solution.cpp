@@ -20,7 +20,7 @@ class scalar_add;
 
 using T = float;
 
-constexpr T value = 23;
+constexpr T value = 42;
 
 int main {
 	
@@ -46,17 +46,29 @@ int main {
   }
   
   // USM
-  T a = 0;
-
   auto q = sycl::queue{};
 
-  auto devPtr = sycl::malloc_device<T>(1, q);
+  auto aPtr = sycl::malloc_device<T>(1, q);
+  auto bPtr = sycl::malloc_device<T>(1, q);
+  auto rPtr = sycl::malloc_device<T>(1, q);
 
-  q.fill(devPtr, value, 1).wait();
+  q.fill(aPtr, value, 0).wait();
+  q.fill(bPtr, value, 0).wait();
+  q.fill(rPtr, value, 0).wait();
 
-  q.memcpy(&a, devPtr, sizeof(T)).wait();
+  {
+    q.memcpy(&a, aPtr, sizeof(T)).wait();
+    q.memcpy(&b, bPtr, sizeof(T)).wait();
+    q.memcpy(&r, rPtr, sizeof(T)).wait();
 
-  if (a == value) {
+    defaultQueue
+        .submit([&](sycl::handler &cgh) {
+          cgh.single_task<scalar_add>([=] { rPtr = aPtr + bPtr; });
+        })
+        .wait();
+  }
+  
+  if (rPtr == value) {
     std::cout << "Got expected answer: 23\n";
   } else {
     std::cout << "Got unexpected answer: " << a << '\n';
