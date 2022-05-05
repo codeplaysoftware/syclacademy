@@ -8,9 +8,6 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #if __has_include(<SYCL/sycl.hpp>)
 #include <SYCL/sycl.hpp>
 #else
@@ -20,7 +17,7 @@
 class vector_add_1;
 class vector_add_2;
 
-TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
+int main () {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -61,15 +58,14 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    if(r[i] == i * 2)
+      std::cout << "Incorrect output \n";
   }
-}
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
-  constexpr size_t dataSize = 1024;
+
+  // constexpr size_t dataSize = 1024;
   constexpr size_t workGroupSize = 128;
 
-  int a[dataSize], b[dataSize], r[dataSize];
   for (int i = 0; i < dataSize; ++i) {
     a[i] = i;
     b[i] = i;
@@ -109,6 +105,7 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    if(r[i] == i * 2)
+      std::cout << "Incorrect output \n";
   }
 }
