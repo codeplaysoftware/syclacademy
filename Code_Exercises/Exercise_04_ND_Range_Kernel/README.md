@@ -1,11 +1,17 @@
-# SYCL Academy
-
-## Exercise 14: ND Range Kernel
+## Exercise: ND Range Kernel
 ---
 
 In this exercise you will learn how to enqueue ND range kernel functions.
 
 ---
+
+Compile with 
+
+```
+dpcpp -o nd-range.o source.cpp
+
+./nd-range.o
+```
 
 ### 1.) Use items in parallel_for
 
@@ -38,11 +44,3 @@ by calling the `get_global_id` member function.
 
 Feel free to use either the buffer/accessor model and feel free to use any
 method of synchronization and copy back.
-
-## Build and execution hints
-
-```
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_14_nd_range_kernel_source
-./Code_Exercises/Exercise_14_ND_Range_Kernel/exercise_14_nd_range_kernel_source
-```

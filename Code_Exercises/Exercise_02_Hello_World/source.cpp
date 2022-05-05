@@ -8,15 +8,29 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+/*
+ * SYCL Quick Reference
+ * ~~~~~~~~~~~~~~~~~~~~
+ *
+ * // Include SYCL header
+ * #include <CL/sycl.hpp>
+ *
+ * // Default construct a queue
+ * auto q = sycl::queue{};
+ *
+ * // Get the queue's device
+ * auto d = q.get_device();
+ *
+ * // Get the name of the device
+ * auto dev_name = d.get_info<sycl::info::device::name>();
+ *
+ */
 
-TEST_CASE("hello_world", "hello_world_source") {
+int main() {
+    // Construct a queue
 
-  // Print "Hello World!\n"
-  std::cout << "Hello World!\n";
+    // Get the device associated with queue
 
-  // Task: Have this message print from the SYCL device instead of the host
-
-  REQUIRE(true);
+    // Print the device name to stdout
 }
+
