@@ -9,17 +9,6 @@ International" license.
 These materials have been adapted for the SYCL tutorial at IWOCL and SYCLcon.
 See the main branch of this repository for all the materials available.
 
-## What is SYCL?
-
-If you're not familiar with SYCL or would like some further resources for
-learning about SYCL below are a list of useful resources:
-
-*  Read a description of SYCL on the [Khronos website SYCL page](https://www.khronos.org/sycl/).
-*  Go to the Khronos website to find [a list of SYCL resources](https://www.khronos.org/sycl/resources).
-*  Check out the [SYCL 2020 reference guide](https://www.khronos.org/registry/SYCL/).
-*  Browse SYCL news, blog posts, videos, projects and more on the [sycl.tech community website](https://sycl.tech/)
-*  Get a list of the [available SYCL implementations](https://sycl.tech/#get-sycl)
-
 ### How to use the Materials
 
 To use these materials simply clone this repository including the required submodules.
@@ -38,22 +27,6 @@ The exercises can be found in `Code_Exercises` in the sub-directory for each
 topic. Each exercise has a markdown document instructing what to do in the
 exercise, a source file to start with and a solution file to provide an
 example implementation to compare against.
-
-## Contributing to SYCL Academy
-
-Contributions to the materials are very gratefully received and this can be done
-by submitting a Pull Request with any changes. Please limit the scope of each
-Pull Request so that they can be reviewed and merged in a timely manner.
-
-### List of Contributors
-
-Codeplay Software Ltd., Heidelberg University, Intel, Xilinx and University of Bristol.
-
-## Supporting Organizations
-Abertay University, Universidad de Concepcion, TU Dresden, University of
-Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
-University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
-and University of the West of Scotland.
 
 ## Lesson Curriculum for IWOCL & SYCLcon 22
 
@@ -82,6 +55,33 @@ The exercises can be built using the command listed in the individual exercise R
 
 For simplicity, attendees of the tutorial will use the [Intel DevCloud](https://tinyurl.com/getdevcloud) 
 for the exercises. Go to this url to set up your environment.
+
+## What is SYCL?
+
+If you're not familiar with SYCL or would like some further resources for
+learning about SYCL below are a list of useful resources:
+
+*  Read a description of SYCL on the [Khronos website SYCL page](https://www.khronos.org/sycl/).
+*  Go to the Khronos website to find [a list of SYCL resources](https://www.khronos.org/sycl/resources).
+*  Check out the [SYCL 2020 reference guide](https://www.khronos.org/registry/SYCL/).
+*  Browse SYCL news, blog posts, videos, projects and more on the [sycl.tech community website](https://sycl.tech/)
+*  Get a list of the [available SYCL implementations](https://sycl.tech/#get-sycl)
+
+## Contributing to SYCL Academy
+
+Contributions to the materials are very gratefully received and this can be done
+by submitting a Pull Request with any changes. Please limit the scope of each
+Pull Request so that they can be reviewed and merged in a timely manner.
+
+### List of Contributors
+
+Codeplay Software Ltd., Heidelberg University, Intel, Xilinx and University of Bristol.
+
+## Supporting Organizations
+Abertay University, Universidad de Concepcion, TU Dresden, University of
+Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
+University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
+and University of the West of Scotland.
 
 SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
