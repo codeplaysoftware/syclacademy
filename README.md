@@ -28,6 +28,29 @@ topic. Each exercise has a markdown document instructing what to do in the
 exercise, a source file to start with and a solution file to provide an
 example implementation to compare against.
 
+## Setting up the Intel DevCloud
+
+There are multiple SYCL implementations but for simplicity due to the limited 
+time during the SYCLcon training we will use the Intel DevCloud which is 
+pre-configured with the DPC++ compiler.
+
+Go to the [Intel DevCloud](https://tinyurl.com/getdevcloud) to set up your 
+environment. You will need to register or log in.
+
+There are two options to connect to the DevCloud: via SSH or using JupyterLab.
+It is recommended to use the JupyterLab terminal for simplicity.
+
+Go to [this page](https://devcloud.intel.com/oneapi/get_started/) and scroll to the 
+bottom of the page. Then click on the 'Launch JupyterLab*' link on the bottom of the 
+page to connect with the Jupyter* Lab.
+
+You will then see a "Welcome to Jupyter Notebooks on the Intel DevCloud for oneAPI 
+Projects!" document which covers the basics of the JupyterLab access to the Intel 
+DevCloud for oneAPI Projects.
+
+**To do the exercises for this tutorial select File -> New -> Terminal and open a 
+terminal window. This gives you command line access to the cloud machine.**
+
 ## Lesson Curriculum for IWOCL & SYCLcon 22
 
 The SYCL Academy curriculum is divided up into a number of short lessons
@@ -50,11 +73,6 @@ support both academic and training style teaching environments.
 ## Building the Exercises
 
 The exercises can be built using the command listed in the individual exercise README.
-
-### Supported Platforms
-
-For simplicity, attendees of the tutorial will use the [Intel DevCloud](https://tinyurl.com/getdevcloud) 
-for the exercises. Go to this url to set up your environment.
 
 ## What is SYCL?
 
