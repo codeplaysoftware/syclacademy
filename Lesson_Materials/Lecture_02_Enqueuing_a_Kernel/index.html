@@ -325,7 +325,7 @@ gpuQueue.submit([&](handler &cgh){
 					<div class=container data-markdown>
 						* Must be defined using a C++ lambda or function object, they cannot be a function pointer or std::function.
 						* Must always capture or store members by-value.
-						* SYCL kernel functions declared with a lambda must be named using a forward declarable C++ type, declared in global scope.
+						* SYCL kernel functions declared with a lambda ~~must be named using a forward declarable C++ type, declared in global scope~~ can be anonymous since SYCL 2020!
 						* SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name.
 					</div>
 				</section>
