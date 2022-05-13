@@ -111,7 +111,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
                       }
                     }
 
-                    item.barrier();
+                    sycl::group_barrier(item.get_group());
 
                     auto sum = sycl::float4{0.0f, 0.0f, 0.0f, 0.0f};
 

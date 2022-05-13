@@ -330,7 +330,7 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 					* Nested subscript operators can be called for each dimension taking a **size_t**
 					  * E.g. a 3-dimensional accessor: acc[x][y][z] = …
 					* A pointer to memory can be retrieved by calling **get_pointer**
-					  * This returns a **multi_ptr**, which is a wrapper class for pointers to the memory in the relevant memory space
+					  * This returns a raw pointer to the data
 					</div>
 				</section>
 				<!--Slide 23-->
