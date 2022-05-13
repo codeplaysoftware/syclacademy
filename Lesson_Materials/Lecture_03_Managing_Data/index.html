@@ -49,6 +49,7 @@
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
 					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/iwocl22.png" />
 				</div>
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
@@ -57,16 +58,30 @@
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
-					* Learn about the buffer/accessor model for managing data
-					* Learn how to use buffers and accessors
-					* Learn how to access data in a kernel function
-					* Learn how a buffer synchronizes data
+					* Learn about the buffer/accessor model and USM for managing data
+					* Learn how to use these
+					* Learn how to use data in a kernel function
+					* Learn how to synchronize data
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Memory Models
+					</div>
+					<div class="container" data-markdown>
+						* In SYCL there are two models for managing data:
+						  * The buffer/accessor model.
+						  * The USM (unified shared memory) model.
+						* Which model you choose can have an effect on how you enqueue kernel functions.
+					</div>
 				</section>
 				<!--Slide 3-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Buffers & Accessors
 					</div>
+				</section>
+				<section>
 					<div class="container" data-markdown>
 						* SYCL separates the storage and access of data 
 						  * A SYCL buffer manages data across the host and any number of devices 
@@ -366,10 +381,147 @@ gpuQueue.submit([&](handler &cgh){
 						  * This operator can take an `id` or a `size_t`.
 					</div>
 				</section>
-				<!--Slide 20-->
+				<!--Slide 3-->
 				<section>
 					<div class="hbox" data-markdown>
-						## Questions
+						#### USM Types
+					</div>
+					<div class="container" data-markdown>
+						* There are different ways USM memory can be allocated; host, device and shared.
+						* We're going to focus on explicit USM, with shared and device allocations.
+					</div>
+				</section>
+				<!--Slide 3A-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### CPU and GPU Memory
+					</div>
+					<div class="container" data-markdown>
+						* A GPU has its own memory, separate to CPU memory.
+						* In order for the GPU to use memory from the CPU we need to:
+						  * Allocate memory on the GPU.
+						  * Memcpy data from the CPU to the allocation on the GPU.
+						  * Memcpy the result back to CPU.
+
+					</div>
+					<img src="./gpu_cpu_memory.png">
+				</section>
+				<!--Slide 3A-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### CPU and GPU Memory
+					</div>
+					<div class="container" data-markdown>
+						* Memory transfers between CPU and GPU are a bottleneck.
+						  * We want to minimize these transfers, when possible.
+					</div>
+					<img src="./gpu_cpu_memory.png">
+				</section>
+				<!--Slide 3B-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### USM Allocation Types
+					</div>
+					<div class="container"data-markdown>
+					  ![SYCL](./Figure6-1bookUSMtypes.png "SYCL")
+					  (from book)
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Malloc_device
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void* malloc_device(size_t numBytes, const queue& syclQueue, const property_list &propList = {});
+
+template &lt;typename T&gt;
+T* malloc_device(size_t count, const queue& syclQueue,  const property_list &propList = {});
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* A USM device allocation is performed by calling one of the `malloc_device` functions.
+						* Both of these functions allocate the specified region of memory on the `device` associated with the specified `queue`.
+						* The pointer returned is only accessible in a kernel function running on that `device`.
+						* Synchronous exception if the device does not have aspect::usm_device_allocations.
+						* This is a blocking operation.
+						* Calls the underlying `cudaMalloc` if using CUDA backend.
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Malloc_shared
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void* malloc_shared(size_t numBytes, const queue& syclQueue, const property_list &propList = {});
+
+template &lt;typename T&gt;
+T* malloc_shared(size_t count, const queue& syclQueue,  const property_list &propList = {});
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* Both of these functions allocate the specified region of memory on the `device` associated with the specified `queue`, as well as host.
+						* The pointer returned is accessible in CPU code as well as `device` kernel code, for the `device` attached to the `queue`.
+						* Synchronous exception if the device does not have aspect::usm_device_allocations
+						* This is a blocking operation.
+						* Calls the underlying `cudaMallocManaged` if using CUDA backend.
+						* Convenient API but potentially slower than `malloc_device` with explicit `memcpy`s.
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Free
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void free(void* ptr, queue& syclQueue);
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* In order to prevent memory leaks USM device allocations must be free by calling the `free` function.
+						* The `queue` must be the same as was used to allocate the memory.
+						* This is a blocking operation.
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Memcpy
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vector<event> &depEvents);
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* Data can be copied to and from a USM device allocation by calling the `queue`'s `memcpy` member function.
+						* The source and destination can be either a host application pointer or a USM device allocation.
+						* This is an asynchronous operation enqueued to the `queue`.
+						* An `event` is returned which can be used to synchronize with the completion of copy operation.
+						* May depend on other events via `depEvents`
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Memset & fill
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+event queue::memset(void* ptr, int value, size_t numBytes, const std::vector<event> &depEvents);
+
+event queue::fill(void* ptr, const T& pattern, size_t count, const std::vector<event> &depEvents);
+						</pre></code>
+					</div>
+					<div class="container" data-markdown>
+						* The additional `queue` member functions `memset` and `fill` provide operations for initializing the data of a USM device allocation.
+						* The member function `memset` initializes each byte of the data with the value interpreted as an unsigned char.
+						* The member function `fill` initializes the data with a recurring pattern.
+						* These are also asynchronous operations.
 					</div>
 				</section>
 				<!--Slide 21-->
@@ -378,11 +530,11 @@ gpuQueue.submit([&](handler &cgh){
 						#### Exercise
 					</div>
 					<div class="container" data-markdown>
-						Code_Exercises/Exercise_3_Scalar_Add/source
+						Code_Exercises/Exercise_03_Scalar_Add
 					</div>
 					<div class="container" data-markdown>
 						Implement a SYCL application that adds two variables
-						and returns the result.
+						and returns the result using USM and Buffers.
 					</div>
 				</section>
 			</div>
