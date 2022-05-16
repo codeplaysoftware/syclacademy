@@ -44,9 +44,9 @@ TEST_CASE("vector_add", "vector_add_solution") {
 
     defaultQueue
         .submit([&](sycl::handler& cgh) {
-          auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-          auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-          auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+          sycl::accessor accA{bufA, cgh, sycl::read_only};
+          sycl::accessor accB{bufB, cgh, sycl::read_only};
+          sycl::accessor accR{bufR, cgh, sycl::write_only};
 
           cgh.parallel_for<vector_add>(
               sycl::range{dataSize},

@@ -77,11 +77,9 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
       util::benchmark(
           [&]() {
             myQueue.submit([&](sycl::handler& cgh) {
-              auto inputAcc = inBuf.get_access<sycl::access::mode::read>(cgh);
-              auto outputAcc =
-                  outBuf.get_access<sycl::access::mode::write>(cgh);
-              auto filterAcc =
-                  filterBuf.get_access<sycl::access::mode::read>(cgh);
+              sycl::accessor inputAcc{inBuf, cgh, sycl::read_only};
+              sycl::accessor outputAcc{outBuf, cgh, sycl::write_only};
+              sycl::accessor filterAcc{filterBuf, cgh, sycl::read_only};
 
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {

@@ -157,7 +157,7 @@ gpuQueue.submit([&](sycl::handler &cgh) {
 });
 
 gpuQueue.submit([&](sycl::handler &cgh) {
-  auto acc = buf.get_access(cgh);
+  sycl::accessor acc{buf, cgh};
 
   cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx) {
@@ -195,7 +195,7 @@ gpuQueue.submit([&](sycl::handler &cgh) {
 });
 
 gpuQueue.submit([&](sycl::handler &cgh) {
-  auto acc = buf.get_access(cgh);
+  sycl::accessor acc {buf, cgh};
 
   cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx) {
@@ -225,7 +225,7 @@ gpuQueue.wait();
 sycl::buffer buf {data, sycl::range{1024}};
 
 gpuQueue.submit([&](sycl::handler &cgh) {
-  <mark>sycl::accessor acc {buf, cgh};</mark>
+  <mark>sycl::accessor acc{buf, cgh};</mark>
 
   cgh.parallel_for&lt;my_kernel&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx) {
@@ -234,7 +234,7 @@ gpuQueue.submit([&](sycl::handler &cgh) {
 });
 
 gpuQueue.submit([&](sycl::handler &cgh) {
-  <mark>auto acc = buf.get_access(cgh);</mark>
+  <mark>sycl::accessor acc{buf, cgh};</mark>
 
   cgh.parallel_for&lt;my_kernel&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx) {
@@ -272,7 +272,7 @@ gpuQueue.submit([&](sycl::handler &cgh) {
 });
 
 gpuQueue.submit([&](sycl::handler &cgh) {
-  auto acc = buf.get_access(<mark>cgh</mark>);
+  sycl::accessor acc {buf, <mark>cgh</mark>};
 
   cgh.parallel_for&lt;my_kernel&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx) {
@@ -424,7 +424,7 @@ sycl::buffer bufA {dataA, sycl::range{1024}};
 sycl::buffer bufB {dataB, sycl::range{1024}};
 
 gpuQueue.submit([&](sycl::handler &cgh) {
-  <mark>auto accA = bufA.get_access(cgh);</mark>
+  <mark>sycl::accessor accA {bufA, cgh};</mark>
 
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx) {
@@ -433,7 +433,7 @@ gpuQueue.submit([&](sycl::handler &cgh) {
 });
 
 gpuQueue.submit([&](sycl::handler &cgh) {
-  <mark>auto accB = bufB.get_access(cgh);</mark>
+  <mark>sycl::accessor accB {bufB, cgh};</mark>
 
   cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx) {

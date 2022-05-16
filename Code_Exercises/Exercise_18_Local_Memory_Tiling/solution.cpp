@@ -83,12 +83,9 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
       util::benchmark(
           [&] {
             myQueue.submit([&](sycl::handler &cgh) {
-              auto inputAcc =
-                  inBufVec.get_access<sycl::access::mode::read>(cgh);
-              auto outputAcc =
-                  outBufVec.get_access<sycl::access::mode::write>(cgh);
-              auto filterAcc =
-                  filterBufVec.get_access<sycl::access::mode::read>(cgh);
+              sycl::accessor inputAcc{inBufVec, cgh, sycl::read_only};
+              sycl::accessor outputAcc{outBufVec, cgh, sycl::write_only};
+              sycl::accessor filterAcc{filterBufVec, cgh, sycl::read_only};
 
               auto scratchpad = sycl::accessor<sycl::float4, 2,
                                                sycl::access::mode::read_write,

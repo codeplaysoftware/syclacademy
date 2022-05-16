@@ -22,7 +22,6 @@ Remember to ensure the `range` provided to the buffer is the size of the arrays.
 ### 3. ) Create accessors
 
 Create `accessor`s to each of the `buffer`s within the command group function.
-The simplest way to do this is to call `get_access` on the `buffer`s.
 
 ### 4. ) Write the kernel function
 

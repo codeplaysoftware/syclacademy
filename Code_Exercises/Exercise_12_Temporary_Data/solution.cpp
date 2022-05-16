@@ -61,8 +61,8 @@ TEST_CASE("buffer_accessor_temporary_data", "temporary_data_solution") {
     bufOut.set_final_data(out);
 
     gpuQueue.submit([&](sycl::handler& cgh) {
-      auto accIn = bufIn.get_access<sycl::access::mode::read>(cgh);
-      auto accOut = bufInt.get_access<sycl::access::mode::write>(cgh);
+      sycl::accessor accIn{bufIn, cgh, sycl::read_only};
+      sycl::accessor accOut{bufInt, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_a_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
         accOut[idx] = accIn[idx] * 8.0f;
@@ -70,8 +70,8 @@ TEST_CASE("buffer_accessor_temporary_data", "temporary_data_solution") {
     });
 
     gpuQueue.submit([&](sycl::handler& cgh) {
-      auto accIn = bufInt.get_access<sycl::access::mode::read>(cgh);
-      auto accOut = bufOut.get_access<sycl::access::mode::write>(cgh);
+      sycl::accessor accIn{bufInt, cgh, sycl::read_only};
+      sycl::accessor accOut{bufOut, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_b_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
         accOut[idx] = accIn[idx] / 2.0f;

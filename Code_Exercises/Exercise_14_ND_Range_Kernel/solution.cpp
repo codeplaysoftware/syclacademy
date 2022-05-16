@@ -44,9 +44,9 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
     gpuQueue.submit([&](sycl::handler& cgh) {
-      auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-      auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-      auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+      sycl::accessor accA{bufA, cgh, sycl::read_only};
+      sycl::accessor accB{bufB, cgh, sycl::read_only};
+      sycl::accessor accR{bufR, cgh, sycl::write_only};
 
       cgh.parallel_for<vector_add_1>(
           sycl::range{dataSize}, [=](sycl::item<1> itm) {
@@ -90,9 +90,9 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
     gpuQueue.submit([&](sycl::handler& cgh) {
-      auto accA = bufA.get_access<sycl::access::mode::read_write>(cgh);
-      auto accB = bufB.get_access<sycl::access::mode::read_write>(cgh);
-      auto accR = bufR.get_access<sycl::access::mode::read_write>(cgh);
+      sycl::accessor accA{bufA, cgh, sycl::read_write};
+      sycl::accessor accB{bufB, cgh, sycl::read_write};
+      sycl::accessor accR{bufR, cgh, sycl::read_write};
 
       auto ndRange =
           sycl::nd_range{sycl::range{dataSize}, sycl::range{workGroupSize}};

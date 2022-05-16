@@ -101,9 +101,9 @@ TEST_CASE("load_balancing", "load_balancing_solution") {
       sycl::buffer{r + dataSizeFirst, sycl::range{dataSizeSecond}};
 
     Q1.submit([&](sycl::handler& cgh) {
-        auto accA = bufFirstA.get_access<sycl::access::mode::read>(cgh);
-        auto accB = bufFirstB.get_access<sycl::access::mode::read>(cgh);
-        auto accR = bufFirstR.get_access<sycl::access::mode::write>(cgh);
+        sycl::accessor accA{bufFirstA, cgh, sycl::read_only};
+        sycl::accessor accB{bufFirstB, cgh, sycl::read_only};
+        sycl::accessor accR{bufFirstR, cgh, sycl::write_only};
 
         cgh.parallel_for<vector_add_first>(
             sycl::range{dataSizeFirst},
@@ -111,9 +111,9 @@ TEST_CASE("load_balancing", "load_balancing_solution") {
         });
 
     Q2.submit([&](sycl::handler& cgh) {
-        auto accA = bufSecondA.get_access<sycl::access::mode::read>(cgh);
-        auto accB = bufSecondB.get_access<sycl::access::mode::read>(cgh);
-        auto accR = bufSecondR.get_access<sycl::access::mode::write>(cgh);
+        sycl::accessor accA{bufSecondA, cgh, sycl::read_only};
+        sycl::accessor accB{bufSecondB, cgh, sycl::read_only};
+        sycl::accessor accR{bufSecondR, cgh, sycl::write_only};
 
         cgh.parallel_for<vector_add_second>(
             sycl::range{dataSizeSecond},

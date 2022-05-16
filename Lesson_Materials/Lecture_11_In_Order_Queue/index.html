@@ -121,7 +121,7 @@ auto inOrderQueue = sycl::queue{gpu_selector{},
 buf = sycl::buffer(data, sycl::range{1024});
 
 inOrderQueue.submit([&](sycl::handler &cgh){
-  auto acc = buf.get_access(cgh);
+  sycl::accessor acc{buf, cgh};
       
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
@@ -130,7 +130,7 @@ inOrderQueue.submit([&](sycl::handler &cgh){
 });
 
 inOrderQueue.submit([&](sycl::handler &cgh){
-  auto acc = buf.get_access(cgh);
+  sycl::accessor acc{buf, cgh};
 		
   cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){

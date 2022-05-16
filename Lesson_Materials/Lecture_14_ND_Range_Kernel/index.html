@@ -346,9 +346,9 @@ buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
 buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
-  auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
-  auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
-  auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+  sycl::accessor inA{bufA, cgh, sycl::read_only};
+  sycl::accessor inB{bufB, cgh, sycl::read_only};
+  sycl::accessor out{bufO, cgh, sycl::write_only};
   cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
     [=](id&lt1&gt i){ 
     <mark>out[i] = inA[i] + inB[i];</mark>
@@ -376,9 +376,9 @@ buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
 buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
-  auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
-  auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
-  auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+  sycl::accessor inA{bufA, cgh, sycl::read_only};
+  sycl::accessor inB{bufB, cgh, sycl::read_only};
+  sycl::accessor out{bufO, cgh, sycl::write_only};
   cgh.parallel_for&ltadd&gt(rng, [=](id&lt3&gt i){
     <mark>auto ptrA = inA.get_pointer();</mark>
     <mark>auto ptrB = inB.get_pointer();</mark>
