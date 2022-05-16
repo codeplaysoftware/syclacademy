@@ -61,7 +61,7 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
     auto halo = filter.half_width();
 
     auto globalRange = sycl::range(inputImgWidth, inputImgHeight);
-    auto localRange = sycl::range(32, 1);
+    auto localRange = sycl::range(1, 32);
     auto ndRange = sycl::nd_range(globalRange, localRange);
 
     auto inBufRange = (inputImgWidth + (halo * 2)) * sycl::range(1, channels);
@@ -86,6 +86,7 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {
                     auto globalId = item.get_global_id();
+                    globalId = sycl::id{globalId[1], globalId[0]};
 
                     auto channelsStride = sycl::range(1, channels);
                     auto haloOffset = sycl::id(halo, halo);
