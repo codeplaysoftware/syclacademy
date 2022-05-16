@@ -9,8 +9,9 @@ results to another array in parallel using `parallel_for`.
 
 ---
 
-### 1.) Create your queue
+### Write the kernel function
 
+<<<<<<< HEAD:Code_Exercises/Exercise_06_Vector_Add/README.md
 Create a `queue` to enqueue your kernel function to, remember to handle errors.
 
 ### 2. ) Create buffers
@@ -27,6 +28,9 @@ The simplest way to do this is to call `get_access` on the `buffer`s.
 ### 4. ) Write the kernel function
 
 Now enqueue parallel kernel function by calling `parallel_for` on the `handler`.
+=======
+Enqueue a parallel kernel function by calling `parallel_for` on the `handler`.
+>>>>>>> origin/isc21:Code_Exercises/Exercise_06_Vector_Add/doc.md
 
 This function takes a `range` specifying the number of iterations of the kernel
 function to invoke and the kernel function itself must take an `id` which
@@ -35,6 +39,7 @@ represents the current iteration.
 The `id` can be used in the `accessor` subscript operator to access or assign to
 the corresponding element of data that the accessor represents.
 
+<<<<<<< HEAD:Code_Exercises/Exercise_06_Vector_Add/README.md
 # SYCL Academy
 
 ## Exercise 1: Compiling with SYCL
@@ -103,6 +108,8 @@ Once you've done that simply build the exercise with your chosen build system
 and invoke the executable.
 
 
+=======
+>>>>>>> origin/isc21:Code_Exercises/Exercise_06_Vector_Add/doc.md
 #### Build And Execution Hints
 
 For For DPC++ (using the Intel DevCloud):
