@@ -8,9 +8,6 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #if __has_include(<SYCL/sycl.hpp>)
 #include <SYCL/sycl.hpp>
 #else
@@ -20,7 +17,7 @@
 class vector_add_1;
 class vector_add_2;
 
-TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -31,26 +28,23 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}, asyncHandler};
+    auto gpuQueue = sycl::queue{};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
+    auto my_nd = sycl::nd_range{sycl::range{1024}, sycl::range{32}};
+
     gpuQueue.submit([&](sycl::handler& cgh) {
-      auto accA = bufA.get_access<sycl::access::mode::read>(cgh);
-      auto accB = bufB.get_access<sycl::access::mode::read>(cgh);
-      auto accR = bufR.get_access<sycl::access::mode::write>(cgh);
+      auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+      auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+      auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
       cgh.parallel_for<vector_add_1>(
-          sycl::range{dataSize}, [=](sycl::item<1> itm) {
-            auto globalId = itm.get_id();
+          my_nd, [=](sycl::nd_item<1> itm) {
+            auto globalId = itm.get_global_id();
             accR[globalId] = accA[globalId] + accB[globalId];
           });
     });
@@ -61,54 +55,8 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
+  std::cout << "The vector add results were correct!\n";
 }
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
-  constexpr size_t dataSize = 1024;
-  constexpr size_t workGroupSize = 128;
-
-  int a[dataSize], b[dataSize], r[dataSize];
-  for (int i = 0; i < dataSize; ++i) {
-    a[i] = i;
-    b[i] = i;
-    r[i] = 0;
-  }
-
-  try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}, asyncHandler};
-
-    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
-    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
-    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
-
-    gpuQueue.submit([&](sycl::handler& cgh) {
-      auto accA = bufA.get_access<sycl::access::mode::read_write>(cgh);
-      auto accB = bufB.get_access<sycl::access::mode::read_write>(cgh);
-      auto accR = bufR.get_access<sycl::access::mode::read_write>(cgh);
-
-      auto ndRange =
-          sycl::nd_range{sycl::range{dataSize}, sycl::range{workGroupSize}};
-
-      cgh.parallel_for<vector_add_2>(ndRange, [=](sycl::nd_item<1> itm) {
-        auto globalId = itm.get_global_id();
-        accR[globalId] = accA[globalId] + accB[globalId];
-      });
-    });
-
-    gpuQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
-    std::cout << "Exception caught: " << e.what() << std::endl;
-  }
-
-  for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
-  }
-}

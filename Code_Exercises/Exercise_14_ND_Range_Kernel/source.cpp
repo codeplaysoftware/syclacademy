@@ -8,10 +8,44 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+/*
+ * SYCL Quick Reference
+ * ~~~~~~~~~~~~~~~~~~~~
+ *
+ * // Include SYCL header
+ * #include <CL/sycl.hpp>
+ *
+ * // Construct a queue
+ * auto q = sycl::queue{};
+ *
+ * // Make a buffer associated with `a`
+ * auto buf = sycl::buffer{&a, sycl::range<1>{1}}
+ *
+ * // Submit a task to the queue
+ * q.submit([&](sycl::handler &cgh) {
+ *
+ *   // Declaring different accessors
+ *   auto read_acc = sycl::accessor{buf, cgh, sycl::read_only};
+ *   auto write_acc = sycl::accessor{buf, cgh, sycl::write_only};
+ *   auto read_write_acc = sycl::accessor{buf, cgh};
+ *
+ *   // submit a parallel_for with an nd_range
+ *   cgh.parallel_for(sycl::nd_range{sycl::range{global_range},
+ *      sycl::range{local_range}}, [=](sycl::nd_item my_nd_it){
+ *      // do stuff
+ *   });
+ *
+ * });
+ *
+ * // N.B. - Each call to q.submit can only contain a single command
+ * (parallel_for)
+ *
+ * // N.B. - Buffers will only update the memory they point to when they are
+ * // destroyed
+ *
+ */
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -27,6 +61,6 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }
