@@ -11,10 +11,10 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
-#include <CL/sycl.hpp>
-#else
+#if __has_include(<SYCL/sycl.hpp>)
 #include <SYCL/sycl.hpp>
+#else
+#include <CL/sycl.hpp>
 #endif
 
 class vector_add;
@@ -36,7 +36,7 @@ TEST_CASE("vector_add", "vector_add_solution") {
       }
     };
 
-    auto defaultQueue = sycl::queue{sycl::default_selector_v, asyncHandler};
+    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};

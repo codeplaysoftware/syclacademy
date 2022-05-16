@@ -1,14 +1,10 @@
 /*
  SYCL Academy (c)
-
  SYCL Academy is licensed under a Creative Commons
  Attribution-ShareAlike 4.0 International License.
-
  You should have received a copy of the license along with this
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
-
-// TODO(Gordon) Create target for Utilities
 
 #ifndef __BENCHMARK_H__
 #define __BENCHMARK_H__
@@ -19,7 +15,7 @@
 #include <string>
 #include <vector>
 
-namespace cppcon {
+namespace util {
 
 template <typename Unit>
 struct unit_extension;
@@ -103,6 +99,6 @@ void print(const std::vector<int> &vec, std::string tag) {
   std::cout << "\n";
 }
 
-}  // namespace cppcon
+}  // namespace util
 
 #endif  // __BENCHMARK_H__

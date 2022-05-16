@@ -21,6 +21,19 @@ class vector_add;
 
 TEST_CASE("vector_add", "vector_add_solution") {
   constexpr size_t dataSize = 1024;
+<<<<<<< HEAD
+
+  float a[dataSize], b[dataSize], r[dataSize];
+  for (int i = 0; i < dataSize; ++i) {
+    a[i] = static_cast<float>(i);
+    b[i] = static_cast<float>(i);
+    r[i] = 0.0f;
+  }
+
+  // Task: Compute r[i] = a[i] + b[i] in parallel on the SYCL device
+  for (int i = 0; i < dataSize; ++i) {
+    r[i] = a[i] + b[i];
+=======
 
   float a[dataSize], b[dataSize], r[dataSize];
   for (int i = 0; i < dataSize; ++i) {
@@ -57,6 +70,7 @@ TEST_CASE("vector_add", "vector_add_solution") {
     defaultQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
+>>>>>>> origin/isc21
   }
 
   for (int i = 0; i < dataSize; ++i) {
