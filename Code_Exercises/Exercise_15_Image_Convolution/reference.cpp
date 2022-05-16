@@ -60,12 +60,17 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
     auto filterWidth = filter.width();
     auto halo = filter.half_width();
 
-    auto globalRange = sycl::range(inputImgWidth, inputImgHeight);
     auto localRange = sycl::range(32, 1);
+    auto globalRange = sycl::range(inputImgHeight, inputImgWidth);
     auto ndRange = sycl::nd_range(globalRange, localRange);
 
-    auto inBufRange = (inputImgWidth + (halo * 2)) * sycl::range(1, channels);
-    auto outBufRange = inputImgHeight * sycl::range(1, channels);
+    auto inBufRange =
+        sycl::range(inputImgHeight + (halo * 2), inputImgWidth + (halo * 2)) *
+        sycl::range(1, channels);
+    auto outBufRange =
+        sycl::range(inputImgHeight, inputImgWidth) * sycl::range(1, channels);
+
+
     auto filterRange = filterWidth * sycl::range(1, channels);
 
     {
