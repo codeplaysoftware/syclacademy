@@ -67,7 +67,7 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
     auto bufOut = sycl::buffer{out, sycl::range{dataSize}};
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      auto acc = bufInA.get_access<sycl::access::mode::read_write>(cgh);
+      sycl::accessor acc{bufInA, cgh, sycl::read_write};
 
       cgh.parallel_for<kernel_a_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
         acc[idx] = acc[idx] * 2.0f;
@@ -75,8 +75,8 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      auto accIn = bufInA.get_access<sycl::access::mode::read>(cgh);
-      auto accOut = bufInB.get_access<sycl::access::mode::write>(cgh);
+      sycl::accessor accIn{bufInA, cgh, sycl::read_only};
+      sycl::accessor accOut{bufInB, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_b_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
         accOut[idx] += accIn[idx];
@@ -84,8 +84,8 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      auto accIn = bufInA.get_access<sycl::access::mode::read>(cgh);
-      auto accOut = bufInC.get_access<sycl::access::mode::write>(cgh);
+      sycl::accessor accIn{bufInA, cgh, sycl::read_only};
+      sycl::accessor accOut{bufInC, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_c_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
         accOut[idx] -= accIn[idx];
@@ -93,9 +93,9 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      auto accInA = bufInB.get_access<sycl::access::mode::read>(cgh);
-      auto accInB = bufInC.get_access<sycl::access::mode::read>(cgh);
-      auto accOut = bufOut.get_access<sycl::access::mode::write>(cgh);
+      sycl::accessor accInA{bufInB, cgh, sycl::read_only};
+      sycl::accessor accInB{bufInC, cgh, sycl::read_only};
+      sycl::accessor accOut{bufOut, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_d_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
         accOut[idx] = accInA[idx] + accInB[idx];

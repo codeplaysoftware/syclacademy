@@ -85,12 +85,9 @@ TEST_CASE("image_convolution_vectorized", "vectors_solution") {
       util::benchmark(
           [&]() {
             myQueue.submit([&](sycl::handler& cgh) {
-              auto inputAcc =
-                  inBufVec.get_access<sycl::access::mode::read>(cgh);
-              auto outputAcc =
-                  outBufVec.get_access<sycl::access::mode::write>(cgh);
-              auto filterAcc =
-                  filterBufVec.get_access<sycl::access::mode::read>(cgh);
+              sycl::accessor inputAcc{inBufVec, cgh, sycl::read_only};
+              sycl::accessor outputAcc{outBufVec, cgh, sycl::write_only};
+              sycl::accessor filterAcc{filterBufVec, cgh, sycl::read_only};
 
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {
