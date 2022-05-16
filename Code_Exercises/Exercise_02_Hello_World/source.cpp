@@ -12,13 +12,6 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("hello_world", "hello_world_source") {
-<<<<<<< HEAD
-
-  // Print "Hello World!\n"
-  std::cout << "Hello World!\n";
-
-  // Task: Have this message print from the SYCL device instead of the host
-=======
   
   // Create a default SYCL queue for submitting events using sycl::queue{}
   // the slides use a GPU queue, but we recommend default queue as this 
@@ -34,7 +27,6 @@ TEST_CASE("hello_world", "hello_world_source") {
   
   // Submit the task using inside your queue.submit, see the slides for hints
   // cgh.single_task<hello_world>([=]() { os << "Hello World!\n"; });
->>>>>>> origin/isc21
 
   REQUIRE(true);
 }

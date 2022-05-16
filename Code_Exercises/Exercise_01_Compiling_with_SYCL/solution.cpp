@@ -17,18 +17,6 @@
 #include <SYCL/sycl.hpp>
 #endif
 
-class hello_world;
-
-TEST_CASE("hello_world", "hello_world_solution") {
-  auto defaultQueue = sycl::queue{};
-
-  defaultQueue
-      .submit([&](sycl::handler& cgh) {
-        auto os = sycl::stream{128, 128, cgh};
-
-        cgh.single_task<hello_world>([=]() { os << "Hello World!\n"; });
-      })
-      .wait();
-
+TEST_CASE("empty_sycl_source_file", "compiling_with_sycl_solution") {
   REQUIRE(true);
 }

@@ -44,7 +44,7 @@ Pull Request so that they can be reviewed and merged in a timely manner.
 
 ### List of Contributors
 
-Codeplay Software Ltd., Heidelberg University, Intel, Xilinx and University of Bristol.
+Codeplay Software Ltd., Heidelberg University, Intel and Xilinx.
 
 ## Supporting Organizations
 Abertay University, Universidad de Concepcion, TU Dresden, University of
@@ -68,30 +68,21 @@ may not match completely.
 
 | Lesson | Title | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
 |--------|-------|--------|----------|--------|----------|------------|-------|---------|
-| 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes | Yes |
-| 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
-| 03 | Managing Data | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
-| 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
-| 05 | Device Discovery | [slides][lesson-5-slides] | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | Yes |
-| 06 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
-| 07 | Introduction to USM | [slides][lesson-7-slides] | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes | Yes |
-| 08 | Using USM | [slides][lesson-8-slides] | [exercise][lesson-8-exercise] | [source][lesson-8-source] | [solution][lesson-8-solution] | Yes | Yes | Yes |
-| 09 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes | Yes |
-| 10 | Data and Dependencies | [slides][lesson-10-slides] | [exercise][lesson-10-exercise] | [source][lesson-10-source] | [solution][lesson-10-solution] | Yes | Yes | Yes |
-| 11 | In Order Queue | [slides][lesson-11-slides] | [exercise][lesson-11-exercise] | [source][lesson-11-source] | [solution][lesson-11-solution] | Yes | Yes | Yes |
-| 12 | Advanced Data Flow | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes | Yes |
-| 13 | Multiple Devices | [slides][lesson-13-slides] | [exercise][lesson-13-exercise] | [source][lesson-13-source] | [solution][lesson-13-solution] | Yes | Yes | Yes |
-| 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes | Yes |
-| 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] | [source][lesson-15-source] | [solution][lesson-15-solution] | Yes | Yes | Yes |
-| 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes | Yes |
-| 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes | Yes |
-| 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes | Yes |
-| 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes | Yes |
+| 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | TBC | Yes |
+| 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | TBC | Yes |
+| 03 | Managing Data | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | TBC | Yes |
+| 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | TBC | Yes |
+| 05 | Device Discovery | [slides][lesson-5-slides] | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | TBC | Yes |
+| 06 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | TBC | Yes |
+| 07 | Introduction to USM | [slides][lesson-7-slides] | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | TBC | Yes |
+| 08 | Using USM | [slides][lesson-8-slides] | [exercise][lesson-8-exercise] | [source][lesson-8-source] | [solution][lesson-8-solution] | Yes | TBC | Yes |
+| 09 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | TBC | Yes |
+| 10 | Data and Dependencies | [slides][lesson-10-slides] | [exercise][lesson-10-exercise] | [source][lesson-10-source] | [solution][lesson-10-solution] | Yes | TBC | Yes |
 
 
 ## Building the Exercises
 
-The exercises can be built for ComputeCpp CE (minimum v2.6.0), DPC++ and hipSYCL.
+The exercises can be built for ComputeCpp CE, DPC++ and hipSYCL.
 
 ### Supported Platforms
 
@@ -102,8 +93,8 @@ all of the exercises.
 
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
-| ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.7.0 |
-| DPC++ | [Intel DevCloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.4	|
+| ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.4.0 |
+| DPC++ | Intel DevCloud <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.2	|
 | hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> Nvidia GPU (CUDA) | Latest develop branch |
 
 \* See [here](troubleshooting-for-computecpp) for troubleshooting when using
@@ -143,7 +134,7 @@ already be installed and available in the path.
 
 #### Installing hipSYCL
 
-You will need a hipSYCL build from September 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install hipSYCL.
+You will need a hipSYCL build from April 21st 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install hipSYCL.
 
 ### Pre-requisites
 
@@ -262,20 +253,6 @@ on the command line as this makes configurating the toolset version easier.
   ],
 ```
 
-## Working on the Exercises
-Once you have a working SYCL compiler, you are ready to start writing some SYCL code. To find the first exercise:
-```
-cd Code_Exercises/Exercise_01_Compiling_with_SYCL/
-```
-And read the README.md for further instructions. 
-
-Each exercise directory contains:
-* ```README.md```, which contains instructions of how to complete a given exercise, as well as directions for compilation.
-* ```source.cpp```, a placeholder file where your code implementation should be written. 
-* ```solution.cpp```, where a solution has been implemented in advance. 
-
-Once you have completed any given exercise make sure to compare your implementation against the corresponding ```solution.cpp```. 
-
 ## Online Interactive Tutorial
 
 Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/introduction-to-sycl/introduction-to-sycl-2) tutorial introduces the concepts of SYCL. The website also provides the ability to compile and execute SYCL code from your web browser.
@@ -297,98 +274,53 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
 [video-playlist]: https://youtube.com/playlist?list=PLCssnq0MpRdM-IUAYtNSPYck6u3oz7OZQ
 
-[lesson-1-slides]: ./Lesson_Materials/Lecture_01_What_is_SYCL/
-[lesson-1-exercise]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/README.md
+[lesson-1-slides]: ./Lesson_Materials/Lecture_1_What_is_SYCL/
+[lesson-1-exercise]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/doc.md
 [lesson-1-source]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
 [lesson-1-solution]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/solution.cpp
 
-[lesson-2-slides]: ./Lesson_Materials/Lecture_02_Enqueuing_a_Kernel/
-[lesson-2-exercise]: ./Code_Exercises/Exercise_02_Hello_World/README.md
+[lesson-2-slides]: ./Lesson_Materials/Lecture_2_Enqueuing_a_Kernel/
+[lesson-2-exercise]: ./Code_Exercises/Exercise_02_Hello_World/doc.md
 [lesson-2-source]: ./Code_Exercises/Exercise_02_Hello_World/source.cpp
 [lesson-2-solution]: ./Code_Exercises/Exercise_02_Hello_World/solution.cpp
 
-[lesson-3-slides]: ./Lesson_Materials/Lecture_03_Managing_Data/
-[lesson-3-exercise]: ./Code_Exercises/Exercise_03_Scalar_Add/README.md
+[lesson-3-slides]: ./Lesson_Materials/Lecture_3_Managing_Data/
+[lesson-3-exercise]: ./Code_Exercises/Exercise_03_Scalar_Add/doc.md
 [lesson-3-source]: ./Code_Exercises/Exercise_03_Scalar_Add/source.cpp
 [lesson-3-solution]: ./Code_Exercises/Exercise_03_Scalar_Add/solution.cpp
 
-[lesson-4-slides]: ./Lesson_Materials/Lecture_04_Handling_Errors/
-[lesson-4-exercise]: ./Code_Exercises/Exercise_04_Handling_Errors/README.md
+[lesson-4-slides]: ./Lesson_Materials/Lecture_4_Handling_Errors/
+[lesson-4-exercise]: ./Code_Exercises/Exercise_04_Handling_Errors/doc.md
 [lesson-4-source]: ./Code_Exercises/Exercise_04_Handling_Errors/source.cpp
 [lesson-4-solution]: ./Code_Exercises/Exercise_04_Handling_Errors/solution.cpp
 
-[lesson-5-slides]: ./Lesson_Materials/Lecture_05_Device_Discovery/
-[lesson-5-exercise]: ./Code_Exercises/Exercise_05_Device_Selection/README.md
+[lesson-5-slides]: ./Lesson_Materials/Lecture_5_Device_Discovery/
+[lesson-5-exercise]: ./Code_Exercises/Exercise_05_Device_Selection/doc.md
 [lesson-5-source]: ./Code_Exercises/Exercise_05_Device_Selection/source.cpp
 [lesson-5-solution]: ./Code_Exercises/Exercise_05_Device_Selection/solution.cpp
 
-[lesson-6-slides]: ./Lesson_Materials/Lecture_06_Data_Parallelism/
-[lesson-6-exercise]: ./Code_Exercises/Exercise_06_Vector_Add/README.md
+[lesson-6-slides]: ./Lesson_Materials/Lecture_6_Data_Parallelism/
+[lesson-6-exercise]: ./Code_Exercises/Exercise_06_Vector_Add/doc.md
 [lesson-6-source]: ./Code_Exercises/Exercise_06_Vector_Add/source.cpp
 [lesson-6-solution]: ./Code_Exercises/Exercise_06_Vector_Add/solution.cpp
 
-[lesson-7-slides]: ./Lesson_Materials/Lecture_07_Introduction_to_USM/
-[lesson-7-exercise]: ./Code_Exercises/Exercise_07_USM_Selector/README.md
+[lesson-7-slides]: ./Lesson_Materials/Lecture_7_Introduction_to_USM/
+[lesson-7-exercise]: ./Code_Exercises/Exercise_07_USM_Selector/doc.md
 [lesson-7-source]: ./Code_Exercises/Exercise_07_USM_Selector/source.cpp
 [lesson-7-solution]: ./Code_Exercises/Exercise_07_USM_Selector/solution.cpp
 
-[lesson-8-slides]: ./Lesson_Materials/Lecture_08_Using_USM/
-[lesson-8-exercise]: ./Code_Exercises/Exercise_08_USM_Vector_Add/README.md
+[lesson-8-slides]: ./Lesson_Materials/Lecture_8_Using_USM/
+[lesson-8-exercise]: ./Code_Exercises/Exercise_08_USM_Vector_Add/doc.md
 [lesson-8-source]: ./Code_Exercises/Exercise_08_USM_Vector_Add/source.cpp
 [lesson-8-solution]: ./Code_Exercises/Exercise_08_USM_Vector_Add/solution.cpp
 
-[lesson-9-slides]: ./Lesson_Materials/Lecture_09_Asynchronous_Execution/
-[lesson-9-exercise]: ./Code_Exercises/Exercise_09_Synchronization/README.md
+[lesson-9-slides]: ./Lesson_Materials/Lecture_9_Asynchronous_Execution/
+[lesson-9-exercise]: ./Code_Exercises/Exercise_09_Synchronization/doc.md
 [lesson-9-source]: ./Code_Exercises/Exercise_09_Synchronization/source.cpp
 [lesson-9-solution]: ./Code_Exercises/Exercise_09_Synchronization/solution.cpp
 
 [lesson-10-slides]: ./Lesson_Materials/Lecture_10_Data_and_Dependencies/
-[lesson-10-exercise]: ./Code_Exercises/Exercise_10_Managing_Dependencies/README.md
+[lesson-10-exercise]: ./Code_Exercises/Exercise_10_Managing_Dependencies/doc.md
 [lesson-10-source]: ./Code_Exercises/Exercise_10_Managing_Dependencies/source.cpp
 [lesson-10-solution]: ./Code_Exercises/Exercise_10_Managing_Dependencies/solution.cpp
-
-[lesson-11-slides]: ./Lesson_Materials/Lecture_11_In_Order_Queue/
-[lesson-11-exercise]: ./Code_Exercises/Exercise_11_In_Order_Queue/README.md
-[lesson-11-source]: ./Code_Exercises/Exercise_11_In_Order_Queue/source.cpp
-[lesson-11-solution]: ./Code_Exercises/Exercise_11_In_Order_Queue/solution.cpp
-
-[lesson-12-slides]: ./Lesson_Materials/Lecture_12_Advanced_Data_Flow/
-[lesson-12-exercise]: ./Code_Exercises/Exercise_12_Temporary_Data/README.md
-[lesson-12-source]: ./Code_Exercises/Exercise_12_Temporary_Data/source.cpp
-[lesson-12-solution]: ./Code_Exercises/Exercise_12_Temporary_Data/solution.cpp
-
-[lesson-13-slides]: ./Lesson_Materials/Lecture_13_Multiple_Devices/
-[lesson-13-exercise]: ./Code_Exercises/Exercise_13_Load_Balancing/README.md
-[lesson-13-source]: ./Code_Exercises/Exercise_13_Load_Balancing/source.cpp
-[lesson-13-solution]: ./Code_Exercises/Exercise_13_Load_Balancing/solution.cpp
-
-[lesson-14-slides]: ./Lesson_Materials/Lecture_14_ND_Range_Kernel/
-[lesson-14-exercise]: ./Code_Exercises/Exercise_14_ND_Range_Kernel/README.md
-[lesson-14-source]: ./Code_Exercises/Exercise_14_ND_Range_Kernel/source.cpp
-[lesson-14-solution]: ./Code_Exercises/Exercise_14_ND_Range_Kernel/solution.cpp
-
-[lesson-15-slides]: ./Lesson_Materials/Lecture_15_Image_Convolution/
-[lesson-15-exercise]: ./Code_Exercises/Exercise_15_Image_Convolution/README.md
-[lesson-15-source]: ./Code_Exercises/Exercise_15_Image_Convolution/source.cpp
-[lesson-15-solution]: ./Code_Exercises/Exercise_15_Image_Convolution/reference.cpp
-
-[lesson-16-slides]: ./Lesson_Materials/Lecture_16_Coalesced_Global_Memory/
-[lesson-16-exercise]: ./Code_Exercises/Exercise_16_Coalesced_Global_Memory/README.md
-[lesson-16-source]: ./Code_Exercises/Exercise_16_Coalesced_Global_Memory/source.cpp
-[lesson-16-solution]: ./Code_Exercises/Exercise_16_Coalesced_Global_Memory/solution.cpp
-
-[lesson-17-slides]: ./Lesson_Materials/Lecture_17_Vectors/
-[lesson-17-exercise]: ./Code_Exercises/Exercise_17_Vectors/README.md
-[lesson-17-source]: ./Code_Exercises/Exercise_17_Vectors/source.cpp
-[lesson-17-solution]: ./Code_Exercises/Exercise_17_Vectors/solution.cpp
-
-[lesson-18-slides]: ./Lesson_Materials/Lecture_18_Local_Memory_Tiling/
-[lesson-18-exercise]: ./Code_Exercises/Exercise_18_Local_Memory_Tiling/README.md
-[lesson-18-source]: ./Code_Exercises/Exercise_18_Local_Memory_Tiling/source.cpp
-[lesson-18-solution]: ./Code_Exercises/Exercise_18_Local_Memory_Tiling/solution.cpp
-
-[lesson-19-slides]: ./Lesson_Materials/Lecture_19_Work_Group_Sizes/
-[lesson-19-exercise]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/README.md
-[lesson-19-source]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/source.cpp
-[lesson-19-solution]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/solution.cpp
 
