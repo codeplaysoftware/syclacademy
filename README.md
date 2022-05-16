@@ -19,10 +19,12 @@ learning about SYCL below are a list of useful resources:
 
 ### How to use the Materials
 
-To use these materials simply clone this repository including the required submodules.
+This branch of SYCL Academy has been made for the SYCL Tutorial at ISC22.
+Please ensure you are using the correct branch if you are working on the 
+tutorial.
 
 ```
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
+git clone --branch isc22 --recursive https://github.com/codeplaysoftware/syclacademy.git
 ```
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
@@ -35,22 +37,6 @@ The exercises can be found in `Code_Exercises` in the sub-directory for each
 topic. Each exercise has a markdown document instructing what to do in the
 exercise, a source file to start with and a solution file to provide an
 example implementation to compare against.
-
-## Contributing to SYCL Academy
-
-Contributions to the materials are very gratefully received and this can be done
-by submitting a Pull Request with any changes. Please limit the scope of each
-Pull Request so that they can be reviewed and merged in a timely manner.
-
-### List of Contributors
-
-Codeplay Software Ltd., Heidelberg University, Intel, Xilinx and University of Bristol.
-
-## Supporting Organizations
-Abertay University, Universidad de Concepcion, TU Dresden, University of
-Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
-University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
-and University of the West of Scotland.
 
 ## Lesson Curriculum
 
@@ -71,23 +57,8 @@ may not match completely.
 | 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes | Yes |
 | 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
 | 03 | Managing Data | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
-| 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
-| 05 | Device Discovery | [slides][lesson-5-slides] | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | Yes |
 | 06 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
-| 07 | Introduction to USM | [slides][lesson-7-slides] | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes | Yes |
-| 08 | Using USM | [slides][lesson-8-slides] | [exercise][lesson-8-exercise] | [source][lesson-8-source] | [solution][lesson-8-solution] | Yes | Yes | Yes |
-| 09 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes | Yes |
-| 10 | Data and Dependencies | [slides][lesson-10-slides] | [exercise][lesson-10-exercise] | [source][lesson-10-source] | [solution][lesson-10-solution] | Yes | Yes | Yes |
-| 11 | In Order Queue | [slides][lesson-11-slides] | [exercise][lesson-11-exercise] | [source][lesson-11-source] | [solution][lesson-11-solution] | Yes | Yes | Yes |
-| 12 | Advanced Data Flow | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes | Yes |
-| 13 | Multiple Devices | [slides][lesson-13-slides] | [exercise][lesson-13-exercise] | [source][lesson-13-source] | [solution][lesson-13-solution] | Yes | Yes | Yes |
 | 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes | Yes |
-| 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] | [source][lesson-15-source] | [solution][lesson-15-solution] | Yes | Yes | Yes |
-| 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes | Yes |
-| 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes | Yes |
-| 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes | Yes |
-| 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes | Yes |
-
 
 ## Building the Exercises
 
@@ -268,6 +239,22 @@ Each exercise directory contains:
 * ```solution.cpp```, where a solution has been implemented in advance. 
 
 Once you have completed any given exercise make sure to compare your implementation against the corresponding ```solution.cpp```. 
+
+## Contributing to SYCL Academy
+
+Contributions to the materials are very gratefully received and this can be done
+by submitting a Pull Request with any changes. Please limit the scope of each
+Pull Request so that they can be reviewed and merged in a timely manner.
+
+### List of Contributors
+
+Codeplay Software Ltd., Heidelberg University, Intel, Xilinx and University of Bristol.
+
+## Supporting Organizations
+Abertay University, Universidad de Concepcion, TU Dresden, University of
+Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
+University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
+and University of the West of Scotland.
 
 ## Online Interactive Tutorial
 
