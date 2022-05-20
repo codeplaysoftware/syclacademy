@@ -61,8 +61,8 @@ TEST_CASE("image_convolution_vectorized", "vectors_solution") {
     auto filterWidth = filter.width();
     auto halo = filter.half_width();
 
-    auto localRange = sycl::range(32, 1);
-    auto globalRange = sycl::range(inputImgHeight, inputImgWidth);
+    auto globalRange = sycl::range(inputImgWidth, inputImgHeight);
+    auto localRange = sycl::range(1, 32);
     auto ndRange = sycl::nd_range(globalRange, localRange);
 
     auto inBufRange =
@@ -88,17 +88,13 @@ TEST_CASE("image_convolution_vectorized", "vectors_solution") {
       util::benchmark(
           [&]() {
             myQueue.submit([&](sycl::handler& cgh) {
-              auto inputAcc =
-                  inBufVec.get_access<sycl::access::mode::read>(cgh);
-              auto outputAcc =
-                  outBufVec.get_access<sycl::access::mode::write>(cgh);
-              auto filterAcc =
-                  filterBufVec.get_access<sycl::access::mode::read>(cgh);
+              sycl::accessor inputAcc{inBufVec, cgh, sycl::read_only};
+              sycl::accessor outputAcc{outBufVec, cgh, sycl::write_only};
+              sycl::accessor filterAcc{filterBufVec, cgh, sycl::read_only};
 
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {
                     auto globalId = item.get_global_id();
-                    globalId = sycl::id{globalId[1], globalId[0]};
 
                     auto haloOffset = sycl::id(halo, halo);
                     auto src = (globalId + haloOffset);

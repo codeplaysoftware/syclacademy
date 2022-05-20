@@ -60,8 +60,8 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
     auto filterWidth = filter.width();
     auto halo = filter.half_width();
 
-    auto localRange = sycl::range(32, 1);
-    auto globalRange = sycl::range(inputImgHeight, inputImgWidth);
+    auto globalRange = sycl::range(inputImgWidth, inputImgHeight);
+    auto localRange = sycl::range(1, 32);
     auto ndRange = sycl::nd_range(globalRange, localRange);
 
     auto inBufRange =
@@ -82,15 +82,14 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
       util::benchmark(
           [&]() {
             myQueue.submit([&](sycl::handler& cgh) {
-              auto inputAcc = inBuf.get_access<sycl::access::mode::read>(cgh);
-              auto outputAcc =
-                  outBuf.get_access<sycl::access::mode::write>(cgh);
-              auto filterAcc =
-                  filterBuf.get_access<sycl::access::mode::read>(cgh);
+              sycl::accessor inputAcc{inBuf, cgh, sycl::read_only};
+              sycl::accessor outputAcc{outBuf, cgh, sycl::write_only};
+              sycl::accessor filterAcc{filterBuf, cgh, sycl::read_only};
 
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {
                     auto globalId = item.get_global_id();
+                    globalId = sycl::id{globalId[1], globalId[0]};
 
                     auto channelsStride = sycl::range(1, channels);
                     auto haloOffset = sycl::id(halo, halo);
