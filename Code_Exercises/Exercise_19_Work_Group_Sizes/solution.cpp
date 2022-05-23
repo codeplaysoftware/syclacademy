@@ -58,12 +58,15 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
     auto filterWidth = filter.width();
     auto halo = filter.half_width();
 
-    auto globalRange = sycl::range(inputImgWidth, inputImgHeight);
+    auto globalRange = sycl::range(inputImgHeight, inputImgWidth);
     auto localRange = sycl::range(16, 16);
     auto ndRange = sycl::nd_range(globalRange, localRange);
 
-    auto inBufRange = (inputImgWidth + (halo * 2)) * sycl::range(1, channels);
-    auto outBufRange = inputImgHeight * sycl::range(1, channels);
+    auto inBufRange =
+        sycl::range(inputImgHeight + (halo * 2), inputImgWidth + (halo * 2)) *
+        sycl::range(1, channels);
+    auto outBufRange =
+        sycl::range(inputImgHeight, inputImgWidth) * sycl::range(1, channels);
     auto filterRange = filterWidth * sycl::range(1, channels);
     auto scratchpadRange = localRange + sycl::range(halo * 2, halo * 2);
 

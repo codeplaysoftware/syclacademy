@@ -64,8 +64,11 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
     auto localRange = sycl::range(1, 32);
     auto ndRange = sycl::nd_range(globalRange, localRange);
 
-    auto inBufRange = (inputImgWidth + (halo * 2)) * sycl::range(1, channels);
-    auto outBufRange = inputImgHeight * sycl::range(1, channels);
+    auto inBufRange =
+        sycl::range(inputImgHeight + (halo * 2), inputImgWidth + (halo * 2)) *
+        sycl::range(1, channels);
+    auto outBufRange =
+        sycl::range(inputImgHeight, inputImgWidth) * sycl::range(1, channels);
     auto filterRange = filterWidth * sycl::range(1, channels);
 
     {
