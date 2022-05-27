@@ -51,16 +51,35 @@ The image convolution support code provides a `filter_type` enum which allows
 you to choose between `identity` and `blur`. The utility for generating the
 filter data; `generate_filter` takes a `filter_type` and a width.
 
-#### Build And Execution Hints
+#### Build And Execution Hints Using the DevCloud
 
+For For DPC++:
+```sh
+dpcpp -fsycl -o sycl-ex-5 -I../../External/Catch2/single_include -I../../Utilities/include -I../../External/stb/ ../Code_Exercises/Exercise_05_Image_Convolution/reference.cpp
+```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
-There is a script provided in the folder for this exercise to compile and run your code. 
+
+We have provided a ready made script in the same directory as the source.cpp file, so you can call:
 
 ```sh
 qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 ```
-Once the job has finished, in the same folder will be a file with a name similar to `run.sh.o1898955`
-If you open this file you will see the program output from your SYCL code.
 
-Refer to the [guide][devcloud-job-submission] for further information on the possibilities.
+For ComputeCpp:
+
+```sh
+make exercise_05_image_reference
+./Code_Exercises/Exercise_05_Image_Convolution/exercise_05_image_reference
+```
+
+
+For hipSYCL:
+
+```sh
+syclcc -o sycl-ex-5 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_05_Image_Convolution/source.cpp
+./sycl-ex-5
+```
+
+
+[devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

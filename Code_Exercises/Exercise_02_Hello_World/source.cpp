@@ -15,22 +15,30 @@
  * // Include SYCL header
  * #include <CL/sycl.hpp>
  *
+ * // Declare the kernel identifier (we use this later)
+ * class hello_world;
+ *
  * // Default construct a queue
  * auto q = sycl::queue{};
  *
- * // Get the queue's device
- * auto d = q.get_device();
+ * // Set up the kernel
+ * q.submit([&](sycl::handler& cgh) {
+ * 
+ * // Set up the output stream
+ * auto os = sycl::stream{128, 128, cgh};
  *
- * // Get the name of the device
- * auto dev_name = d.get_info<sycl::info::device::name>();
+ * // Print hello world
+ * cgh.single_task<hello_world>([=]() { os << "Hello World!\n"; });
  *
+ * // End the kernel scope 
+ * }).wait();
  */
 
 int main() {
     // Construct a queue
 
-    // Get the device associated with queue
+    // Set up the kernel
 
-    // Print the device name to stdout
+    // Print Hello World
 }
 

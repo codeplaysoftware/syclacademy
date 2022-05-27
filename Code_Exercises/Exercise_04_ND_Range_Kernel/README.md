@@ -37,16 +37,35 @@ by calling the `get_global_id` member function.
 Feel free to use either the buffer/accessor model and feel free to use any
 method of synchronization and copy back.
 
-#### Build And Execution Hints
+#### Build And Execution Hints Using the DevCloud
 
+For For DPC++:
+```sh
+dpcpp -fsycl -o sycl-ex-4 ../Code_Exercises/Exercise_04_ND_Range_Kernel/source.cpp
+```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
-There is a script provided in the folder for this exercise to compile and run your code. 
+
+We have provided a ready made script in the same directory as the source.cpp file, so you can call:
 
 ```sh
 qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 ```
-Once the job has finished, in the same folder will be a file with a name similar to `run.sh.o1898955`
-If you open this file you will see the program output from your SYCL code.
 
-Refer to the [guide][devcloud-job-submission] for further information on the possibilities.
+For ComputeCpp:
+
+```sh
+make exercise_14_nd_range_kernel_source
+./Code_Exercises/Exercise_04_ND_Range_Kernel/exercise_14_nd_range_kernel_source
+```
+
+
+For hipSYCL:
+
+```sh
+syclcc -o sycl-ex-1 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_04_ND_Range_Kernel/source.cpp
+./sycl-ex-4
+```
+
+
+[devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

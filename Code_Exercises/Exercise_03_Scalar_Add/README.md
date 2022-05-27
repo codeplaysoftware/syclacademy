@@ -35,19 +35,35 @@ sure you `wait()` between fill() and memcpy() or else you
 aren't guaranteed to get the expected result.
 
 
-#### Build And Execution Hints
+#### Build And Execution Hints Using the DevCloud
 
+For For DPC++:
+```sh
+dpcpp -fsycl -o sycl-ex-3 ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
+```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
-There is a script provided in the folder for this exercise to compile and run your code. 
+
+We have provided a ready made script in the same directory as the source.cpp file, so you can call:
 
 ```sh
 qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 ```
-Once the job has finished, in the same folder will be a file with a name similar to `run.sh.o1898955`
-If you open this file you will see the program output from your SYCL code.
 
-Refer to the [guide][devcloud-job-submission] for further information on the possibilities.
+For ComputeCpp:
+
+```sh
+make exercise_03_scalar_add_source
+./Code_Exercises/Exercise_03_Scalar_Add/exercise_03_scalar_add_source
+```
+
+
+For hipSYCL:
+
+```sh
+syclcc -o sycl-ex-3 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
+./sycl-ex-3
+```
 
 
 [devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

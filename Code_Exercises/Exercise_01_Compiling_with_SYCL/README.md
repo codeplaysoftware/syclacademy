@@ -4,53 +4,24 @@
 
 ---
 
-For this first exercise you simply need to install a SYCL implementation and the SYCL
-Academy dependencies and then verify your installation by comping a source file
-for SYCL.
-
-### 1.) Installing a SYCL implementation
-
-To install a SYCL implementation, follow the instructions in the README.md of the SYCL
-Academy repository.
+For this first exercise you simply need to register and log in to the DevCloud 
+environment. We would recommend accessing the DevCloud through the Jupyter terminal.
+To access this go to [this page](https://devcloud.intel.com/oneapi/get_started/) 
+and scroll right to the bottom where there is a link "Connect with Jupyter* Lab."
+Once opened, which may take a little time, use the "File->New->Terminal" option to 
+open a console.
 
 ### 2.) Verifying your environment
 
 Depending on the SYCL implementation used, the steps to verify your environment might vary.
 
-#### When using ComputeCpp
-
-ComputeCpp includes a tool called `computecpp_info` which lists all the
-devices available on your machine and displays which are setup with the correct
-drivers.
-
-Open a console and run the executable located in the 'bin' directory of the
-ComputeCpp release package:
+#### DPC++
 
 ```
-./computecpp_info
+sycl-ls
 ```
 
-Look for the lines that say:
-```
-  Device is supported                     : YES - Tested internally by Codeplay
-  Software Ltd.
-```
-
-You can also add the option --verbose to display further information about the
-devices.
-
-From this output you can confirm your environment is setup correctly.
-
-#### When using hipSYCL
-
-With hipSYCL, you can skip this step. If you suspect later that your environment might not be set up correctly, you can set the environment variable `HIPSYCL_DEBUG_LEVEL=3` and execute your program. hipSYCL will then print (among many other things) all devices that it can find, for example:
-```sh
-[hipSYCL Info] Discovered devices from backend 'OpenMP': 
-[hipSYCL Info]   device 0: 
-[hipSYCL Info]     vendor: the hipSYCL project
-[hipSYCL Info]     name: hipSYCL OpenMP host device
-```
-*Note: You may not see this output in this exercise because we do not yet actually use any SYCL functionality. Consequently, there is no need for the hipSYCL runtime to launch and print diagnostic information.*
+This will show you the devices that are available to you on the system.
 
 ### 3.) Configuring the exercise project
 
@@ -59,12 +30,11 @@ compile your first SYCL application from source code.
 
 First fetch the tutorial samples from GitHub.
 
-Clone this repository ensuring that you include sub-modules.
+If you have not done so already clone this repository ensuring that you include sub-modules 
+and the "isc22" branch.
 
 ```
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
-mkdir build
-cd build
+git clone --recursive --branch isc22 https://github.com/codeplaysoftware/syclacademy.git
 ```
 
 ### 4.) Include the SYCL header file
@@ -83,44 +53,77 @@ Once you've done that simply build the exercise with your chosen build system
 and invoke the executable.
 
 
-#### Build And Execution Hints
+#### Build And Execution Hints Using the DevCloud
 
-For For DPC++ (using the Intel DevCloud):
-```sh
-clang++ -fsycl -o sycl-ex-1 -I../External/Catch2/single_include ../Code_Exercises/Exercise_01_compiling_with_SYCL/source.cpp
-```
-In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
-especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
-Please refer to the [guide][devcloud-job-submission].
+For For DPC++ this is how you would compile your source code:
 
-So wrap the binary into a script `job_submission` and run:
 ```sh
-qsub job_submission
+dpcpp -fsycl -o sycl-ex-1 source.cpp
 ```
 
-For ComputeCpp:
-```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_compiling_with_sycl_source
-```
+Then run the compiled binary using
 
-
-For hipSYCL:
-```sh
-# <target specification> is a list of backends and devices to target, for example
-# "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
-# The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
-cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
-make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_compiling_with_sycl_source
 ```
-alternatively, without cmake:
-```sh
-cd Code_Exercises/Exercise_01_compiling_with_SYCL
-/path/to/hipsycl/bin/syclcc -o sycl-ex-1 -I../../External/Catch2/single_include --hipsycl-targets="<target specification>" source.cpp
 ./sycl-ex-1
 ```
+
+In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
+
+We have provided a ready made script in the same directory as the source.cpp file, so you can call:
+
+```sh
+./q run.sh
+```
+
+To compile the `solution.cpp` file you will need to update the run.sh file.
+
+For ComputeCpp:
+
+To use ComputeCpp you will need to load the module.
+
+`module use /data/oneapi_workshop/xpublog/cppcon/Modules/modulefiles`
+
+`module load computeCPP`
+
+```
+computecpp_info
+```
+
+This will show you the devices that are available to you on the system.
+
+Go back to the root of the git repo and create a build directory
+
+```
+mkdir build
+cd build
+```
+
+```sh
+cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/data/oneapi_workshop/isc22/ComputeCpp-experimental-CE-2.10.0-x86_64-linux-gnu -DOpenCL_INCLUDE_DIR=/data/oneapi_workshop/xpublog/cppcon/OpenCL-Headers/include -DOpenCL_LIBRARY=tools/versions/oneapi/2022.2/oneapi/compiler/2022.1.0/linux/lib ..
+make exercise_01_compiling_with_sycl_source
+./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_compiling_with_sycl_source
+```
+Unload the module again if you want to use DPC++ using 
+
+`module purge`
+
+For hipSYCL:
+
+To use hipSYCL you will need to load the module.
+
+`module use /data/oneapi_workshop/xpublog/cppcon/Modules/modulefiles`
+
+`module load hipSYCL`
+
+```sh
+syclcc -o sycl-ex-1 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
+qsub -l nodes=1:gpu:ppn=2 -d . run.sh
+```
+
+Unload the module again if you want to use DPC++ using 
+
+`module purge`
 
 
 [devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/
