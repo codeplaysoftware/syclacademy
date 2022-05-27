@@ -98,18 +98,13 @@ computecpp_info
 
 This will show you the devices that are available to you on the system.
 
-Go back to the root of the git repo and create a build directory
-
-```
-mkdir build
-cd build
-```
-
+Compile and run using the following commands:
 ```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/data/oneapi_workshop/isc22/ComputeCpp-experimental-CE-2.10.0-x86_64-linux-gnu -DOpenCL_INCLUDE_DIR=/data/oneapi_workshop/xpublog/cppcon/OpenCL-Headers/include -DOpenCL_LIBRARY=tools/versions/oneapi/2022.2/oneapi/compiler/2022.1.0/linux/lib ..
-make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_compiling_with_sycl_source
+cd ~/syclacademy/Code_Exercises/Exercise_01_Compiling_with_SYCL
+compute++ source.cpp -lComputeCpp -sycl-driver -std=c++17 -DSYCL_LANGUAGE_VERSION=2020 -no-serial-memop
+./a.out 
 ```
+
 Unload the module again if you want to use DPC++ using 
 
 `module purge`

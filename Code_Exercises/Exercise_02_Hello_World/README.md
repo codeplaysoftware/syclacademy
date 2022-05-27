@@ -32,10 +32,10 @@ qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 For ComputeCpp:
 
 ```sh
-make exercise_02_hello_world_source
-./Code_Exercises/Exercise_02_Hello_World/exercise_02_hello_world_source
+cd ~/syclacademy/Code_Exercises/Exercise_02_Hello_World
+compute++ source.cpp -lComputeCpp -sycl-driver -std=c++17 -DSYCL_LANGUAGE_VERSION=2020 -no-serial-memop
+./a.out 
 ```
-
 
 For hipSYCL:
 

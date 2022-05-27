@@ -14,6 +14,8 @@
 #include <CL/sycl.hpp>
 #endif
 
+#include <iostream>
+
 class vector_add_1;
 class vector_add_2;
 

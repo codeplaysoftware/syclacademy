@@ -53,8 +53,9 @@ qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 For ComputeCpp:
 
 ```sh
-make exercise_03_scalar_add_source
-./Code_Exercises/Exercise_03_Scalar_Add/exercise_03_scalar_add_source
+cd ~/syclacademy/Code_Exercises/Exercise_03_Scalar_Add
+compute++ source.cpp -lComputeCpp -sycl-driver -std=c++17 -DSYCL_LANGUAGE_VERSION=2020 -no-serial-memop
+./a.out 
 ```
 
 
