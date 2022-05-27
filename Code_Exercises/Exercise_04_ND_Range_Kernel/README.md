@@ -41,7 +41,7 @@ method of synchronization and copy back.
 
 For For DPC++:
 ```sh
-dpcpp -fsycl -o sycl-ex-4 ../Code_Exercises/Exercise_04_ND_Range_Kernel/source.cpp
+dpcpp -fsycl -o sycl-ex-4 source.cpp
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.

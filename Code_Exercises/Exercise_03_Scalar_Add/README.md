@@ -39,7 +39,7 @@ aren't guaranteed to get the expected result.
 
 For For DPC++:
 ```sh
-dpcpp -fsycl -o sycl-ex-3 ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
+dpcpp -fsycl -o sycl-ex-3 source.cpp
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
