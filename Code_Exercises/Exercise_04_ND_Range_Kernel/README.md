@@ -55,9 +55,11 @@ qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 For ComputeCpp:
 
 ```sh
-make exercise_14_nd_range_kernel_source
-./Code_Exercises/Exercise_04_ND_Range_Kernel/exercise_14_nd_range_kernel_source
+cd ~/syclacademy/Code_Exercises/Exercise_04_ND_Range_Kernel
+compute++ source.cpp -lComputeCpp -sycl-driver -std=c++17 -DSYCL_LANGUAGE_VERSION=2020 -no-serial-memop
+./a.out 
 ```
+
 
 
 For hipSYCL:
