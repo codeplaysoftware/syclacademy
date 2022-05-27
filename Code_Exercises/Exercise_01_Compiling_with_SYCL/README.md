@@ -55,6 +55,12 @@ and invoke the executable.
 
 #### Build And Execution Hints Using the DevCloud
 
+First navigate the terminal to the right directory:
+
+```
+cd syclacademy/Code_Exercises/Exercise_01_Compiling_with_SYCL
+```
+
 For For DPC++ this is how you would compile your source code:
 
 ```sh
