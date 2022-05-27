@@ -9,33 +9,41 @@ to run on a device and print `Hello World!` to the console.
 
 ---
 
-The purpose of this exercise is to compile some SYCL code.
+The purpose of this exercise is to write a simple SYCL kernel.
 
-Write some simple code using the examples in `source.cpp`.
-
-Use the quick reference guide in `source.cpp` to output the device name
-to `stdout`.
-
-Extra fields may also be outputted using `get_info()`.
-
-Try:
-
-`sycl::info::device::version`
-`sycl::info::device::driver_version`
+Write some simple code using the hints in `source.cpp`.
 
 
-#### Build And Execution Hints
+#### Build And Execution Hints Using the DevCloud
 
+For For DPC++:
+```sh
+dpcpp -fsycl -o sycl-ex-2 ../Code_Exercises/Exercise_02_Hello_World/source.cpp
+```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
-There is a script provided in the folder for this exercise to compile and run your code. 
+
+We have provided a ready made script in the same directory as the source.cpp file, so you can call:
 
 ```sh
 qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 ```
-Once the job has finished, in the same folder will be a file with a name similar to `run.sh.o1898955`
-If you open this file you will see the program output from your SYCL code.
 
-Refer to the [guide][devcloud-job-submission] for further information on the possibilities.
+For ComputeCpp:
+
+```sh
+cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
+make exercise_02
+./Code_Exercises/Exercise_02_Hello_World/exercise_02
+```
+
+
+For hipSYCL:
+
+```sh
+syclcc -o sycl-ex-2 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_02_Hello_World/source.cpp
+./sycl-ex-2
+```
+
 
 [devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/
