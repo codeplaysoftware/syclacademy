@@ -53,9 +53,8 @@ qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 For ComputeCpp:
 
 ```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON
-make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_03_Scalar_Add/exercise_01_compiling_with_sycl_source
+make exercise_03_scalar_add_source
+./Code_Exercises/Exercise_03_Scalar_Add/exercise_03_scalar_add_source
 ```
 
 

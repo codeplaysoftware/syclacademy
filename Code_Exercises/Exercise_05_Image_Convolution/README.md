@@ -69,9 +69,8 @@ qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 For ComputeCpp:
 
 ```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_05_Image_Convolution/exercise_01_compiling_with_sycl_source
+make exercise_05_image_reference
+./Code_Exercises/Exercise_05_Image_Convolution/exercise_05_image_reference
 ```
 
 

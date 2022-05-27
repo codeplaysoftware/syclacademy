@@ -23,30 +23,6 @@ sycl-ls
 
 This will show you the devices that are available to you on the system.
 
-#### ComputeCpp
-
-To use ComputeCpp you will need to load the module.
-
-`module use /data/oneapi_workshop/xpublog/cppcon/Modules/modulefiles`
-`module load computeCPP`
-
-```
-computecpp_info
-```
-
-Unload the module again if you want to use DPC++ using `unload computeCpp`
-
-This will show you the devices that are available to you on the system.
-
-#### hipSYCL
-
-To use hipSYCL you will need to load the module.
-
-`module use /data/oneapi_workshop/xpublog/cppcon/Modules/modulefiles`
-`module load hipSYCL`
-
-Unload the module again if you want to use DPC++ using `unload hipSYCL`
-
 ### 3.) Configuring the exercise project
 
 Once you have confirmed your environment is setup and available you are ready to
@@ -54,12 +30,11 @@ compile your first SYCL application from source code.
 
 First fetch the tutorial samples from GitHub.
 
-Clone this repository ensuring that you include sub-modules and the "isc22" branch.
+If you have not done so already clone this repository ensuring that you include sub-modules 
+and the "isc22" branch.
 
 ```
 git clone --recursive --branch isc22 https://github.com/codeplaysoftware/syclacademy.git
-mkdir build
-cd build
 ```
 
 ### 4.) Include the SYCL header file
@@ -80,34 +55,75 @@ and invoke the executable.
 
 #### Build And Execution Hints Using the DevCloud
 
-For For DPC++:
+For For DPC++ this is how you would compile your source code:
+
 ```sh
-dpcpp -fsycl -o sycl-ex-1 ../Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
+dpcpp -fsycl -o sycl-ex-1 source.cpp
 ```
+
+Then run the compiled binary using
+
+```
+./sycl-ex-1
+```
+
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
 
 We have provided a ready made script in the same directory as the source.cpp file, so you can call:
 
 ```sh
-qsub -l nodes=1:gpu:ppn=2 -d . run.sh
+./q run.sh
 ```
+
+To compile the `solution.cpp` file you will need to update the run.sh file.
 
 For ComputeCpp:
 
+To use ComputeCpp you will need to load the module.
+
+`module use /data/oneapi_workshop/xpublog/cppcon/Modules/modulefiles`
+
+`module load computeCPP`
+
+```
+computecpp_info
+```
+
+This will show you the devices that are available to you on the system.
+
+Go back to the root of the git repo and create a build directory
+
+```
+mkdir build
+cd build
+```
+
 ```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
+cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/data/oneapi_workshop/isc22/ComputeCpp-experimental-CE-2.10.0-x86_64-linux-gnu -DOpenCL_INCLUDE_DIR=/data/oneapi_workshop/xpublog/cppcon/OpenCL-Headers/include -DOpenCL_LIBRARY=tools/versions/oneapi/2022.2/oneapi/compiler/2022.1.0/linux/lib ..
 make exercise_01_compiling_with_sycl_source
 ./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_compiling_with_sycl_source
 ```
+Unload the module again if you want to use DPC++ using 
 
+`module purge`
 
 For hipSYCL:
+
+To use hipSYCL you will need to load the module.
+
+`module use /data/oneapi_workshop/xpublog/cppcon/Modules/modulefiles`
+
+`module load hipSYCL`
 
 ```sh
 syclcc -o sycl-ex-1 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
 qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 ```
+
+Unload the module again if you want to use DPC++ using 
+
+`module purge`
 
 
 [devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

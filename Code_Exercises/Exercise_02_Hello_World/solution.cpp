@@ -9,6 +9,7 @@
 */
 
 #include <CL/sycl.hpp>
+class hello_world;
 
 int main() {
   // Construct a queue

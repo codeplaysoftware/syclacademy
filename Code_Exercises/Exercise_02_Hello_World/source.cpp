@@ -15,6 +15,9 @@
  * // Include SYCL header
  * #include <CL/sycl.hpp>
  *
+ * // Declare the kernel identifier (we use this later)
+ * class hello_world;
+ *
  * // Default construct a queue
  * auto q = sycl::queue{};
  *
