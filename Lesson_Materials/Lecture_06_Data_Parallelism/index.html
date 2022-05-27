@@ -160,114 +160,12 @@ parallel_for(calc, in, out, 1024);
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							* Work-items are collected together into **work-groups**
-							* The size of work-groups is generally relative to what is optimal on the device being targeted
-							* It can also be affected by the resources used by each work-item
+							* Work-items are launched in parallel in a `sycl::range`.
+							* In order to maximize parallelism, the range should correspond to the problem size.
 						</div>
 						<div class="col" data-markdown>
-							![Work Group](../common-revealjs/images/workgroup.png "Work-Group")
+							![Work Group](./SYCL_range.png "Work-Group")
 						</div>
-					</div>
-				</section>
-				<!--Slide 8-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* SYCL kernel functions are invoked within an **nd-range**
-							* An nd-range has a number of work-groups and subsequently a number of work-items
-							* Work-groups always have the same number of work-items
-						</div>
-						<div class="col" data-markdown>
-							![ND-Range](../common-revealjs/images/ndrange.png "ND-Range")
-						</div>
-					</div>
-				</section>
-				<!--Slide 9-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* The nd-range describes an **iteration space**; how the work-items and work-groups are composed
-							* An nd-range can be 1, 2 or 3 dimensions
-							* An nd-range has two components
-							  * The **global-range** describes the total number of workitems in each dimension
-							  * The **local-range** describes the number of work-items in a work-group in each dimension
-						</div>
-						<div class="col" data-markdown>
-							![ND-Range](../common-revealjs/images/ndrange-example.png "ND-Range")
-						</div>
-					</div>
-				</section>
-				<!--Slide 10-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* Multiple work-items will generally execute concurrently
-							* On vector hardware this is often done in lock-step, which means the same hardware instructions
-							* The number of work-items that will execute concurrently can vary from one device to another
-							* Work-items will be batched along with other work-items in the same work-group
-							* The order work-items and workgroups are executed in is implementation defined
-						</div>
-						<div class="col" data-markdown>
-							![ND-Range](../common-revealjs/images/ndrange-lock-step.png "ND-Range")
-						</div>
-					</div>
-				</section>
-				<!--Slide 11-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* Work-items in a work-group can be synchronized using a work-group barrier
-							  * All work-items within a work-group must reach the barrier before any can continue on
-						</div>
-						<div class="col" data-markdown>
-							![ND-Range](../common-revealjs/images/work-group-0.png "ND-Range")
-						</div>
-					</div>
-				</section>
-				<!--Slide 12-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* SYCL does not support synchronizing across all work-items in the nd-range
-							* The only way to do this is to split the computation into separate SYCL kernel functions
-						</div>
-						<div class="col" data-markdown>
-							![ND-Range](../common-revealjs/images/work-group-0-1.png "ND-Range")
-						</div>
-					</div>
-				</section>
-				<!--Slide 13-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL memory model
-					</div>
-					<div class="container">
-						<div class="col-left-3" data-markdown>
-							![Constant Memory](../common-revealjs/images/workitem-constantmemory.png "Constant Memory")
-						</div>
-						<div class="col-right-2" data-markdown>
-							Each work-item can access
-							* a dedicated region of **private memory**
-							* a dedicated region of **local memory** accessible to all work-items in a work-group
-							* a single region of **global memory** that's accessible to all work-items in a ND-range
-							* a region of global memory reserved as **constant memory**, which is read-only
-						</div>
-
 					</div>
 				</section>
 
@@ -370,7 +268,7 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						#### Exercise
 					</div>
 					<div class="container" data-markdown>
-						Code_Exercises/Exercise_6_Vector_Add/source
+						Code_Exercises/Exercise_06_Vector_Add/source.cpp
 					</div>
 					<div class="container" data-markdown>
 						Implement a SYCL application that adds two arrays of
