@@ -55,7 +55,7 @@ filter data; `generate_filter` takes a `filter_type` and a width.
 
 For For DPC++:
 ```sh
-dpcpp -fsycl -o sycl-ex-5 ../Code_Exercises/Exercise_05_Image_Convolution/source.cpp
+dpcpp -fsycl -o sycl-ex-5 -I../../External/Catch2/single_include -I../../Utilities/include -I../../External/stb/ ../Code_Exercises/Exercise_05_Image_Convolution/reference.cpp
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
