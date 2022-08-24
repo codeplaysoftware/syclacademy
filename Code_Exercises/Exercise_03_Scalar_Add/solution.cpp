@@ -17,7 +17,8 @@
 #include <CL/sycl.hpp>
 #endif
 
-class scalar_add;
+class scalar_add_usm;
+class scalar_add_buff_acc;
 
 TEST_CASE("scalar_add_usm", "scalar_add_solution") {
   int a = 18, b = 24, r = 0;
@@ -33,7 +34,7 @@ TEST_CASE("scalar_add_usm", "scalar_add_solution") {
 
   defaultQueue
       .submit([&](sycl::handler &cgh) {
-        cgh.single_task([=] { dev_R[0] = dev_A[0] + dev_B[0]; });
+        cgh.single_task<scalar_add_usm>([=] { dev_R[0] = dev_A[0] + dev_B[0]; });
       });
 
   defaultQueue.memcpy(&r, dev_R, 1 * sizeof(int)).wait();
@@ -61,7 +62,7 @@ TEST_CASE("scalar_add_buff_acc", "scalar_add_solution") {
           auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
           auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
-          cgh.single_task([=] { accR[0] = accA[0] + accB[0]; });
+          cgh.single_task<scalar_add_buff_acc>([=] { accR[0] = accA[0] + accB[0]; });
         })
         .wait();
   }
