@@ -68,8 +68,8 @@
 					</div>
 					<div class="container" data-markdown>
 						* In SYCL there are two models for managing data:
-						* The buffer/accessor model.
-						* The USM (unified shared memory) model.
+						  * The buffer/accessor model.
+						  * The USM (unified shared memory) model.
 						* Which model you choose can have an effect on how you enqueue kernel functions.
 					</div>
 				</section>
@@ -81,12 +81,11 @@
 					</div>
 					<div class="container" data-markdown>
 						* A GPU has its own memory, separate to CPU memory.
-						* In order for the GPU to use memory from the CPU we need to:
-						    * Allocate memory on the GPU.
-						    * Memcpy data from the CPU to the allocation on the GPU.
-						    * Perform some computation on the GPU.
-						    * Memcpy the result back to CPU.
-				
+						* In order for the GPU to use memory from the CPU, the following actions must take place (either explicitly or implicitly):
+						    * Memory allocation on the GPU.
+						    * Data migration from the CPU to the allocation on the GPU.
+						    * Some computation on the GPU.
+						    * Migration of the result back to the CPU.
 					</div>
 					<img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
 				</section>
@@ -398,7 +397,7 @@ T var = 42;
 	auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
 	auto accB = sycl::accessor{bufA, cgh, sycl::no_init};
 
-	cgh.single_task(...); // Do some work
+  cgh.single_task&lt;mykernel&gt;(...); // Do some work
   });
   
 } // var updated here
@@ -423,7 +422,7 @@ gpuQueue.submit([&](handler &cgh){
   auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
   auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
   auto out = sycl::accessor{bufO, cgh, sycl::write_only};
-  cgh.single_task([=]{
+  cgh.single_task&lt;mykernel&gt;([=]{
     <mark>out[0] = inA[0] + inB[0];</mark>
   }); 
 });
