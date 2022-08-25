@@ -6,6 +6,24 @@
 
  You should have received a copy of the license along with this
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
+ *
+ * SYCL Quick Reference
+ * ~~~~~~~~~~~~~~~~~~~~
+ *
+ * // Make a child class of sycl::device_selector
+ * class my_selecter : public sycl::device_selector {
+ *   // Overload operator() for sycl::device.
+ *   int operator()(const sycl::device& dev) const override {
+ *   ...
+ *   }
+ * }
+ *
+ * // Query a device for some things:
+ * std::string vendor = dev.get_info<sycl::info::device::vendor>();
+ * std::string dev_name = dev.get_info<sycl::info::device::name>();
+ * std::string dev_name = dev.get_info<sycl::info::device::driver_version>();
+ *
+ *
 */
 
 #define CATCH_CONFIG_MAIN
