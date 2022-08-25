@@ -31,13 +31,7 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}, asyncHandler};
+    auto gpuQueue = sycl::queue{sycl::gpu_selector{}};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
@@ -77,13 +71,7 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}, asyncHandler};
+    auto gpuQueue = sycl::queue{sycl::gpu_selector{}};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};

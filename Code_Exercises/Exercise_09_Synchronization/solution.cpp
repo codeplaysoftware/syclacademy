@@ -46,13 +46,7 @@ TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+    auto defaultQueue = sycl::queue{};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
@@ -91,13 +85,7 @@ TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+    auto defaultQueue = sycl::queue{};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
@@ -134,13 +122,7 @@ TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+    auto defaultQueue = sycl::queue{};
 
     {
       auto bufA = sycl::buffer{a, sycl::range{dataSize}};
@@ -179,13 +161,7 @@ TEST_CASE("usm_event_wait", "synchronization_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
+    auto usmQueue = sycl::queue{usm_selector{}};
 
 #ifdef SYCL_ACADEMY_USE_COMPUTECPP
     auto devicePtrA = sycl::experimental::usm_wrapper<float>{
@@ -246,13 +222,7 @@ TEST_CASE("usm_queue_wait", "synchronization_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
+    auto usmQueue = sycl::queue{usm_selector{}};
 
 #ifdef SYCL_ACADEMY_USE_COMPUTECPP
     auto devicePtrA = sycl::experimental::usm_wrapper<float>{
@@ -311,13 +281,7 @@ TEST_CASE("host_accessor", "synchronization_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+    auto defaultQueue = sycl::queue{};
 
     {
       auto bufA = sycl::buffer{a, sycl::range{dataSize}};

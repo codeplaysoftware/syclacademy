@@ -30,13 +30,7 @@ TEST_CASE("vector_add", "vector_add_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+    auto defaultQueue = sycl::queue{};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};

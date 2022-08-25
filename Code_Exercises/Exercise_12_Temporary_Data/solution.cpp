@@ -45,13 +45,7 @@ TEST_CASE("buffer_accessor_temporary_data", "temporary_data_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}, asyncHandler};
+    auto gpuQueue = sycl::queue{sycl::gpu_selector{}};
 
     auto bufIn = sycl::buffer{in, sycl::range{dataSize}};
     auto bufInt = sycl::buffer<float>{sycl::range{dataSize}};
@@ -98,13 +92,7 @@ TEST_CASE("usm_temporary_data", "temporary_data_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
+    auto usmQueue = sycl::queue{usm_selector{}};
 
 #ifdef SYCL_ACADEMY_USING_COMPUTECPP
     auto devicePtrIn = sycl::experimental::usm_wrapper<float>{
