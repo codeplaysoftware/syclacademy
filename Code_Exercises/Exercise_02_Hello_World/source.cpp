@@ -29,7 +29,7 @@
  *
  * // Within the command group you can
  * //    1. Enqueue a command:
- *          cgh.single_task<class mykernel>([=]() {
+ *          cgh.single_task<class mykernel>([=] {
  *              // Do something
  *          });
  *
