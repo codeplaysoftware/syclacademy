@@ -21,7 +21,7 @@
  * // Query a device for some things:
  * std::string vendor = dev.get_info<sycl::info::device::vendor>();
  * std::string dev_name = dev.get_info<sycl::info::device::name>();
- * std::string dev_name = dev.get_info<sycl::info::device::driver_version>();
+ * std::string dev_driver_ver = dev.get_info<sycl::info::device::driver_version>();
  *
  *
 */

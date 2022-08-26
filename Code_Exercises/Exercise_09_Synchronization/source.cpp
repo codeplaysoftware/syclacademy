@@ -33,10 +33,10 @@
  *
  * // Within the command group you can
  * //    1. Declare an accessor to a buffer
- *          auto acc = sycl::accessor{buf, cgh};
- *          auto acc = sycl::accessor{buf, cgh, sycl::read_only};
- *          auto acc = sycl::accessor{buf, cgh, sycl::write_only};
- *          auto acc = sycl::accessor{buf, cgh, sycl::no_init};
+ *          auto read_write_acc = sycl::accessor{buf, cgh};
+ *          auto read_acc = sycl::accessor{buf, cgh, sycl::read_only};
+ *          auto write_acc = sycl::accessor{buf, cgh, sycl::write_only};
+ *          auto no_init_acc = sycl::accessor{buf, cgh, sycl::no_init};
  * //    2. Enqueue a parallel for:
  *              cgh.parallel_for<class mykernel>(sycl::range{n}, 
  *                    [=](sycl::id<1> i) { // Do something });
