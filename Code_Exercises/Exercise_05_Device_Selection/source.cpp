@@ -11,12 +11,34 @@
  * ~~~~~~~~~~~~~~~~~~~~
  *
  * // Make a child class of sycl::device_selector
- * class my_selecter : public sycl::device_selector {
+ * class my_functor_selector : public sycl::device_selector {
  *   // Overload operator() for sycl::device.
  *   int operator()(const sycl::device& dev) const override {
  *   ...
  *   }
  * }
+ * ...
+ * auto q = sycl::queue{my_functor_selector{}};
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * // Or use a function selector
+ * int my_function_selector(const sycl::device &d) {
+ *  ...
+ * }
+ * ...
+ * auto q = sycl::queue{my_function_selector};
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * // Or use a lambda selector
+ * auto my_lambda_selector = [](const sycl::device &d) {
+ *  ...
+ * };
+ * ...
+ * auto q = sycl::queue{my_lambda_selector};
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
  * // Query a device for some things:
  * std::string vendor = dev.get_info<sycl::info::device::vendor>();
