@@ -129,7 +129,7 @@ myQueue.memcpy(device_ptr, cpu_ptr, n * sizeof(T));
 // ...
 
 // Copy data back to CPU
-myQueue.memcpy(result_ptr, device_ptr, n * sizeof(T));
+myQueue.memcpy(result_ptr, device_ptr, n * sizeof(T)).wait();
 
 // Free allocated data
 sycl::free(device_ptr, myQueue);
