@@ -26,38 +26,15 @@ class vector_add_second;
 // allowing computation to be split across said devices.
 std::vector<sycl::device> get_two_devices() {
   auto devs = sycl::device::get_devices();
+  if (devs.size() == 0) throw "No devices available";
   if (devs.size() == 1)
     return {devs[0], devs[0]};
-
-  auto host_it{std::find_if(devs.begin(), devs.end(),
-                            [](sycl::device &d) { return d.is_host(); })};
-
-  // Don't mix Nvidia and non-Nvidia devices to avoid incompatible binary
-  auto nvidia_it{std::find_if(devs.begin(), devs.end(), [](sycl::device &d) {
-    return d.get_info<sycl::info::device::vendor>().find("NVIDIA") !=
-           std::string::npos;
-  })};
-  if (nvidia_it != devs.end()) {
-    auto nvidia_it2 =
-        std::find_if(nvidia_it + 1, devs.end(), [](sycl::device &d) {
-          return d.get_info<sycl::info::device::vendor>().find("NVIDIA") !=
-                 std::string::npos;
-        });
-    if (nvidia_it2 != devs.end())
-      return {*nvidia_it, *nvidia_it2};
-    if (host_it != devs.end())
-      return {*nvidia_it, *host_it};
-    return {*nvidia_it, *nvidia_it};
-  }
-
-  auto dev_it{std::find_if(devs.begin(), devs.end(),
-                           [](sycl::device &d) { return !d.is_host(); })};
-  auto dev_it2{std::find_if(dev_it + 1, devs.end(),
-                            [](sycl::device &d) { return !d.is_host(); })};
-
-  if (dev_it2 != devs.end())
-    return {*dev_it, *dev_it2};
-  return {*host_it, *dev_it};
+  
+  // Choose the first non-host devices
+  std::sort(devs.begin(), devs.end(), [](sycl::device &d1, sycl::device &d2) {
+      return !d1.is_host() && d2.is_host(); });
+  
+  return {devs[0], devs[1]};
 }
 
 TEST_CASE("load_balancing", "load_balancing_solution") {
