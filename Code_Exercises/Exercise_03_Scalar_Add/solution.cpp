@@ -17,9 +17,36 @@
 #include <CL/sycl.hpp>
 #endif
 
-class scalar_add;
+class scalar_add_usm;
+class scalar_add_buff_acc;
 
-TEST_CASE("scalar_add", "scalar_add_solution") {
+TEST_CASE("scalar_add_usm", "scalar_add_solution") {
+  int a = 18, b = 24, r = 0;
+
+  auto defaultQueue = sycl::queue{};
+
+  auto dev_A = sycl::malloc_device<int>(1, defaultQueue);
+  auto dev_B = sycl::malloc_device<int>(1, defaultQueue);
+  auto dev_R = sycl::malloc_device<int>(1, defaultQueue);
+
+  defaultQueue.memcpy(dev_A, &a, 1 * sizeof(int));
+  defaultQueue.memcpy(dev_B, &b, 1 * sizeof(int));
+
+  defaultQueue
+      .submit([&](sycl::handler &cgh) {
+        cgh.single_task<scalar_add_usm>([=] { dev_R[0] = dev_A[0] + dev_B[0]; });
+      });
+
+  defaultQueue.memcpy(&r, dev_R, 1 * sizeof(int)).wait();
+
+  sycl::free(dev_A, defaultQueue);
+  sycl::free(dev_B, defaultQueue);
+  sycl::free(dev_R, defaultQueue);
+
+  REQUIRE(r == 42);
+}
+
+TEST_CASE("scalar_add_buff_acc", "scalar_add_solution") {
   int a = 18, b = 24, r = 0;
 
   auto defaultQueue = sycl::queue{};
@@ -35,7 +62,7 @@ TEST_CASE("scalar_add", "scalar_add_solution") {
           auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
           auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
-          cgh.single_task<scalar_add>([=] { accR[0] = accA[0] + accB[0]; });
+          cgh.single_task<scalar_add_buff_acc>([=] { accR[0] = accA[0] + accB[0]; });
         })
         .wait();
   }

@@ -40,8 +40,8 @@
 				}
 			})();
 		</script>
-		
 	</head>
+
 	<body>
 		<div class="reveal">
 			<div class="slides">
@@ -57,18 +57,129 @@
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
-					* Learn about the buffer/accessor model for managing data
-					* Learn how to use buffers and accessors
-					* Learn how to access data in a kernel function
+					* Learn about the USM and buffer/accessor models for managing data
+					* Learn how to allocate, transfer and free memory using USM.
 					* Learn how a buffer synchronizes data
+					* Learn how to access data in a kernel function
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Memory Models
+					</div>
+					<div class="container" data-markdown>
+						* In SYCL there are two models for managing data:
+						  * The buffer/accessor model.
+						  * The USM (unified shared memory) model.
+						* Which model you choose can have an effect on how you enqueue kernel functions.
+					</div>
 				</section>
 				<!--Slide 3-->
+				<!--Slide 3A-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### CPU and GPU Memory
+					</div>
+					<div class="container" data-markdown>
+						* A GPU has its own memory, separate to CPU memory.
+						* In order for the GPU to use memory from the CPU, the following actions must take place (either explicitly or implicitly):
+						    * Memory allocation on the GPU.
+						    * Data migration from the CPU to the allocation on the GPU.
+						    * Some computation on the GPU.
+						    * Migration of the result back to the CPU.
+					</div>
+					<img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
+				</section>
+				<!--Slide 3A-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### CPU and GPU Memory
+					</div>
+					<div class="container" data-markdown>
+						* Memory transfers between CPU and GPU are a bottleneck.
+						* We want to minimize these transfers, when possible.
+					</div>
+					<img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
+				</section>
+				<!--Slide 3B-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### USM Allocation Types
+					</div>
+					<div class="container" data-markdown>
+						* There are different ways USM memory can be allocated: host, device and shared.
+						![SYCL](../common-revealjs/images/Figure6-1bookUSMtypes.png "SYCL")
+						(from book)
+					</div>
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Using USM - Malloc Device
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+// Allocate memory on device
+T *device_ptr = sycl::malloc_device&lt;T&gt;(n, myQueue);
+
+// Copy data to device
+myQueue.memcpy(device_ptr, cpu_ptr, n * sizeof(T));
+
+// ...
+// Do some computation on device
+// ...
+
+// Copy data back to CPU
+myQueue.memcpy(result_ptr, device_ptr, n * sizeof(T)).wait();
+
+// Free allocated data
+sycl::free(device_ptr, myQueue);
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* It is important to free memory after it has been 
+						used to avoid memory leaks.
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Using USM - Malloc Shared
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+// Allocate shared memory 
+T *shared_ptr = sycl::malloc_shared&lt;T&gt;(n, myQueue);
+
+// Shared memory can be accessed on host as well as device
+for (auto i = 0; i &lt; n; ++i)
+  shared_ptr[i] = i;
+
+// ...
+// Do some computation on device
+// ...
+
+// Free allocated data
+sycl::free(shared_ptr, myQueue);
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* Shared memory is accessible on host and device.
+						* Performance of shared memory accesses may be poor depending on platform.
+					</div>
+				</section>
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Buffers & Accessors
 					</div>
 					<div class="container" data-markdown>
-						* SYCL separates the storage and access of data 
+						* SYCL provides an API which takes care of allocations and `memcpy`s, as well as some other things.
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL Buffers & Accessors
+					</div>
+					<div class="container" data-markdown>
+						* The buffer/accessor model separates the storage and access of data 
 						  * A SYCL buffer manages data across the host and any number of devices 
 						  * A SYCL accessor requests access to data on the host or on a device for a specific SYCL kernel function
 						* Accessors are also used to access data within a SYCL kernel function
@@ -156,44 +267,37 @@
 				<!--Slide 9-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Buffer class
+						#### SYCL Buffers & Accessors
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-template &lt;typename dataT, int dimensions&gt;
-sycl::buffer;
+T var = 42;
+
+{
+  // Create buffer pointing to var.
+  auto buf = sycl::buffer{&var, sycl::range&lt;1&gt;{1}};
+
+  // ...
+  // Do some computation on device. Use accessors to access buffer
+  // ...
+  
+} // var updated here
+
+assert(var != 42);
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
-						* A `buffer` manages data across the host application
-						and kernel functions executing on device(s).
-						* It has a typename which specifies the type of the
-						elements of data it manages.
-						* It has a dimensionality which specifies the
-						dimensionality that the elements of data are represented
-						in.
+						* A buffer is associated with a type, range and 
+						  dimensionality. Dimensionality must be either 1, 2 or 
+						  3.
+						* Usually type and dimensionality can be inferred using
+						  CTAD.
+						* If a buffer is associated with some allocation in host
+						  memory, the host memory will be updated only once the
+						  buffer goes out of scope.
 					</div>
 				</section>
 				<!--Slide 10-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Constructing a buffer
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-int var = 42;
-auto buf = sycl::buffer{&var, sycl::range{1}};
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* A `buffer` can be constructed from a pointer to data
-						for it to manage and a `range` which describes the
-						number of elements of data.
-						* Using CTAD the type and the dimensionality can be
-						inferred.
-					</div>
-				</section>
-				<!--Slide 11-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Accessor class
@@ -230,14 +334,12 @@ auto acc = sycl::accessor{bufA, cgh};
 					<div class="container" data-markdown>
 						* There are many ways to construct an `accessor`.
 						* The `accessor` class supports CTAD so it's not
-						nessesary to specify all of the template arguments.
+						necessary to specify all of the template arguments.
 						* The most common way to construct an `accessor` is from
 						a `buffer` and a `handler` associated with the command
 						group function you are within.
-						  * The element type and dimensionality are infered from
+						  * The element type and dimensionality are inferred from
 						  the `buffer`.
-						  * The `access::target` is defaulted to
-						  `access::target::global_buffer`.
 						  * The `access::mode` is defaulted to
 						  `access::mode::read_write`.
 					</div>
@@ -280,65 +382,34 @@ auto acc = sycl::accessor{buf, cgh, sycl::no_init};
 				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Access modes
-					</div>
-					<div class="container" data-markdown>
-						* A **read** `accessor` instructs the SYCL runtime that
-						the SYCL kernel function will read the data – cannot be
-						written to within a SYCL kernel function.
-						* A **write** `accessor` instructs the SYCL runtime that
-						the SYCL kernel function will modify the data – creating
-						a dependency for future command groups.
-						* A **no_init** `accessor` instructs the SYCL runtime
-						that the SYCL kernel function does not need the initial
-						values of the data – removing the dependency on previous
-						command groups.
-					</div>
-				</section>
-				<!--Slide 17-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Accessor resolution
-					</div>
-					<div class="container" data-markdown>
-						* If a command group has more than one `accessor` to the
-						same `buffer` with conflicting `access::mode` they are
-						resolved into one:
-						  * read & write => read_write.
-						* If a command group has more than one `accessor` to the
-						same `buffer` all must have the `no_init` property for
-						it to apply.
-						* Within the SYCL kernel function there are still
-						multiple `accessor`s, but they alias to the same memory
-						address.
-					</div>
-				</section>
-				<!--Slide 18-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Accessor resolution
+						#### Using Accessors
 					</div>
 					<div class="container">
-						<div class="col-left-3">
-							<code><pre>
-gpuQueue.submit([&](handler &cgh){
-  auto in = sycl::accessor{buf, cgh, sycl::read_only};
-  auto out = sycl::accessor{buf, cgh, sycl::write_only};
-});
-							</code></pre>
-						</div>
-						<div class="col-right-2" data-markdown>
-							* Here `in` and `out` both point to `buf` but one is
-							`access::mode::read` and one is
-							`access::mode::write`.
-							* So the SYCL runtime will treat them both as
-							`access::mode::read_write`.
-							* Both will point to a single allocation of global
-							memory on the device(s).
-							* The runtime will resolve the data dependency into
-							`access::mode::read_write`.
-						</div>
+						<code class="code-100pc"><pre>
+T var = 42;
+
+{
+  // Create buffer pointing to var.
+  auto bufA = sycl::buffer{&var, sycl::range&lt;1&gt;{1}};
+  auto bufB = sycl::buffer{&var, sycl::range&lt;1&gt;{1}};
+
+  q.submit([&](sycl::handler &cgh) {
+	auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+	auto accB = sycl::accessor{bufA, cgh, sycl::no_init};
+
+  cgh.single_task&lt;mykernel&gt;(...); // Do some work
+  });
+  
+} // var updated here
+
+assert(var != 42);
+						</code></pre>
 					</div>
+						<div class="col-right-2" data-markdown>
+							* Buffers and accessors take care of memory 
+							migration, as well as dependency analysis.
+							  * More to come later on dependencies.
+						</div>
 				</section>
 				<!--Slide 19-->
 				<section>
@@ -351,7 +422,7 @@ gpuQueue.submit([&](handler &cgh){
   auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
   auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
   auto out = sycl::accessor{bufO, cgh, sycl::write_only};
-  cgh.single_task&lt;add&gt;([=]{
+  cgh.single_task&lt;mykernel&gt;([=]{
     <mark>out[0] = inA[0] + inB[0];</mark>
   }); 
 });
@@ -363,7 +434,9 @@ gpuQueue.submit([&](handler &cgh){
 						function.
 						* You can do this by calling `operator[]` on the
 						`accessor`.
-						  * This operator can take an `id` or a `size_t`.
+						  * `operator[]` for USM pointers must take a `size_t`, 
+						  whereas `operator[]` for accessors can take a 
+						  multi-dimensional `sycl::id` or a `size_t`.
 					</div>
 				</section>
 				<!--Slide 20-->
@@ -382,7 +455,11 @@ gpuQueue.submit([&](handler &cgh){
 					</div>
 					<div class="container" data-markdown>
 						Implement a SYCL application that adds two variables
-						and returns the result.
+						and returns the result using:
+					</div>
+					<div class="container" data-markdown>
+							1. The USM memory model
+							2. The buffer/accessor memory model.
 					</div>
 				</section>
 			</div>
