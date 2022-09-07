@@ -19,11 +19,10 @@
 
 class scalar_add;
 
-// Example device selector, looks for an Intel GPU, you may want to write a
-// different device selector for the device you are looking for on your machine.
-class intel_gpu_selector : public sycl::device_selector {
- public:
-  int operator()(const sycl::device& dev) const override {
+// Functor device selector
+class intel_gpu_selector1 : public sycl::device_selector {
+public:
+  int operator()(const sycl::device &dev) const override {
     if (dev.has(sycl::aspect::gpu)) {
       auto vendorName = dev.get_info<sycl::info::device::vendor>();
       if (vendorName.find("Intel") != std::string::npos) {
@@ -32,6 +31,28 @@ class intel_gpu_selector : public sycl::device_selector {
     }
     return -1;
   }
+};
+
+// Function device selector
+int intel_gpu_selector2(const sycl::device &dev) {
+  if (dev.has(sycl::aspect::gpu)) {
+    auto vendorName = dev.get_info<sycl::info::device::vendor>();
+    if (vendorName.find("Intel") != std::string::npos) {
+      return 1;
+    }
+  }
+  return -1;
+}
+
+// Lambda device_selector
+auto intel_gpu_selector3 = [](const sycl::device &dev) {
+  if (dev.has(sycl::aspect::gpu)) {
+    auto vendorName = dev.get_info<sycl::info::device::vendor>();
+    if (vendorName.find("Intel") != std::string::npos) {
+      return 1;
+    }
+  }
+  return -1;
 };
 
 TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
@@ -44,10 +65,12 @@ TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
       }
     };
 
-    auto defaultQueue = sycl::queue{intel_gpu_selector{}, asyncHandler};
+    auto defaultQueue1 = sycl::queue{intel_gpu_selector1{}, asyncHandler};
+    auto defaultQueue2 = sycl::queue{intel_gpu_selector2, asyncHandler};
+    auto defaultQueue3 = sycl::queue{intel_gpu_selector3, asyncHandler};
 
     std::cout << "Chosen device: "
-              << defaultQueue.get_device().get_info<sycl::info::device::name>()
+              << defaultQueue1.get_device().get_info<sycl::info::device::name>()
               << std::endl;
 
     {
@@ -55,8 +78,8 @@ TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
       auto bufB = sycl::buffer{&b, sycl::range{1}};
       auto bufR = sycl::buffer{&r, sycl::range{1}};
 
-      defaultQueue
-          .submit([&](sycl::handler& cgh) {
+      defaultQueue1
+          .submit([&](sycl::handler &cgh) {
             auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
             auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
             auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
@@ -66,8 +89,8 @@ TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
           .wait();
     }
 
-    defaultQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+    defaultQueue1.throw_asynchronous();
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
