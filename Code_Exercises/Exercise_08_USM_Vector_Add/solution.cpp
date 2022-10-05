@@ -41,13 +41,7 @@ TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
+    auto usmQueue = sycl::queue{usm_selector{}};
 
 #ifdef SYCL_ACADEMY_USE_COMPUTECPP
     auto devicePtrA = sycl::experimental::usm_wrapper<float>{

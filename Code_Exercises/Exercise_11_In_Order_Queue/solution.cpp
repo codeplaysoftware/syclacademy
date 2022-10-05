@@ -51,14 +51,7 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
     auto inOrderQueue = sycl::queue{sycl::gpu_selector{},
-                                    asyncHandler,
                                     {sycl::property::queue::in_order{}}};
 
     auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
@@ -124,14 +117,8 @@ TEST_CASE("usm_in_order_queue", "in_order_queue_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
     auto inOrderQueue = sycl::queue{
-        usm_selector{}, asyncHandler, {sycl::property::queue::in_order{}}};
+        usm_selector{}, {sycl::property::queue::in_order{}}};
 #ifdef SYCL_ACADEMY_USING_COMPUTE_CPP
     auto devicePtrInA = sycl::experimental::usm_wrapper<float>{
         sycl::malloc_device<float>(dataSize, inOrderQueue)};

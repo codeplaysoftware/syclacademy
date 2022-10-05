@@ -29,13 +29,7 @@ class usm_selector : public sycl::device_selector {
 
 TEST_CASE("usm_selector", "usm_selector_solution") {
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
+    auto usmQueue = sycl::queue{usm_selector{}};
 
     usmQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {

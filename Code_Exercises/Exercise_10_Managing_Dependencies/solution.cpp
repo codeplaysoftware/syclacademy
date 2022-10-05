@@ -49,13 +49,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto defaultQueue = sycl::queue{sycl::default_selector{}, asyncHandler};
+    auto defaultQueue = sycl::queue{};
 
     auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
     auto bufInB = sycl::buffer{inB, sycl::range{dataSize}};
@@ -120,13 +114,7 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
   }
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
-
-    auto usmQueue = sycl::queue{usm_selector{}, asyncHandler};
+    auto usmQueue = sycl::queue{usm_selector{}};
 
 #ifdef SYCL_ACADEMY_USE_COMPUTECPP
     auto devicePtrInA = sycl::experimental::usm_wrapper<float>{

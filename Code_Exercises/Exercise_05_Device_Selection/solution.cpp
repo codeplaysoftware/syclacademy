@@ -59,15 +59,10 @@ TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
   int a = 18, b = 24, r = 0;
 
   try {
-    auto asyncHandler = [&](sycl::exception_list exceptionList) {
-      for (auto& e : exceptionList) {
-        std::rethrow_exception(e);
-      }
-    };
 
-    auto defaultQueue1 = sycl::queue{intel_gpu_selector1{}, asyncHandler};
-    auto defaultQueue2 = sycl::queue{intel_gpu_selector2, asyncHandler};
-    auto defaultQueue3 = sycl::queue{intel_gpu_selector3, asyncHandler};
+    auto defaultQueue1 = sycl::queue{intel_gpu_selector1{}};
+    auto defaultQueue2 = sycl::queue{intel_gpu_selector2};
+    auto defaultQueue3 = sycl::queue{intel_gpu_selector3};
 
     std::cout << "Chosen device: "
               << defaultQueue1.get_device().get_info<sycl::info::device::name>()
