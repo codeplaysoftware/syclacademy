@@ -30,7 +30,7 @@ call `set_final_data` on it with the address of the output memory.
 
 Now do the same but using the USM model.
 
-Again, fell free to have the kernel functions perform any computation you like,
+Again, feel free to have the kernel functions perform any computation you like,
 and feel free to use any method of synchronization and copy back you like.
 
 Note that when using the USM model since it's an explicit model to avoid

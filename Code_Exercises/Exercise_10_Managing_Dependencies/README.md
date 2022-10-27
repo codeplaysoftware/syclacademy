@@ -30,7 +30,7 @@ buffer/accessor these dependencies are created implicitly using the creation of
 Feel free to use any method of synchronization and copy back you like, but
 remember to handle errors.
 
-### 2.) Define a data flow graph with the buffer/accessor model
+### 2.) Define a data flow graph with the USM model
 
 Now do the same again but using the USM model. Note that in the USM model
 dependencies are defined explicitly by chaining commands via `event`s.
