@@ -19,10 +19,16 @@ learning about SYCL below are a list of useful resources:
 
 ### How to use the Materials
 
-To use these materials simply clone this repository including the required submodules.
+For the SC22 tutorial we have created a specific branch for the lessons and exercises.
+
+Before joining the tutorial please ensure you have created an account on the 
+[DevCloud][intel-devcloud] enviornment, this will save us time on the day.
+
+To use these materials simply clone this repository **using the specific branch and 
+including the required submodules.**
 
 ```
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
+git clone --recursive --branch sc22 https://github.com/codeplaysoftware/syclacademy.git
 ```
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
@@ -36,35 +42,7 @@ topic. Each exercise has a markdown document instructing what to do in the
 exercise, a source file to start with and a solution file to provide an
 example implementation to compare against.
 
-## Contributing to SYCL Academy
-
-Contributions to the materials are very gratefully received and this can be done
-by submitting a Pull Request with any changes. Please limit the scope of each
-Pull Request so that they can be reviewed and merged in a timely manner.
-
-### List of Contributors
-
-Codeplay Software Ltd., Heidelberg University, Intel, Xilinx and University of Bristol.
-
-## Supporting Organizations
-Abertay University, Universidad de Concepcion, TU Dresden, University of
-Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
-University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
-and University of the West of Scotland.
-
-## Lesson Curriculum
-
-The SYCL Academy curriculum is divided up into a number of short lessons
-consisting of slides for presenting the material and a more detailed write-up,
-each accompanied by a tutorial for getting hands on experience with the subject
-matter.
-
-Each of the lessons are designed to be self contained modules in order to
-support both academic and training style teaching environments. 
-
-A playlist of video content is [also available][video-playlist]. Though note that these
-slides and exercises may have changed since these videos were created so they
-may not match completely.
+## SC22 Lesson Curriculum
 
 | Lesson | Title | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
 |--------|-------|--------|----------|--------|----------|------------|-------|---------|
@@ -106,8 +84,11 @@ chips).
 
 ### Install SYCL implementations
 
-First you'll need to install your chosen SYCL implementation and any
-dependencies they require.
+We would strongly recommend using the [DevCloud][intel-devcloud] enviornment as 
+this requires no machine configuration but can still be accessed in a variety of 
+ways. 
+If you want to install your chosen SYCL implementation please do this in advance 
+of the tutorial.
 
 #### Installing ComputeCpp
 
