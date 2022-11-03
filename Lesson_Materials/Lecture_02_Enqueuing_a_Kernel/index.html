@@ -469,7 +469,7 @@ gpuQueue.submit([&](handler &cgh){
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* Here we construct a `stream` in our command group function with a buffer size of `1024` and a work-item size of `128`.
+							* Here we construct a `stream` in our command group function with a buffer size of `1024` and a work-item size of `1024`.
 							* This means that the total text that the stream can receive is 1024 bytes.
 						</div>
 					</div>
@@ -487,7 +487,7 @@ class my_kernel;
 queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 
-  auto os = sycl::stream(1024, 128, cgh);
+  auto os = sycl::stream(1024, 1024, cgh);
 
   cgh.single_task&lt;my_kernel&gt;([=]() {
     <mark>os << "Hello world!\n";</mark>
