@@ -191,7 +191,7 @@ gpuQueue.submit([&](handler &cgh){
 						<div class="col" data-markdown>
 							* The `queue` will not wait for commands to complete on destruction.
 							* However `submit` returns an `event` to allow you to synchronize with the completion of the commands.
-							* Here we call `wait` on the `event` to immediately wait for it complete.
+							* Here we call `wait` on the `event` to immediately wait for it to complete.
 							* There are other ways to do this, that will be covered in later lectures.
 						</div>
 					</div>
@@ -432,7 +432,7 @@ gpuQueue.submit([&](handler &cgh){
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-stream::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
+sycl::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -455,7 +455,7 @@ class my_kernel;
 queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 
-  <mark>auto os = sycl::stream(1024, 128, cgh);</mark>
+  <mark>auto os = sycl::stream(1024, 1024, cgh);</mark>
 
   cgh.single_task&lt;my_kernel&gt;([=]() {
     /* kernel code */
@@ -464,7 +464,7 @@ gpuQueue.submit([&](handler &cgh){
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* Here we construct a `stream` in our command group function with a buffer size of `1024` and a work-item size of `128`.
+							* Here we construct a `stream` in our command group function with a buffer size of `1024` and a work-item size of also `1024`.
 							* This means that the total text that the stream can receive is 1024 bytes.
 						</div>
 					</div>
@@ -482,7 +482,7 @@ class my_kernel;
 queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 
-  auto os = sycl::stream(1024, 128, cgh);
+  auto os = sycl::stream(1024, 1024, cgh);
 
   cgh.single_task&lt;my_kernel&gt;([=]() {
     <mark>os << "Hello world!\n";</mark>
