@@ -100,7 +100,7 @@
 						#### Synchronization with kernel functions
 					</div>
 					<div class="container" data-markdown>
-						There are two ways ways to synchronize with kernel functions.
+						There are two ways to synchronize with kernel functions.
 					</div>
 					<div class="container" data-markdown>
 						* Calling `wait` on an `event` object returned from enqueuing a kernel function command, either via a command group or a shortcut function.
@@ -170,8 +170,7 @@ gpuQueue.submit([&](sycl::handler &cgh){
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, gpuQueue));
+auto devicePtr = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
 
 gpuQueue.memcpy(devicePtr, data, sizeof(int))<mark>.wait();</mark>
 
@@ -195,8 +194,7 @@ gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, gpuQueue));
+auto devicePtr = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
 
 gpuQueue.memcpy(devicePtr, data, sizeof(int));
 
@@ -222,7 +220,7 @@ gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
 						#### Synchronizing with data
 					</div>
 					<div class="container" data-markdown>
-						There are multiple ways ways to synchronize with data, but it differs depending on the data management model you are using.
+						There are multiple ways to synchronize with data, but it differs depending on the data management model you are using.
 					</div>
 					<div class="container" data-markdown>
 						* When using the USM data management model you can synchronize the same way you would for kernel functions, calling `wait` on an `event` or the `queue`.
@@ -239,7 +237,8 @@ gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-gpuQueue.memcpy(data, devicePtr, sizeof(int))<mark>.wait();</mark>
+gpuQueue.memcpy(data, devicePtr, sizeof(int))
+    <mark>.wait();</mark>
 							</code></pre>
 							<code class="code-100pc"><pre>
 gpuQueue.memcpy(data, devicePtr, sizeof(int));
@@ -274,7 +273,7 @@ gpuQueue.submit([&](sycl::handler &cgh){
 {
   <mark>auto hostAcc = buf.get_host_access(cgh);</mark>
 
-  <mark>hostAcc[idx] = /* some computation */</mark>
+  <mark>/* some computation with hostAcc */</mark>
 }
 							</code></pre>
 						</div>
@@ -336,7 +335,7 @@ gpuQueue.submit([&](sycl::handler &cgh){
 						#### Exercise
 					</div>
 					<div class="container" data-markdown>
-						Code_Exercises/Exercise_9_Synchronization/source
+						Code_Exercises/Exercise_06_Synchronization/source.cpp
 					</div>
 					<div class="container" data-markdown>
 						Try out the different methods of synchronizing with a kernel function and the resulting data from the computation.

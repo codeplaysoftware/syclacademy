@@ -196,7 +196,7 @@ gpuQueue.submit([&](handler &cgh){
 						<div class="col" data-markdown>
 							* The `queue` will not wait for commands to complete on destruction.
 							* However `submit` returns an `event` to allow you to synchronize with the completion of the commands.
-							* Here we call `wait` on the `event` to immediately wait for it complete.
+							* Here we call `wait` on the `event` to immediately wait for it to complete.
 							* There are other ways to do this, that will be covered in later lectures.
 						</div>
 					</div>
@@ -437,7 +437,7 @@ gpuQueue.submit([&](handler &cgh){
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-stream::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
+sycl::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -460,7 +460,7 @@ class my_kernel;
 queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 
-  <mark>auto os = sycl::stream(1024, 128, cgh);</mark>
+  <mark>auto os = sycl::stream(1024, 1024, cgh);</mark>
 
   cgh.single_task&lt;my_kernel&gt;([=]() {
     /* kernel code */
