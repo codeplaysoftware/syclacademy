@@ -11,6 +11,8 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#include <sycl/sycl.hpp>
+
 TEST_CASE("handling_errors", "handling_errors_source") {
 
   // This program computes r = a + b

@@ -46,11 +46,7 @@ InTile:               OutTile:
 #include <iostream>
 #include <vector>
 
-#if __has_include(<SYCL/sycl.hpp>)
-#include <SYCL/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
+#include <sycl/sycl.hpp>
 
 #include <benchmark.h>
 

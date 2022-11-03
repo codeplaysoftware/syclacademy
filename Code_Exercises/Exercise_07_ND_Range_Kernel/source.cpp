@@ -14,7 +14,7 @@
  * auto q = sycl::queue{};
  *
  * // Construct an in-order queue
- * auto q = sycl::queue{sycl::default_selector{}, 
+ * auto q = sycl::queue{sycl::default_selector_v, 
  *        {sycl::property::queue::in_order{}}};
  *
  * // Declare a buffer pointing to ptr
@@ -56,6 +56,7 @@
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
+#include <sycl/sycl.hpp>
 
 TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
   constexpr size_t dataSize = 1024;

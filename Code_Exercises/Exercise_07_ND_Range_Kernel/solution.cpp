@@ -11,11 +11,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#if __has_include(<SYCL/sycl.hpp>)
-#include <SYCL/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
+#include <sycl/sycl.hpp>
 
 class vector_add_1;
 class vector_add_2;
@@ -37,7 +33,7 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}, asyncHandler};
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
@@ -83,7 +79,7 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
       }
     };
 
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}, asyncHandler};
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v, asyncHandler};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};

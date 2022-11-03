@@ -1,6 +1,10 @@
 ## Exercise: Local Memory Matrix Transpose
 ---
 
+This exercise uses GPU specific features in order to gain good GPU performance.
+While code will run on other hardware, the local memory tiled solution may not
+give as good performance as it does on a GPU.
+
 In this exercise you will learn how to cache global memory into local memory in
 tiles according to work-groups in order to compare the performance difference. 
 

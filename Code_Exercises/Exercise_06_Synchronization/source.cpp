@@ -47,12 +47,14 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#include <sycl/sycl.hpp>
+
 TEST_CASE("synchronization_usm", "synchronization_source") {
-  // Use your code from Exercise 3 to start
+  // Use your code from Exercise 5 to start
   REQUIRE(true);
 }
 
 TEST_CASE("synchronization_buffer_acc", "synchronization_source") {
-  // Use your code from Exercise 3 to start
+  // Use your code from Exercise 5 to start
   REQUIRE(true);
 }

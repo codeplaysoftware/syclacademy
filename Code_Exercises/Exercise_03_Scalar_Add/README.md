@@ -46,7 +46,7 @@ initializing it with just a `range` and no host pointer.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 clang++ -fsycl -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
 ./sycl-ex-3

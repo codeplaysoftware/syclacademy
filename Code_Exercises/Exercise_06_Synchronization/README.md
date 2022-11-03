@@ -10,9 +10,11 @@ synchronizing commands and data.
 
 ### 1.) Waiting on events
 
-Take a look at the vector add applications using the buffer/accessor model in
-exercise 6 and the USM model in exercise 8, and familiarize yourself with how
-they call `wait` on returned `event`s to synchronize the completion of the work.
+Take a look at the vector add applications using the buffer/accessor and
+USM models in exercise 5, and familiarize yourself with how they call `wait` 
+on returned `event`s to synchronize the completion of the work.
+
+i.e. q.submit(...).wait();
 
 ### 2.) Waiting on queues
 
@@ -49,7 +51,7 @@ pointer provided to the `buffer` but this is not guaranteed.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 clang++ -fsycl -o sycl-ex-9 -I../External/Catch2/single_include ../Code_Exercises/Exercise_09_Synchronization/source.cpp
 ```

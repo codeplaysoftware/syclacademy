@@ -13,7 +13,6 @@
 
 // Task: Include SYCL header file
 
-
 // The below tests that the header file has been included
 TEST_CASE("empty_sycl_source_file", "compiling_with_sycl_source") {
   REQUIRE(true);
