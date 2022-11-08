@@ -48,7 +48,7 @@ Then use the stream you constructed within the SYCL kernel function to print
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 clang++ -fsycl -o sycl-ex-2 -I../External/Catch2/single_include ../Code_Exercises/Exercise_02_Hello_World/source.cpp
 ```

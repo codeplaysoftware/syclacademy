@@ -11,13 +11,10 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#if __has_include(<SYCL/sycl.hpp>)
-#include <SYCL/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
+#include <sycl/sycl.hpp>
 
 class scalar_add;
+class bad_access_kernel;
 
 TEST_CASE("handling_errors", "handling_errors_source") {
   int a = 18, b = 24, r = 0;
@@ -54,3 +51,4 @@ TEST_CASE("handling_errors", "handling_errors_source") {
 
   REQUIRE(r == 42);
 }
+

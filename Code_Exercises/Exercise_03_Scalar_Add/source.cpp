@@ -10,13 +10,6 @@
  * SYCL Quick Reference
  * ~~~~~~~~~~~~~~~~~~~~
  *
- * // Include SYCL header
- * #if __has_include(<SYCL/sycl.hpp>)
- * #include <SYCL/sycl.hpp>
- * #else
- * #include <CL/sycl.hpp>
- * #endif
- *
  * // Default construct a queue
  * auto q = sycl::queue{};
  *
@@ -51,6 +44,8 @@
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
+
+#include <sycl/sycl.hpp>
 
 TEST_CASE("scalar_add_usm", "scalar_add_source") {
 

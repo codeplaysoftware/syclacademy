@@ -41,6 +41,8 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#include <sycl/sycl.hpp>
+
 TEST_CASE("vector_add", "vector_add_solution") {
   constexpr size_t dataSize = 1024;
 
