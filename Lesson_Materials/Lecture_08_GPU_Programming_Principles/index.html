@@ -373,10 +373,66 @@ sycl::group_barrier(item.get_group());
 				<!--Slide 28-->
 				<section>
 					<div class="hbox" data-markdown>
-						## Questions
+						#### Matrix Transpose
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./matrix_transpose1.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+						* In the next exercise we will transpose a matrix.
 					</div>
 				</section>
 				<!--Slide 29-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Matrix Transpose
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./matrix_transpose2.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+						* Reading naively from global memory and writing to global memory will give poor performance.
+						* This is because at least one of our memory transactions will be uncoalesced.
+						* Adjacent work items are reading a contiguous block from memory, and writing in a strided fashion into the out array.
+					</div>
+				</section>
+				<!--Slide 30-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Matrix Transpose
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./matrix_transpose4.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+						* Using scratchpad memory can allow us to make uncoalesced loads or stores into local memory, not global memory.
+						* Uncoalesced local memory transactions are less detrimental to performance than uncoalesced global memory transactions.
+					</div>
+				</section>
+				<!--Slide 31-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Matrix Transpose
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./matrix_transpose5.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+						* Global memory loads and stores are now coalesced.
+						* Adjacent work items are reading and writing contiguous blocks.
+					</div>
+				</section>
+				<!--Slide 32-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
+					</div>
+				</section>
+				<!--Slide 33-->
 				<section>
 					<div class="container" data-markdown>
 						Code_Exercises/Exercise_08_Matrix_Transpose
