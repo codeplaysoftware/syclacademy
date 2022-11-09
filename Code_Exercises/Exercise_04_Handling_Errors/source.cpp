@@ -13,6 +13,8 @@
 
 #include <sycl/sycl.hpp>
 
+class scalar_add;
+
 TEST_CASE("handling_errors", "handling_errors_source") {
 
   // This program computes r = a + b
@@ -21,7 +23,7 @@ TEST_CASE("handling_errors", "handling_errors_source") {
 
   // Task: catch synchronous and asynchronous exceptions
 
-  auto defaultQueue = sycl::queue{asyncHandler};
+  auto defaultQueue = sycl::queue{};
 
   {
     auto bufA = sycl::buffer{&a, sycl::range{1}};

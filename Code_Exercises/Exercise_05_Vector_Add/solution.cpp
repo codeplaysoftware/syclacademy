@@ -86,23 +86,26 @@ TEST_CASE("vector_add_usm", "vector_add_solution") {
 
     defaultQueue.memcpy(devA, a, sizeof(float) * dataSize);
     defaultQueue.memcpy(devB, b, sizeof(float) * dataSize);
-    defaultQueue.memcpy(devR, r, sizeof(float) * dataSize);
 
     defaultQueue.wait();
 
     defaultQueue
-        .submit([&](sycl::handler& cgh) {
+        .submit([&](sycl::handler &cgh) {
           cgh.parallel_for<vector_add_usm>(
-              sycl::range{dataSize},
-              [=](sycl::id<1> idx) { devR[idx] = devA[idx] + devB[idx]; });
+              sycl::range{dataSize}, [=](sycl::id<1> i) {
+                size_t id = i.get(0);
+                devR[id] = devA[id] + devB[id];
+              });
         })
         .wait();
-    
-    defaultQueue.memcpy(a, devA, sizeof(float) * dataSize);
-    defaultQueue.memcpy(b, devB, sizeof(float) * dataSize);
+
     defaultQueue.memcpy(r, devR, sizeof(float) * dataSize);
 
     defaultQueue.wait_and_throw();
+
+    sycl::free(devA, defaultQueue);
+    sycl::free(devB, defaultQueue);
+    sycl::free(devR, defaultQueue);
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }

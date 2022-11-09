@@ -50,6 +50,9 @@ InTile:               OutTile:
 
 #include <benchmark.h>
 
+class naive;
+class tiled;
+
 constexpr size_t N = 8192;
 
 using T = float;
@@ -86,7 +89,7 @@ int main() {
               auto compAcc = sycl::accessor{compBuf, cgh, sycl::write_only,
                                             sycl::property::no_init{}};
 
-              cgh.parallel_for(ndRange, [=](sycl::nd_item<2> item) {
+              cgh.parallel_for<naive>(ndRange, [=](sycl::nd_item<2> item) {
                 auto globalId = item.get_global_id();
                 auto globalIdTranspose = sycl::id{globalId[1], globalId[0]};
                 compAcc[globalIdTranspose] = inAcc[globalId];
@@ -104,7 +107,7 @@ int main() {
                                            sycl::property::no_init{}};
               auto localAcc = sycl::local_accessor<T, 2>(localRange, cgh);
 
-              cgh.parallel_for(ndRange, [=](sycl::nd_item<2> item) {
+              cgh.parallel_for<tiled>(ndRange, [=](sycl::nd_item<2> item) {
                 auto globalId = item.get_global_id();
                 auto localId = item.get_local_id();
                 auto localId_T = sycl::range{localId[1], localId[0]};
