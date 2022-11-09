@@ -8,5 +8,5 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_06_synchronization source)
-add_sycl_executable(exercise_06_synchronization solution)
+add_sycl_executable(exercise_08_matrix_transpose source)
+add_sycl_executable(exercise_08_matrix_transpose solution)

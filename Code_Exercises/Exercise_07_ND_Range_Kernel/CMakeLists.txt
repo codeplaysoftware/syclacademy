@@ -8,5 +8,5 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_14_nd_range_kernel source)
-add_sycl_executable(exercise_14_nd_range_kernel solution)
+add_sycl_executable(exercise_07_nd_range_kernel source)
+add_sycl_executable(exercise_07_nd_range_kernel solution)
