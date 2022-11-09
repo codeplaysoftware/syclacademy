@@ -44,16 +44,19 @@ example implementation to compare against.
 
 ## SC22 Lesson Curriculum
 
-| Lesson | Title | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
-|--------|-------|--------|----------|--------|----------|------------|-------|---------|
-| 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes | Yes |
-| 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
-| 03 | Managing Data | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
-| 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
-| 05 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
-| 06 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes | Yes |
-| 07 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes | Yes |
-| 08 | GPU Programming Principles | [slides][lesson-08A-slides] | [exercise][lesson-08A-exercise] | [source][lesson-08A-source] | [solution][lesson-08A-solution] | Yes | Yes | Yes |
+|  Time   |   Presenter        | Lesson | Title         | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
+|---------|--------------------|--------|---------------|--------|----------|--------|----------|------------|-------|---------|
+| 8:30am  |   James Reinders   | 01     | What is SYCL? | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes | Yes |
+|  9:15am   |   Dounia Khaldi   | 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
+|  10:00am   |   Break   | NA |  |  |  |  |  |  |  |  |
+|  10:30am   |   Hugh Delaney   | 03 | Managing Data | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
+|  11:15am   |   Hugh Delaney   | 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
+|  12:00am  |   Lunch   | NA |  |  |  |  |  |  |  |  |
+|  1:30pm   |   Ronan Keryell   | 05 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
+|  2:15pm   |   Dounia Khaldi   | 06 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes | Yes |
+|  3:00pm   |   Break   | NA |  |  |  |  |  |  |  |  |
+|  3:30pm   |   James Reinders   | 07 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes | Yes |
+|  4:15pm   |   Hugh Delaney   | 08 | GPU Programming Principles | [slides][lesson-08A-slides] | [exercise][lesson-08A-exercise] | [source][lesson-08A-source] | [solution][lesson-08A-solution] | Yes | Yes | Yes |
 
 
 ## Building the Exercises
