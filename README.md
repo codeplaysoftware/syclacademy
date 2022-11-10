@@ -242,12 +242,6 @@ Each exercise directory contains:
 
 Once you have completed any given exercise make sure to compare your implementation against the corresponding ```solution.cpp```. 
 
-## Online Interactive Tutorial
-
-Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/introduction-to-sycl/introduction-to-sycl-2) tutorial introduces the concepts of SYCL. The website also provides the ability to compile and execute SYCL code from your web browser.
-
-
-
 SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
 [computecpp-download]: https://developer.codeplay.com
