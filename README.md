@@ -242,18 +242,12 @@ Each exercise directory contains:
 
 Once you have completed any given exercise make sure to compare your implementation against the corresponding ```solution.cpp```. 
 
-## Online Interactive Tutorial
-
-Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/introduction-to-sycl/introduction-to-sycl-2) tutorial introduces the concepts of SYCL. The website also provides the ability to compile and execute SYCL code from your web browser.
-
-
-
 SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
 [computecpp-download]: https://developer.codeplay.com
 [computecpp-getting-started]: https://developer.codeplay.com/products/computecpp/ce/guides/getting-started?
 [dpcpp-getting-started]: https://software.intel.com/content/www/us/en/develop/articles/installation-guide-for-intel-oneapi-toolkits.html
-[intel-devcloud]: https://intelsoftwaresites.secure.force.com/devcloud/oneapi
+[intel-devcloud]: https://www.intel.com/content/www/us/en/developer/articles/technical/multiple-sycl-compilers-on-devcloud.html
 [docker-container-oneapi]: https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-intel-oneapi-base-linux/top/using-containers.html
 [oneAPI-system-requirements]: https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-base-toolkit-system-requirements.html
 
