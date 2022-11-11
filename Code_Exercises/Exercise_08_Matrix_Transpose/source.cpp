@@ -6,12 +6,24 @@
 
  You should have received a copy of the license along with this
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
+
+ SYCL Quick Reference
+ ~~~~~~~~~~~~~~~~~~~~
+
+ // Declare a local accessor
+ sycl::accessor<T, dims, 
+          sycl::access:mode::read_write, sycl::access::target_local>
+                local_acc{localRange, cgh};
 */
 
 #include <iostream>
 #include <vector>
 
+#if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
+#else
+#include <CL/sycl.hpp>
+#endif
 
 #include <benchmark.h>
 

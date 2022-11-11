@@ -16,6 +16,13 @@ uncoalesced memeory accesses.
 
 Compile with 
 
+DPC++ on Devcloud:
+```
+dpcpp -fsycl -fsycl-targets=<triple> source.cpp \
+  -I../../External/Catch2/single_include -I../../Utilities/include
+```
+
+DPC++ otherwise:
 ```
 clang++ -fsycl -fsycl-targets=<triple> source.cpp \
   -I../../External/Catch2/single_include -I../../Utilities/include

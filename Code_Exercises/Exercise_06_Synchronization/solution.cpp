@@ -11,7 +11,14 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
+#else
+#include <CL/sycl.hpp>
+namespace sycl {
+auto default_selector_v = default_selector{};
+}
+#endif
 
 class vector_add_1;
 class vector_add_2;

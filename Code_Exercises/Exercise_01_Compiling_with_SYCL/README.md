@@ -87,6 +87,11 @@ and invoke the executable.
 
 For DPC++ (using the Intel DevCloud):
 ```sh
+dpcpp -fsycl -o sycl-ex-1 -I../External/Catch2/single_include ../Code_Exercises/Exercise_01_compiling_with_SYCL/source.cpp
+
+```
+For DPC++ (not Intel DevCloud):
+```sh
 clang++ -fsycl -o sycl-ex-1 -I../External/Catch2/single_include ../Code_Exercises/Exercise_01_compiling_with_SYCL/source.cpp
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,

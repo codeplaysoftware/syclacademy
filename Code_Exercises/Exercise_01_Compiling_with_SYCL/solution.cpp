@@ -11,7 +11,11 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
+#else
+#include <CL/sycl.hpp>
+#endif
 
 // The below tests that the header file has been included
 TEST_CASE("empty_sycl_source_file", "compiling_with_sycl_solution") {

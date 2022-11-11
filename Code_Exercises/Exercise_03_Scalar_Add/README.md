@@ -48,6 +48,11 @@ initializing it with just a `range` and no host pointer.
 
 For DPC++ (using the Intel DevCloud):
 ```sh
+dpcpp -fsycl -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
+./sycl-ex-3
+```
+For DPC++ (not using Intel DevCloud):
+```sh
 clang++ -fsycl -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
 ./sycl-ex-3
 ```

@@ -46,7 +46,11 @@ InTile:               OutTile:
 #include <iostream>
 #include <vector>
 
+#if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
+#else
+#include <CL/sycl.hpp>
+#endif
 
 #include <benchmark.h>
 
@@ -105,7 +109,9 @@ int main() {
               auto inAcc = sycl::accessor{inBuf, cgh, sycl::read_only};
               auto outAcc = sycl::accessor{outBuf, cgh, sycl::write_only,
                                            sycl::property::no_init{}};
-              auto localAcc = sycl::local_accessor<T, 2>(localRange, cgh);
+              auto localAcc = sycl::accessor<T, 2, 
+                                  sycl::access::mode::read_write, 
+                                  sycl::access::target::local>(localRange, cgh);
 
               cgh.parallel_for<tiled>(ndRange, [=](sycl::nd_item<2> item) {
                 auto globalId = item.get_global_id();
