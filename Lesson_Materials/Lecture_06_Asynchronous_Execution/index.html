@@ -280,12 +280,42 @@ gpuQueue.submit([&](sycl::handler &cgh){
 						<div class="col" data-markdown>
 							* A `host_accessor` gives immediate access to the data managed by a `buffer` in the host application.
 							* This will wait for any kernel functions accessing the `buffer` to complete and then copying the data back to the host.
+						</div>
+					</div>
+				</section>
+        <!--Slide 13-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with data (buffer/accessor)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+buf = sycl::buffer(data, sycl::range{1024});
+
+gpuQueue.submit([&](sycl::handler &cgh){
+  auto acc = sycl::accessor{buf, cgh};
+									  
+  cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+    [=](sycl::id&lt;1&gt; idx){
+    acc[idx] = /* some computation */
+  });
+});
+
+{
+  <mark>auto hostAcc = buf.get_host_access();</mark>
+
+  <mark>/* some computation with hostAcc */</mark>
+}
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
 							* It will also block any other `accessor` accessing a `buffer` until it is destroyed.
 							* Note that the data managed by the `buffer` may not be copied back to the original address on the host, in this case `data`.
 						</div>
 					</div>
 				</section>
-				<!--Slide 13-->
+				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Synchronizing with data (buffer/accessor)
@@ -313,7 +343,7 @@ gpuQueue.submit([&](sycl::handler &cgh){
 						</div>
 					</div>
 				</section>
-				<!--Slide 14-->
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Synchronizing with errors
@@ -323,13 +353,13 @@ gpuQueue.submit([&](sycl::handler &cgh){
 						* The best way to ensure all errors are caught is to synchronize by calling `wait` or `wait_and_throw` on the the `queue`.
 					</div>
 				</section>
-				<!--Slide 15-->
+				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Questions
 					</div>
 				</section>
-				<!--Slide 16-->
+				<!--Slide 17-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
