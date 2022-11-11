@@ -41,6 +41,18 @@ method of synchronization and copy back.
 
 ## Build and execution hints
 
+For DPC++ (using the Intel DevCloud):
+```sh
+dpcpp -I../../External/Catch2/single_include source.cpp
+
+```
+For DPC++ (not Intel DevCloud):
+```sh
+clang++ -fsycl -I../../External/Catch2/single_include source.cpp
+```
+
+For ComputeCPP
+
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
 make exercise_14_nd_range_kernel_source

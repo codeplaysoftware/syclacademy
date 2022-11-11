@@ -50,11 +50,12 @@ Then use the stream you constructed within the SYCL kernel function to print
 
 For DPC++ (using the Intel DevCloud):
 ```sh
-dpcpp -fsycl -o sycl-ex-2 -I../External/Catch2/single_include ../Code_Exercises/Exercise_02_Hello_World/source.cpp
+dpcpp -I../../External/Catch2/single_include source.cpp
+
 ```
-For DPC++ (not using Intel DevCloud):
+For DPC++ (not Intel DevCloud):
 ```sh
-clang++ -fsycl -o sycl-ex-2 -I../External/Catch2/single_include ../Code_Exercises/Exercise_02_Hello_World/source.cpp
+clang++ -fsycl -I../../External/Catch2/single_include source.cpp
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
