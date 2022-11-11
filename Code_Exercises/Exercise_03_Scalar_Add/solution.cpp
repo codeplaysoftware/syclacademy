@@ -11,7 +11,11 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
+#else
+#include <CL/sycl.hpp>
+#endif
 
 class scalar_add_usm;
 class scalar_add_buff_acc;

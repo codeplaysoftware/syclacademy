@@ -47,7 +47,11 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
+#else
+#include <CL/sycl.hpp>
+#endif
 
 TEST_CASE("synchronization_usm", "synchronization_source") {
   // Use your code from Exercise 5 to start

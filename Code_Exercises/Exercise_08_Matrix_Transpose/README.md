@@ -16,9 +16,14 @@ uncoalesced memeory accesses.
 
 Compile with 
 
+For DPC++ (using the Intel DevCloud):
+```sh
+dpcpp -I../../Utilities/include source.cpp
+
 ```
-clang++ -fsycl -fsycl-targets=<triple> source.cpp \
-  -I../../External/Catch2/single_include -I../../Utilities/include
+For DPC++ (not Intel DevCloud):
+```sh
+clang++ -fsycl -fsycl-targets=<triple> -I../../Utilities/include source.cpp
 ```
 
 ### 1.) Use local memory

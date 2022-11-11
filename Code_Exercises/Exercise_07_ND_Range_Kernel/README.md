@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 14: ND Range Kernel
+## Exercise 07: ND Range Kernel
 ---
 
 In this exercise you will learn how to enqueue ND range kernel functions.
@@ -40,6 +40,18 @@ Feel free to use either the buffer/accessor model and feel free to use any
 method of synchronization and copy back.
 
 ## Build and execution hints
+
+For DPC++ (using the Intel DevCloud):
+```sh
+dpcpp -I../../External/Catch2/single_include source.cpp
+
+```
+For DPC++ (not Intel DevCloud):
+```sh
+clang++ -fsycl -I../../External/Catch2/single_include source.cpp
+```
+
+For ComputeCPP
 
 ```
 cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
