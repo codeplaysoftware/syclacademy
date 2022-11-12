@@ -130,7 +130,7 @@ void calc(const int in[], int out[], int id) {
 
 // parallel_for invokes calc multiple
 // times in parallel
-parallel_for(calc, in, out, 1024);
+parallel_for(1024, calc, in, out);
 
 
 							</code></pre>
