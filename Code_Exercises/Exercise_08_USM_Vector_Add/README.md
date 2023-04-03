@@ -70,7 +70,7 @@ SYCL API `free` and not the standard C `free`.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 icpx -fsycl -o sycl-ex-8 -I../External/Catch2/single_include ../Code_Exercises/Exercise_08_USM_Vector_Add/source.cpp
 ```

@@ -26,7 +26,7 @@ create a `queue` using it to select its device, remember to handle errors.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 icpx -fsycl -o sycl-ex-7 -I../External/Catch2/single_include ../Code_Exercises/Exercise_07_USM_Selector/source.cpp
 ```

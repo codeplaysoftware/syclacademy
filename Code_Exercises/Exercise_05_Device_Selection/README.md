@@ -119,7 +119,7 @@ and invoke the executable.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 icpx -fsycl -o sycl-ex-5 -I../External/Catch2/single_include ../Code_Exercises/Exercise_05_Device_Selection/source.cpp
 ```

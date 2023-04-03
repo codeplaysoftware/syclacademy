@@ -49,7 +49,7 @@ pointer provided to the `buffer` but this is not guaranteed.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 icpx -fsycl -o sycl-ex-9 -I../External/Catch2/single_include ../Code_Exercises/Exercise_09_Synchronization/source.cpp
 ```

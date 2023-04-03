@@ -29,7 +29,7 @@ exceptions to be caught by the surrounding try-catch block.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 icpx -fsycl -o sycl-ex-4 -I../External/Catch2/single_include ../Code_Exercises/Exercise_04_Handling_Errors/source.cpp
 ```

@@ -40,7 +40,7 @@ but remember to handle errors.
 
 #### Build And Execution Hints
 
-For For DPC++ (using the Intel DevCloud):
+For DPC++ (using the Intel DevCloud):
 ```sh
 icpx -fsycl -o sycl-ex-10 -I../External/Catch2/single_include ../Code_Exercises/Exercise_10_Managing_Dependencies/source.cpp
 ```
