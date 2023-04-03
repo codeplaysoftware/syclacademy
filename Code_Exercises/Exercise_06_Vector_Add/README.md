@@ -106,7 +106,7 @@ and invoke the executable.
 
 For For DPC++ (using the Intel DevCloud):
 ```sh
-clang++ -fsycl -o sycl-ex-6 -I../External/Catch2/single_include ../Code_Exercises/Exercise_06_Vector_Add/source.cpp
+icpx -fsycl -o sycl-ex-6 -I../External/Catch2/single_include ../Code_Exercises/Exercise_06_Vector_Add/source.cpp
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
