@@ -13,11 +13,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#if __has_include(<SYCL/sycl.hpp>)
-#include <SYCL/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
+#include <sycl/sycl.hpp>
 
 class kernel_a_1;
 class kernel_b_1;
@@ -28,7 +24,7 @@ class kernel_b_2;
 class kernel_c_2;
 class kernel_d_2;
 
-class usm_selector : public sycl::device_selector {
+class usm_selector {
  public:
   int operator()(const sycl::device& dev) const {
     if (dev.has(sycl::aspect::usm_device_allocations)) {
@@ -51,7 +47,7 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
   }
 
   try {
-    auto inOrderQueue = sycl::queue{sycl::gpu_selector{},
+    auto inOrderQueue = sycl::queue{sycl::gpu_selector_v,
                                     {sycl::property::queue::in_order{}}};
 
     auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
