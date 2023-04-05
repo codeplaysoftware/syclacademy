@@ -17,11 +17,8 @@
 #include <benchmark.h>
 #include <image_conv.h>
 
-#if __has_include(<SYCL/sycl.hpp>)
-#include <SYCL/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
+#include <sycl/sycl.hpp>
+
 
 class image_convolution;
 
@@ -43,7 +40,7 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
   auto filter = util::generate_filter(util::filter_type::blur, filterWidth);
 
   try {
-    sycl::queue myQueue{sycl::gpu_selector{}};
+    sycl::queue myQueue{sycl::gpu_selector_v};
 
     std::cout << "Running on "
               << myQueue.get_device().get_info<sycl::info::device::name>()
