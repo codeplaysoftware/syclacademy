@@ -39,5 +39,5 @@ make exercise_18_local_memory_tiling_source
 ```
 #### DPC++
 ```
-clang++ -fsycl -I../../External/Catch2/single_include -I../../Utilities/include/ -I../../External/stb solution.cpp
+icpx -fsycl -I../../External/Catch2/single_include -I../../Utilities/include/ -I../../External/stb solution.cpp
 ```

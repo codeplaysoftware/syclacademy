@@ -60,5 +60,5 @@ make exercise_15_image_convolution_reference
 ```
 #### DPC++
 ```
-clang++ -fsycl -I../../External/Catch2/single_include -I../../Utilities/include/ -I../../External/stb reference.cpp
+icpx -fsycl -I../../External/Catch2/single_include -I../../Utilities/include/ -I../../External/stb reference.cpp
 ```

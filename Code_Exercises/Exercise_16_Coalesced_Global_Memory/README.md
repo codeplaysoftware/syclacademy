@@ -32,6 +32,6 @@ make exercise_16_coalesced_global_memory_source
 ```
 #### DPC++:
 ```
-clang++ -fsycl -I../../External/Catch2/single_include -I../../Utilities/include/ -I../../External/stb solution.cpp
+icpx -fsycl -I../../External/Catch2/single_include -I../../Utilities/include/ -I../../External/stb solution.cpp
 ```
 
