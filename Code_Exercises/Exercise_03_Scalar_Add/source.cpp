@@ -11,11 +11,7 @@
  * ~~~~~~~~~~~~~~~~~~~~
  *
  * // Include SYCL header
- * #if __has_include(<SYCL/sycl.hpp>)
- * #include <SYCL/sycl.hpp>
- * #else
- * #include <CL/sycl.hpp>
- * #endif
+ * #include <sycl/sycl.hpp>
  *
  * // Default construct a queue
  * auto q = sycl::queue{};
