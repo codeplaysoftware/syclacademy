@@ -54,11 +54,11 @@ int main(int argc, char *argv[]) {
              }
 
              T groupReduction = sycl::reduce_over_group(
-                 item.get_group(), localMem[localIdx], sycl::plus<>());
+                 item.get_group(), localMem[localIdx], sycl::plus<T>());
 
              if (localIdx == 0)
                sycl::atomic_ref<T, sycl::memory_order_relaxed,
-                                sycl::memory_scope_work_group,
+                                sycl::memory_scope_device,
                                 sycl::access::address_space::global_space>(
                    devReduced[0])
                    .fetch_add(groupReduction);
