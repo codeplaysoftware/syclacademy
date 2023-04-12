@@ -17,7 +17,7 @@ using T = float;
 constexpr size_t dataSize = 32'768;
 constexpr size_t workGroupSize = 1024;
 
-int main() {
+int main(int argc, char *argv[]) {
 
   T a[dataSize];
 

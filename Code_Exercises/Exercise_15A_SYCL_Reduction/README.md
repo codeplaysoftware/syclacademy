@@ -19,7 +19,7 @@ and the result is added together using a single global memory
 ## SYCL Group Algorithms
 
 `reduce_group_algorithm.cpp` replaces the local memory atomic add with a call
-to `sycl::reduce_over_group`, which we can imagine performs a similar operation
+to `sycl::reduce_over_group`, which can be expected to perform a similar operation
 to the device function `workgroup_reduce_local_mem` as seen in
 `reduce_naive.cpp`.
 

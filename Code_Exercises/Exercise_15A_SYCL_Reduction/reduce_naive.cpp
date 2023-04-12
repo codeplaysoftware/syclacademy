@@ -38,7 +38,7 @@ inline void workgroup_reduce_local_mem(sycl::local_accessor<T, 1> a,
   }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 
   T a[dataSize];
 
