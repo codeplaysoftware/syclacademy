@@ -4,12 +4,14 @@
  *
  */
 
+#include <benchmark.h>
 #include <sycl/sycl.hpp>
 
 using T = float;
 
 constexpr size_t dataSize = 32'768;
 constexpr size_t workGroupSize = 1024;
+constexpr int numIters = 100;
 
 int main(int argc, char *argv[]) {
 
@@ -30,17 +32,22 @@ int main(int argc, char *argv[]) {
 
   auto myNd = sycl::nd_range(sycl::range(dataSize), sycl::range(workGroupSize));
 
-  auto e3 = q.submit([&](sycl::handler &cgh) {
-    cgh.depends_on({e1, e2});
-    auto myReduction = sycl::reduction(devReduced, sycl::plus<>());
+  util::benchmark(
+      [&]() {
+        q.submit([&](sycl::handler &cgh) {
+           cgh.depends_on({e1, e2});
+           auto myReduction = sycl::reduction(devReduced, sycl::plus<>());
 
-    cgh.parallel_for(myNd, myReduction, [=](sycl::nd_item<1> item, auto &sum) {
-      sum += devA[item.get_global_linear_id()];
-    });
-  });
+           cgh.parallel_for(myNd, myReduction,
+                            [=](sycl::nd_item<1> item, auto &sum) {
+                              sum += devA[item.get_global_linear_id()];
+                            });
+         }).wait();
+      },
+      numIters, "Reduction using sycl::reduction");
 
   T devAns = 0;
-  q.memcpy(&devAns, devReduced, sizeof(T), e3).wait();
+  q.memcpy(&devAns, devReduced, sizeof(T)).wait();
 
   T serialAns = 0;
   for (auto i = 0; i < dataSize; i++) {

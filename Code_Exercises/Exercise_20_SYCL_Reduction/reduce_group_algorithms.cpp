@@ -8,12 +8,14 @@
  *
  */
 
+#include <benchmark.h>
 #include <sycl/sycl.hpp>
 
 using T = float;
 
 constexpr size_t dataSize = 32'768;
 constexpr size_t workGroupSize = 1024;
+constexpr int numIters = 100;
 
 int main(int argc, char *argv[]) {
 
@@ -33,36 +35,40 @@ int main(int argc, char *argv[]) {
 
   auto myNd = sycl::nd_range(sycl::range(dataSize), sycl::range(workGroupSize));
 
-  auto e3 = q.submit([&](sycl::handler &cgh) {
-     cgh.depends_on({e1, e2});
-     sycl::local_accessor<T, 1> localMem(workGroupSize, cgh);
+  util::benchmark(
+      [&]() {
+        q.submit([&](sycl::handler &cgh) {
+           cgh.depends_on({e1, e2});
+           sycl::local_accessor<T, 1> localMem(workGroupSize, cgh);
 
-     cgh.parallel_for(myNd, [=](sycl::nd_item<1> item) {
-       auto localIdx = item.get_local_linear_id();
-       auto globalIdx = item.get_global_linear_id();
-       auto globalRange = item.get_global_range(0);
+           cgh.parallel_for(myNd, [=](sycl::nd_item<1> item) {
+             auto localIdx = item.get_local_linear_id();
+             auto globalIdx = item.get_global_linear_id();
+             auto globalRange = item.get_global_range(0);
 
-       localMem[localIdx] = 0;
+             localMem[localIdx] = 0;
 
-       // Accumulating thread local reductions into local memory
-       for (auto i = globalIdx; i < dataSize; i += globalRange) {
-         localMem[localIdx] += devA[i];
-       }
+             // Accumulating thread local reductions into local memory
+             for (auto i = globalIdx; i < dataSize; i += globalRange) {
+               localMem[localIdx] += devA[i];
+             }
 
-       T groupReduction = sycl::reduce_over_group(
-           item.get_group(), localMem[localIdx], sycl::plus<>());
+             T groupReduction = sycl::reduce_over_group(
+                 item.get_group(), localMem[localIdx], sycl::plus<>());
 
-       if (localIdx == 0)
-         sycl::atomic_ref<T, sycl::memory_order_relaxed,
-                          sycl::memory_scope_work_group,
-                          sycl::access::address_space::global_space>(
-             devReduced[0])
-             .fetch_add(groupReduction);
-     });
-   });
+             if (localIdx == 0)
+               sycl::atomic_ref<T, sycl::memory_order_relaxed,
+                                sycl::memory_scope_work_group,
+                                sycl::access::address_space::global_space>(
+                   devReduced[0])
+                   .fetch_add(groupReduction);
+           });
+         }).wait();
+      },
+      numIters, "Reduction using group algorithms");
 
   T devAns = 0;
-  q.memcpy(&devAns, devReduced, sizeof(T), e3).wait();
+  q.memcpy(&devAns, devReduced, sizeof(T)).wait();
 
   T serialAns = 0;
   for (auto i = 0; i < dataSize; i++) {
