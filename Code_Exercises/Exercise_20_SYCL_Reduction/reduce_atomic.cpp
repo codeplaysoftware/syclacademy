@@ -52,9 +52,7 @@ int main(int argc, char *argv[]) {
              auto globalIdx = item.get_global_linear_id();
 
              sycl::atomic_ref<T, sycl::memory_order_relaxed,
-                              sycl::memory_scope_device,
-                              sycl::access::address_space::global_space>(
-                 devReduced[0])
+                              sycl::memory_scope_device>(devReduced[0])
                  .fetch_add(devA[globalIdx]);
            });
          }).wait();
