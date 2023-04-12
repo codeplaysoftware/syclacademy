@@ -6,7 +6,7 @@ TARGETS := $(SOURCES:.cpp=)
 INCLUDE_FLAGS := -I../../Utilities/include
 CXX_FLAGS := -fsycl $(INCLUDE_FLAGS) $(TRIPLE)
 
-.PHONY: all clean run profile
+.PHONY: all clean run
 
 all: $(TARGETS)
 
