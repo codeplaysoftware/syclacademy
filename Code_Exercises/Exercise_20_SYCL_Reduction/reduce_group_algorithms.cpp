@@ -10,8 +10,6 @@
 
 #include <sycl/sycl.hpp>
 
-#define MIN(a, b) a < b ? a : b
-
 using T = float;
 
 constexpr size_t dataSize = 32'768;
@@ -30,12 +28,13 @@ int main(int argc, char *argv[]) {
   T *devA = sycl::malloc_device<T>(dataSize, q);
   T *devReduced = sycl::malloc_device<T>(1, q); // Holds reduction output
 
-  q.memcpy(devA, a, sizeof(T) * dataSize).wait();
-  q.fill(devReduced, 0, 1).wait();
+  auto e1 = q.memcpy(devA, a, sizeof(T) * dataSize);
+  auto e2 = q.fill(devReduced, 0, 1);
 
   auto myNd = sycl::nd_range(sycl::range(dataSize), sycl::range(workGroupSize));
 
-  q.submit([&](sycl::handler &cgh) {
+  auto e3 = q.submit([&](sycl::handler &cgh) {
+     cgh.depends_on({e1, e2});
      sycl::local_accessor<T, 1> localMem(workGroupSize, cgh);
 
      cgh.parallel_for(myNd, [=](sycl::nd_item<1> item) {
@@ -60,10 +59,10 @@ int main(int argc, char *argv[]) {
              devReduced[0])
              .fetch_add(groupReduction);
      });
-   }).wait();
+   });
 
   T devAns = 0;
-  q.memcpy(&devAns, devReduced, sizeof(T));
+  q.memcpy(&devAns, devReduced, sizeof(T), e3).wait();
 
   T serialAns = 0;
   for (auto i = 0; i < dataSize; i++) {

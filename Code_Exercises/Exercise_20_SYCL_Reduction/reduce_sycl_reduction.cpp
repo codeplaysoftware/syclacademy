@@ -6,13 +6,10 @@
 
 #include <sycl/sycl.hpp>
 
-#define MIN(a, b) a < b ? a : b
-
 using T = float;
 
 constexpr size_t dataSize = 32'768;
 constexpr size_t workGroupSize = 1024;
-constexpr size_t numWorkGroups = MIN(workGroupSize, dataSize / workGroupSize);
 
 int main(int argc, char *argv[]) {
 
@@ -28,22 +25,22 @@ int main(int argc, char *argv[]) {
   T *devReduced = sycl::malloc_device<T>(1, q); // Holds intermediate values
 
   T zeroVal = 0;
-  q.memcpy(devA, a, sizeof(T) * dataSize).wait();
-  q.memcpy(devReduced, &zeroVal, sizeof(T)).wait();
+  auto e1 = q.memcpy(devA, a, sizeof(T) * dataSize);
+  auto e2 = q.memcpy(devReduced, &zeroVal, sizeof(T));
 
-  auto myNd =
-      sycl::nd_range(sycl::range(numWorkGroups * workGroupSize), sycl::range(workGroupSize));
+  auto myNd = sycl::nd_range(sycl::range(dataSize), sycl::range(workGroupSize));
 
-  q.submit([&](sycl::handler &cgh) {
-     auto myReduction = sycl::reduction(devReduced, sycl::plus<>());
+  auto e3 = q.submit([&](sycl::handler &cgh) {
+    cgh.depends_on({e1, e2});
+    auto myReduction = sycl::reduction(devReduced, sycl::plus<>());
 
-     cgh.parallel_for(myNd, myReduction, [=](sycl::nd_item<1> item, auto &sum) {
-       sum += devA[item.get_global_linear_id()];
-     });
-   }).wait();
+    cgh.parallel_for(myNd, myReduction, [=](sycl::nd_item<1> item, auto &sum) {
+      sum += devA[item.get_global_linear_id()];
+    });
+  });
 
   T devAns = 0;
-  q.memcpy(&devAns, devReduced, sizeof(T));
+  q.memcpy(&devAns, devReduced, sizeof(T), e3).wait();
 
   T serialAns = 0;
   for (auto i = 0; i < dataSize; i++) {

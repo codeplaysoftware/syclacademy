@@ -26,4 +26,6 @@ to the device function `workgroup_reduce_local_mem` as seen in
 ## SYCL Reductions
 
 `reduce_sycl_reduction.cpp` replaces the entire logic of the reduction with a
-SYCL reducer object.
+SYCL reducer object. The reduction is a parameter of the `parallel_for`
+invocation, and there is another reducer object used as a parameter to the
+kernel lambda.
