@@ -99,8 +99,6 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
 					<div class="container">
 						<div class="col" data-markdown>
 ![SYCL](./RaceCondition0.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
 ```
 q.parallel_for([=](sycl::item&lt;1&gt; it) {
   // Race condition! Multiple threads
@@ -108,13 +106,15 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
   a[0] = it.get_global_linear_id();
 });
 ```
+						</div>
+						<div class="col" data-markdown>
+* SYCL does not guarantee any particular ordering for the execution of work
+  items.
 * When multiple work items concurrently write different values to the same area
   of memory, there is no way of knowing which value will be held in memory
   once all work items have finished writing.
 * This is called a race condition and can be a source of non determinism in
   code execution.
-* Atomic operations are needed in order to deterministically combine values
-  from different work items.
 						</div>
 					</div>
 				</section>
@@ -126,8 +126,6 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
 					<div class="container">
 						<div class="col" data-markdown>
 ![SYCL](./combine0.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
 ```
 q.parallel_for([=](sycl::item&lt;1&gt; it) {
   sycl::atomic_ref&lt;T,
@@ -137,6 +135,13 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
             .fetch_add(it.get_global_linear_id());
 });
 ```
+						</div>
+						<div class="col" data-markdown>
+* Atomic operations are needed in order to deterministically combine values
+  from different work items.
+* Atomic operations enforce a particular ordering of instructions across work
+  items. Some orderings include `memory_order_relaxed`, `memory_order_acq_rel`,
+  `memory_order_seq_cst`.
 						</div>
 					</div>
 				</section>
@@ -148,8 +153,6 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
 					<div class="container">
 						<div class="col" data-markdown>
 ![SYCL](./combine1.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
 ```
 q.parallel_for([=](sycl::item&lt;1&gt; it) {
   sycl::atomic_ref&lt;T,
@@ -159,6 +162,13 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
             .fetch_add(it.get_global_linear_id());
 });
 ```
+						</div>
+						<div class="col" data-markdown>
+* Atomic operations are needed in order to deterministically combine values
+  from different work items.
+* Atomic operations enforce a particular ordering of instructions across work
+  items. Some orderings include `memory_order_relaxed`, `memory_order_acq_rel`,
+  `memory_order_seq_cst`.
 						</div>
 					</div>
 				</section>
@@ -170,8 +180,6 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
 					<div class="container">
 						<div class="col" data-markdown>
 ![SYCL](./combine2.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
 ```
 q.parallel_for([=](sycl::item&lt;1&gt; it) {
   sycl::atomic_ref&lt;T,
@@ -181,6 +189,13 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
             .fetch_add(it.get_global_linear_id());
 });
 ```
+						</div>
+						<div class="col" data-markdown>
+* Atomic operations are needed in order to deterministically combine values
+  from different work items.
+* Atomic operations enforce a particular ordering of instructions across work
+  items. Some orderings include `memory_order_relaxed`, `memory_order_acq_rel`,
+  `memory_order_seq_cst`.
 						</div>
 					</div>
 				</section>
@@ -192,8 +207,6 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
 					<div class="container">
 						<div class="col" data-markdown>
 ![SYCL](./combine3.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
 ```
 q.parallel_for([=](sycl::item&lt;1&gt; it) {
   sycl::atomic_ref&lt;T,
@@ -203,6 +216,13 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
             .fetch_add(it.get_global_linear_id());
 });
 ```
+						</div>
+						<div class="col" data-markdown>
+* Atomic operations are needed in order to deterministically combine values
+  from different work items.
+* Atomic operations enforce a particular ordering of instructions across work
+  items. Some orderings include `memory_order_relaxed`, `memory_order_acq_rel`,
+  `memory_order_seq_cst`.
 						</div>
 					</div>
 				</section>
@@ -214,8 +234,6 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
 					<div class="container">
 						<div class="col" data-markdown>
 ![SYCL](./combine3.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
 ```
 q.parallel_for([=](sycl::item&lt;1&gt; it) {
   sycl::atomic_ref&lt;T,
@@ -225,7 +243,9 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
             .fetch_add(it.get_global_linear_id());
 });
 ```
-* Using atomics, values can be combined without data races.
+						</div>
+						<div class="col" data-markdown>
+* Using atomics, values can be combined across work items without data races.
 * `fetch_add`, `fetch_sub`, `fetch_max`, `fetch_min` are some of the ways we can
   combine values atomically.
 * `fetch_and` and `fetch_or` can also be used for
@@ -284,6 +304,20 @@ q.parallel_for([=](sycl::item&lt;1&gt; it) {
 				<!--Slide 12 -->
 				<section>
 					<div class="hbox" data-markdown>
+#### Group Algorithms
+					</div>
+					<div class="container" data-markdown>
+* Group algorithms can operate on different group scopes, such as `work_group`,
+	`sub_group`.
+* All work items in a given group scope must call the function in convergent
+	control flow.
+* Please see the SYCL specification for more details.
+					</div>
+				</section>
+				</section>
+				<!--Slide 13 -->
+				<section>
+					<div class="hbox" data-markdown>
 #### SYCL Reductions
 					</div>
 					<div class="container">
@@ -308,7 +342,7 @@ q.submit([&amp;](sycl::handler &amp;cgh) {
 						</div>
 					</div>
 				</section>
-				<!--Slide 12 -->
+				<!--Slide 14 -->
 				<section>
 					<div class="hbox" data-markdown>
 #### SYCL Reductions
@@ -330,15 +364,25 @@ q.submit([&amp;](sycl::handler &amp;cgh) {
 						<div class="col" data-markdown>
 * SYCL provides reduction operators to perform fast reductions using some binary
 	operation.
-* Reductions can be performed with `sycl::plus`, `sycl::maximum`, `sycl::multiplies` etc.
+* Reductions can be performed with `sycl::plus`, `sycl::maximum`,
+	`sycl::multiplies` etc.
 * Please see the SYCL specification for more details.
 						</div>
 					</div>
 				</section>
-				<!--Slide 13-->
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 ## Questions
+					</div>
+				</section>
+				<!--Slide 16 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Exercise
+* See how atomics, group algorithms and `sycl::reductions` are used in
+  implementing a simple reduction operation.
+* Which code runs fastest? Which code is simplest?
 					</div>
 				</section>
 			</div>
