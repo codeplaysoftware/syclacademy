@@ -11,11 +11,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#if __has_include(<SYCL/sycl.hpp>)
-#include <SYCL/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
+#include <sycl/sycl.hpp>
 
 #include <algorithm>
 
@@ -25,15 +21,13 @@ class vector_add_second;
 // This function returns a vector of two (not necessarily distinct) devices,
 // allowing computation to be split across said devices.
 std::vector<sycl::device> get_two_devices() {
-  auto devs = sycl::device::get_devices();
+  auto devs_gpu = sycl::device::get_devices(sycl::info::device_type::gpu);
+  auto devs = sycl::device::get_devices(sycl::info::device_type::cpu);
+  devs.insert(devs.end(), devs_gpu.begin(), devs_gpu.end());
   if (devs.size() == 0) throw "No devices available";
   if (devs.size() == 1)
     return {devs[0], devs[0]};
-  
-  // Choose the first non-host devices
-  std::sort(devs.begin(), devs.end(), [](sycl::device &d1, sycl::device &d2) {
-      return !d1.is_host() && d2.is_host(); });
-  
+
   return {devs[0], devs[1]};
 }
 
