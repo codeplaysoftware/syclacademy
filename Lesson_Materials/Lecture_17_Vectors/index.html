@@ -190,7 +190,7 @@ auto f4 = sycl::float4{0.0f};  // {0.0f, 0.0f, 0.0f, 0.0f}
 					</div>
 					<div class="container" data-markdown>
 						* A `vec` can be constructed with any combination of scalar and vector values which add up to the correct number of elements.
-						* A `vec`can also be constructed from a single scalar in which case it will initialize ever element to that value.
+						* A `vec`can also be constructed from a single scalar in which case it will initialize every element to that value.
 					</div>
 				</section>
 				<!--Slide 11-->
@@ -208,7 +208,7 @@ auto f4r = f4a * f4b; // {2.0f, 4.0f, 6.0f, 8.0f}
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
-						* The `vec` class provides a number of operators such as `+`, `-`, `*`, `/` and many more, which perform the operation elemeent-wise.
+						* The `vec` class provides a number of operators such as `+`, `-`, `*`, `/` and many more, which perform the operation element-wise.
 					</div>
 				</section>
 				<!--Slide 12-->
@@ -250,7 +250,7 @@ f4.yz() = sycl::float2{9.0f, 9.0f}; // f4 becomes {1.0f, 9.0f, 9.0f, 4.0f}
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
-						* If `SYCL_SIMPLE_SWIZZLES` is defined before including `SYCL/sycl.hpp` simplified swizzle member functions can also be used in place of `swizzle`.
+						* If `SYCL_SIMPLE_SWIZZLES` is defined before including `sycl/sycl.hpp` simplified swizzle member functions can also be used in place of `swizzle`.
 					</div>
 				</section>
 				<!--Slide 14-->
@@ -265,10 +265,51 @@ f4.yz() = sycl::float2{9.0f, 9.0f}; // f4 becomes {1.0f, 9.0f, 9.0f, 4.0f}
 				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
-						## Questions
+						#### marray class
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+template &lt;typename DataT, std::size_t NumElements&gt; 
+class marray;
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* Motivation
+							* vec class is mostly used as a vector in SPMD code 
+							* For SIMD use vec class, for vectors in SPMD use new math array types
+						* marray is templated on its element type and number of elements 
+						* The type of elements must be a numeric type
+						
+						* Improved usage
+							* Size never contains padding (vec of 3 elements is 4 long)
+							* Element access doesn’t require swizzle and write to element is allowed
 					</div>
 				</section>
 				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Aliases
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+using mfloat4 = marray&lt;float, 4&gt;;
+...
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* A number of aliases are provided for shorthand with the notation of the type followed by the size, such as float4.
+						* More examples:
+							* muint4 is the alias to marray&lt;uint32_t, 4&gt; 
+							* mfloat16 is the alias to marray&lt;float, 16&gt;
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
+					</div>
+				</section>
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
