@@ -101,7 +101,7 @@
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto inOrderQueue = sycl::queue{gpu_selector{},
+auto inOrderQueue = sycl::queue{gpu_selector_v,
   <mark>{sycl::property::queue::in_order{}}</mark>};
 							</code></pre>
 						</div>

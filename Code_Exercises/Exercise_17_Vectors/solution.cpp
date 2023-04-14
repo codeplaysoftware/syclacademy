@@ -14,11 +14,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#if __has_include(<SYCL/sycl.hpp>)
-#include <SYCL/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
+#include <sycl/sycl.hpp>
 
 #include <benchmark.h>
 #include <image_conv.h>
@@ -44,7 +40,7 @@ TEST_CASE("image_convolution_vectorized", "vectors_solution") {
   auto filter = util::generate_filter(util::filter_type::blur, filterWidth);
 
   try {
-    sycl::queue myQueue{sycl::gpu_selector{}};
+    sycl::queue myQueue{sycl::gpu_selector_v};
 
     std::cout << "Running on "
               << myQueue.get_device().get_info<sycl::info::device::name>()
