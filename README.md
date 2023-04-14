@@ -52,6 +52,11 @@ DevCloud for oneAPI Projects.
 **To do the exercises for this tutorial select File -> New -> Terminal and open a 
 terminal window. This gives you command line access to the cloud machine.**
 
+Note that by deafult you are connected to login node. Please run the following command in order to get a compute node with integarted GPU in interactive node via Portable Batch System (PBS):
+```
+qsub -I -l nodes=1:gpu:ppn=2 -d .
+```
+
 ## Lesson Curriculum for IWOCL & SYCLcon 23
 
 The SYCL Academy curriculum is divided up into a number of short lessons
