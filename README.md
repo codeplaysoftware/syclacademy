@@ -9,7 +9,7 @@ International" license.
 These materials have been adapted for the SYCL tutorial at IWOCL and SYCLcon.
 See the main branch of this repository for all the materials available.
 
-### How to use the Materials
+## How to use the Materials
 
 To use these materials simply clone this repository including the required submodules.
 
@@ -104,11 +104,11 @@ Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
 University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
 and University of the West of Scotland.
 
-### Install SYCL implementations
+## Install SYCL implementations
 
 The alternative to using DevCloud is to install the specific SYCL implementation.
 
-#### Installing DPC++
+### Installing DPC++
 
 To set up DPC++ follow the [getting started instructions][dpcpp-getting-started]. The recommended version is 2023.1.
 
@@ -117,7 +117,7 @@ You can also use a [Docker* image][docker-container-oneapi].
 If you are using the [Intel DevCloud][intel-devcloud] then the latest version of DPC++ will
 already be installed and available in the path.
 
-#### Installing hipSYCL
+### Installing hipSYCL
 
 Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install hipSYCL.
 
@@ -159,7 +159,7 @@ always be required.
 This will enable building the solutions for each exercise as well as the source
 files. This is disabled by default.
 
-#### Additional cmake arguments for hipSYCL
+### Additional cmake arguments for hipSYCL
 
 When building with hipSYCL, cmake will additionally require you to specify the
 target platform using `-DHIPSYCL_TARGETS=<target specification>`. 
@@ -224,39 +224,39 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [hipsycl-installing]: https://github.com/illuhad/hipSYCL/blob/develop/doc/installing.md
 
 
-[lesson-1-slides]: ./Lesson_Materials/Lecture_01_GPU_programming_and_SYCL_recap/
+[lesson-1-slides]: ./Lesson_Materials/Lecture_01_GPU_programming_and_SYCL_recap/Lecture_00_GPU_programming_and_SYCL_recap.pdf
 
-[lesson-2-slides]: ./Lesson_Materials/Lecture_02_In_Order_Queue/
+[lesson-2-slides]: ./Lesson_Materials/Lecture_02_In_Order_Queue/Lecture_02_In_Order_Queue.pdf
 [lesson-2-exercise]: ./Code_Exercises/Exercise_02_In_Order_Queue/README.md
 [lesson-2-source]: ./Code_Exercises/Exercise_02_In_Order_Queue/source.cpp
 [lesson-2-solution]: ./Code_Exercises/Exercise_02_In_Order_Queue/solution.cpp
 
-[lesson-3-slides]: ./Lesson_Materials/Lecture_03_Multiple_Devices/
+[lesson-3-slides]: ./Lesson_Materials/Lecture_03_Multiple_Devices/Lecture_03_Multiple_Devices.pdf
 [lesson-3-exercise]: ./Code_Exercises/Exercise_03_Load_Balancing/README.md
 [lesson-3-source]: ./Code_Exercises/Exercise_03_Load_Balancing/source.cpp
 [lesson-3-solution]: ./Code_Exercises/Exercise_03_Load_Balancing/solution.cpp
 
-[lesson-4-slides]: ./Lesson_Materials/Lecture_04_More_SYCL_Features/
+[lesson-4-slides]: ./Lesson_Materials/Lecture_04_More_SYCL_Features/Lecture_04_More_SYCL_Features.pdf
 [lesson-4-exercise]: ./Code_Exercises/Exercise_04_SYCL_Reduction/README.md
 [lesson-4-source]: ./Code_Exercises/Exercise_04_SYCL_Reduction/
 [lesson-4-solution]: ./Code_Exercises/Exercise_04_SYCL_Reduction/
 
-[lesson-5-slides]: ./Lesson_Materials/Lecture_05_Image_Convolution/
+[lesson-5-slides]: ./Lesson_Materials/Lecture_05_Image_Convolution/Lecture_05_Image_Convolution.pdf
 [lesson-5-exercise]: ./Code_Exercises/Exercise_05_Image_Convolution/README.md
 [lesson-5-source]: ./Code_Exercises/Exercise_05_Image_Convolution/source.cpp
 [lesson-5-solution]: ./Code_Exercises/Exercise_05_Image_Convolution/solution.cpp
 
-[lesson-6-slides]: ./Lesson_Materials/Lecture_06_Coalesced_Global_Memory/
+[lesson-6-slides]: ./Lesson_Materials/Lecture_06_Coalesced_Global_Memory/Lecture_06_Coalesced_Global_Memory.pdf
 [lesson-6-exercise]: ./Code_Exercises/Exercise_06_Coalesced_Global_Memory/README.md
 [lesson-6-source]: ./Code_Exercises/Exercise_06_Coalesced_Global_Memory/source.cpp
 [lesson-6-solution]: ./Code_Exercises/Exercise_06_Coalesced_Global_Memory/solution.cpp
 
-[lesson-7-slides]: ./Lesson_Materials/Lecture_07_Vectors/
+[lesson-7-slides]: ./Lesson_Materials/Lecture_07_Vectors/Lecture_07_Vectors.pdf
 [lesson-7-exercise]: ./Code_Exercises/Exercise_07_Vectors/README.md
 [lesson-7-source]: ./Code_Exercises/Exercise_07_Vectors/source.cpp
 [lesson-7-solution]: ./Code_Exercises/Exercise_07_Vectors/solution.cpp
 
-[lesson-8-slides]: ./Lesson_Materials/Lecture_08_Local_Memory_Tiling/
+[lesson-8-slides]: ./Lesson_Materials/Lecture_08_Local_Memory_Tiling/Lecture_08_Local_Memory_Tiling.pdf
 [lesson-8-exercise]: ./Code_Exercises/Exercise_08_Local_Memory_Tiling/README.md
 [lesson-8-source]: ./Code_Exercises/Exercise_08_Local_Memory_Tiling/source.cpp
 [lesson-8-solution]: ./Code_Exercises/Exercise_08_Local_Memory_Tiling/solution.cpp
