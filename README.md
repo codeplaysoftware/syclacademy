@@ -14,7 +14,7 @@ See the main branch of this repository for all the materials available.
 To use these materials simply clone this repository including the required submodules.
 
 ```
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
+git clone --recursive https://github.com/codeplaysoftware/syclacademy.git -b iwocl23
 ```
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
