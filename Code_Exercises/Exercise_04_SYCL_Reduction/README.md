@@ -33,5 +33,5 @@ kernel lambda.
 ## Build and execution hints
 #### DPC++
 ```
-icpx -fsycl -I../../External/Catch2/single_include reduce_naive.cpp
+icpx -fsycl -I../../External/Catch2/single_include -I../../Utilities/include/ -I../../External/stb reduce_naive.cpp
 ```

@@ -10,7 +10,7 @@
 using T = float;
 
 constexpr size_t dataSize = 32'768;
-constexpr size_t workGroupSize = 1024;
+constexpr size_t workGroupSize = 512;
 constexpr int numIters = 100;
 
 int main(int argc, char *argv[]) {
