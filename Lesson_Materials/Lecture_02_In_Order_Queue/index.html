@@ -118,23 +118,23 @@ auto inOrderQueue = sycl::queue{gpu_selector_v,
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-buf = sycl::buffer(data, sycl::range{1024});
+sycl::buffer buf{data, sycl::range{1024}};
 
 inOrderQueue.submit([&](sycl::handler &cgh){
-  sycl::accessor acc{buf, cgh};
+  sycl::accessor acc{buf, cgh, sycl::read_only};
       
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
+      /* some use */ = acc[idx];
   });
 });
 
 inOrderQueue.submit([&](sycl::handler &cgh){
-  sycl::accessor acc{buf, cgh};
+  sycl::accessor acc{buf, cgh, sycl::read_only};
 		
   cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
+      /* some other use */ = acc[idx];
   });
 });
 
@@ -155,19 +155,18 @@ inOrderQueue.submit([&](sycl::handler &cgh){
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, inOrderQueue));
+auto devicePtr = malloc_device&lt;int&gt;(1024, inOrderQueue));
   
   inOrderQueue.memcpy(devicePtr, data, sizeof(int));
   
   inOrderQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
   [=](sycl::id&lt;1&gt; idx){
-  devicePtr[idx] = /* some computation */
+    devicePtr[idx] = /* some computation */
 });
 
 inOrderQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
   [=](sycl::id&lt;1&gt; idx){
-  devicePtr[idx] = /* some computation */
+    devicePtr[idx] = /* some computation */
 });
 
 inOrderQueue.memcpy(data, devicePtr, sizeof(int));
