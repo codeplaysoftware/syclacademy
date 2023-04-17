@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 11: In Order Queue
+## Exercise 02: In Order Queue
 ---
 
 In this exercise you will learn how to create a fixed data flow using an

@@ -14,7 +14,7 @@
  * auto q = sycl::queue{};
  *
  * // Construct an in-order queue
- * auto q = sycl::queue{sycl::default_selector{}, 
+ * auto q = sycl::queue{sycl::default_selector_v,
  *        {sycl::property::queue::in_order{}}};
  *
  * // Declare a buffer pointing to ptr
@@ -32,7 +32,7 @@
  * q.wait();
  *
  * // Submit work to the queue
- * auto event = q.submit([&](sycl::handler &cgh) {
+ * auto event = q.submit([&](sycl::handler& cgh) {
  *   // COMMAND GROUP
  * });
  *
@@ -59,6 +59,6 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("in_order_queue", "in_order_queue_source") {
-  // Use the Exercise 02 solution to start
+  // Write your code here, the solution can be used if you are stuck
   REQUIRE(true);
 }
