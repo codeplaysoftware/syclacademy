@@ -73,7 +73,8 @@ int main(int argc, char *argv[]) {
              auto globalIdx = item.get_global_linear_id();
              auto globalRange = item.get_global_range(0);
 
-             localReduction[0] = 0;
+             if (localIdx == 0) 
+                localReduction[0] = 0;
 
              item.barrier();
 
