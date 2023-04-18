@@ -10,7 +10,7 @@
 using T = float;
 
 constexpr size_t dataSize = 32'768;
-constexpr size_t workGroupSize = 256;
+constexpr size_t workGroupSize = 512;
 constexpr int numIters = 100;
 
 int main(int argc, char *argv[]) {
@@ -36,8 +36,7 @@ int main(int argc, char *argv[]) {
       [&]() {
         q.submit([&](sycl::handler &cgh) {
            cgh.depends_on({e1, e2});
-           auto myReduction = sycl::reduction(devReduced, sycl::plus<T>(), 
-               {sycl::property::reduction::initialize_to_identity{}});
+           auto myReduction = sycl::reduction(devReduced, sycl::plus<T>());
 
            cgh.parallel_for(myNd, myReduction,
                             [=](sycl::nd_item<1> item, auto &sum) {
