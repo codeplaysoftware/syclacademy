@@ -59,12 +59,12 @@ int main(int argc, char *argv[]) {
       },
       numIters, "Reduction using only global atomics");
 
-  q.memcpy(&devAns[0], devReduced, sizeof(T)).wait();
+  auto e3 = q.memcpy(&devAns[0], devReduced, sizeof(T));
+  q.memcpy(devReduced, &zeroVal, sizeof(T), e3).wait();
 
   util::benchmark(
       [&]() {
         q.submit([&](sycl::handler &cgh) {
-           cgh.depends_on({e1, e2});
            sycl::local_accessor<T, 1> localMem(workGroupSize, cgh);
            sycl::local_accessor<T, 1> localReduction(1, cgh);
 
@@ -108,8 +108,8 @@ int main(int argc, char *argv[]) {
     serialAns += a[i];
   }
 
-  std::cout << "Got global atomics device ans " << devAns[0] << '\n';
-  std::cout << "Got global and local atomics device ans " << devAns[1] << '\n';
+  std::cout << "Got global atomics device ans " << devAns[0] / numIters  << '\n';
+  std::cout << "Got global and local atomics device ans " << devAns[1] / numIters << '\n';
   std::cout << "vs serial ans " << serialAns << '\n';
 
   sycl::free(devA, q);
