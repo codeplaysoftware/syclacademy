@@ -20,7 +20,7 @@ template <typename T> constexpr T my_min(T a, T b) { return a < b ? a : b; }
 using T = float;
 
 constexpr size_t dataSize = 32'768;
-constexpr size_t workGroupSize = 256;
+constexpr size_t workGroupSize = 512;
 constexpr int numIters = 100;
 
 int main(int argc, char *argv[]) {
@@ -59,12 +59,12 @@ int main(int argc, char *argv[]) {
       },
       numIters, "Reduction using only global atomics");
 
-  auto e3 = q.memcpy(&devAns[0], devReduced, sizeof(T));
-  q.memcpy(devReduced, &zeroVal, sizeof(T), e3).wait();
+  q.memcpy(&devAns[0], devReduced, sizeof(T)).wait();
 
   util::benchmark(
       [&]() {
         q.submit([&](sycl::handler &cgh) {
+           cgh.depends_on({e1, e2});
            sycl::local_accessor<T, 1> localMem(workGroupSize, cgh);
            sycl::local_accessor<T, 1> localReduction(1, cgh);
 
@@ -72,10 +72,6 @@ int main(int argc, char *argv[]) {
              auto localIdx = item.get_local_linear_id();
              auto globalIdx = item.get_global_linear_id();
              auto globalRange = item.get_global_range(0);
-
-             localReduction[0] = 0;
-
-             item.barrier();
 
              // Accumulating thread local reductions into local memory
              localMem[localIdx] = devA[globalIdx];
@@ -107,8 +103,8 @@ int main(int argc, char *argv[]) {
     serialAns += a[i];
   }
 
-  std::cout << "Got global atomics device ans " << devAns[0] / numIters << '\n';
-  std::cout << "Got global and local atomics device ans " << devAns[1] / numIters << '\n';
+  std::cout << "Got global atomics device ans " << devAns[0] << '\n';
+  std::cout << "Got global and local atomics device ans " << devAns[1] << '\n';
   std::cout << "vs serial ans " << serialAns << '\n';
 
   sycl::free(devA, q);
