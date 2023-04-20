@@ -340,8 +340,8 @@ auto acc = sycl::accessor{bufA, cgh};
 						group function you are within.
 						  * The element type and dimensionality are inferred from
 						  the `buffer`.
-						  * The `access::mode` is defaulted to
-						  `access::mode::read_write`.
+						  * The `access_mode` is defaulted to
+						  `access_mode::read_write`.
 					</div>
 				</section>
 				<!--Slide 14-->
@@ -357,10 +357,10 @@ auto writeAcc = sycl::accessor{bufB, cgh, sycl::write_only};
 					</div>
 					<div class="container" data-markdown>
 						* When constructing an `accessor` you will likely also
-						want to specify the `access::mode`
+						want to specify the `access_mode`
 						* You can do this by passing one of the CTAD tags:
-						  * `read_only` will result in `access::mode::read`.
-						  * `write_only` will result in `access::mode::write`.
+						  * `read_only` will result in `access_mode::read`.
+						  * `write_only` will result in `access_mode::write`.
 					</div>
 				</section>
 				<!--Slide 15-->
