@@ -68,7 +68,7 @@
 						#### Task vs data parallelism
 					</div>
 					<div class="container" data-markdown>
-						![Work Item](./task_parallelism_data_parallelism.png "Task parallelism vs data parallelism")
+						![Task vs Data](./task_parallelism_data_parallelism.png "Task parallelism vs data parallelism")
 					</div>
 					<div class="container" data-markdown>
 						* **Task parallelism** is where you have several,
@@ -149,7 +149,7 @@ parallel_for(calc, in, out, 1024);
 							element.
 						</div>
 						<div class="col-right" data-markdown>
-							![Work Item](../common-revealjs/images/workitem.png "Work-Item")
+							![Work-Item](../common-revealjs/images/workitem.png "Work-Item")
 						</div>
 					</div>
 				</section>
@@ -164,7 +164,7 @@ parallel_for(calc, in, out, 1024);
 							* In order to maximize parallelism, the range should correspond to the problem size.
 						</div>
 						<div class="col" data-markdown>
-							![Work Group](./SYCL_range.png "Work-Group")
+							![Work-Group](./SYCL_range.png "Work-Group")
 						</div>
 					</div>
 				</section>
@@ -186,11 +186,11 @@ cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>range{64, 64}</mark>,
 						</div>
 					</div>
 					<div class="container" data-markdown>
-					  * In SYCL kernel functions can be enqueued to execute over
-					  a range of work-items using `parallel_for`.
+					  * In SYCL, kernel functions can be enqueued to execute
+					  over a range of work-items using `parallel_for`.
 					  * When using `parallel_for` you must also pass `range`
-					  which describes the number of iteration space to be
-					  executed over.
+					  which describes the iteration space over which the kernel
+					  is to be executed.
 					</div>
 				</section>
 				<!--Slide 15-->

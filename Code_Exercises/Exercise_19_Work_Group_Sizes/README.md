@@ -1,9 +1,9 @@
 # SYCL Academy
 
-## Exercise 19: Work Group Sizes
+## Exercise 19: Work-Group Sizes
 ---
 
-In this exercise you will learn how to use different work group sizes in order
+In this exercise you will learn how to use different work-group sizes in order
 to compare the performance difference.
 
 ---
