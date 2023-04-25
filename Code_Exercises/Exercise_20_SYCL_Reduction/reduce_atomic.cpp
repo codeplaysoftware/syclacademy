@@ -59,7 +59,8 @@ int main(int argc, char *argv[]) {
       },
       numIters, "Reduction using only global atomics");
 
-  q.memcpy(&devAns[0], devReduced, sizeof(T)).wait();
+  auto e3 = q.memcpy(&devAns[0], devReduced, sizeof(T));
+  q.memcpy(devReduced, &zeroVal, sizeof(T), e3).wait();
 
   util::benchmark(
       [&]() {
@@ -72,6 +73,11 @@ int main(int argc, char *argv[]) {
              auto localIdx = item.get_local_linear_id();
              auto globalIdx = item.get_global_linear_id();
              auto globalRange = item.get_global_range(0);
+
+             if (localIdx == 0)
+               localReduction[0] = 0;
+
+             item.barrier();
 
              // Accumulating thread local reductions into local memory
              localMem[localIdx] = devA[globalIdx];
@@ -103,9 +109,10 @@ int main(int argc, char *argv[]) {
     serialAns += a[i];
   }
 
-  std::cout << "Got global atomics device ans " << devAns[0] << '\n';
-  std::cout << "Got global and local atomics device ans " << devAns[1] << '\n';
-  std::cout << "vs serial ans " << serialAns << '\n';
+  std::cout << "Got global atomics device ans " << devAns[0] / numIters << '\n';
+  std::cout << "Got global and local atomics device ans "
+            << devAns[1] / numIters << '\n';
+  std::cout << "vs serial ans " << serialAns << "\n\n";
 
   sycl::free(devA, q);
   sycl::free(devReduced, q);

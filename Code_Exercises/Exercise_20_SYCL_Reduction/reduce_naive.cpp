@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
   }
 
   std::cout << "Got device ans " << devAns << '\n';
-  std::cout << "vs serial ans " << serialAns << '\n';
+  std::cout << "vs serial ans " << serialAns << "\n\n";
 
   sycl::free(devPtrA, q);
   sycl::free(devPtrB, q);

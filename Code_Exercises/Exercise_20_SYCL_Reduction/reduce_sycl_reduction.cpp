@@ -36,7 +36,9 @@ int main(int argc, char *argv[]) {
       [&]() {
         q.submit([&](sycl::handler &cgh) {
            cgh.depends_on({e1, e2});
-           auto myReduction = sycl::reduction(devReduced, sycl::plus<T>());
+           auto myReduction = sycl::reduction(
+               devReduced, sycl::plus<T>(),
+               sycl::property::reduction::initialize_to_identity{});
 
            cgh.parallel_for(myNd, myReduction,
                             [=](sycl::nd_item<1> item, auto &sum) {
@@ -55,7 +57,7 @@ int main(int argc, char *argv[]) {
   }
 
   std::cout << "Got device ans " << devAns << '\n';
-  std::cout << "vs serial ans " << serialAns << '\n';
+  std::cout << "vs serial ans " << serialAns << "\n\n";
 
   sycl::free(devA, q);
   sycl::free(devReduced, q);
