@@ -6,65 +6,105 @@
 
  You should have received a copy of the license along with this
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
- 
+*/
+
+// Copyright (C) Codeplay Software Limited
+
+/*
  * SYCL Quick Reference
  * ~~~~~~~~~~~~~~~~~~~~
- *
+ * Buffers
  * // Include SYCL header
- * #include <sycl/sycl.hpp>
+ * #include <CL/sycl.hpp>
  *
  * // Default construct a queue
  * auto q = sycl::queue{};
  *
+ * // Make a buffer associated with `a`
+ * auto buf = sycl::buffer{&a, sycl::range<1>{1}}
+ *
+ * // Submit a task to the queue
+ * q.submit([&](sycl::handler &cgh) {
+ *   
+ *   // Declaring different accessors
+ *   sycl::accessor read_acc{buf, cgh, sycl::read_only};
+ *   sycl::accessor write_acc{buf, cgh, sycl::write_only};
+ *   sycl::accessor read_write_acc{buf, cgh, sycl::read_write};
+ *
+ *   // submit a single task
+ *   cgh.single_task([=](){
+ *      // do stuff      
+ *   });
+ *
+ * });
+ *
+ * // N.B. - Each call to q.submit can only contain a single command (single_task)
+ *
+ * // N.B. - Buffers will only update the memory they point to when they are 
+ * // destroyed
+ * 
+ * USM
  * // Allocate device memory
- * auto * devPtr = sycl::malloc_device<int>(mycount, q);
+ * auto * devPtr = malloc_device<int>(mycount, q);
+ *
+ * // Fill ptr with value
+ * q.fill(devPtr, value, num_items);
  *
  * // Memcpy
- * q.memcpy(dst, src, sizeof(T)*n).wait();
+ * auto event1 = q.memcpy(dst, src, sizeof(T)*n);
  * // (dst and src are pointers)
  *
  * // Free memory
  * sycl::free(ptr, q);
  *
- * // Construct a buffer of size n associated with ptr
- * auto buf = sycl::buffer{ptr, sycl::range{n}};
+ */
+
  *
- * // Submit a kernel
- * q.submit([&](sycl::handler &cgh) {
- *    cgh.single_task([=](){
- *      // Some kernel code
- *      });
- * }).wait();
- *    
- * // Construct an accessor for buf 
- * // (must be done within command group)
- *     auto acc = sycl::accessor{buf, cgh};
- *     auto acc = sycl::accessor{buf, cgh, sycl::read_only};
- *     auto acc = sycl::accessor{buf, cgh, sycl::write_only};
- *     auto acc = sycl::accessor{buf, cgh, sycl::no_init};
- *
-*/
+ */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include <iostream>
 
-TEST_CASE("scalar_add_usm", "scalar_add_source") {
+using T = int;
 
-  int a = 18, b = 24, r = 0;
+constexpr T fill_val = 31;
 
-  // Task: Compute a+b on the SYCL device using USM
-  r = a + b;
+int main() {
+  
+  // Use Buffers
+  int a = 1, b = 2;
 
-  REQUIRE(r == 42);
+  // 1. Construct a queue
+
+  // 2. Make a buffer for a and another for b
+
+  // 3. Use q.submit to add a and b and store the value in a. 
+  
+  // Use braces around steps 2-5 so that memory is updated when buffers go out
+  // of scope
+
+
+  if (a == 202) {
+    std::cout << "Got expected answer: 202\n";
+  } else {
+    std::cout << "Got unexpected answer: " << a << '\n';
+  }
+
+  // Use USM
+  int a = 0;
+
+  // Allocate memory at devPtr for one T on device
+
+  // Fill the memory at devPtr with fill_val
+
+  // Memcpy the value at devPtr back into a
+  
+  // Free the memory at devPtr
+
+  if (a == fill_val) {
+    std::cout << "Got expected answer: " << fill_val << '\n';
+  } else {
+    std::cout << "Got unexpected answer: " << a << '\n';
+  }
 }
 
-TEST_CASE("scalar_add_buff_acc", "scalar_add_source") {
 
-  int a = 18, b = 24, r = 0;
-
-  // Task: Compute a+b on the SYCL device using the buffer
-  // accessor memory model
-  r = a + b;
-
-  REQUIRE(r == 42);
-}

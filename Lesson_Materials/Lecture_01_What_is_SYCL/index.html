@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<r<!DOCTYPE html>
 
 <html>
 	<head>
@@ -49,6 +49,7 @@
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
 					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/cluster22.png" />
 				</div>
 				<!--Slide 1-->
 				<section>
@@ -59,12 +60,35 @@
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
+					* Heterogeneous parallel programming
 					* Learn about the SYCL specification and its implementations
 					* Learn about the components of a SYCL implementation
 					* Learn about how a SYCL source file is compiled
 					* Learn where to find useful resources for SYCL
                 </section>
 				<!--Slide 3-->
+				<section class="container" data-markdown>
+					### Supercomputing landscape at Exascale
+					* Need for high levels of performance driving use of accelerators
+					* Many, but not all, large supercomputers using GPUs:
+						* LUMI at EuroHPC JU: AMD Trento CPU and AMD MI250X GPUs (4 per node)
+						* Perlmutter at NERSC: AMD EPYC Milan CPUs and NVIDIA A100 GPUs
+						* Frontier at ORNL: AMD EPYC custom CPUs and Radeon Instinct GPUs (4 per node)
+						* Aurora at ALCF: Intel Xeon Sapphire Rapids CPUs and Xe Ponte Vecchio GPUs (6 per node)
+						* El Capitan at LLNL: AMD EPYC Genoa CPUs and Radeon Instinct GPUs (4 per node)
+
+					**Multiple vendor solutions to get to Exascale**
+                </section>
+				<!--Slide 4-->
+				<section class="container" data-markdown>
+					### Performance Portable Heterogeneous Programming
+					* Scientific applications need to be performant across a range of processors
+					* Need to write applications in (heterogeneous) parallel programming model
+						* Open Standards: SYCL, OpenMP, ...
+						* DSLs and abstractions: Kokkos, Raja, ...
+						* Language parallelism: ISO C++, Fortran, ...
+				</section>
+				<!--Slide 5-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
@@ -79,7 +103,7 @@
 						We'll examine what each of the parts of this statement means.
 					</aside>
 				</section>
-				<!--Slide 4-->
+				<!--Slide 6-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
@@ -91,23 +115,27 @@
 						![SYCL](./sycl_first_sample_code.png "SYCL")
 					</div>
 				</section>
-				<!--Slide 4A-->
+				<!--Slide 7-->
 				<section data-markdown>
 					## SYCL is...
 					
 					* SYCL extends C++ in two key ways:
+					  * heterogeneous memory
+					  * heterogeneous parallel compute
+					* SYCL is modern C++, with APIs for
 					  * device discovery (and information)
 					  * device control (kernels of work, memory)
-					* SYCL is modern C++
-					* SYCL is open, multivendor, multiarchitecture
+					* SYCL doesn't add extensions to the core language
+					* SYCL is an open standard
+					  * multivendor and multiarchitecture support
 				</section>
-				<!--Slide 5-->
+				<!--Slide 8-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
 					</div>
 					<div class="hbox" data-markdown>
-						SYCL is a ***single source***, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
+						SYCL is a **single source**, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -124,13 +152,13 @@
 						Your kernel contains the code you want to execute on parallel hardware, i.e the bit you want to accelerate such as a vector addition
 					</aside>
 				</section>
-				<!--Slide 6-->
+				<!--Slide 9-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
 					</div>
 					<div class="hbox" data-markdown>
-						SYCL is a single source, ***high-level***, standard C++ programming model, that can target a range of heterogeneous platforms
+						SYCL is a single source, **high-level**, standard C++ programming model, that can target a range of heterogeneous platforms
 					</div>
 					<div class="container">
 					<article class="main" data-markdown>
@@ -139,18 +167,20 @@
 						  * Buffer creation and data movement
 						  * Kernel function compilation
 						  * Dependency management and scheduling
+						* High-level abstractions are good for productivity
+						  * SYCL has layers of abstractions when control is needed
 					</article>
 					<aside class="notes">
 						
 					</aside>
 				</section>
-				<!--Slide 7-->
+				<!--Slide 10-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
 					</div>
 				    <div class="hbox" data-markdown>
-				        SYCL is a single source, high-level ***standard C++*** programming model, that can target a range of heterogeneous platforms
+				        SYCL is a single source, high-level **standard C++** programming model, that can target a range of heterogeneous platforms
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -160,9 +190,9 @@
 							* SYCL allows you to write standard C++
 							  * SYCL 2020 is based on C++17
 							* Unlike the other implementations shown on the left there are:
-							  * No language extensions 
+							  * No language extensions
 							  * No pragmas 
-							  * No attributes
+							  * No mandatory attributes
 						</div>
 					</div>
 					<aside class="notes">
@@ -170,7 +200,20 @@
 						Other models use language extensions such as pragmas, attributes or keywords to indicate device code
 					</aside>
 				</section>
-				<!--Slide 8-->
+				<!--Slide 11-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## SYCL and ISO C++
+						* ISO C++ has some notion of concurrency via threads and futures
+						* and data parallelism via algorithm and numeric libraries
+						* Assumes single execution space and single memory
+						* No control of where to run (yet)
+						* No asynchrony of algorithms (yet)
+
+						**SYCL is aligning with and helping shape the future for heterogeneous compute in C++**
+					</div>
+				</section>
+				<!--Slide 11-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### What is SYCL?
@@ -195,7 +238,7 @@
 						Whilst the current specification of SYCL is bound to OpenCL, it is possible to support non-OpenCL back-ends. For example hipSYCL targets AMD's HIP interface and ComputeCpp targets NVidia's ptx instruction set
 					</aside>
 				</section>
-				<!--Slide 9-->
+				<!--Slide 12-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### SYCL specification
@@ -205,14 +248,33 @@
 						![SYCL](./sycl_spec_versions.png "SYCL-OpenCL")
 					</aside>
 				</section>
-				<!--Slide 10-->
+				<!--Slide 13-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						#### SYCL implementations
 					</div>
-                                        <img src="./sycl_implementation_targets.png" alt="SYCL-Implementations">
+                                        <img src="./sycl_implementation_targets_1.jpg" alt="SYCL-Implementations">
 				</section>
-				<!--Slide 11-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						#### SYCL implementations
+					</div>
+                                        <img src="./sycl_implementation_targets_2.jpg" alt="SYCL-Implementations">
+				</section>
+				<!--Slide 14-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						### Implementations of a standard
+						* SYCL is a *standard*
+						* Document defines behaviour of API:
+						  * Platform, device model
+						  * Memory and execution model
+						  * What the APIs are and what they do
+						* Implementations (like DPC++, hipSYCL, etc) *implement* the standard
+						  * Once conformant, guarenteed all APIs are supported by the implementation
+					</div>
+				</section>
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### What a SYCL implementation looks like
@@ -231,161 +293,7 @@
 						* The device is the parallel unit used to execute the kernels, such as a GPU
 					</div>
 				</section>
-				<!--Slide 12-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### What a SYCL implementation looks like
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL Runtime](./sycl_implementation_sycl_runtime.png "SYCL-Host-Device")
-						</div>
-						<div class="col" data-markdown>
-							* The SYCL runtime is a library that schedules and executes work
-							  * It loads kernels, tracks data dependencies and schedules commands
-						</div>
-				</section>
-				<!--Slide 13-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### What a SYCL implementation looks like
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL Host Device](./sycl_implementation_host_device.png "SYCL-Host-Device")
-						</div>
-						<div class="col" data-markdown>
-						  * There is no Host Device in SYCL (as of SYCL 2020)
-						  * SYCL 1.2.1 had a concept of a 'magical' host device - an emulated backend
-						  * SYCL 2020 implementations generally offer a CPU device
-						  * Often, the best debugging on a platform is using a CPU device
-						  * Yet, debugging off the CPU is important to discover offloading issues
-						</div>
-				</section>
-				<!--Slide 14-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### What a SYCL implementation looks like
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL Backend](./sycl_implementation_backend_interface.png "SYCL-Backend")
-						</div>
-						<div class="col" data-markdown>
-							* The back-end interface is where the SYCL runtime calls down into a back-end in order to execute on a particular device  
-							* Many implementations provide OpenCL backends, but some provide additional or different backends.
-						</div>
-					</div>
-				</section>
-				<!--Slide 15-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### What a SYCL implementation looks like
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL Compiler](./sycl_implementation_sycl_compiler.png "SYCL-Compiler")
-						</div>
-						<div class="col" data-markdown>
-							* The SYCL device compiler is a C++ compiler which can identify SYCL kernels and compile them down to an IR or ISA
-							  * This can be SPIR, SPIR-V, GCN, PTX or any proprietary vendor ISA
-							* Some SYCL implementations are library only in
-							which case they do not require a device compiler
-						</div>
-					</div>
-					<div class="bottom-bullets" data-markdown>
-						**IR** = Intermediate Representation 	**ISA** = Instruction Set Architecture
-					</div>
-				</section>
-				<!--Slide 16-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
-					</div>
-					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_1.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-						* This is the typical compilation model for a C++ source file.
-					</div>
-				</section>
-				<!--Slide 17-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
-					</div>
-					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_2.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-						* So how do you compile a source file to also target the GPU?
-					</div>
-				</section>
-				<!--Slide 18-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
-					</div>
-					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_3.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-						* As SYCL is single source the kernel functions are standard C++ function objects or lambda expressions.
-						* These are defined by submitting them to specific APIs.
-					</div>
-				</section>
-				<!--Slide 19-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
-					</div>
-					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_4.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-						* As well as the standard C++ compiler, the source file is also compiled by a SYCL device compiler.
-						* This produces a device IR such as SPIR, SPIR-V or PTX or ISA for a specific architecture containing the GPU code.
-					</div>
-				</section>
-				<!--Slide 20-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
-					</div>
-					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_5.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-						* The CPU object is then linked with the device IR or ISA to form a single executable with both the CPU and GPU code.
-					</div>
-				</section>
-				<!--Slide 21-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
-					</div>
-					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_5.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-						* This is the multi-compiler compilation model.
-						* This allows the host compiler (MSVC, clang, icx, gcc) to be independent of the SYCL device compiler.
-					</div>
-				</section>
-				<!--Slide 22-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
-					</div>
-					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_6.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-						* SYCL also supports a single-compiler compilation model.
-						* Where both the host compiler and SYCL device compiler are invoked from the same driver.
-					</div>
-				</section>
-				<!--Slide 23-->
+				<!--Slide 27-->
 				<section data-markdown>
 					## Where to Get Started with SYCL
 					
@@ -393,20 +301,50 @@
 					* Visit https://www.khronos.org/sycl/ to find the latest SYCL specifications
 					* Checkout the documentation provided with one of the SYCL implementations.
 				</section>
-				<!--Slide 24-->
+				<!--Slide 28-->
 				<section data-markdown>
 					## Questions
 				</section>
-				<!--Slide 25-->
+				<!--Slide 29-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
 					</div>
 					<div class="container" data-markdown>
-						Code_Exercises/Exercise_1_Compiling_with_SYCL/source
+						Code_Exercises/Exercise_1_Compiling_with_SYCL/source.cpp
 					</div>
 					<div class="container" data-markdown>
 						Configure your environment for using SYCL and compile a source file with the SYCL compiler.
+					</div>
+					<div class="container" data-markdown>
+						**Task**: Include the SYCL header and successfully build and run a binary.
+					</div>
+				</section>
+				<!--Slide 30-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Intel DevCloud
+						1. Register for the Intel DevCloud
+						2. Follow instructions to set up SSH
+						
+						https://devcloud.intel.com/oneapi/documentation/
+					</div>
+				</section>
+				<!--Slide 31-->
+				<section>
+					<div class="hbox" data-markdown>
+						### DevCloud Demo
+					</div>
+					<div class="container">
+					<pre><code  data-trim data-noescape>
+$ ssh devcloud
+$ git clone https://github.com/illuhad/syclacademy -b cluster22 --recursive
+$ cd syclacademy
+$ mkdir build
+$ dpcpp -fsycl -o sycl-ex-1 ../Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
+$ qsub -I -l nodes=1:gpu:ppn=2 -d .
+$ ./sycl-ex-1
+					</code></pre>
 					</div>
 				</section>
 			</div>

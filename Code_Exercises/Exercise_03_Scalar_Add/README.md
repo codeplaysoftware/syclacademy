@@ -1,86 +1,68 @@
 # SYCL Academy
 
-## Exercise 3: Scalar Add
+## Exercise 3: Scalar Add using Buffers and USM
 
 ---
 
 In this exercise you will learn how to create `buffer`s to manage data and
-`accessor`s to access the data within a kernel function.
+`accessor`s to access the data within a kernel function. 
+
+You'll then use the USM functions `malloc_device`, `fill` and `memcpy` to 
+allocate some memory on the device, fill it, copy it back, and free the 
+device allocation.
 
 ---
 
-### 1.) Allocate your input and output
+## Buffers 
 
-Allocate memory on the host for your input and output data variables and assign
-values to the inputs.
+## Instructions
 
-### 2.) Construct buffers
+1. Initialize 2 buffers to point to ints a, b.
+2. Use another `single_task` within another q.submit to add `a` and `b` 
+together and store the value in `a`.
+3. Allow the buffers to destruct and check that `a` contains the correct answer.
 
-In SYCL buffers are used to manage data across the host and device(s).
 
-Construct a buffer to manage your input and output data. The parameters to
-construct a buffer are a pointer to the host data and a `1` dimensional `range`
-of `1` to represent a single value. The element type and dimensionality can be
-inferred from the pointer and the `range`.
+## USM
 
-### 3.) Construct accessors
+1. Allocate an int on device.
+2. Fill the int.
+3. Memcpy the int back to host memory.
+4. Free the allocated int.
 
-In SYCL accessors are used to declare data dependencies to a SYCL kernel
-function as well as to access the data within a SYCL kernel function.
+Remember that fill() and mempcy() are asynchronous, so make
+sure you `wait()` between fill() and memcpy() or else you
+aren't guaranteed to get the expected result.
 
-Construct an accessor for each of the buffers to access the data of each within
-the kernel function. The parameters to construct an `accessor` are the `buffer`
-and the `handler`.
 
-### 4.) Declare your kernel
+#### Build And Execution Hints Using the DevCloud
 
-Declare a SYCL kernel function using the `single_task` command provide a lambda
-as the kernel function. The kernel function should use the `operator[]` of the
-`accessor` objects to read from the inputs and write the sum to the output. As
-each `accessor` is only accessing a single element you can simply specify `0`.
-
-### 5.) Try a temporary buffer
-
-You can construct a temporary `buffer` that doesn't copy back on destruction by
-initializing it with just a `range` and no host pointer.
-
-#### Build And Execution Hints
-
-For DPC++ (using the Intel DevCloud):
+For For DPC++:
 ```sh
-icpx -fsycl -o sycl-ex-3 -I../External/Catch2/single_include ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
-./sycl-ex-3
+dpcpp -fsycl -o sycl-ex-3 source.cpp
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
-especially some features like longer walltime and multi-node computation is only available through the job queue.
-Please refer to the [guide][devcloud-job-submission].
+especially some features like longer walltime and multi-node computation is only abvailable through the job queue.
 
-So wrap the binary into a script `job_submission` and run:
+We have provided a ready made script in the same directory as the source.cpp file, so you can call:
+
 ```sh
-qsub job_submission
+qsub -l nodes=1:gpu:ppn=2 -d . run.sh
 ```
 
 For ComputeCpp:
+
 ```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_03_scalar_add_source
-./Code_Exercises/Exercise_03_Scalar_Add/exercise_03_scalar_add_source
+cd ~/syclacademy/Code_Exercises/Exercise_03_Scalar_Add
+compute++ source.cpp -lComputeCpp -sycl-driver -std=c++17 -DSYCL_LANGUAGE_VERSION=2020 -no-serial-memop
+./a.out 
 ```
 
 
 For hipSYCL:
+
 ```sh
-# <target specification> is a list of backends and devices to target, for example
-# "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
-# The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
-cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
-make exercise_03_scalar_add_source
-./Code_Exercises/Exercise_03_Scalar_Add/exercise_03_scalar_add_source
-```
-alternatively, without cmake:
-```sh
-cd Code_Exercises/Exercise_03_Scalar_Add
-/path/to/hipsycl/bin/syclcc -o sycl-ex-3 -I../../External/Catch2/single_include --hipsycl-targets="<target specification>" source.cpp
+syclcc -o sycl-ex-3 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_03_Scalar_Add/source.cpp
 ./sycl-ex-3
 ```
 

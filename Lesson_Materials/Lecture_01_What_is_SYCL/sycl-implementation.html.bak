@@ -1,0 +1,154 @@
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### What a SYCL implementation looks like
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL Runtime](./sycl_implementation_sycl_runtime.png "SYCL-Host-Device")
+						</div>
+						<div class="col" data-markdown>
+							* The SYCL runtime is a library that schedules and executes work
+							  * It loads kernels, tracks data dependencies and schedules commands
+						</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### What a SYCL implementation looks like
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL Host Device](./sycl_implementation_host_device.png "SYCL-Host-Device")
+						</div>
+						<div class="col" data-markdown>
+						  * There is no Host Device in SYCL (as of SYCL 2020)
+						  * SYCL 1.2.1 had a concept of a 'magical' host device - an emulated backend
+						  * SYCL 2020 implementations generally offer a CPU device
+						  * Often, the best debugging on a platform is using a CPU device
+						  * Yet, debugging off the CPU is important to discover offloading issues
+						</div>
+				</section>
+				<!--Slide 18-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### What a SYCL implementation looks like
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL Backend](./sycl_implementation_backend_interface.png "SYCL-Backend")
+						</div>
+						<div class="col" data-markdown>
+							* The back-end interface is where the SYCL runtime calls down into a back-end in order to execute on a particular device  
+							* Many implementations provide OpenCL backends, but some provide additional or different backends.
+						</div>
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### What a SYCL implementation looks like
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL Compiler](./sycl_implementation_sycl_compiler.png "SYCL-Compiler")
+						</div>
+						<div class="col" data-markdown>
+							* The SYCL device compiler is a C++ compiler which can identify SYCL kernels and compile them down to an IR or ISA
+							  * This can be SPIR, SPIR-V, GCN, PTX or any proprietary vendor ISA
+							* Some SYCL implementations are library only in
+							which case they do not require a device compiler
+						</div>
+					</div>
+					<div class="bottom-bullets" data-markdown>
+						**IR** = Intermediate Representation 	**ISA** = Instruction Set Architecture
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Std C++ compilation model
+					</div>
+					<div class="container" data-markdown>
+						![SYCL Backend](./compilation_1.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* This is the typical compilation model for a C++ source file.
+					</div>
+				</section>
+				<!--Slide 21-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Std C++ compilation model
+					</div>
+					<div class="container" data-markdown>
+						![SYCL Backend](./compilation_2.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* So how do you compile a source file to also target the GPU?
+					</div>
+				</section>
+				<!--Slide 22-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Std C++ compilation model
+					</div>
+					<div class="container" data-markdown>
+						![SYCL Backend](./compilation_3.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* As SYCL is single source the kernel functions are standard C++ function objects or lambda expressions.
+						* These are defined by submitting them to specific APIs.
+					</div>
+				</section>
+				<!--Slide 23-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Std C++ compilation model
+					</div>
+					<div class="container" data-markdown>
+						![SYCL Backend](./compilation_4.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* As well as the standard C++ compiler, the source file is also compiled by a SYCL device compiler.
+						* This produces a device IR such as SPIR, SPIR-V or PTX or ISA for a specific architecture containing the GPU code.
+					</div>
+				</section>
+				<!--Slide 24-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Std C++ compilation model
+					</div>
+					<div class="container" data-markdown>
+						![SYCL Backend](./compilation_5.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* The CPU object is then linked with the device IR or ISA to form a single executable with both the CPU and GPU code.
+					</div>
+				</section>
+				<!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Std C++ compilation model
+					</div>
+					<div class="container" data-markdown>
+						![SYCL Backend](./compilation_5.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* This is the multi-compiler compilation model.
+						* This allows the host compiler (MSVC, clang, icx, gcc) to be independent of the SYCL device compiler.
+					</div>
+				</section>
+				<!--Slide 26-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Std C++ compilation model
+					</div>
+					<div class="container" data-markdown>
+						![SYCL Backend](./compilation_6.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* SYCL also supports a single-compiler compilation model.
+						* Where both the host compiler and SYCL device compiler are invoked from the same driver.
+					</div>
+				</section>

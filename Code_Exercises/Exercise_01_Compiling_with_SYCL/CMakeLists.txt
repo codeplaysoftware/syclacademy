@@ -9,4 +9,3 @@
 ]]
 
 add_sycl_executable(exercise_01_compiling_with_sycl source)
-add_sycl_executable(exercise_01_compiling_with_sycl solution)
