@@ -81,7 +81,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./cost_of_global_memory_access.png "SYCL")
+							![SYCL](../common-revealjs/images/cost_of_global_memory_access.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* Looking at the image convolution example.
@@ -100,7 +100,7 @@
 						#### Using local memory
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./local_memory.png "SYCL")
+						![SYCL](../common-revealjs/images/local_memory.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* The solution is local memory.
@@ -158,7 +158,7 @@ auto scratchpad = sycl::accessor&lt;int, 1, sycl::access::target::local&gt;(sycl
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./barrier_1.png "SYCL")
+							![SYCL](../common-revealjs/images/barrier_1.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* Remember that work-items are not guaranteed to all execute at the same time (in parallel).
@@ -172,7 +172,7 @@ auto scratchpad = sycl::accessor&lt;int, 1, sycl::access::target::local&gt;(sycl
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./barrier_2.png "SYCL")
+							![SYCL](../common-revealjs/images/barrier_2.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* A work-item can share results with other work-items via local (or global) memory.
@@ -186,7 +186,7 @@ auto scratchpad = sycl::accessor&lt;int, 1, sycl::access::target::local&gt;(sycl
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./barrier_3.png "SYCL")
+							![SYCL](../common-revealjs/images/barrier_3.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* This means it's possible for a work-item to read a result that hasn't been written to yet.
@@ -201,7 +201,7 @@ auto scratchpad = sycl::accessor&lt;int, 1, sycl::access::target::local&gt;(sycl
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./barrier_4.png "SYCL")
+							![SYCL](../common-revealjs/images/barrier_4.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* This problem can be solved with a synchronization primitive called a work-group barrier.
@@ -215,7 +215,7 @@ auto scratchpad = sycl::accessor&lt;int, 1, sycl::access::target::local&gt;(sycl
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./barrier_5.png "SYCL")
+							![SYCL](../common-revealjs/images/barrier_5.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* When a work-group barrier is inserted work-items will wait until all work-items in the work-group have reached that point.
@@ -229,7 +229,7 @@ auto scratchpad = sycl::accessor&lt;int, 1, sycl::access::target::local&gt;(sycl
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./barrier_6.png "SYCL")
+							![SYCL](../common-revealjs/images/barrier_6.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* Only then can any work-items in the work-group continue execution.
@@ -243,7 +243,7 @@ auto scratchpad = sycl::accessor&lt;int, 1, sycl::access::target::local&gt;(sycl
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./barrier_7.png "SYCL")
+							![SYCL](../common-revealjs/images/barrier_7.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* So now you can be sure that all of the results that you want to read have been written to.
@@ -257,7 +257,7 @@ auto scratchpad = sycl::accessor&lt;int, 1, sycl::access::target::local&gt;(sycl
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./barrier_8.png "SYCL")
+							![SYCL](../common-revealjs/images/barrier_8.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* However note that this does not apply across work-group boundaries.
