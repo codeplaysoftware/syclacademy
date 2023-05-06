@@ -39,7 +39,9 @@ example implementation to compare against.
 ## Contributing to SYCL Academy
 
 Contributions to the materials are very gratefully received and this can be done
-by submitting a Pull Request with any changes. Please limit the scope of each
+by submitting a Pull Request with any changes. If you can, follow the
+instructions [here](https://revealjs.com/pdf-export/) to generate a pdf file for
+any lecture slides you change. Please limit the scope of each
 Pull Request so that they can be reviewed and merged in a timely manner.
 
 ### List of Contributors
