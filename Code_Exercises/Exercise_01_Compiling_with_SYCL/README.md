@@ -40,7 +40,7 @@ git clone --recursive --branch isc22 https://github.com/codeplaysoftware/syclaca
 ### 4.) Include the SYCL header file
 
 Then open the source file for this exercise and include the SYCL header file
-`"CL/sycl.hpp"`.
+`"sycl/sycl.hpp"`.
 
 Make sure before you do this you define `SYCL_LANGUAGE_VERSION` to `2020`, to
 enable support for the SYCL 2020 interface.
@@ -64,7 +64,7 @@ cd syclacademy/Code_Exercises/Exercise_01_Compiling_with_SYCL
 For For DPC++ this is how you would compile your source code:
 
 ```sh
-dpcpp -fsycl -o sycl-ex-1 source.cpp
+icpx -fsycl -o sycl-ex-1 source.cpp
 ```
 
 Then run the compiled binary using

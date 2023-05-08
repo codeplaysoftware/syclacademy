@@ -45,6 +45,9 @@
  *
  */
 
+#include <stddef.h> // replace both headers with sycl/sycl.hpp
+#include <cassert>
+
 int main() {
   constexpr size_t dataSize = 1024;
 
