@@ -15,7 +15,7 @@
  * ~~~~~~~~~~~~~~~~~~~~
  * Buffers
  * // Include SYCL header
- * #include <CL/sycl.hpp>
+ * #include <sycl/sycl.hpp>
  *
  * // Default construct a queue
  * auto q = sycl::queue{};

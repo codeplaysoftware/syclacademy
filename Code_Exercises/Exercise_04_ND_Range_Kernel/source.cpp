@@ -13,7 +13,7 @@
  * ~~~~~~~~~~~~~~~~~~~~
  *
  * // Include SYCL header
- * #include <CL/sycl.hpp>
+ * #include <sycl/sycl.hpp>
  *
  * // Construct a queue
  * auto q = sycl::queue{};
