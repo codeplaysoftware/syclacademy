@@ -15,7 +15,7 @@
  * ~~~~~~~~~~~~~~~~~~~~
  * Buffers
  * // Include SYCL header
- * #include <CL/sycl.hpp>
+ * #include <sycl/sycl.hpp>
  *
  * // Default construct a queue
  * auto q = sycl::queue{};
@@ -59,9 +59,6 @@
  *
  */
 
- *
- */
-
 #include <iostream>
 
 using T = int;
@@ -90,7 +87,7 @@ int main() {
   }
 
   // Use USM
-  int a = 0;
+  a = 0;
 
   // Allocate memory at devPtr for one T on device
 

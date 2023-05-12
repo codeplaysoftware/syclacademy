@@ -13,7 +13,7 @@
  * ~~~~~~~~~~~~~~~~~~~~
  *
  * // Include SYCL header
- * #include <CL/sycl.hpp>
+ * #include <sycl/sycl.hpp>
  *
  * // Construct a queue
  * auto q = sycl::queue{};
@@ -44,6 +44,9 @@
  * // destroyed
  *
  */
+
+#include <stddef.h> // replace both headers with sycl/sycl.hpp
+#include <cassert>
 
 int main() {
   constexpr size_t dataSize = 1024;

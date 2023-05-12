@@ -17,11 +17,7 @@
 #include <benchmark.h>
 #include <image_conv.h>
 
-#if __has_include(<SYCL/sycl.hpp>)
-#include <SYCL/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
+#include <sycl/sycl.hpp>
 
 class image_convolution;
 
@@ -43,7 +39,7 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
   auto filter = util::generate_filter(util::filter_type::blur, filterWidth);
 
   try {
-    sycl::queue myQueue{sycl::gpu_selector{},
+    sycl::queue myQueue{sycl::gpu_selector_v,
                         [](sycl::exception_list exceptionList) {
                           for (auto e : exceptionList) {
                             std::rethrow_exception(e);
@@ -77,11 +73,9 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
       util::benchmark(
           [&]() {
             myQueue.submit([&](sycl::handler& cgh) {
-              auto inputAcc = inBuf.get_access<sycl::access::mode::read>(cgh);
-              auto outputAcc =
-                  outBuf.get_access<sycl::access::mode::write>(cgh);
-              auto filterAcc =
-                  filterBuf.get_access<sycl::access::mode::read>(cgh);
+              sycl::accessor inputAcc{inBuf, cgh, sycl::read_only};
+              sycl::accessor outputAcc{outBuf, cgh, sycl::write_only};
+              sycl::accessor filterAcc{filterBuf, cgh, sycl::read_only};
 
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {

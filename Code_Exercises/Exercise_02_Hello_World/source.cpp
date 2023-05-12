@@ -13,7 +13,7 @@
  * ~~~~~~~~~~~~~~~~~~~~
  *
  * // Include SYCL header
- * #include <CL/sycl.hpp>
+ * #include <sycl/sycl.hpp>
  *
  * // Declare the kernel identifier (we use this later)
  * class hello_world;
