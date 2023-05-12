@@ -1,4 +1,4 @@
-<r<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
 	<head>
@@ -49,7 +49,6 @@
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
 					<img src="../common-revealjs/images/trademarks.png" />
-					<img src="../common-revealjs/images/cluster22.png" />
 				</div>
 				<!--Slide 1-->
 				<section>
@@ -311,7 +310,7 @@
 						#### Exercise
 					</div>
 					<div class="container" data-markdown>
-						Code_Exercises/Exercise_1_Compiling_with_SYCL/source.cpp
+						Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
 					</div>
 					<div class="container" data-markdown>
 						Configure your environment for using SYCL and compile a source file with the SYCL compiler.
@@ -324,27 +323,11 @@
 				<section>
 					<div class="hbox" data-markdown>
 						## Intel DevCloud
-						1. Register for the Intel DevCloud
-						2. Follow instructions to set up SSH
+						1. Read the README for the SYCL Academy isc23 branch
+						2. Register for the Intel DevCloud
+						3. Follow instructions to use the Jupyter Lab console
 						
-						https://devcloud.intel.com/oneapi/documentation/
-					</div>
-				</section>
-				<!--Slide 31-->
-				<section>
-					<div class="hbox" data-markdown>
-						### DevCloud Demo
-					</div>
-					<div class="container">
-					<pre><code  data-trim data-noescape>
-$ ssh devcloud
-$ git clone https://github.com/illuhad/syclacademy -b cluster22 --recursive
-$ cd syclacademy
-$ mkdir build
-$ dpcpp -fsycl -o sycl-ex-1 ../Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
-$ qsub -I -l nodes=1:gpu:ppn=2 -d .
-$ ./sycl-ex-1
-					</code></pre>
+						https://devcloud.intel.com/oneapi/get_started/
 					</div>
 				</section>
 			</div>
