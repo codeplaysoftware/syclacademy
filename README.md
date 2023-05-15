@@ -39,7 +39,9 @@ example implementation to compare against.
 ## Contributing to SYCL Academy
 
 Contributions to the materials are very gratefully received and this can be done
-by submitting a Pull Request with any changes. Please limit the scope of each
+by submitting a Pull Request with any changes. If you can, follow the
+instructions [here](https://revealjs.com/pdf-export/) to generate a pdf file for
+any lecture slides you change. Please limit the scope of each
 Pull Request so that they can be reviewed and merged in a timely manner.
 
 ### List of Contributors
@@ -47,6 +49,7 @@ Pull Request so that they can be reviewed and merged in a timely manner.
 Codeplay Software Ltd., Heidelberg University, Intel, Xilinx and University of Bristol.
 
 ## Supporting Organizations
+
 Abertay University, Universidad de Concepcion, TU Dresden, University of
 Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
 University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
@@ -82,7 +85,7 @@ may not match completely.
 | 12 | Advanced Data Flow | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes | Yes |
 | 13 | Multiple Devices | [slides][lesson-13-slides] | [exercise][lesson-13-exercise] | [source][lesson-13-source] | [solution][lesson-13-solution] | Yes | Yes | Yes |
 | 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes | Yes |
-| 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] | [source][lesson-15-source] | [solution][lesson-15-solution] | Yes | Yes | Yes |
+| 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] |  | [solution][lesson-15-solution] | Yes | Yes | Yes |
 | 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes | Yes |
 | 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes | Yes |
 | 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes | Yes |
