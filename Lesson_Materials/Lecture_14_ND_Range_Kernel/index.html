@@ -59,7 +59,7 @@
 				<section class="hbox" data-markdown>
 					## Learning Objectives
 					* Learn about the SYCL execution and memory model
-					* Learn how to enqueue an nd-range kernel functions
+					* Learn how to enqueue an nd-range kernel function
 				</section>
 				<!--Slide 3-->
 				<section>
@@ -74,7 +74,7 @@
 							* A work-item can run on CPU threads, SIMD lanes, GPU threads, or any other kind of processing element
 						</div>
 						<div class="col-right" data-markdown>
-							![Work Item](../common-revealjs/images/workitem.png "Work-Item")
+							![Work-Item](../common-revealjs/images/workitem.png "Work-Item")
 						</div>
 
 					</div>
@@ -91,7 +91,7 @@
 							* It can also be affected by the resources used by each work-item
 						</div>
 						<div class="col" data-markdown>
-							![Work Group](../common-revealjs/images/workgroup.png "Work-Group")
+							![Work-Group](../common-revealjs/images/workgroup.png "Work-Group")
 						</div>
 					</div>
 				</section>
@@ -118,10 +118,10 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							* The nd-range describes an **iteration space**; how the work-items and work-groups are composed
+							* The nd-range describes an **iteration space**: how it is composed in terms of work-groups and work-items
 							* An nd-range can be 1, 2 or 3 dimensions
 							* An nd-range has two components
-							  * The **global-range** describes the total number of workitems in each dimension
+							  * The **global-range** describes the total number of work-items in each dimension
 							  * The **local-range** describes the number of work-items in a work-group in each dimension
 						</div>
 						<div class="col" data-markdown>
@@ -176,7 +176,7 @@
 							* On vector hardware this is often done in lock-step, which means the same hardware instructions
 							* The number of work-items that will execute concurrently can vary from one device to another
 							* Work-items will be batched along with other work-items in the same work-group
-							* The order work-items and workgroups are executed in is implementation defined
+							* The order work-items and work-groups are executed in is implementation defined
 						</div>
 						<div class="col" data-markdown>
 							![ND-Range](../common-revealjs/images/ndrange-lock-step.png "ND-Range")
@@ -240,7 +240,7 @@
 						</div>
 						<div class="col-right-2" data-markdown>
 							* Each work-item can access a dedicated region of **local memory** accessible to all work-items in a work-group
-							* A work-item cannot access the local memory of another workgroup
+							* A work-item cannot access the local memory of another work-group
 						</div>
 					</div>
 				</section>
