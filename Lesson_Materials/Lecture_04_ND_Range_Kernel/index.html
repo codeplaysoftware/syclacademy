@@ -53,15 +53,75 @@
 				</div>
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
-					## ND Range Kernels
+					## DATA PARALLELISM 
+					## and ND-Range Kernels
 				</section>
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
+					* Learn about task parallelism and data parallelism
 					* Learn about the SYCL execution and memory model
-					* Learn how to enqueue an nd-range kernel functions
+					* Learn about enqueuing kernel functions with `parallel_for`
+					* Learn how to enqueue an nd-range kernel function
 				</section>
 				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Task vs data parallelism
+					</div>
+					<div class="container" data-markdown>
+						![Task vs Data](../common-revealjs/images/task_parallelism_data_parallelism.png "Task parallelism vs data parallelism")
+					</div>
+					<div class="container" data-markdown>
+						* **Task parallelism** is where you have several,
+						possibly distinct tasks executing in parallel.
+						  * In task parallelism you optimize for latency.
+						* **Data parallelism** is where you have the same
+						task being performed on multiple elements of data.
+						  * In data parallelism you optimize for throughput.
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SPMD model for describing data parallelism
+					</div>
+					<div class="container">
+						<div class="col">
+							Sequential CPU code
+							<code><pre>
+void calc(const int in[], int out[]) {
+  // all iterations are run in the same
+  // thread in a loop
+  for (int i = 0; i < 1024; i++){
+    out[i] = in[i] * in[i];
+  }
+}
+
+// calc is invoked just once and all
+// iterations are performed inline
+calc(in, out);
+							</code></pre>
+						</div>
+						<div class="col">
+							Parallel SPMD code
+							<code><pre>
+void calc(const int in[], int out[], int id) {
+  // function is described in terms of
+  // a single iteration
+  out[id] = in[id] * in[id];
+}
+
+
+// parallel_for invokes calc multiple
+// times in parallel
+parallel_for(calc, in, out, 1024);
+							</code></pre>
+						</div>
+					</div>
+				</section>
+
+				<!--Slide 5-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -79,10 +139,52 @@
 
 					</div>
 				</section>
-				<!--Slide 4-->
+				<!--Slide 5-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							* Work-items can be launched in parallel in a `sycl::range`.
+							* In order to maximize parallelism, the range should correspond to the problem size.
+						</div>
+						<div class="col" data-markdown>
+							![Work-Group](../common-revealjs/images/SYCL_range.png "Work-Group")
+						</div>
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Parallel_for
+					</div>
+					<div class="container">
+						<div class="col">
+							<code><pre>
+cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>range{64, 64}</mark>, 
+                            [=](<mark>id&lt;2&gt; idx</mark>){
+  // SYCL kernel function is executed 
+  // on a range of work-items
+});
+							</code></pre>
+						</div>
+					</div>
+					<div class="container" data-markdown>
+					  * In SYCL, kernel functions can be enqueued to execute
+					  over a range of work-items using `parallel_for`.
+					  * When using `parallel_for` you must also pass `range`
+					  which describes the iteration space over which the kernel
+					  is to be executed.
+					  * Kernel functions should take an `id` which indicates the current 
+					  work-item being executed and its position within the iteration space.
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL execution model
+						##### nd-range kernels
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
@@ -91,7 +193,7 @@
 							* It can also be affected by the resources used by each work-item
 						</div>
 						<div class="col" data-markdown>
-							![Work Group](../common-revealjs/images/workgroup.png "Work-Group")
+							![Sycl Range](../common-revealjs/images/workgroup.png "Work-Group")
 						</div>
 					</div>
 				</section>
@@ -414,7 +516,7 @@ gpuQueue.submit([&](handler &cgh){
 						Code_Exercises/Exercise_04_ND_Range_Kernel/source
 					</div>
 					<div class="container" data-markdown>
-						Implement a SYCL application that will perform a vector add using `parallel_for`, adding multiple elements in parallel.
+						Implement a SYCL application that adds two arrays of values together in parallel using `parallel_for` and `nd-range`.
 					</div>
 				</section>
 			</div>
