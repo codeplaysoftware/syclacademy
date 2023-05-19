@@ -132,7 +132,7 @@ deviceQueue.submit([&](handler& cgh){
               </code></pre>
             </div>
             <div class="col" data-markdown>
-              * Two models for managing data: Bbuffer/accessor model and Unified Shared Memory
+              * Two models for managing data: Buffer/accessor model and Unified Shared Memory
               * SYCL separates the storage (buffer) and access of data (accessor)
               * Different types of accessor provide different ways to access data
               * In buffer/accessor model the scheduler takes care of data movement
@@ -144,8 +144,16 @@ deviceQueue.submit([&](handler& cgh){
         </section>
         <!--Slide 5-->
         <section class="hbox" data-markdown>
-          ## 4. ND Range Kernel
-          * Something
+          <div class="hbox" data-markdown>
+            ## 4. ND Range Kernel
+          </div>
+          <div class="container">
+              * Task parallelism: Executes separate tasks simultaneously. Data parallelism: Performs the same task on multiple data elements.
+              * SYCL execution model: Kernel functions executed by work-items (threads).
+              * parallel_for: Enqueues kernel functions to execute over work-items.
+              * ND-Range kernels: Work-items grouped into work-groups. Work-groups invoked within an nd-range. Work-items within a group can synchronize.
+              * SYCL memory model: Each work-item has private memory, can't access others'.
+          </div>
         </section>
         <!--Slide 6-->
         <section class="hbox" data-markdown>
