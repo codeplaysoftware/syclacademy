@@ -1,83 +1,83 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-	    <meta charset="utf-8">
-		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
-		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
-		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
-		<script>
-			// This is needed when printing the slides to pdf
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-		<script>
-		    // This is used to display the static images on each slide,
-			// See global-images in this html file and custom.css
-			(function() {
-				if(window.addEventListener) {
-					window.addEventListener('load', () => {
-						let slides = document.getElementsByClassName("slide-background");
+  <head>
+      <meta charset="utf-8">
+    <link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+    <link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+    <link rel="stylesheet" href="../common-revealjs/css/custom.css">
+    <script>
+      // This is needed when printing the slides to pdf
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <script>
+        // This is used to display the static images on each slide,
+      // See global-images in this html file and custom.css
+      (function() {
+        if(window.addEventListener) {
+          window.addEventListener('load', () => {
+            let slides = document.getElementsByClassName("slide-background");
 
-						if (slides.length === 0) {
-							slides = document.getElementsByClassName("pdf-page")
-						}
+            if (slides.length === 0) {
+              slides = document.getElementsByClassName("pdf-page")
+            }
 
-						// Insert global images on each slide
-						for(let i = 0, max = slides.length; i < max; i++) {
-							let cln = document.getElementById("global-images").cloneNode(true);
-							cln.removeAttribute("id");
-							slides[i].appendChild(cln);
-						}
+            // Insert global images on each slide
+            for(let i = 0, max = slides.length; i < max; i++) {
+              let cln = document.getElementById("global-images").cloneNode(true);
+              cln.removeAttribute("id");
+              slides[i].appendChild(cln);
+            }
 
-						// Remove top level global images
-						let elem = document.getElementById("global-images");
-						elem.parentElement.removeChild(elem);
-					}, false);
-				}
-			})();
-		</script>
-		
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<div id="global-images" class="global-images">
-					<img src="../common-revealjs/images/sycl_academy.png" />
-					<img src="../common-revealjs/images/sycl_logo.png" />
-					<img src="../common-revealjs/images/trademarks.png" />
-				</div>
-				<!--Slide 1-->
-				<section class="hbox" data-markdown>
-					# Summary
+            // Remove top level global images
+            let elem = document.getElementById("global-images");
+            elem.parentElement.removeChild(elem);
+          }, false);
+        }
+      })();
+    </script>
+    
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <div id="global-images" class="global-images">
+          <img src="../common-revealjs/images/sycl_academy.png" />
+          <img src="../common-revealjs/images/sycl_logo.png" />
+          <img src="../common-revealjs/images/trademarks.png" />
+        </div>
+        <!--Slide 1-->
+        <section class="hbox" data-markdown>
+          # Summary
         </section>
-				<!--Slide 2-->
-				<section class="hbox">
-					<div class="hbox" data-markdown>
-						## 1. What is SYCL?
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](../Lecture_01_What_is_SYCL/sycl_ecosystem.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
-							* Single source, high-level, standard C++ programming model,
-							  that can target a range of heterogeneous platforms
-							* Provides high-level abstractions over common boilerplate code
-						</div>
-					</div>
+        <!--Slide 2-->
+        <section class="hbox">
+          <div class="hbox" data-markdown>
+            ## 1. What is SYCL?
+          </div>
+          <div class="container">
+            <div class="col" data-markdown>
+              ![SYCL](../Lecture_01_What_is_SYCL/sycl_ecosystem.png "SYCL")
+            </div>
+            <div class="col" data-markdown>
+              * Single source, high-level, standard C++ programming model,
+                that can target a range of heterogeneous platforms
+              * Provides high-level abstractions over common boilerplate code
+            </div>
+          </div>
         </section>
-				<!--Slide 3-->
-				<section class="hbox">
-					<div class="hbox" data-markdown>
-						## 2. Enqueueing a Kernel
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+        <!--Slide 3-->
+        <section class="hbox">
+          <div class="hbox" data-markdown>
+            ## 2. Enqueueing a Kernel
+          </div>
+          <div class="container">
+            <div class="col">
+              <code><pre>
 class my_kernel;
 
 queue deviceQueue;
@@ -89,26 +89,26 @@ deviceQueue.submit([&](handler& cgh){
     os << "Hello world!\n";
   }); 
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* Series of commands are enqueued via command groups
-								* Performed via `sycl::queue::submit`
-							* Commands are scheduled for execution on a device
-							* Kernels submitted as kernel functions, either as C++ lambdas or function objects
-							* There are restrictions on kernel code because of device limitations
-							* Can use a `sycl::stream` to write text on device
-						</div>
-					</div>
+              </code></pre>
+            </div>
+            <div class="col" data-markdown>
+              * Series of commands are enqueued via command groups
+                * Performed via `sycl::queue::submit`
+              * Commands are scheduled for execution on a device
+              * Kernels submitted as kernel functions, either as C++ lambdas or function objects
+              * There are restrictions on kernel code because of device limitations
+              * Can use a `sycl::stream` to write text on device
+            </div>
+          </div>
         </section>
-				<!--Slide 4-->
-				<section class="hbox">
-					<div class="hbox" data-markdown>
-						## 3. Managing Data
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+        <!--Slide 4-->
+        <section class="hbox">
+          <div class="hbox" data-markdown>
+            ## 3. Managing Data
+          </div>
+          <div class="container">
+            <div class="col">
+              <code><pre>
 
 class my_kernel;
 queue deviceQueue;
@@ -129,9 +129,9 @@ deviceQueue.submit([&](handler& cgh){
   });
 }).wait();
 
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
+              </code></pre>
+            </div>
+            <div class="col" data-markdown>
               * Two models for managing data: Bbuffer/accessor model and Unified Shared Memory
               * SYCL separates the storage (buffer) and access of data (accessor)
               * Different types of accessor provide different ways to access data
@@ -139,35 +139,35 @@ deviceQueue.submit([&](handler& cgh){
               * Access modes specify how to access data (read/write/no_init)
               * USM memory can be allocated as host, device, or shared
               * USM requires manual operations
-						</div>
-					</div>
+            </div>
+          </div>
         </section>
-				<!--Slide 5-->
-				<section class="hbox" data-markdown>
-					## 4. ND Range Kernel
-					* Something
-				</section>
-				<!--Slide 6-->
-				<section class="hbox" data-markdown>
-					## 5. Image Convolution
-					* Something
-				</section>
-				<!--Slide 7-->
-				<section class="hbox" data-markdown>
-					## Learn more
-					* `main` branch of SYCL Academy has many more lectures
-					* Visit https://sycl.tech to find out about all the SYCL book, implementations, tutorials, news, and videos
-					* Visit https://www.khronos.org/sycl/ to find the latest SYCL specifications
-				</section>
-			</div>
-		</div>
-		<script src="../common-revealjs/js/reveal.js"></script>
-		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
-		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
-		<script src="../common-revealjs/plugin/notes/notes.js"></script>
-		<script>
-			Reveal.initialize({mouseWheel: true, defaultNotes: true});
-			Reveal.configure({ slideNumber: true });
-		</script>
-	</body>
+        <!--Slide 5-->
+        <section class="hbox" data-markdown>
+          ## 4. ND Range Kernel
+          * Something
+        </section>
+        <!--Slide 6-->
+        <section class="hbox" data-markdown>
+          ## 5. Image Convolution
+          * Something
+        </section>
+        <!--Slide 7-->
+        <section class="hbox" data-markdown>
+          ## Learn more
+          * `main` branch of SYCL Academy has many more lectures
+          * Visit https://sycl.tech to find out about all the SYCL book, implementations, tutorials, news, and videos
+          * Visit https://www.khronos.org/sycl/ to find the latest SYCL specifications
+        </section>
+      </div>
+    </div>
+    <script src="../common-revealjs/js/reveal.js"></script>
+    <script src="../common-revealjs/plugin/markdown/marked.js"></script>
+    <script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+    <script src="../common-revealjs/plugin/notes/notes.js"></script>
+    <script>
+      Reveal.initialize({mouseWheel: true, defaultNotes: true});
+      Reveal.configure({ slideNumber: true });
+    </script>
+  </body>
 </html>
