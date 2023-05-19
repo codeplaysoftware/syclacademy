@@ -220,10 +220,10 @@ cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>range{64, 64}</mark>,
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							* The nd-range describes an **iteration space**; how the work-items and work-groups are composed
+							* The nd-range describes an **iteration space**: how it is composed in terms of work-groups and work-items
 							* An nd-range can be 1, 2 or 3 dimensions
 							* An nd-range has two components
-							  * The **global-range** describes the total number of workitems in each dimension
+							  * The **global-range** describes the total number of work-items in each dimension
 							  * The **local-range** describes the number of work-items in a work-group in each dimension
 						</div>
 						<div class="col" data-markdown>
@@ -278,7 +278,7 @@ cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>range{64, 64}</mark>,
 							* On vector hardware this is often done in lock-step, which means the same hardware instructions
 							* The number of work-items that will execute concurrently can vary from one device to another
 							* Work-items will be batched along with other work-items in the same work-group
-							* The order work-items and workgroups are executed in is implementation defined
+							* The order work-items and work-groups are executed in is implementation defined
 						</div>
 						<div class="col" data-markdown>
 							![ND-Range](../common-revealjs/images/ndrange-lock-step.png "ND-Range")
@@ -342,7 +342,7 @@ cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>range{64, 64}</mark>,
 						</div>
 						<div class="col-right-2" data-markdown>
 							* Each work-item can access a dedicated region of **local memory** accessible to all work-items in a work-group
-							* A work-item cannot access the local memory of another workgroup
+							* A work-item cannot access the local memory of another work-group
 						</div>
 					</div>
 				</section>
@@ -430,9 +430,9 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 					    * Must be the same dimensionality of the accessor
 					    * For dimensions > 1, linear address is calculated in row major 
 					* Nested subscript operators can be called for each dimension taking a **size_t**
-					  * E.g. a 3-dimensional accessor: acc[x][y][z] = …
+					  * E.g. a 3-dimensional accessor: acc[x][y][z] = ?
 					* A pointer to memory can be retrieved by calling **get_pointer**
-					  * This returns a **multi_ptr**, which is a wrapper class for pointers to the memory in the relevant memory space
+					  * This returns a raw pointer to the data
 					</div>
 				</section>
 				<!--Slide 23-->
@@ -448,9 +448,9 @@ buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
 buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
-  auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
-  auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
-  auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+  sycl::accessor inA{bufA, cgh, sycl::read_only};
+  sycl::accessor inB{bufB, cgh, sycl::read_only};
+  sycl::accessor out{bufO, cgh, sycl::write_only};
   cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
     [=](id&lt1&gt i){ 
     <mark>out[i] = inA[i] + inB[i];</mark>
@@ -478,9 +478,9 @@ buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
 buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
-  auto inA = bufA.get_access&ltaccess::mode::read&gt(cgh);
-  auto inB = bufB.get_access&ltaccess::mode::read&gt(cgh);
-  auto out = bufO.get_access&ltaccess::mode::write&gt(cgh);
+  sycl::accessor inA{bufA, cgh, sycl::read_only};
+  sycl::accessor inB{bufB, cgh, sycl::read_only};
+  sycl::accessor out{bufO, cgh, sycl::write_only};
   cgh.parallel_for&ltadd&gt(rng, [=](id&lt3&gt i){
     <mark>auto ptrA = inA.get_pointer();</mark>
     <mark>auto ptrB = inB.get_pointer();</mark>
@@ -516,7 +516,7 @@ gpuQueue.submit([&](handler &cgh){
 						Code_Exercises/Exercise_04_ND_Range_Kernel/source
 					</div>
 					<div class="container" data-markdown>
-						Implement a SYCL application that adds two arrays of values together in parallel using `parallel_for` and `nd-range`.
+						Implement a SYCL application that will perform a vector add using `parallel_for`, adding multiple elements in parallel.
 					</div>
 				</section>
 			</div>
