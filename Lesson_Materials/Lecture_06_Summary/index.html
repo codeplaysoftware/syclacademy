@@ -152,25 +152,29 @@ deviceQueue.submit([&](handler& cgh){
               ![SYCL](../common-revealjs/images/ndrange.png "ND range")
             </div>
             <div class="col" data-markdown>
-              * Task parallelism: Executes separate tasks simultaneously.
-              * Data parallelism: Performs the same task on multiple data elements.
-              * Work-items perform computation, execute independently (threads).
-              * Work-items grouped into work-groups. Work-groups invoked within an ND-range. Work-items within a group can synchronize.
-              * Each work-item has private memory, can't access others'.
+              * Task parallelism: Executes separate tasks simultaneously
+              * Data parallelism: Performs the same task on multiple data elements
+              * Work-items perform computation, execute independently (threads)
+              * Work-items grouped into work-groups. Work-groups invoked within an ND-range. Work-items within a group can synchronize
+              * Each work-item has private memory, can't access others'
             </div>
           </div>
         </section>
         <!--Slide 6-->
-        <section class="hbox" data-markdown>
-          ## 5. Image Convolution
-          * Something
-        </section>
-        <!--Slide 7-->
-        <section class="hbox" data-markdown>
-          ## Learn more
-          * `main` branch of SYCL Academy has many more lectures
-          * Visit https://sycl.tech to find out about all the SYCL book, implementations, tutorials, news, and videos
-          * Visit https://www.khronos.org/sycl/ to find the latest SYCL specifications
+        <section class="hbox">
+          <div class="hbox" data-markdown>
+            ## 5. Image Convolution
+          </div>
+          <div class="container">
+            <div class="col" data-markdown>
+              ![SYCL](../Lecture_05_Image_Convolution/image_convolution_definition.png "Image Convolution")
+            </div>
+            <div class="col" data-markdown>
+              * Embarrassingly parallel algorithm:
+                many independent calculations per work-item
+              * Each pixel multiplied with the filter
+            </div>
+          </div>
         </section>
       </div>
     </div>
