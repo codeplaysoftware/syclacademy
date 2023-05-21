@@ -61,7 +61,7 @@
           </div>
           <div class="container">
             <div class="col" data-markdown>
-              ![SYCL](../Lecture_01_What_is_SYCL/sycl_ecosystem.png "SYCL")
+              ![SYCL](../Lecture_01_What_is_SYCL/sycl_ecosystem.png "What is SYCL")
             </div>
             <div class="col" data-markdown>
               * Single source, high-level, standard C++ programming model,
@@ -143,16 +143,21 @@ deviceQueue.submit([&](handler& cgh){
           </div>
         </section>
         <!--Slide 5-->
-        <section class="hbox" data-markdown>
+        <section class="hbox">
           <div class="hbox" data-markdown>
-            ## 4. ND Range Kernel
+            ## 4. DATA PARALLELISM and ND-Range Kernels      
           </div>
           <div class="container">
-              * Task parallelism: Executes separate tasks simultaneously. Data parallelism: Performs the same task on multiple data elements.
-              * SYCL execution model: Kernel functions executed by work-items (threads).
-              * parallel_for: Enqueues kernel functions to execute over work-items.
-              * ND-Range kernels: Work-items grouped into work-groups. Work-groups invoked within an nd-range. Work-items within a group can synchronize.
-              * SYCL memory model: Each work-item has private memory, can't access others'.
+            <div class="col" data-markdown>
+              ![SYCL](../common-revealjs/images/ndrange.png "ND range")
+            </div>
+            <div class="col" data-markdown>
+              * Task parallelism: Executes separate tasks simultaneously.
+              * Data parallelism: Performs the same task on multiple data elements.
+              * Work-items perform computation, execute independently (threads).
+              * Work-items grouped into work-groups. Work-groups invoked within an ND-range. Work-items within a group can synchronize.
+              * Each work-item has private memory, can't access others'.
+            </div>
           </div>
         </section>
         <!--Slide 6-->
