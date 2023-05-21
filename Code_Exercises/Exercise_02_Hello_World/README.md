@@ -29,20 +29,5 @@ We have provided a ready made script in the same directory as the source.cpp fil
 ./q run.sh
 ```
 
-For ComputeCpp:
-
-```sh
-cd ~/syclacademy/Code_Exercises/Exercise_02_Hello_World
-compute++ source.cpp -lComputeCpp -sycl-driver -std=c++17 -DSYCL_LANGUAGE_VERSION=2020 -no-serial-memop
-./a.out 
-```
-
-For hipSYCL:
-
-```sh
-syclcc -o sycl-ex-2 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_02_Hello_World/source.cpp
-./sycl-ex-2
-```
-
 
 [devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

@@ -66,20 +66,4 @@ We have provided a ready made script in the same directory as the source.cpp fil
 ./q run.sh
 ```
 
-For ComputeCpp:
-
-```sh
-make exercise_05_image_reference
-./Code_Exercises/Exercise_05_Image_Convolution/exercise_05_image_reference
-```
-
-
-For hipSYCL:
-
-```sh
-syclcc -o sycl-ex-5 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_05_Image_Convolution/source.cpp
-./sycl-ex-5
-```
-
-
 [devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

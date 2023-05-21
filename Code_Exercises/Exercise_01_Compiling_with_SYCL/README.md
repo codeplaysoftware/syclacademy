@@ -84,47 +84,4 @@ We have provided a ready made script in the same directory as the source.cpp fil
 
 To compile the `solution.cpp` file you will need to update the run.sh file.
 
-For ComputeCpp:
-
-To use ComputeCpp you will need to load the module.
-
-`module use /data/oneapi_workshop/xpublog/cppcon/Modules/modulefiles`
-
-`module load computeCPP`
-
-```
-computecpp_info
-```
-
-This will show you the devices that are available to you on the system.
-
-Compile and run using the following commands:
-```sh
-cd ~/syclacademy/Code_Exercises/Exercise_01_Compiling_with_SYCL
-compute++ source.cpp -lComputeCpp -sycl-driver -std=c++17 -DSYCL_LANGUAGE_VERSION=2020 -no-serial-memop
-./a.out 
-```
-
-Unload the module again if you want to use DPC++ using 
-
-`module purge`
-
-For hipSYCL:
-
-To use hipSYCL you will need to load the module.
-
-`module use /data/oneapi_workshop/xpublog/cppcon/Modules/modulefiles`
-
-`module load hipSYCL`
-
-```sh
-syclcc -o sycl-ex-1 --hipsycl-targets="spirv" ../Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
-qsub -l nodes=1:gpu:ppn=2 -d . run.sh
-```
-
-Unload the module again if you want to use DPC++ using 
-
-`module purge`
-
-
 [devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/
