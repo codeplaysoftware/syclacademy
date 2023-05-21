@@ -26,7 +26,7 @@ especially some features like longer walltime and multi-node computation is only
 We have provided a ready made script in the same directory as the source.cpp file, so you can call:
 
 ```sh
-qsub -l nodes=1:gpu:ppn=2 -d . run.sh
+./q run.sh
 ```
 
 For ComputeCpp:
