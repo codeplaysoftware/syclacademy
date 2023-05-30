@@ -117,7 +117,7 @@ The alternative to using DevCloud is to install the specific SYCL implementation
 
 To install DPC++ on Perlmutter first you must download and install the oneapi compiler locally
 ```
-wget': wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7deeaac4-f605-4bcf-a81b-ea7531577c61/l_BaseKit_p_2023.1.0.46401.sh -o ./Basekit.sh
+wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7deeaac4-f605-4bcf-a81b-ea7531577c61/l_BaseKit_p_2023.1.0.46401.sh -o ./Basekit.sh
 sh Basekit.sh -a -s --eula accept
 ```
 
