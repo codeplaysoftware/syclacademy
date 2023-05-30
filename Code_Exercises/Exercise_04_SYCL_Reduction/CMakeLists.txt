@@ -8,5 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_05_image_convolution source)
-add_sycl_executable(exercise_05_image_convolution solution)
+add_sycl_executable(exercise_04_sycl_reduction reduce_naive)
+add_sycl_executable(exercise_04_sycl_reduction reduce_atomic)
+add_sycl_executable(exercise_04_sycl_reduction reduce_group_algorithms)
+add_sycl_executable(exercise_04_sycl_reduction reduce_sycl_reduction)
