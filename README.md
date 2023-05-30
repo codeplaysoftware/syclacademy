@@ -57,7 +57,7 @@ Note that by deafult you are connected to login node. Please run the following c
 qsub -I -l nodes=1:gpu:ppn=2 -d .
 ```
 
-## Lesson Curriculum for IWOCL & SYCLcon 23
+## Lesson Curriculum for NERSC Advanced Training on Perlmutter
 
 The SYCL Academy curriculum is divided up into a number of short lessons
 consisting of slides for presenting the material and a more detailed write-up,
@@ -112,6 +112,35 @@ and University of the West of Scotland.
 ## Install SYCL implementations
 
 The alternative to using DevCloud is to install the specific SYCL implementation.
+
+### Installing DPC++ on Perlmutter
+
+To install DPC++ on Perlmutter first you must download and install the oneapi compiler locally
+```
+wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7deeaac4-f605-4bcf-a81b-ea7531577c61/l_BaseKit_p_2023.1.0.46401.sh -o ./Basekit.sh
+sh Basekit.sh -a -s --eula accept
+```
+
+And set some environment variables:
+
+```
+source intel/oneapi/setvars.sh
+```
+
+Then you must download the Codeplay plugins found [here](https://developer.codeplay.com/products/oneapi/nvidia/download)
+
+And run the installer using:
+
+```
+sh oneapi-for-nvidia-gpus-2023.1.0-cuda-12.0-linux.sh
+```
+
+`sycl-ls` should now show the correct NVIDIA device.
+
+```
+$ sycl-ls
+[ext_oneapi_cuda:gpu:0] NVIDIA CUDA BACKEND, NVIDIA A100-PCIE-40GB 0.0 [CUDA 12.0]
+```
 
 ### Installing DPC++
 
