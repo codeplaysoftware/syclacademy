@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     serialAns += a[i];
   }
 
-  std::cout << "Got device ans " << devAns << '\n';
+  std::cout << "Got device ans " << devAns / numIters << '\n';
   std::cout << "vs serial ans " << serialAns << '\n';
 
   sycl::free(devA, q);
