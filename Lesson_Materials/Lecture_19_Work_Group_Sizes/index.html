@@ -117,7 +117,7 @@
 						#### Local memory image convolution performance
 					</div>
 					<div class="container"data-markdown>
-						![SYCL](./image_convolution_performance_local_mem.png "SYCL")
+						![SYCL](../common-revealjs/images/image_convolution_performance_local_mem.png "SYCL")
 					</div>
 				</section>
 				<!--Slide 8-->
@@ -138,7 +138,7 @@
 						#### Varying work-group size image convolution performance
 					</div>
 					<div class="container"data-markdown>
-						![SYCL](./image_convolution_performance_work_group_sizes.png "SYCL")
+						![SYCL](../common-revealjs/images/image_convolution_performance_work_group_sizes.png "SYCL")
 					</div>
 				</section>
 				<!--Slide 10-->
@@ -162,7 +162,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./work_distribution.png "SYCL")
+							![SYCL](../common-revealjs/images/work_distribution.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* If you hit occupancy limitations then each compute unit must process multiple rounds of work-groups and work-items.
@@ -233,7 +233,7 @@
 						#### Double buffering
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./double_buffer_1.png "SYCL")
+						![SYCL](../common-revealjs/images/double_buffer_1.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* So in this case you have multiple invocation of the
@@ -248,7 +248,7 @@
 						#### Double buffering
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./double_buffer_2.png "SYCL")
+						![SYCL](../common-revealjs/images/double_buffer_2.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* With the cost of moving data to the GPU being very
@@ -262,7 +262,7 @@
 						#### Double buffering
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./double_buffer_3.png "SYCL")
+						![SYCL](../common-revealjs/images/double_buffer_3.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* An option for optimizing this is to double buffer the data being moved to and accessed on the GPU.
@@ -274,7 +274,7 @@
 						#### Double buffering
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./double_buffer_4.png "SYCL")
+						![SYCL](../common-revealjs/images/double_buffer_4.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* This allows overlapping of compute and data movement.
@@ -289,7 +289,7 @@
 						#### Use constant memory
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./constant_memory.png "SYCL")
+						![SYCL](../common-revealjs/images/constant_memory.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* Some SYCL devices provide a benefit from using constant memory.
@@ -305,7 +305,7 @@
 						#### Use texture memory
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./texture_memory.png "SYCL")
+						![SYCL](../common-revealjs/images/texture_memory.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* Some SYCL devices provide a benefit from using constant memory.
