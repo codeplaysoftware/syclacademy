@@ -24,16 +24,13 @@ class kernel_b_2;
 class kernel_c_2;
 class kernel_d_2;
 
-class usm_selector : public sycl::device_selector {
- public:
-  int operator()(const sycl::device& dev) const {
-    if (dev.has(sycl::aspect::usm_device_allocations)) {
-      if (dev.has(sycl::aspect::gpu)) return 2;
-      return 1;
-    }
-    return -1;
+int usm_selector(const sycl::device& dev) {
+  if (dev.has(sycl::aspect::usm_device_allocations)) {
+    if (dev.has(sycl::aspect::gpu)) return 2;
+    return 1;
   }
-};
+  return -1;
+}
 
 TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
   constexpr size_t dataSize = 1024;
@@ -47,7 +44,7 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
   }
 
   try {
-    auto inOrderQueue = sycl::queue{sycl::gpu_selector{},
+    auto inOrderQueue = sycl::queue{sycl::gpu_selector_v,
                                     {sycl::property::queue::in_order{}}};
 
     auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
@@ -56,11 +53,10 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
     auto bufOut = sycl::buffer{out, sycl::range{dataSize}};
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor acc{bufInA, cgh, sycl::read_write};
+      sycl::accessor accInA{bufInA, cgh, sycl::read_write};
 
-      cgh.parallel_for<kernel_a_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        acc[idx] = acc[idx] * 2.0f;
-      });
+      cgh.parallel_for<kernel_a_1>(
+          sycl::range{dataSize}, [=](sycl::id<1> idx) { accInA[idx] *= 2.0f; });
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
@@ -73,21 +69,21 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accIn{bufInA, cgh, sycl::read_only};
-      sycl::accessor accOut{bufInC, cgh, sycl::write_only};
+      sycl::accessor accInA{bufInA, cgh, sycl::read_only};
+      sycl::accessor accInC{bufInC, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_c_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accOut[idx] -= accIn[idx];
+        accInC[idx] -= accInA[idx];
       });
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accInA{bufInB, cgh, sycl::read_only};
-      sycl::accessor accInB{bufInC, cgh, sycl::read_only};
+      sycl::accessor accInB{bufInB, cgh, sycl::read_only};
+      sycl::accessor accInC{bufInC, cgh, sycl::read_only};
       sycl::accessor accOut{bufOut, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_d_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accOut[idx] = accInA[idx] + accInB[idx];
+        accOut[idx] = accInB[idx] + accInC[idx];
       });
     });
 
@@ -114,22 +110,11 @@ TEST_CASE("usm_in_order_queue", "in_order_queue_solution") {
 
   try {
     auto inOrderQueue = sycl::queue{
-        usm_selector{}, {sycl::property::queue::in_order{}}};
-#ifdef SYCL_ACADEMY_USING_COMPUTE_CPP
-    auto devicePtrInA = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, inOrderQueue)};
-    auto devicePtrInB = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, inOrderQueue)};
-    auto devicePtrInC = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, inOrderQueue)};
-    auto devicePtrOut = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, inOrderQueue)};
-#else
+        usm_selector, {sycl::property::queue::in_order{}}};
     auto devicePtrInA = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrInB = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrInC = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrOut = sycl::malloc_device<float>(dataSize, inOrderQueue);
-#endif
 
     inOrderQueue.memcpy(devicePtrInA, inA, sizeof(float) * dataSize);
     inOrderQueue.memcpy(devicePtrInB, inB, sizeof(float) * dataSize);
