@@ -88,7 +88,7 @@ may not match completely.
 | 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
 | 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] |  | [solution][lesson-15-solution] | Yes | Yes |
 | 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes |
-| 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes |
+| 17 | Vectors | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes |
 | 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes |
 | 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes |
 | 20 | Matrix Transpose | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
@@ -356,7 +356,7 @@ cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_S
 [lesson-1-source]:   ./Code_Exercises/What_is_SYCL/source.cpp
 [lesson-1-solution]: ./Code_Exercises/What_is_SYCL/solution.cpp
 
-[lesson-2-slides]: ./Lesson_Materials/Enqueuing_a_Kernel/
+[lesson-2-slides]: ./Lesson_Materials/Enqueueing_a_Kernel/
 [lesson-2-exercise]: ./Code_Exercises/Enqueueing_a_Kernel/README.md
 [lesson-2-source]:   ./Code_Exercises/Enqueueing_a_Kernel/source.cpp
 [lesson-2-solution]: ./Code_Exercises/Enqueueing_a_Kernel/solution.cpp
