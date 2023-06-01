@@ -71,16 +71,16 @@ slides and exercises may have changed since these videos were created so they
 may not match completely.
 
 | Lesson | Title | Slides | Exercise | Source | Solution | DPC++ | AdaptiveCpp |
-|--------|-------|--------|----------|--------|----------|-------|---------|
-| 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes |
-| 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes |
-| 03 | Managing Data | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes |
-| 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes |
-| 05 | Device Discovery | [slides][lesson-5-slides] | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes |
-| 06 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes |
-| 07 | Introduction to USM | [slides][lesson-7-slides] | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes |
-| 08 | Using USM | [slides][lesson-8-slides] | [exercise][lesson-8-exercise] | [source][lesson-8-source] | [solution][lesson-8-solution] | Yes | Yes |
-| 09 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes |
+|--------|-------|--------|----------|--------|----------|-------|-------------|
+| 01 | What is SYCL | [slides][lesson-01-slides] | [exercise][lesson-01-exercise] | [source][lesson-01-source] | [solution][lesson-01-solution] | Yes | Yes |
+| 02 | Enqueueing a Kernel | [slides][lesson-02-slides] | [exercise][lesson-02-exercise] | [source][lesson-02-source] | [solution][lesson-02-solution] | Yes | Yes |
+| 03 | Managing Data | [slides][lesson-03-slides] | [exercise][lesson-03-exercise] | [source][lesson-03-source] | [solution][lesson-03-solution] | Yes | Yes |
+| 04 | Handling Errors | [slides][lesson-04-slides] | [exercise][lesson-04-exercise] | [source][lesson-04-source] | [solution][lesson-04-solution] | Yes | Yes |
+| 05 | Device Discovery | [slides][lesson-05-slides] | [exercise][lesson-05-exercise] | [source][lesson-05-source] | [solution][lesson-05-solution] | Yes | Yes |
+| 06 | Data Parallelism | [slides][lesson-06-slides] | [exercise][lesson-06-exercise] | [source][lesson-06-source] | [solution][lesson-06-solution] | Yes | Yes |
+| 07 | Introduction to USM | [slides][lesson-07-slides] | [exercise][lesson-07-exercise] | [source][lesson-07-source] | [solution][lesson-07-solution] | Yes | Yes |
+| 08 | Using USM | [slides][lesson-08-slides] | [exercise][lesson-08-exercise] | [source][lesson-08-source] | [solution][lesson-08-solution] | Yes | Yes |
+| 09 | Asynchronous Execution | [slides][lesson-09-slides] | [exercise][lesson-09-exercise] | [source][lesson-09-source] | [solution][lesson-09-solution] | Yes | Yes |
 | 10 | Data and Dependencies | [slides][lesson-10-slides] | [exercise][lesson-10-exercise] | [source][lesson-10-source] | [solution][lesson-10-solution] | Yes | Yes |
 | 11 | In Order Queue | [slides][lesson-11-slides] | [exercise][lesson-11-exercise] | [source][lesson-11-source] | [solution][lesson-11-solution] | Yes | Yes |
 | 12 | Advanced Data Flow | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes |
@@ -91,6 +91,7 @@ may not match completely.
 | 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes |
 | 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes |
 | 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes |
+| 20 | More SYCL Features | [slides][lesson-20-slides] | [exercises][lesson-20-exercise] |  |  | Yes | Yes |
 
 
 ## Building the Exercises
@@ -271,50 +272,50 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
 [video-playlist]: https://youtube.com/playlist?list=PLCssnq0MpRdM-IUAYtNSPYck6u3oz7OZQ
 
-[lesson-1-slides]: ./Lesson_Materials/Lecture_01_What_is_SYCL/
-[lesson-1-exercise]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/README.md
-[lesson-1-source]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
-[lesson-1-solution]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/solution.cpp
+[lesson-01-slides]: ./Lesson_Materials/Lecture_01_What_is_SYCL/
+[lesson-01-exercise]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/README.md
+[lesson-01-source]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/source.cpp
+[lesson-01-solution]: ./Code_Exercises/Exercise_01_Compiling_with_SYCL/solution.cpp
 
-[lesson-2-slides]: ./Lesson_Materials/Lecture_02_Enqueuing_a_Kernel/
-[lesson-2-exercise]: ./Code_Exercises/Exercise_02_Hello_World/README.md
-[lesson-2-source]: ./Code_Exercises/Exercise_02_Hello_World/source.cpp
-[lesson-2-solution]: ./Code_Exercises/Exercise_02_Hello_World/solution.cpp
+[lesson-02-slides]: ./Lesson_Materials/Lecture_02_Enqueuing_a_Kernel/
+[lesson-02-exercise]: ./Code_Exercises/Exercise_02_Hello_World/README.md
+[lesson-02-source]: ./Code_Exercises/Exercise_02_Hello_World/source.cpp
+[lesson-02-solution]: ./Code_Exercises/Exercise_02_Hello_World/solution.cpp
 
-[lesson-3-slides]: ./Lesson_Materials/Lecture_03_Managing_Data/
-[lesson-3-exercise]: ./Code_Exercises/Exercise_03_Scalar_Add/README.md
-[lesson-3-source]: ./Code_Exercises/Exercise_03_Scalar_Add/source.cpp
-[lesson-3-solution]: ./Code_Exercises/Exercise_03_Scalar_Add/solution.cpp
+[lesson-03-slides]: ./Lesson_Materials/Lecture_03_Managing_Data/
+[lesson-03-exercise]: ./Code_Exercises/Exercise_03_Scalar_Add/README.md
+[lesson-03-source]: ./Code_Exercises/Exercise_03_Scalar_Add/source.cpp
+[lesson-03-solution]: ./Code_Exercises/Exercise_03_Scalar_Add/solution.cpp
 
-[lesson-4-slides]: ./Lesson_Materials/Lecture_04_Handling_Errors/
-[lesson-4-exercise]: ./Code_Exercises/Exercise_04_Handling_Errors/README.md
-[lesson-4-source]: ./Code_Exercises/Exercise_04_Handling_Errors/source.cpp
-[lesson-4-solution]: ./Code_Exercises/Exercise_04_Handling_Errors/solution.cpp
+[lesson-04-slides]: ./Lesson_Materials/Lecture_04_Handling_Errors/
+[lesson-04-exercise]: ./Code_Exercises/Exercise_04_Handling_Errors/README.md
+[lesson-04-source]: ./Code_Exercises/Exercise_04_Handling_Errors/source.cpp
+[lesson-04-solution]: ./Code_Exercises/Exercise_04_Handling_Errors/solution.cpp
 
-[lesson-5-slides]: ./Lesson_Materials/Lecture_05_Device_Discovery/
-[lesson-5-exercise]: ./Code_Exercises/Exercise_05_Device_Selection/README.md
-[lesson-5-source]: ./Code_Exercises/Exercise_05_Device_Selection/source.cpp
-[lesson-5-solution]: ./Code_Exercises/Exercise_05_Device_Selection/solution.cpp
+[lesson-05-slides]: ./Lesson_Materials/Lecture_05_Device_Discovery/
+[lesson-05-exercise]: ./Code_Exercises/Exercise_05_Device_Selection/README.md
+[lesson-05-source]: ./Code_Exercises/Exercise_05_Device_Selection/source.cpp
+[lesson-05-solution]: ./Code_Exercises/Exercise_05_Device_Selection/solution.cpp
 
-[lesson-6-slides]: ./Lesson_Materials/Lecture_06_Data_Parallelism/
-[lesson-6-exercise]: ./Code_Exercises/Exercise_06_Vector_Add/README.md
-[lesson-6-source]: ./Code_Exercises/Exercise_06_Vector_Add/source.cpp
-[lesson-6-solution]: ./Code_Exercises/Exercise_06_Vector_Add/solution.cpp
+[lesson-06-slides]: ./Lesson_Materials/Lecture_06_Data_Parallelism/
+[lesson-06-exercise]: ./Code_Exercises/Exercise_06_Vector_Add/README.md
+[lesson-06-source]: ./Code_Exercises/Exercise_06_Vector_Add/source.cpp
+[lesson-06-solution]: ./Code_Exercises/Exercise_06_Vector_Add/solution.cpp
 
-[lesson-7-slides]: ./Lesson_Materials/Lecture_07_Introduction_to_USM/
-[lesson-7-exercise]: ./Code_Exercises/Exercise_07_USM_Selector/README.md
-[lesson-7-source]: ./Code_Exercises/Exercise_07_USM_Selector/source.cpp
-[lesson-7-solution]: ./Code_Exercises/Exercise_07_USM_Selector/solution.cpp
+[lesson-07-slides]: ./Lesson_Materials/Lecture_07_Introduction_to_USM/
+[lesson-07-exercise]: ./Code_Exercises/Exercise_07_USM_Selector/README.md
+[lesson-07-source]: ./Code_Exercises/Exercise_07_USM_Selector/source.cpp
+[lesson-07-solution]: ./Code_Exercises/Exercise_07_USM_Selector/solution.cpp
 
-[lesson-8-slides]: ./Lesson_Materials/Lecture_08_Using_USM/
-[lesson-8-exercise]: ./Code_Exercises/Exercise_08_USM_Vector_Add/README.md
-[lesson-8-source]: ./Code_Exercises/Exercise_08_USM_Vector_Add/source.cpp
-[lesson-8-solution]: ./Code_Exercises/Exercise_08_USM_Vector_Add/solution.cpp
+[lesson-08-slides]: ./Lesson_Materials/Lecture_08_Using_USM/
+[lesson-08-exercise]: ./Code_Exercises/Exercise_08_USM_Vector_Add/README.md
+[lesson-08-source]: ./Code_Exercises/Exercise_08_USM_Vector_Add/source.cpp
+[lesson-08-solution]: ./Code_Exercises/Exercise_08_USM_Vector_Add/solution.cpp
 
-[lesson-9-slides]: ./Lesson_Materials/Lecture_09_Asynchronous_Execution/
-[lesson-9-exercise]: ./Code_Exercises/Exercise_09_Synchronization/README.md
-[lesson-9-source]: ./Code_Exercises/Exercise_09_Synchronization/source.cpp
-[lesson-9-solution]: ./Code_Exercises/Exercise_09_Synchronization/solution.cpp
+[lesson-09-slides]: ./Lesson_Materials/Lecture_09_Asynchronous_Execution/
+[lesson-09-exercise]: ./Code_Exercises/Exercise_09_Synchronization/README.md
+[lesson-09-source]: ./Code_Exercises/Exercise_09_Synchronization/source.cpp
+[lesson-09-solution]: ./Code_Exercises/Exercise_09_Synchronization/solution.cpp
 
 [lesson-10-slides]: ./Lesson_Materials/Lecture_10_Data_and_Dependencies/
 [lesson-10-exercise]: ./Code_Exercises/Exercise_10_Managing_Dependencies/README.md
@@ -365,3 +366,6 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-19-exercise]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/README.md
 [lesson-19-source]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/source.cpp
 [lesson-19-solution]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/solution.cpp
+
+[lesson-20-slides]: ./Lesson_Materials/Lecture_20_More_SYCL_Features/
+[lesson-20-exercise]: ./Code_Exercises/Exercise_20_SYCL_Reduction/
