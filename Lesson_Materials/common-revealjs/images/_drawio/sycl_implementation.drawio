@@ -1,0 +1,37 @@
+<mxfile host="app.diagrams.net" modified="2023-06-06T09:54:30.665Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15" etag="1MweGEpBuvT3GJMnc6bD" version="21.3.7" type="device">
+  <diagram name="Page-1" id="Tn-3iI9aUscg6fJpSIf9">
+    <mxGraphModel dx="1434" dy="802" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#f7f7f7;" parent="1" vertex="1">
+          <mxGeometry x="120" y="130" width="610" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-2" value="SYCL device&lt;br style=&quot;font-size: 15px;&quot;&gt;compiler" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;fillColor=#9FC5E7;" parent="1" vertex="1">
+          <mxGeometry x="610" y="140" width="110" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-3" value="SYCL interface" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;fillColor=#f9cb9c;" parent="1" vertex="1">
+          <mxGeometry x="130" y="140" width="460" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-4" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;&amp;nbsp; &amp;nbsp;SYCL runtime&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#FFE599;" parent="1" vertex="1">
+          <mxGeometry x="130" y="230" width="460" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-6" value="Backend interface(s)&lt;br style=&quot;font-size: 15px;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;(e.g., OpenCL, Level Zero, OpenMP, CUDA, HIP)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;fillColor=#b6d8a8;" parent="1" vertex="1">
+          <mxGeometry x="270" y="360" width="320" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-7" value="(optional)&lt;br style=&quot;font-size: 15px;&quot;&gt;CPU device" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;fillColor=#D9D2E9;" parent="1" vertex="1">
+          <mxGeometry x="150" y="280" width="100" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-14" value="Kernel loader" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;fillColor=#c9daf8;" parent="1" vertex="1">
+          <mxGeometry x="270" y="250" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-15" value="Runtime scheduler" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fillColor=#d0e0e3;" parent="1" vertex="1">
+          <mxGeometry x="360" y="250" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="UdFE2nHjyvkxrEpaFEkz-16" value="Data dependency tracker" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fontSize=12;fillColor=#c9daf8;" parent="1" vertex="1">
+          <mxGeometry x="450" y="244" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
