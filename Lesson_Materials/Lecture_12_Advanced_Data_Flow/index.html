@@ -189,40 +189,6 @@ buf.set_final_data(nullptr);
 						* A `buffer` with no final data address is useful because the data can left on a device and not copied back to the host from the device.
 					</div>
 				</section>
-				<!--Slide 11-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Uninitialized buffers (buffer/accessor)
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-auto buf = sycl::buffer{sycl::range{size}};
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* As we've seen in the USM model all memory is allocated initialized, but `buffer`s can be constructed within initial data.
-						* Alternatively a `buffer` can be constructed as uninitialized.
-						* To do this simply construct a `buffer` without initial data.
-						* Uninitialized `buffer`s are useful for a couple of reasons because they can be allocated directly on a device and not copied to the device from the host.
-					</div>
-				</section>
-				<!--Slide 12-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Uninitialized buffers (buffer/accessor)
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-auto buf = sycl::buffer{sycl::range{size}};
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* As we've seen in the USM model all memory is allocated initialized, but `buffer`s can be constructed within initial data.
-						* Alternatively a `buffer` can be constructed as uninitialized.
-						* To do this simply construct a `buffer` without initial data.
-						* Uninitialized `buffer`s are useful for temporary data or data which is initialized within a kernel function.
-					</div>
-				</section>
 				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -231,12 +197,10 @@ auto buf = sycl::buffer{sycl::range{size}};
 					<div class="container">
 						<code class="code-100pc"><pre>
 auto buf = sycl::buffer{sycl::range{size}};
-
-buf.set_final_data()
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
-						* As we've seen in the USM model all memory is allocated initialized, but `buffer`s can be constructed within initial data.
+						* As we've seen in the USM model all memory is allocated initialized, but `buffer`s can be constructed without initial data.
 						* Alternatively a `buffer` can be constructed as uninitialized.
 						* To do this simply construct a `buffer` without initial data.
 						* Uninitialized `buffer`s are useful for a couple of reasons because they can be allocated directly on a device and don't require moving data from the host.
