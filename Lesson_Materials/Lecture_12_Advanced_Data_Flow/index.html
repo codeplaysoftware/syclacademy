@@ -219,7 +219,7 @@ auto buf = sycl::buffer&lt;T&gt;{sycl::range{size}};
 							* Here we have an example of using these techniques:
 							  * **Input data** is initialized with initial data but doesn't need to be copied back so it can use `set_final_data(nullptr)`.
 							  * **Temporary** is only used on the device so can be an uninitialized `buffer`.
-							  * **Output data** is initialized on the data and needs to be copied back so it can be an uninitialized `buffer` and use `set_final_data` to provide the final data address.
+							  * **Output data** is initialized on the device and needs to be copied back so it can be an uninitialized `buffer` and use `set_final_data` to provide the final data address.
 						</div>
 					</div>
 				</section>
@@ -243,7 +243,7 @@ auto buf = sycl::buffer&lt;T&gt;{sycl::range{size}};
 					<div class="container" data-markdown>
 						* The SYCL runtime will always aim to manage the memory for you in the most efficient way for the target device.
 						* Generally there are two approaches to facilitate pinned memory:
-						  * Allocate memory according to the vendor's programming guide, usually involved allocating a size fo a particular multiple and aligned to a particular size, and then use the `property::buffer::use_host_ptr` property.
+						  * Allocate memory according to the vendor's programming guide, usually involved allocating a size of a particular multiple and aligned to a particular size, and then use the `property::buffer::use_host_ptr` property.
 						  * Create an uninitialized `buffer` and allow the runtime to allocate the memory the appropriate way.
 					</div>
 				</section>
