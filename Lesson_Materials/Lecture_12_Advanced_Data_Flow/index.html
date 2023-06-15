@@ -196,7 +196,7 @@ buf.set_final_data(nullptr);
 					</div>
 					<div class="container">
 						<code class="code-100pc"><pre>
-auto buf = sycl::buffer{sycl::range{size}};
+auto buf = sycl::buffer&lt;T&gt;{sycl::range{size}};
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
