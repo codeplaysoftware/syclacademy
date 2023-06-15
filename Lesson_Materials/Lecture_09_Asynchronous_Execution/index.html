@@ -267,7 +267,7 @@ gpuQueue.submit([&](sycl::handler &cgh){
 });
 
 {
-  <mark>auto hostAcc = buf.get_host_access(cgh);</mark>
+  <mark>auto hostAcc = buf.get_host_access();</mark>
 
   <mark>hostAcc[idx] = /* some computation */</mark>
 }
