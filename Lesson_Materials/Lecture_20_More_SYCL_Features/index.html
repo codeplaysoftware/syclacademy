@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		<style>
+		/* Custom styling for the highlighted code */
+		.highlight {
+			color: red;
+			font-weight: bold;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+## More SYCL Features
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+## Learning Objectives
+* Learn about atomic operations and how to use them in SYCL kernels
+* Learn about SYCL group algorithms
+* Learn about SYCL reductions
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+#### Race Condition
+					</div>
+					<div class="container">
+					<div class="col" data-markdown>
+* In a multithreaded environment, multiple work items writing indiscriminately
+  to the same area of memory causes a race condition.
+					</div>
+					<div class="col" data-markdown>
+```
+q.parallel_for([=](sycl::item&lt;1&gt; it) {
+  // Race condition! Multiple threads
+  // writing to same area of memory
+  a[0] = it.get_global_linear_id();
+});
+```
+					</div>
+				</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+#### Race Condition
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+![SYCL](./RaceCondition0.png "SYCL")
+```
+q.parallel_for([=](sycl::item&lt;1&gt; it) {
+  // Race condition! Multiple threads
+  // writing to same area of memory
+  a[0] = it.get_global_linear_id();
+});
+```
+						</div>
+						<div class="col" data-markdown>
+* SYCL does not guarantee any particular ordering for the execution of work
+  items.
+* When multiple work items concurrently write different values to the same area
+  of memory, there is no way of knowing which value will be held in memory
+  once all work items have finished writing.
+* This is called a race condition and can be a source of non determinism in
+  code execution.
+						</div>
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+#### Atomic Operations
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+![SYCL](./combine0.png "SYCL")
+```
+q.parallel_for([=](sycl::item&lt;1&gt; it) {
+  sycl::atomic_ref&lt;T,
+          sycl::memory_order_relaxed, 
+          sycl::memory_scope_device&gt;
+            (a[0])
+            .fetch_add(it.get_global_linear_id());
+});
+```
+						</div>
+						<div class="col" data-markdown>
+* Atomic operations are needed in order to deterministically combine values
+  from different work items.
+* Atomic operations enforce a particular ordering of instructions across work
+  items. Some orderings include `memory_order_relaxed`, `memory_order_acq_rel`,
+  `memory_order_seq_cst`.
+						</div>
+					</div>
+				</section>
+				<!--Slide 6 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Atomic Operations
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+![SYCL](./combine1.png "SYCL")
+```
+q.parallel_for([=](sycl::item&lt;1&gt; it) {
+  sycl::atomic_ref&lt;T,
+          sycl::memory_order_relaxed, 
+          sycl::memory_scope_device&gt;
+            (a[0])
+            .fetch_add(it.get_global_linear_id());
+});
+```
+						</div>
+						<div class="col" data-markdown>
+* Atomic operations are needed in order to deterministically combine values
+  from different work items.
+* Atomic operations enforce a particular ordering of instructions across work
+  items. Some orderings include `memory_order_relaxed`, `memory_order_acq_rel`,
+  `memory_order_seq_cst`.
+						</div>
+					</div>
+				</section>
+				<!--Slide 7 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Atomic Operations
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+![SYCL](./combine2.png "SYCL")
+```
+q.parallel_for([=](sycl::item&lt;1&gt; it) {
+  sycl::atomic_ref&lt;T,
+          sycl::memory_order_relaxed, 
+          sycl::memory_scope_device&gt;
+            (a[0])
+            .fetch_add(it.get_global_linear_id());
+});
+```
+						</div>
+						<div class="col" data-markdown>
+* Atomic operations are needed in order to deterministically combine values
+  from different work items.
+* Atomic operations enforce a particular ordering of instructions across work
+  items. Some orderings include `memory_order_relaxed`, `memory_order_acq_rel`,
+  `memory_order_seq_cst`.
+						</div>
+					</div>
+				</section>
+				<!--Slide 8 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Atomic Operations
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+![SYCL](./combine3.png "SYCL")
+```
+q.parallel_for([=](sycl::item&lt;1&gt; it) {
+  sycl::atomic_ref&lt;T,
+          sycl::memory_order_relaxed, 
+          sycl::memory_scope_device&gt;
+            (a[0])
+            .fetch_add(it.get_global_linear_id());
+});
+```
+						</div>
+						<div class="col" data-markdown>
+* Atomic operations are needed in order to deterministically combine values
+  from different work items.
+* Atomic operations enforce a particular ordering of instructions across work
+  items. Some orderings include `memory_order_relaxed`, `memory_order_acq_rel`,
+  `memory_order_seq_cst`.
+						</div>
+					</div>
+				</section>
+				<!--Slide 9 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Atomic Operations
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+![SYCL](./combine3.png "SYCL")
+```
+q.parallel_for([=](sycl::item&lt;1&gt; it) {
+  sycl::atomic_ref&lt;T,
+          sycl::memory_order_relaxed, 
+          sycl::memory_scope_device&gt;
+            (a[0])
+            .fetch_add(it.get_global_linear_id());
+});
+```
+						</div>
+						<div class="col" data-markdown>
+* Using atomics, values can be combined across work items without data races.
+* `fetch_add`, `fetch_sub`, `fetch_max`, `fetch_min` are some of the ways we can
+  combine values atomically.
+* `fetch_and` and `fetch_or` can also be used for
+  integral types
+* Please see the SYCL Specification for more details.
+						</div>
+					</div>
+				</section>
+				<!--Slide 10 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Atomic Operations
+					</div>
+					<div class="container">
+						<div class="col">
+							<pre><code>
+q.parallel_for([=](sycl::item&lt;1&gt; it) {
+  sycl::atomic_ref&lt;T,
+          sycl::memory_order_relaxed,
+          sycl::memory_scope_<span class="highlight">work_group</span>,
+          <span class="highlight">sycl::access::address_space::local_space</span>&gt;
+            (a[0])
+            .fetch_add(it.get_global_linear_id());
+});
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+* We can also specify the memory space of `a[0]`.
+* If `a[0]` is in local memory, we should expect a speedup for using the local
+	memory atomic over the default atomic (which uses the generic address space).
+						</div>
+					</div>
+				</section>
+				<!--Slide 11 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Group Algorithms
+					</div>
+					<div class="container" data-markdown>
+* SYCL provides group algorithms which perform common operations over a single
+	workgroup.
+* `reduce` algorithms perform fast work group reduction operation for some op
+	such as `plus`, `max`, etc.
+* `any_of`, `all_of`, `none_of` as well as the `joint_*` counterparts perform
+	some predicate checking and return the same value to all items in a work 
+	group.
+* `permute_group_by_xor` permutes values among work items in a work group,
+	according to a provided mask.
+* `inclusive_scan` and `exclusive_scan`. For a scan of elements: `[x0,...,xn]`
+	the ith result of an exclusive scan is the combination of the elements
+	[x0,...,x{i-1}] and the ith result of an inclusive scan is the combination of
+	elements [x0,...,xi] using some binary op.
+* Please see the SYCL specification for more details.
+					</div>
+				</section>
+				<!--Slide 12 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Group Algorithms
+					</div>
+					<div class="container" data-markdown>
+* Group algorithms can operate on different group scopes, such as `work_group`,
+	`sub_group`.
+* All work items in a given group scope must call the function in convergent
+	control flow.
+* Please see the SYCL specification for more details.
+					</div>
+				</section>
+				</section>
+				<!--Slide 13 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### SYCL Reductions
+					</div>
+					<div class="container">
+						<div class="col">
+							<pre><code>
+q.submit([&amp;](sycl::handler &amp;cgh) {
+  // Output of reduction will be in ptr
+  auto sumReduction = sycl::reduction(ptr,
+                        sycl::plus&lt;T&gt;());
+  cgh.parallel_for(myNd, <span class="highlight">sumReduction</span>,
+      [=](sycl::nd_item&lt;1&gt; item, <span class="highlight">auto &amp;sum</span>) {
+         sum += devA[item.get_global_linear_id()];
+  });
+});
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+* SYCL provides reduction operators to perform fast reductions using some binary
+	operation.
+* Reductions can be performed with `sycl::plus`, `sycl::maximum`, `sycl::multiplies` etc.
+* Please see the SYCL specification for more details.
+						</div>
+					</div>
+				</section>
+				<!--Slide 14 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### SYCL Reductions
+					</div>
+					<div class="container">
+						<div class="col">
+							<pre><code>
+q.submit([&amp;](sycl::handler &amp;cgh) {
+  // Output of reduction will be in ptr
+  auto maxReduction = sycl::reduction(ptr,
+                        <span class="highlight">sycl::maximum</span>&lt;T&gt;());
+  cgh.parallel_for(myNd, maxReduction,
+      [=](sycl::nd_item&lt;1&gt; item, <span class="highlight">auto &amp;myMax</span>) {
+         myMax.<span class="highlight">combine</span>(devA[item.get_global_linear_id()]);
+  });
+});
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+* SYCL provides reduction operators to perform fast reductions using some binary
+	operation.
+* Reductions can be performed with `sycl::plus`, `sycl::maximum`,
+	`sycl::multiplies` etc.
+* Please see the SYCL specification for more details.
+						</div>
+					</div>
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="hbox" data-markdown>
+## Questions
+					</div>
+				</section>
+				<!--Slide 16 -->
+				<section>
+					<div class="hbox" data-markdown>
+#### Exercise
+* See how atomics, group algorithms and `sycl::reductions` are used in
+  implementing a simple reduction operation.
+* Which code runs fastest? Which code is simplest?
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
