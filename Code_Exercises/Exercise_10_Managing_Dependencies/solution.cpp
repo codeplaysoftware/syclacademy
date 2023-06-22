@@ -62,7 +62,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
 
     defaultQueue.submit([&](sycl::handler& cgh) {
       sycl::accessor accIn{bufInA, cgh, sycl::read_only};
-      sycl::accessor accOut{bufInB, cgh, sycl::write_only};
+      sycl::accessor accOut{bufInB, cgh, sycl::read_write};
 
       cgh.parallel_for<kernel_b_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
         accOut[idx] += accIn[idx];
@@ -71,7 +71,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
 
     defaultQueue.submit([&](sycl::handler& cgh) {
       sycl::accessor accIn{bufInA, cgh, sycl::read_only};
-      sycl::accessor accOut{bufInC, cgh, sycl::write_only};
+      sycl::accessor accOut{bufInC, cgh, sycl::read_write};
 
       cgh.parallel_for<kernel_c_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
         accOut[idx] -= accIn[idx];
