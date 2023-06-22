@@ -133,19 +133,19 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
     auto e3 = usmQueue.memcpy(devicePtrInC, inC, sizeof(float) * dataSize);
 
     auto e4 = usmQueue.parallel_for<kernel_a_2>(
-        sycl::range{dataSize}, {e1, e2, e3}, [=](sycl::id<1> idx) {
+        sycl::range{dataSize}, e1, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrInA[globalId] = devicePtrInA[globalId] * 2.0f;
         });
 
     auto e5 = usmQueue.parallel_for<kernel_b_2>(
-        sycl::range{dataSize}, e4, [=](sycl::id<1> idx) {
+        sycl::range{dataSize}, {e2, e4}, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrInB[globalId] += devicePtrInA[globalId];
         });
 
     auto e6 = usmQueue.parallel_for<kernel_c_2>(
-        sycl::range{dataSize}, e4, [=](sycl::id<1> idx) {
+        sycl::range{dataSize}, {e3, e4}, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrInC[globalId] -= devicePtrInA[globalId];
         });
