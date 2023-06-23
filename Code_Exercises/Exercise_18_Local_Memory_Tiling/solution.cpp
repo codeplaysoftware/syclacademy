@@ -93,6 +93,12 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
                     auto localId = item.get_local_id();
                     auto globalGroupOffset = groupId * localRange;
 
+                    // Explanation:
+                    // We need to read pixels from the neighbouring work-groups 
+                    // too, so we have more pixels to read than items in a work-
+                    // group. We solve this by having each work item also read 
+                    // the pixel at their local index in the neighbouring group 
+                    // if that pixel is part of the halo.
                     for (auto i = localId[0]; i < scratchpadRange[0];
                          i += localRange[0]) {
                       for (auto j = localId[1]; j < scratchpadRange[1];
