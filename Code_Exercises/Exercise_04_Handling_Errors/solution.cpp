@@ -13,11 +13,7 @@
 
 #include <sycl/sycl.hpp>
 
-class scalar_add;
-
 TEST_CASE("handling_errors", "handling_errors_source") {
-  int a = 18, b = 24, r = 0;
-
   try {
     auto asyncHandler = [&](sycl::exception_list exceptionList) {
       for (auto& e : exceptionList) {
@@ -27,26 +23,18 @@ TEST_CASE("handling_errors", "handling_errors_source") {
 
     auto defaultQueue = sycl::queue{asyncHandler};
 
-    {
-      auto bufA = sycl::buffer{&a, sycl::range{1}};
-      auto bufB = sycl::buffer{&b, sycl::range{1}};
-      auto bufR = sycl::buffer{&r, sycl::range{1}};
+    auto buf = sycl::buffer<int>(sycl::range{1});
 
-      defaultQueue
-          .submit([&](sycl::handler& cgh) {
-            auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
-            auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
-            auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
-
-            cgh.single_task<scalar_add>([=]() { accR[0] = accA[0] + accB[0]; });
-          })
-          .wait();
-    }
+    defaultQueue.submit([&](sycl::handler& cgh) {
+      // This throws an exception: an accessor has a range which is
+      // outside the bounds of its buffer.
+      auto acc = buf.get_access(cgh, sycl::range{2}, sycl::read_write);
+    }).wait();
 
     defaultQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  REQUIRE(r == 42);
+  REQUIRE(true);
 }
