@@ -95,7 +95,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
 
                     // Explanation:
                     // We need to read pixels from the neighbouring work-groups 
-                    // too, so we have more pixels to read than items in a work-
+                    // too, so we have more pixels to read than items per work-
                     // group. We solve this by having each work item also read 
                     // the pixel at their local index in the neighbouring group 
                     // if that pixel is part of the halo.
