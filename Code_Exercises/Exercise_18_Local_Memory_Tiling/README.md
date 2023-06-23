@@ -11,8 +11,7 @@ tiles according to work-groups in order to compare the performance difference.
 ### 1.) Use local memory
 
 Allocate local memory for the kernel function by creating a local `accessor`,
-you can do this by creating an `accessor` with the `access::target::local`
-access target template parameter.
+you can do this by creating a `sycl::local_accessor`.
 
 The local `accessor` is create by specifying a `range` which is the number of
 elements to allocate.

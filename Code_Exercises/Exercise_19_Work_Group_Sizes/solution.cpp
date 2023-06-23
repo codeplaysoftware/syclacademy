@@ -37,7 +37,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
   auto filter = util::generate_filter(util::filter_type::blur, filterWidth);
 
   try {
-    sycl::queue myQueue{sycl::gpu_selector{}};
+    sycl::queue myQueue{sycl::gpu_selector_v};
 
     std::cout << "Running on "
               << myQueue.get_device().get_info<sycl::info::device::name>()
@@ -81,9 +81,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
               sycl::accessor outputAcc{outBufVec, cgh, sycl::write_only};
               sycl::accessor filterAcc{filterBufVec, cgh, sycl::read_only};
 
-              auto scratchpad = sycl::accessor<sycl::float4, 2,
-                                               sycl::access::mode::read_write,
-                                               sycl::access::target::local>(
+              auto scratchpad = sycl::local_accessor<sycl::float4, 2>(
                   scratchpadRange, cgh);
 
               cgh.parallel_for<image_convolution>(
