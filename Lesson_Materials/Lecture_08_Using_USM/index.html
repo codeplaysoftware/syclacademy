@@ -168,7 +168,7 @@ event queue::fill(void* ptr, const T& pattern, size_t count, const std::vector<e
 						<code class="code-100pc"><pre>
 int square_number(int x){
 	
-  auto myQueue = sycl::queue{};
+  auto myQueue = queue{};
 
   myQueue.submit([&](handler &cgh){
     cgh.single_task&lt;square_number&gt;([=](){
@@ -193,7 +193,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 	
-  auto myQueue = sycl::queue{<mark>usm_selector{}</mark>};
+  auto myQueue = queue{<mark>usm_selector{}</mark>};
 
   myQueue.submit([&](handler &cgh){
     cgh.single_task&lt;square_number&gt;([=](){
@@ -218,7 +218,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 	
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   <mark>auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);</mark>
 
@@ -246,7 +246,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
@@ -276,7 +276,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
@@ -305,7 +305,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
@@ -336,7 +336,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
@@ -388,7 +388,7 @@ event queue::parallel_for(range<Dims> GlobalRange, const KernelType &KernelFunc)
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
