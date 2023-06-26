@@ -324,10 +324,43 @@ int square_number(int x){
 						</code></pre>
 					</div>
 						<div class="container" data-markdown>
-							Finally we copy the result from USM device memory back to the variable x in the host application by calling `memcpy` on `myQueue`.
+							We then copy the result from USM device memory back to the variable x in the host application by calling `memcpy` on `myQueue`.
 						</div>
 				</section>
 				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Putting it all together
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+int square_number(int x){
+
+  auto myQueue = sycl::queue{usm_selector{}};
+
+  auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
+
+  myQueue.memcpy(devicePtr, &x, sizeof(int)).wait();
+
+  myQueue.submit([&](handler &cgh){
+    cgh.single_task&lt;square&gt;([=](){
+      *devicePtr = (*devicePtr) * (*devicePtr);
+    });
+  }).wait();
+
+  myQueue.memcpy(&x, devicePtr, sizeof(int)).wait();
+
+  <mark>free(devicePtr, myQueue);</mark>
+
+  return x;
+}
+						</code></pre>
+					</div>
+						<div class="container" data-markdown>
+							Finally, we free the USM device memory that we allocated.
+						</div>
+				</section>
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Queue shortcuts
@@ -346,7 +379,7 @@ event queue::parallel_for(range<Dims> GlobalRange, const KernelType &KernelFunc)
 						* These can only be used when using the USM data management model.
 					</div>
 				</section>
-				<!--Slide 15-->
+				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### With the queue shortcut
@@ -375,7 +408,7 @@ int square_number(int x){
 							If we use the queue shortcut here it reduces the complexity of the code.
 						</div>
 				</section>
-				<!--Slide 16-->
+				<!--Slide 17-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Usm_wrapper **ComputeCpp only**
@@ -397,7 +430,7 @@ class usm_wrapper;
 						* This will be removed when ComputeCpp fully supports SYCL 2020.
 					</div>
 				</section>
-				<!--Slide 17-->
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### With the usm_wrapper **ComputeCpp only**
@@ -426,13 +459,13 @@ int square_number(int x){
 							In ComputeCpp we wrap the result of `malloc_device` with a `usm_wrapper<int>` so it can be passed to the kernel function.
 						</div>
 				</section>
-				<!--Slide 18-->
+				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Questions
 					</div>
 				</section>
-				<!--Slide 19-->
+				<!--Slide 20-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
