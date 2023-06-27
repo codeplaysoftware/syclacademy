@@ -316,6 +316,8 @@ auto e4 = gpuQueue.memcpy(data, devicePtr,
                           sizeof(int), e3);
 
 e4.wait();
+
+sycl::free(devicePtr, gpuQueue);
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
@@ -388,6 +390,8 @@ auto e4 = gpuQueue.memcpy(data, devicePtr,
                           sizeof(int), e3);
 
 e4.wait();
+
+sycl::free(devicePtr, gpuQueue);
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
@@ -476,6 +480,9 @@ auto e4 = gpuQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024}, e2, [=](sycl:
 auto e6 = gpuQueue.memcpy(dataB, devicePtrB, sizeof(int), e4);
 
 <mark>e5.wait();</mark> e6.wait();
+
+sycl::free(devicePtrA, gpuQueue);
+sycl::free(devicePtrB, gpuQueue);
 							</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -507,6 +514,9 @@ auto e5 = gpuQueue.memcpy(dataA), devicePtrA, sizeof(int), e3);
 <mark>auto e6</mark> = gpuQueue.memcpy(dataB, devicePtrB, sizeof(int), <mark>e4</mark>);
 
 e5.wait(); <mark>e6.wait();</mark>
+
+sycl::free(devicePtrA, gpuQueue);
+sycl::free(devicePtrB, gpuQueue);
 							</code></pre>
 					</div>
 					<div class="container" data-markdown>
