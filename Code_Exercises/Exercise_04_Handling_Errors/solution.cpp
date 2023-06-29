@@ -29,7 +29,7 @@ TEST_CASE("handling_errors", "handling_errors_source") {
       // This throws an exception: an accessor has a range which is
       // outside the bounds of its buffer.
       auto acc = buf.get_access(cgh, sycl::range{2}, sycl::read_write);
-    }).wait();
+    });
 
     defaultQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
