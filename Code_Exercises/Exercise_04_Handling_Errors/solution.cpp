@@ -31,7 +31,7 @@ TEST_CASE("handling_errors", "handling_errors_source") {
       auto acc = buf.get_access(cgh, sycl::range{2}, sycl::read_write);
     });
 
-    defaultQueue.throw_asynchronous();
+    defaultQueue.wait_and_throw();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
