@@ -61,7 +61,7 @@
 					* Learn about the difference between synchronous and asynchronous exceptions
 					* Learn how to handle exceptions and retrieve further information
 					* Learn about the host device and how to use it
-                </section>
+				</section>
 				<!--Slide 3-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -95,25 +95,22 @@
 class add;
 
 int main() {
-  std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
-    queue gpuQueue(gpu_selector{});
-    buffer bufA{dA};
-    buffer bufB{dB};
-    buffer bufO{dO};
+  queue q();
 
-    gpuQueue.submit([&](handler &cgh) {
-      auto inA = accessor{bufA, cgh, read_only};
-      auto inB = accessor{bufB, cgh, read_only};
-      auto out = accessor{bufO, cgh, write_only};
+  /* Synchronous code */ 
 
-      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
-        out[i] = inA[i] + inB[i];
-      });
-    }).wait();
+  q.submit([&](handler &cgh) {
+    /* Synchronous code */
+
+    cgh.single_task&lt;add&gt;([=](id&lt;1&gt; i) {
+      /* Asynchronous code */
+    });
+  }).wait();
 }
 						</code></pre>
 					</div>
 					<div class="bottom-bullets" data-markdown>
+					* Code on the device runs asynchronously
 					* If errors are not handled, the application can fail:
 						* SYCL 1.2.1 application will fail silently.
 						* SYCL 2020 provides a default async handler that will call `std::terminate`
@@ -136,7 +133,7 @@ int main() {
     buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-	  auto inA = accessor{bufA, cgh, read_only};
+      auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
@@ -170,7 +167,7 @@ int main() {
     buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-	  auto inA = accessor{bufA, cgh, read_only};
+      auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
@@ -210,7 +207,7 @@ int main() {
     buffer bufO{dO};
 
     gpuQueue.submit([&](handler &cgh) {
-	  auto inA = accessor{bufA, cgh, read_only};
+      auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
@@ -301,7 +298,7 @@ int main() {
   context gpuContext = gpuQueue.get_context();
 
   try {
-  ...
+    ...
     gpuQueue.wait_and_throw();
   } catch (const sycl::exception& e) {
     <mark>if (e.has_context()) {</mark>
@@ -374,7 +371,7 @@ int main() {
     buffer bufO{dO};
 
     hostQueue.submit([&](handler &cgh) {
-	  auto inA = accessor{bufA, cgh, read_only};
+      auto inA = accessor{bufA, cgh, read_only};
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
