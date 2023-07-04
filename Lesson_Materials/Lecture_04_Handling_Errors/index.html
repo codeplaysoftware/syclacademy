@@ -76,6 +76,35 @@
 						  * Asynchronous errors (thrown by the SYCL scheduler).
 					</div>
 				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Handling errors
+					</div>
+					<div class="hbox" >
+						<code class="code-60pc"><pre>
+int main() {
+  queue q();
+
+  /* Synchronous code */
+
+  q.submit([&](handler &cgh) {
+
+    /* Synchronous code */
+
+    cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+
+      /* Asynchronous code */
+
+    });
+  });
+}
+						</code></pre>
+					</div>
+					<div class="bottom-bullets" data-markdown>
+					* Kernels run asynchronously on the device, and will throw asynchronous errors.
+					* Everything else runs synchronously on the host, and will throw synchronous errors.
+					</div>
+				</section>
 				<!--Slide 4-->
 				<section>
 					<div class="hbox" data-markdown>
