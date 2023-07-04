@@ -30,11 +30,10 @@ TEST_CASE("handling_errors", "handling_errors_source") {
       // outside the bounds of its buffer.
       auto acc = buf.get_access(cgh, sycl::range{2}, sycl::read_write);
     });
-    printf("This should print before an exception is thrown!\n");
     defaultQueue.wait_and_throw();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
-
+  
   REQUIRE(true);
 }
