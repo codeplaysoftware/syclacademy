@@ -93,12 +93,33 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
                     auto localId = item.get_local_id();
                     auto globalGroupOffset = groupId * localRange;
 
-                    // Explanation:
-                    // We need to read pixels from the neighbouring work-groups 
-                    // too, so we have more pixels to read than items per work-
-                    // group. We solve this by having each work item also read 
-                    // the pixel at their local index in the neighbouring group 
-                    // if that pixel is part of the halo.
+                    /*
+                     * Each work group will need to read a tile of size 
+                     * (localRange[0] + halo * 2, localRange[1] + halo * 2) in order to write a 
+                     * tile of size (localRange[0], localRange[1]). Since the size of the tile 
+                     * we need to read is larger than the workgroup size (localRange), we must 
+                     * do multiple loads per work item. The iterations of the for loop work 
+                     * are as follows:
+                     * 
+                     *            <- localRange[0] + halo *2 ->
+                     *           +------------------------------+  ^
+                     *           |+-----------------++---------+|  |
+                     *         ^ ||<-localRange[0]->||         ||  |
+                     *         | ||                 ||         ||  |
+                     *     local ||   iteration 1   ||  it 2   ||  |
+                     *  Range[1] ||     load        ||  load   ||
+                     *         | ||                 ||         ||  localRange[1] +
+                     *         | ||                 ||         ||  halo * 2
+                     *         V ||                 ||         ||
+                     *           |+-----------------++---------+|  |
+                     *           |+-----------------++---------+|  |
+                     *           ||                 ||         ||  |
+                     *           ||    it  3 load   ||it 4 load||  |
+                     *           ||                 ||         ||  |
+                     *           |+-----------------++---------+|  |
+                     *           +------------------------------+  V
+                     */
+
                     for (auto i = localId[0]; i < scratchpadRange[0];
                          i += localRange[0]) {
                       for (auto j = localId[1]; j < scratchpadRange[1];
