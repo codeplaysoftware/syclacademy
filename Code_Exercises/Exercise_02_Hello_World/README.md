@@ -32,7 +32,11 @@ Within the command group function define a SYCL kernel function via the
 `single_task` command within the command group, which takes only a function
 object which itself doesn't take any parameters.
 
-Remember to declare a class for your kernel name in the global namespace.
+Remember to declare a class for your kernel name in the global namespace. While
+it is possible to leave the class declaration inline in the handler scope, this
+can produce long kernel names that show up in profiler and debugger output and
+make it harder to use. Defining the kernel names out of local scope avoids
+this.
 
 Also remember to call `wait` on the `event` returned from `submit` to await the
 completion of the kernel function.
