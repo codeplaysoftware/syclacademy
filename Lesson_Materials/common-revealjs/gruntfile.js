@@ -56,12 +56,6 @@ module.exports = grunt => {
 			}
 		},
 
-		autoprefixer: {
-			core: {
-				src: 'css/reveal.css'
-			}
-		},
-
 		cssmin: {
 			options: {
 				compatibility: 'ie9'
@@ -172,10 +166,10 @@ module.exports = grunt => {
 	grunt.registerTask( 'css-themes', [ 'sass:themes' ] );
 
 	// Core framework CSS
-	grunt.registerTask( 'css-core', [ 'sass:core', 'autoprefixer', 'cssmin' ] );
+	grunt.registerTask( 'css-core', [ 'sass:core', 'cssmin' ] );
 
 	// All CSS
-	grunt.registerTask( 'css', [ 'sass', 'autoprefixer', 'cssmin' ] );
+	grunt.registerTask( 'css', [ 'sass', 'cssmin' ] );
 
 	// Package presentation to archive
 	grunt.registerTask( 'package', [ 'default', 'zip' ] );
