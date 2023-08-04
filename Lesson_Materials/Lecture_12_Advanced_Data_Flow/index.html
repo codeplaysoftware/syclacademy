@@ -202,7 +202,7 @@ auto buf = sycl::buffer&lt;T&gt;{sycl::range{size}};
 					<div class="container" data-markdown>
 						* As we've seen in the USM model all memory is allocated initialized, but `buffer`s can be constructed without initial data.
 						* A `buffer` like this is called uninitialized.
-						* To do this simply construct a `buffer` without initial data. Just remember to explicitly specify the buffers data type as it can't be inferred from the initial data anymore.
+						* To do this simply construct a `buffer` without initial data. Just remember to explicitly specify the buffer's data type as it can't be inferred from the initial data any more.
 						* Uninitialized `buffer`s are useful for a couple of reasons because they can be allocated directly on a device and don't require moving data from the host.
 					</div>
 				</section>
