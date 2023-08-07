@@ -25,13 +25,13 @@ TEST_CASE("scalar_add_usm", "scalar_add_solution") {
   auto dev_B = sycl::malloc_device<int>(1, defaultQueue);
   auto dev_R = sycl::malloc_device<int>(1, defaultQueue);
 
-  defaultQueue.memcpy(dev_A, &a, 1 * sizeof(int));
-  defaultQueue.memcpy(dev_B, &b, 1 * sizeof(int));
+  defaultQueue.memcpy(dev_A, &a, 1 * sizeof(int)).wait();
+  defaultQueue.memcpy(dev_B, &b, 1 * sizeof(int)).wait();
 
   defaultQueue
       .submit([&](sycl::handler &cgh) {
         cgh.single_task<scalar_add_usm>([=] { dev_R[0] = dev_A[0] + dev_B[0]; });
-      });
+      }).wait();
 
   defaultQueue.memcpy(&r, dev_R, 1 * sizeof(int)).wait();
 
