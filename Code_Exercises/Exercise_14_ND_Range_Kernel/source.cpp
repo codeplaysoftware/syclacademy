@@ -14,7 +14,7 @@
  * auto q = sycl::queue{};
  *
  * // Construct an in-order queue
- * auto q = sycl::queue{sycl::default_selector{}, 
+ * auto q = sycl::queue{sycl::default_selector_v, 
  *        {sycl::property::queue::in_order{}}};
  *
  * // Declare a buffer pointing to ptr

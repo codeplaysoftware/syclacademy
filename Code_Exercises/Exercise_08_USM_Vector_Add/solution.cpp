@@ -15,16 +15,12 @@
 
 class vector_add;
 
-class usm_selector : public sycl::device_selector {
- public:
-  int operator()(const sycl::device& dev) const {
-    if (dev.has(sycl::aspect::usm_device_allocations)) {
-      if (dev.has(sycl::aspect::gpu)) return 2;
-      return 1;
-    }
-    return -1;
+int usm_selector(const sycl::device& dev) {
+  if (dev.has(sycl::aspect::usm_device_allocations)) {
+    return 1;
   }
-};
+  return -1;
+}
 
 TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
   constexpr size_t dataSize = 1024;
@@ -37,20 +33,11 @@ TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
   }
 
   try {
-    auto usmQueue = sycl::queue{usm_selector{}};
+    auto usmQueue = sycl::queue{usm_selector};
 
-#ifdef SYCL_ACADEMY_USE_COMPUTECPP
-    auto devicePtrA = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrB = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrR = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-#else
     auto devicePtrA = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrB = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrR = sycl::malloc_device<float>(dataSize, usmQueue);
-#endif
 
     usmQueue.memcpy(devicePtrA, a, sizeof(float) * dataSize).wait();
     usmQueue.memcpy(devicePtrB, b, sizeof(float) * dataSize).wait();

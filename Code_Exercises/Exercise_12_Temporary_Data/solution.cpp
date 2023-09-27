@@ -20,16 +20,13 @@ class kernel_b_1;
 class kernel_a_2;
 class kernel_b_2;
 
-class usm_selector : public sycl::device_selector {
- public:
-  int operator()(const sycl::device& dev) const {
-    if (dev.has(sycl::aspect::usm_device_allocations)) {
-      if (dev.has(sycl::aspect::gpu)) return 2;
-      return 1;
-    }
-    return -1;
+int usm_selector(const sycl::device& dev) {
+  if (dev.has(sycl::aspect::usm_device_allocations)) {
+    if (dev.has(sycl::aspect::gpu)) return 2;
+    return 1;
   }
-};
+  return -1;
+}
 
 TEST_CASE("buffer_accessor_temporary_data", "temporary_data_solution") {
   constexpr size_t dataSize = 1024;
@@ -41,7 +38,7 @@ TEST_CASE("buffer_accessor_temporary_data", "temporary_data_solution") {
   }
 
   try {
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}};
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
     auto bufIn = sycl::buffer{in, sycl::range{dataSize}};
     auto bufInt = sycl::buffer<float>{sycl::range{dataSize}};
@@ -88,20 +85,11 @@ TEST_CASE("usm_temporary_data", "temporary_data_solution") {
   }
 
   try {
-    auto usmQueue = sycl::queue{usm_selector{}};
+    auto usmQueue = sycl::queue{usm_selector};
 
-#ifdef SYCL_ACADEMY_USING_COMPUTECPP
-    auto devicePtrIn = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrInt = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrOut = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-#else
     auto devicePtrIn = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrInt = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrOut = sycl::malloc_device<float>(dataSize, usmQueue);
-#endif
 
     auto e1 = usmQueue.memcpy(devicePtrIn, in, sizeof(float) * dataSize);
 

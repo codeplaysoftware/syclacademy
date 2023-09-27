@@ -13,19 +13,16 @@
 
 #include <sycl/sycl.hpp>
 
-class usm_selector : public sycl::device_selector {
- public:
-  int operator()(const sycl::device& dev) const {
-    if (dev.has(sycl::aspect::usm_device_allocations)) {
-      return 1;
-    }
-    return -1;
+int usm_selector(const sycl::device& dev) {
+  if (dev.has(sycl::aspect::usm_device_allocations)) {
+    return 1;
   }
-};
+  return -1;
+}
 
 TEST_CASE("usm_selector", "usm_selector_solution") {
   try {
-    auto usmQueue = sycl::queue{usm_selector{}};
+    auto usmQueue = sycl::queue{usm_selector};
 
     usmQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {

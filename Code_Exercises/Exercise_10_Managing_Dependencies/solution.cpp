@@ -22,16 +22,13 @@ class kernel_b_2;
 class kernel_c_2;
 class kernel_d_2;
 
-class usm_selector : public sycl::device_selector {
- public:
-  int operator()(const sycl::device& dev) const {
-    if (dev.has(sycl::aspect::usm_device_allocations)) {
-      if (dev.has(sycl::aspect::gpu)) return 2;
-      return 1;
-    }
-    return -1;
+int usm_selector(const sycl::device& dev) {
+  if (dev.has(sycl::aspect::usm_device_allocations)) {
+    if (dev.has(sycl::aspect::gpu)) return 2;
+    return 1;
   }
-};
+  return -1;
+}
 
 TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
   constexpr size_t dataSize = 1024;
@@ -110,23 +107,12 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
   }
 
   try {
-    auto usmQueue = sycl::queue{usm_selector{}};
+    auto usmQueue = sycl::queue{usm_selector};
 
-#ifdef SYCL_ACADEMY_USE_COMPUTECPP
-    auto devicePtrInA = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrInB = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrInC = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-    auto devicePtrOut = sycl::experimental::usm_wrapper<float>{
-        sycl::malloc_device<float>(dataSize, usmQueue)};
-#else
     auto devicePtrInA = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrInB = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrInC = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrOut = sycl::malloc_device<float>(dataSize, usmQueue);
-#endif
 
     auto e1 = usmQueue.memcpy(devicePtrInA, inA, sizeof(float) * dataSize);
     auto e2 = usmQueue.memcpy(devicePtrInB, inB, sizeof(float) * dataSize);

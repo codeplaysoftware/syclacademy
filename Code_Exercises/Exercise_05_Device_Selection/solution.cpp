@@ -15,22 +15,8 @@
 
 class scalar_add;
 
-// Functor device selector
-class intel_gpu_selector1 : public sycl::device_selector {
-public:
-  int operator()(const sycl::device &dev) const override {
-    if (dev.has(sycl::aspect::gpu)) {
-      auto vendorName = dev.get_info<sycl::info::device::vendor>();
-      if (vendorName.find("Intel") != std::string::npos) {
-        return 1;
-      }
-    }
-    return -1;
-  }
-};
-
 // Function device selector
-int intel_gpu_selector2(const sycl::device &dev) {
+int intel_gpu_selector1(const sycl::device &dev) {
   if (dev.has(sycl::aspect::gpu)) {
     auto vendorName = dev.get_info<sycl::info::device::vendor>();
     if (vendorName.find("Intel") != std::string::npos) {
@@ -41,7 +27,7 @@ int intel_gpu_selector2(const sycl::device &dev) {
 }
 
 // Lambda device_selector
-auto intel_gpu_selector3 = [](const sycl::device &dev) {
+auto intel_gpu_selector2 = [](const sycl::device &dev) {
   if (dev.has(sycl::aspect::gpu)) {
     auto vendorName = dev.get_info<sycl::info::device::vendor>();
     if (vendorName.find("Intel") != std::string::npos) {
@@ -56,9 +42,8 @@ TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
 
   try {
 
-    auto defaultQueue1 = sycl::queue{intel_gpu_selector1{}};
+    auto defaultQueue1 = sycl::queue{intel_gpu_selector1};
     auto defaultQueue2 = sycl::queue{intel_gpu_selector2};
-    auto defaultQueue3 = sycl::queue{intel_gpu_selector3};
 
     std::cout << "Chosen device: "
               << defaultQueue1.get_device().get_info<sycl::info::device::name>()
