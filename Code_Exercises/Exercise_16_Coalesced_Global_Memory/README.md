@@ -11,7 +11,7 @@ coalesced global memory access.
 
 ### 1.) Evaluate global memory access
 
-Now that you have a working grayscaling kernel you should evaluate whether the
+Now that you have a working image convolution kernel you should evaluate whether the
 global memory access patterns in your kernel are coalesced.
 
 Consider two alternative ways to linearize the global id:

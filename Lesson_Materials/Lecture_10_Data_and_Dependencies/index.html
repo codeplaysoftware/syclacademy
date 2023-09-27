@@ -94,7 +94,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./data_dependency.png "SYCL")
+							![SYCL](../common-revealjs/images/data_dependency.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* Kernel A first writes to the data
@@ -111,7 +111,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./data_movement.png "SYCL")
+							![SYCL](../common-revealjs/images/data_movement.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* Here both kernel functions are enqueued to the same device, in this case a GPU
@@ -128,7 +128,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./data_flow.png "SYCL")
+							![SYCL](../common-revealjs/images/data_flow.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* Combining kernel function dependencies and the data movement dependencies we have a final data flow graph
@@ -316,6 +316,8 @@ auto e4 = gpuQueue.memcpy(data, devicePtr,
                           sizeof(int), e3);
 
 e4.wait();
+
+sycl::free(devicePtr, gpuQueue);
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
@@ -388,6 +390,8 @@ auto e4 = gpuQueue.memcpy(data, devicePtr,
                           sizeof(int), e3);
 
 e4.wait();
+
+sycl::free(devicePtr, gpuQueue);
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
@@ -402,7 +406,7 @@ e4.wait();
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./concurrent_data_flow.png "SYCL")
+							![SYCL](../common-revealjs/images/concurrent_data_flow.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* If two kernels are accessing different buffers then there is no dependency between them
@@ -476,6 +480,9 @@ auto e4 = gpuQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024}, e2, [=](sycl:
 auto e6 = gpuQueue.memcpy(dataB, devicePtrB, sizeof(int), e4);
 
 <mark>e5.wait();</mark> e6.wait();
+
+sycl::free(devicePtrA, gpuQueue);
+sycl::free(devicePtrB, gpuQueue);
 							</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -507,6 +514,9 @@ auto e5 = gpuQueue.memcpy(dataA), devicePtrA, sizeof(int), e3);
 <mark>auto e6</mark> = gpuQueue.memcpy(dataB, devicePtrB, sizeof(int), <mark>e4</mark>);
 
 e5.wait(); <mark>e6.wait();</mark>
+
+sycl::free(devicePtrA, gpuQueue);
+sycl::free(devicePtrB, gpuQueue);
 							</code></pre>
 					</div>
 					<div class="container" data-markdown>
@@ -552,7 +562,7 @@ e5.wait(); <mark>e6.wait();</mark>
 						Code_Exercises/Exercise_10_Managing_Dependencies/source
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./diamond_data_flow.png "SYCL")
+						![SYCL](../common-revealjs/images/diamond_data_flow.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						Put together what you've seen here to create the above diamond data flow graph in either buffer/accessor or USM data management models

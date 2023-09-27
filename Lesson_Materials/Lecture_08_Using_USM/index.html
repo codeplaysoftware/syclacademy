@@ -81,7 +81,7 @@
 						#### USM Allocation Types
 					</div>
 					<div class="container"data-markdown>
-					  ![SYCL](./Figure6-1bookUSMtypes.png "SYCL")
+					  ![SYCL](../common-revealjs/images/Figure6-1bookUSMtypes.png "SYCL")
 					  (from book)
 					</div>
 				</section>
@@ -168,7 +168,7 @@ event queue::fill(void* ptr, const T& pattern, size_t count, const std::vector<e
 						<code class="code-100pc"><pre>
 int square_number(int x){
 	
-  auto myQueue = sycl::queue{};
+  auto myQueue = queue{};
 
   myQueue.submit([&](handler &cgh){
     cgh.single_task&lt;square_number&gt;([=](){
@@ -193,7 +193,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 	
-  auto myQueue = sycl::queue{<mark>usm_selector{}</mark>};
+  auto myQueue = queue{<mark>usm_selector{}</mark>};
 
   myQueue.submit([&](handler &cgh){
     cgh.single_task&lt;square_number&gt;([=](){
@@ -218,7 +218,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 	
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   <mark>auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);</mark>
 
@@ -246,7 +246,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
@@ -276,7 +276,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
@@ -305,7 +305,7 @@ int square_number(int x){
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
@@ -324,10 +324,43 @@ int square_number(int x){
 						</code></pre>
 					</div>
 						<div class="container" data-markdown>
-							Finally we copy the result from USM device memory back to the variable x in the host application by calling `memcpy` on `myQueue`.
+							We then copy the result from USM device memory back to the variable x in the host application by calling `memcpy` on `myQueue`.
 						</div>
 				</section>
 				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Putting it all together
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+int square_number(int x){
+
+  auto myQueue = queue{usm_selector{}};
+
+  auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
+
+  myQueue.memcpy(devicePtr, &x, sizeof(int)).wait();
+
+  myQueue.submit([&](handler &cgh){
+    cgh.single_task&lt;square&gt;([=](){
+      *devicePtr = (*devicePtr) * (*devicePtr);
+    });
+  }).wait();
+
+  myQueue.memcpy(&x, devicePtr, sizeof(int)).wait();
+
+  <mark>free(devicePtr, myQueue);</mark>
+
+  return x;
+}
+						</code></pre>
+					</div>
+						<div class="container" data-markdown>
+							Finally, we free the USM device memory that we allocated.
+						</div>
+				</section>
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Queue shortcuts
@@ -346,7 +379,7 @@ event queue::parallel_for(range<Dims> GlobalRange, const KernelType &KernelFunc)
 						* These can only be used when using the USM data management model.
 					</div>
 				</section>
-				<!--Slide 15-->
+				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### With the queue shortcut
@@ -355,7 +388,7 @@ event queue::parallel_for(range<Dims> GlobalRange, const KernelType &KernelFunc)
 						<code class="code-100pc"><pre>
 int square_number(int x){
 
-  auto myQueue = sycl::queue{usm_selector{}};
+  auto myQueue = queue{usm_selector{}};
 
   auto devicePtr = malloc_device&lt;int&gt;(1, myQueue);
 
@@ -367,6 +400,8 @@ int square_number(int x){
 
   myQueue.memcpy(&x, devicePtr, sizeof(int)).wait();
 
+  free(devicePtr, myQueue);
+
   return x;
 }
 						</code></pre>
@@ -375,64 +410,13 @@ int square_number(int x){
 							If we use the queue shortcut here it reduces the complexity of the code.
 						</div>
 				</section>
-				<!--Slide 16-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Usm_wrapper **ComputeCpp only**
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-using namespace experimental {
-
-template &lt;typename T&gt;
-class usm_wrapper;
-
-}
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* USM support in ComputeCpp is still experimental.
-						* You currently need to wrap USM pointers in a `usm_wrapper` to pass them to a kernel function.
-						* The `usm_wrapper` will behave like and convert to the raw pointer type.
-						* This will be removed when ComputeCpp fully supports SYCL 2020.
-					</div>
-				</section>
 				<!--Slide 17-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### With the usm_wrapper **ComputeCpp only**
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-int square_number(int x){
-
-  auto myQueue = sycl::queue{usm_selector{}};
-
-  auto devicePtr = <mark>experimental::usm_wrapper&lt;int&gt;(</mark>malloc_device&lt;int&gt;(1, myQueue)<mark>)</mark>;
-
-  myQueue.memcpy(devicePtr, &x, sizeof(int)).wait();
-
-  myQueue.single_task&lt;square&gt;([=](){
-    *devicePtr = (*devicePtr) * (*devicePtr);
-  }).wait();
-
-  myQueue.memcpy(&x, devicePtr, sizeof(int)).wait();
-
-  return x;
-}
-						</code></pre>
-					</div>
-						<div class="container" data-markdown>
-							In ComputeCpp we wrap the result of `malloc_device` with a `usm_wrapper<int>` so it can be passed to the kernel function.
-						</div>
-				</section>
-				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Questions
 					</div>
 				</section>
-				<!--Slide 19-->
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
@@ -441,7 +425,7 @@ int square_number(int x){
 						Code_Exercises/Exercise_8_USM_Vector_Add/source
 					</div>
 					<div class="container" data-markdown>
-						Implement the vector add from lesson 3 using the USM data management model.
+						Implement the vector add from lesson 6 using the USM data management model.
 					</div>
 				</section>
 			</div>

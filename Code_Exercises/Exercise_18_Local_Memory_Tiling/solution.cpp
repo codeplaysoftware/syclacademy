@@ -37,7 +37,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
   auto filter = util::generate_filter(util::filter_type::blur, filterWidth);
 
   try {
-    sycl::queue myQueue{sycl::gpu_selector{}};
+    sycl::queue myQueue{sycl::gpu_selector_v};
 
     std::cout << "Running on "
               << myQueue.get_device().get_info<sycl::info::device::name>()
@@ -81,9 +81,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
               sycl::accessor outputAcc{outBufVec, cgh, sycl::write_only};
               sycl::accessor filterAcc{filterBufVec, cgh, sycl::read_only};
 
-              auto scratchpad = sycl::accessor<sycl::float4, 2,
-                                               sycl::access::mode::read_write,
-                                               sycl::access::target::local>(
+              auto scratchpad = sycl::local_accessor<sycl::float4, 2>(
                   scratchpadRange, cgh);
 
               cgh.parallel_for<image_convolution>(
@@ -92,6 +90,33 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
                     auto groupId = item.get_group().get_group_id();
                     auto localId = item.get_local_id();
                     auto globalGroupOffset = groupId * localRange;
+
+                    /*
+                     * Each work group will need to read a tile of size 
+                     * (localRange[0] + halo * 2, localRange[1] + halo * 2) in order to write a 
+                     * tile of size (localRange[0], localRange[1]). Since the size of the tile 
+                     * we need to read is larger than the workgroup size (localRange), we must 
+                     * do multiple loads per work item. The iterations of the for loop work 
+                     * are as follows:
+                     * 
+                     *            <- localRange[0] + halo *2 ->
+                     *           +------------------------------+  ^
+                     *           |+-----------------++---------+|  |
+                     *         ^ ||<-localRange[0]->||         ||  |
+                     *         | ||                 ||         ||  |
+                     *     local ||   iteration 1   ||  it 2   ||  |
+                     *  Range[1] ||     load        ||  load   ||
+                     *         | ||                 ||         ||  localRange[1] +
+                     *         | ||                 ||         ||  halo * 2
+                     *         V ||                 ||         ||
+                     *           |+-----------------++---------+|  |
+                     *           |+-----------------++---------+|  |
+                     *           ||                 ||         ||  |
+                     *           ||    it  3 load   ||it 4 load||  |
+                     *           ||                 ||         ||  |
+                     *           |+-----------------++---------+|  |
+                     *           +------------------------------+  V
+                     */
 
                     for (auto i = localId[0]; i < scratchpadRange[0];
                          i += localRange[0]) {

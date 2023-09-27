@@ -27,7 +27,7 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   }
 
   try {
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}};
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
@@ -67,7 +67,7 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   }
 
   try {
-    auto gpuQueue = sycl::queue{sycl::gpu_selector{}};
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};

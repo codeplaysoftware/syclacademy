@@ -70,7 +70,7 @@
 						#### What is SYCL?
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./sycl_and_cpp.png "SYCL")
+						![SYCL](../common-revealjs/images/sycl_and_cpp.png "SYCL")
 					</div>
 					<div class="hbox" data-markdown>
 						SYCL is a single source, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
@@ -88,7 +88,7 @@
 						A first example of SYCL code. Elements will be explained in coming sections!
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](./sycl_first_sample_code.png "SYCL")
+						![SYCL](../common-revealjs/images/sycl_first_sample_code.png "SYCL")
 					</div>
 				</section>
 				<!--Slide 4A-->
@@ -111,7 +111,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./sycl_ecosystem.png "SYCL")
+							![SYCL](../common-revealjs/images/sycl.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							*  SYCL allows you to write both host CPU and device code in the same C++ source file
@@ -154,7 +154,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./code_comparison.png "SYCL-Comparison")
+							![SYCL](../common-revealjs/images/code_comparison.png "SYCL-Comparison")
 						</div>
 						<div class="col" data-markdown>
 							* SYCL allows you to write standard C++
@@ -180,7 +180,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./sycl_targets.png "SYCL-Targets")
+							![SYCL](../common-revealjs/images/sycl_targets.png "SYCL-Targets")
 						</div>
 						<div class="col" data-markdown>
 							* SYCL can target any device supported by its backend
@@ -202,7 +202,7 @@
 					</div>
 					<div class="container">
 					<aside class="aside aside-1" data-markdown>
-						![SYCL](./sycl_spec_versions.png "SYCL-OpenCL")
+						![SYCL](../common-revealjs/images/sycl_spec_versions.png "SYCL-OpenCL")
 					</aside>
 				</section>
 				<!--Slide 10-->
@@ -210,7 +210,7 @@
 					<div class="hbox" data-markdown>
 						#### SYCL implementations
 					</div>
-                                        <img src="./sycl_implementation_targets.png" alt="SYCL-Implementations">
+                                        <img src="../common-revealjs/images/sycl_implementation_targets.png" alt="SYCL-Implementations">
 				</section>
 				<!--Slide 11-->
 				<section>
@@ -219,7 +219,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Implementation](./sycl_implementation_sycl_interface.png "SYCL-Implementation")
+							![SYCL Interface](../common-revealjs/images/sycl_implementation_interface.svg "SYCL-Interface")
 						</div>
 						<div class="col" data-markdown>
 							* The SYCL interface is a C++ template library that developers can use to access the features of SYCL
@@ -238,7 +238,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Runtime](./sycl_implementation_sycl_runtime.png "SYCL-Host-Device")
+							![SYCL Runtime](../common-revealjs/images/sycl_implementation_runtime.svg "SYCL-Runtime")
 						</div>
 						<div class="col" data-markdown>
 							* The SYCL runtime is a library that schedules and executes work
@@ -252,7 +252,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Host Device](./sycl_implementation_host_device.png "SYCL-Host-Device")
+							![SYCL CPU Device](../common-revealjs/images/sycl_implementation_cpu.svg "SYCL-CPU-Device")
 						</div>
 						<div class="col" data-markdown>
 						  * There is no Host Device in SYCL (as of SYCL 2020)
@@ -269,7 +269,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Backend](./sycl_implementation_backend_interface.png "SYCL-Backend")
+							![SYCL Backend](../common-revealjs/images/sycl_implementation_backend.svg "SYCL-Backend")
 						</div>
 						<div class="col" data-markdown>
 							* The back-end interface is where the SYCL runtime calls down into a back-end in order to execute on a particular device  
@@ -284,7 +284,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL Compiler](./sycl_implementation_sycl_compiler.png "SYCL-Compiler")
+							![SYCL Compiler](../common-revealjs/images/sycl_implementation_compiler.svg "SYCL-Compiler")
 						</div>
 						<div class="col" data-markdown>
 							* The SYCL device compiler is a C++ compiler which can identify SYCL kernels and compile them down to an IR or ISA
@@ -303,7 +303,7 @@
 						#### Std C++ compilation model
 					</div>
 					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_1.png "SYCL")
+						![SYCL Backend](../common-revealjs/images/compilation_1.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* This is the typical compilation model for a C++ source file.
@@ -315,7 +315,7 @@
 						#### Std C++ compilation model
 					</div>
 					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_2.png "SYCL")
+						![SYCL Backend](../common-revealjs/images/compilation_2.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* So how do you compile a source file to also target the GPU?
@@ -327,7 +327,7 @@
 						#### Std C++ compilation model
 					</div>
 					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_3.png "SYCL")
+						![SYCL Backend](../common-revealjs/images/compilation_3.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* As SYCL is single source the kernel functions are standard C++ function objects or lambda expressions.
@@ -340,7 +340,7 @@
 						#### Std C++ compilation model
 					</div>
 					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_4.png "SYCL")
+						![SYCL Backend](../common-revealjs/images/compilation_4.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* As well as the standard C++ compiler, the source file is also compiled by a SYCL device compiler.
@@ -353,7 +353,7 @@
 						#### Std C++ compilation model
 					</div>
 					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_5.png "SYCL")
+						![SYCL Backend](../common-revealjs/images/compilation_5.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* The CPU object is then linked with the device IR or ISA to form a single executable with both the CPU and GPU code.
@@ -365,7 +365,7 @@
 						#### Std C++ compilation model
 					</div>
 					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_5.png "SYCL")
+						![SYCL Backend](../common-revealjs/images/compilation_5.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* This is the multi-compiler compilation model.
@@ -378,7 +378,7 @@
 						#### Std C++ compilation model
 					</div>
 					<div class="container" data-markdown>
-						![SYCL Backend](./compilation_6.png "SYCL")
+						![SYCL Backend](../common-revealjs/images/compilation_6.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* SYCL also supports a single-compiler compilation model.

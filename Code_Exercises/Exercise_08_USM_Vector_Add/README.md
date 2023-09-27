@@ -42,7 +42,7 @@ Now you can define the kernel function itself, which is largely the same as in
 exercise 7.
 
 This can be done differently from the buffer/accessor model, by calling the
-shortcut member function `single_task` on the `queue` rather than creating a
+shortcut member function `parallel_for` on the `queue` rather than creating a
 command group.
 
 Note that as you are accessing a pointer rather than an `accessor` you must

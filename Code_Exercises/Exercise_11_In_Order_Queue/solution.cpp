@@ -111,6 +111,7 @@ TEST_CASE("usm_in_order_queue", "in_order_queue_solution") {
   try {
     auto inOrderQueue = sycl::queue{
         usm_selector, {sycl::property::queue::in_order{}}};
+
     auto devicePtrInA = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrInB = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrInC = sycl::malloc_device<float>(dataSize, inOrderQueue);

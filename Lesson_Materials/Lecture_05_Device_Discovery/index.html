@@ -85,27 +85,10 @@
 						  * CPU, GPU, FPGA, and other kinds of accelerators.
 					</div>
 					<div class="col" data-markdown>
-						![SYCL](./devices-1.png "SYCL-Devices")
+						![SYCL](../common-revealjs/images/devices-1.png "SYCL-Devices")
 					</div>
 				</section>
 				<!--Slide 5-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Host device
-					</div>
-					<div class="container" data-markdown>
-						* In SYCL there is also a host device which executes SYCL kernels as native C++.
-						  * The host device emulates the execution and memory model of a SYCL device.
-						* This is very useful for debugging SYCL kernels.
-						* There is only ever one host device and that device is associated with a host platform.
-						  * This is generally a CPU implementation.
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](./devices-2.png "SYCL-Devices")
-						</div>
-					</div>
-				</section>
 				<!--Slide 6-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -113,12 +96,10 @@
 					</div>
 					<div class="container" data-markdown>
 						* Platforms and devices are represented by the `platform` and `device` classes respectively.
-						* A default constructed platform object represents the host platform.
-						* A default constructed device object represents the host device.
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](./devices-3.png "SYCL-Devices")
+							![SYCL](../common-revealjs/images/devices-1.png "SYCL-Devices")
 						</div>
 					</div>
 				<!--Slide 7-->
@@ -132,7 +113,7 @@
 						  * The topology can be manually queried and iterated over via APIs of the platform and device classes .
 						  * The topology can be automatically queried and iterated over using a use  specified heuristic by a device selector object.
 					</div>
-                </section>
+				</section>
 				<!--Slide 8-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -146,13 +127,12 @@ auto platforms = platform::get_platforms();
 							</code></pre>
 						</div>
 						<div class="col-right-1" data-markdown>
-						    ![SYCL](./devices-5.png "SYCL-Devices")
+						    ![SYCL](../common-revealjs/images/devices-5.png "SYCL-Devices")
 						</div>
 					</div>
 					<div class="smaller-size-font" data-markdown>
 							* The platform class provides the static function `get_platforms`.
 							  * It retrieves a vector of all available platforms in the system.
-							* This includes the host platform.
 					</div>
 				</section>
 				<!--Slide 9-->
@@ -168,14 +148,13 @@ auto intelDevices = intelPlatform.get_devices();
 							</code></pre>
 						</div>
 						<div class="col-right-1" data-markdown>
-						    ![SYCL](./devices-6.png "SYCL-Devices")
+						    ![SYCL](../common-revealjs/images/devices-6.png "SYCL-Devices")
 						</div>
 					</div>
 					<div class="smaller-size-font" data-markdown>
 							* The platform class provides the member function
 							`get_devices` that returns a vector of all devices
 							associated with that platform.
-							* This includes the host device if the platform object represents a host platform.
 					</div>
 				</section>
 				<!--Slide 10-->
@@ -191,14 +170,13 @@ auto devices = device::get_devices();
 							</code></pre>
 						</div>
 						<div class="col-right-1" data-markdown>
-						    ![SYCL](./devices-7.png "SYCL-Devices")
+						    ![SYCL](../common-revealjs/images/devices-7.png "SYCL-Devices")
 						</div>
 					</div>
 					<div class="smaller-size-font" data-markdown>
 							* The device class also provides the static
 							function `get_devices` that returns a vector of all
 							available devices in the system.
-							* This includes the host device.
 					</div>
 				</section>
 				<!--Slide 11-->
@@ -208,12 +186,12 @@ auto devices = device::get_devices();
 					</div>
 					<div class="container">
 						<div class="col-left-1" data-markdown>
-							![Device Topology](./topology-1.png "Device-Topology")
+							![Device Topology](../common-revealjs/images/topology-1.png "Device-Topology")
 						</div>
 						<div class="col-right-1" data-markdown>
 							* To simplify the process of traversing the system topology SYCL provides device selectors.
-							* A device selector is is a C++ function object, derived from the `device_selector` class, which defines a heuristic for scoring devices.
-							* SYCL provides a number of standard device selectors, e.g. `default_selector`, `gpu_selector`, etc.
+							* A device selector is is a callable C++ object which defines a heuristic for scoring devices.
+							* SYCL provides a number of standard device selectors, e.g. `default_selector_v`, `gpu_selector_v`, etc.
 							* Users can also create their own device selectors.
 						</div>
 					</div>
@@ -226,16 +204,16 @@ auto devices = device::get_devices();
 					<div class="container">
 						<div class="col-left-1">
 							<code><pre>
-auto gpuDevice = gpu_selector{}.select_device();
+auto gpuDevice = device(gpu_selector_v); 
 							</code></pre>
 						</div>
 						<div class="col-right-1" data-markdown>
-						    ![Device Topology](./topology-1.png "Device-Topology")
+						    ![Device Topology](../common-revealjs/images/topology-1.png "Device-Topology")
 						</div>
 					</div>
 					<div class="container" data-markdown>
-							* The `device_selector` class provides the member function `select_device`.
-							* Queries all devices and returns the one with the highest "score".
+							* A device selector takes a parameter of type `const device &` and gives it a "score".
+							* Used to query all devices and return the one with the highest "score".
 							* A device with a negative score will never be chosen.
 					</div>
 				</section>
@@ -247,16 +225,18 @@ auto gpuDevice = gpu_selector{}.select_device();
 					<div class="container">
 						<div class="col-left-1">
 							<code><pre>
-auto chosenDevice = default_selector{}.select_device();
+auto chosenDevice = device();
+auto chosenDevice = device(default_selector_v);
 							</code></pre>
 						</div>
 						<div class="col-right-1" data-markdown>
-						    ![Device Topology](./topology-1.png "Device-Topology")
+						    ![Device Topology](../common-revealjs/images/topology-1.png "Device-Topology")
 						</div>
 					</div>
 					<div class="container" data-markdown>
-							* The `default_selector` is a standard device selector type.
+							* The `default_selector_v` is a standard device selector.
 							* Chooses a device based on an implementation defined heuristic.
+							* A default constructed device or platform will use this selector.
 					</div>
 				</section>
 				<!--Slide 14-->
@@ -266,17 +246,13 @@ auto chosenDevice = default_selector{}.select_device();
 					</div>
 					<div class="container">
 						<code><pre>
-struct my_gpu_selector : <mark>public device_selector</mark> {
+<mark>int my_gpu_selector(const device& dev) {</mark>
 
-  <mark>int operator()(const device& dev) const override {</mark>
-
-  <mark>}</mark>
-};
+<mark>}</mark>
 						</code></pre>
 					</div>
 					<div class="hbox" data-markdown>
-						* A device selector must inherit from the `device_selector` class.
-							* In SYCL 2020 it can be any callable object.
+						* A device selector can be any callable object.
 						* A device selector must have a function call operator which takes a reference to a device.
 					</div>
 				</section>
@@ -287,17 +263,14 @@ struct my_gpu_selector : <mark>public device_selector</mark> {
 					</div>
 					<div class="container">
 						<code><pre>
-struct my_gpu_selector : public device_selector {
-
-  int operator()(const device& dev) const override {
-    <mark>if (dev.is_gpu()){</mark>
-      <mark>return 1;</mark>
-    <mark>}</mark>
-    <mark>else {</mark>
-      <mark>return -1;</mark>
-    <mark>}</mark>
-  }
-};
+int my_gpu_selector(const device& dev) {
+  <mark>if (dev.is_gpu()){</mark>
+    <mark>return 1;</mark>
+  <mark>}</mark>
+  <mark>else {</mark>
+    <mark>return -1;</mark>
+  <mark>}</mark>
+}
 						</code></pre>
 					</div>
 					<div class="hbox" data-markdown>
@@ -312,17 +285,14 @@ struct my_gpu_selector : public device_selector {
 					</div>
 					<div class="container">
 						<code><pre>
-struct my_gpu_selector : public device_selector {
-
-  int operator()(const device& dev) const override {
-    if (dev.is_gpu()){ 
-      return 1; 
-    } 
-    else { 
-      return -1; 
-    }
+int my_gpu_selector(const device& dev) {
+  if (dev.is_gpu()){
+    return 1;
   }
-};
+  else {
+    return -1;
+  }
+}
 
 int main(int argc, char *argv[]) {
   <mark>auto gpuQueue = queue{my_gpu_selector};</mark>
@@ -348,7 +318,7 @@ auto platformName
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>
-						    ![SYCL](./topology-2.png "SYCL-Devices")
+						    ![SYCL](../common-revealjs/images/topology-2.png "SYCL-Devices")
 						</div>
 					</div>
 					<div class="container" data-markdown>
