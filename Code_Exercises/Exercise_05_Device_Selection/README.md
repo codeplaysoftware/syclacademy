@@ -28,7 +28,7 @@ and see which device those choose.
 
 ### 3.) Create your own device selector
 
-Create a device selector using the template below. implementing the function
+Create a device selector using the template below. Implement the function
 call operator, using various device and platform info queries like the one we
 used earlier to query the device name and then use that device selector in the
 queue constructor. 

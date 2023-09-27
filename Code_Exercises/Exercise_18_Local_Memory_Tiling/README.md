@@ -10,10 +10,9 @@ tiles according to work-groups in order to compare the performance difference.
 
 ### 1.) Use local memory
 
-Allocate local memory for the kernel function by creating a local `accessor`,
-you can do this by creating a `sycl::local_accessor`.
+Allocate local memory for the kernel function by creating a local `accessor`.
 
-The local `accessor` is create by specifying a `range` which is the number of
+The local `accessor` is created by specifying a `range` which is the number of
 elements to allocate.
 
 Note that local memory is allocated per work-group and each work-group can only
