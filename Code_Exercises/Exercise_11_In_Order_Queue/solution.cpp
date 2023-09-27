@@ -53,11 +53,10 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
     auto bufOut = sycl::buffer{out, sycl::range{dataSize}};
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor acc{bufInA, cgh, sycl::read_write};
+      sycl::accessor accInA{bufInA, cgh, sycl::read_write};
 
-      cgh.parallel_for<kernel_a_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        acc[idx] = acc[idx] * 2.0f;
-      });
+      cgh.parallel_for<kernel_a_1>(
+          sycl::range{dataSize}, [=](sycl::id<1> idx) { accInA[idx] *= 2.0f; });
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
@@ -70,21 +69,21 @@ TEST_CASE("buffer_accessor_in_order_queue", "in_order_queue_solution") {
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accIn{bufInA, cgh, sycl::read_only};
-      sycl::accessor accOut{bufInC, cgh, sycl::write_only};
+      sycl::accessor accInA{bufInA, cgh, sycl::read_only};
+      sycl::accessor accInC{bufInC, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_c_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accOut[idx] -= accIn[idx];
+        accInC[idx] -= accInA[idx];
       });
     });
 
     inOrderQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accInA{bufInB, cgh, sycl::read_only};
-      sycl::accessor accInB{bufInC, cgh, sycl::read_only};
+      sycl::accessor accInB{bufInB, cgh, sycl::read_only};
+      sycl::accessor accInC{bufInC, cgh, sycl::read_only};
       sycl::accessor accOut{bufOut, cgh, sycl::write_only};
 
       cgh.parallel_for<kernel_d_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accOut[idx] = accInA[idx] + accInB[idx];
+        accOut[idx] = accInB[idx] + accInC[idx];
       });
     });
 
