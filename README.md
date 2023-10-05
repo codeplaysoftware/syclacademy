@@ -170,12 +170,13 @@ For `<cmake_generator>` / `<cmake_arch>` we recommend:
 
 * Visual Studio 16 2019 / x64 (Windows)
 * Ninja / NA (Windows or Linux)
-* Make / NA (Linux)
+* Make / NA (Linux) i.e. "-GUnix Makefiles"
 
 For `sycl_implementation` this can be one of:
 
 * `SYCL_ACADEMY_USE_COMPUTECPP`
 * `SYCL_ACADEMY_USE_HIPSYCL`
+* `SYCL_ACADEMY_USE_DPCPP`
 
 You can also specify the additional optional options:
 
@@ -388,4 +389,3 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-19-exercise]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/README.md
 [lesson-19-source]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/source.cpp
 [lesson-19-solution]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/solution.cpp
-
