@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_08_usm_vector_add source)
-add_sycl_executable(exercise_08_usm_vector_add solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_08_usm_vector_add solution)
+endif()

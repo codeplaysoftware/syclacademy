@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_10_managing_dependencies source)
-add_sycl_executable(exercise_10_managing_dependencies solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_10_managing_dependencies solution)
+endif()

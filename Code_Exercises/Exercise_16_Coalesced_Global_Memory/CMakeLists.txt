@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_16_coalesced_global_memory source)
-add_sycl_executable(exercise_16_coalesced_global_memory solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_16_coalesced_global_memory solution)
+endif()

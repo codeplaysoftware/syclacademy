@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_04_handling_errors source)
-add_sycl_executable(exercise_04_handling_errors solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_04_handling_errors solution)
+endif()

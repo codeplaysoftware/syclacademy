@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_12_temporary_data source)
-add_sycl_executable(exercise_12_temporary_data solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_12_temporary_data solution)
+endif()

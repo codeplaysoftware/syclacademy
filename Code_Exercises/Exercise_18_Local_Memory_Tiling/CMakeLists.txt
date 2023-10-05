@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_18_local_memory_tiling source)
-add_sycl_executable(exercise_18_local_memory_tiling solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_18_local_memory_tiling solution)
+endif()

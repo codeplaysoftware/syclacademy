@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_03_scalar_add source)
-add_sycl_executable(exercise_03_scalar_add solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_03_scalar_add solution)
+endif()

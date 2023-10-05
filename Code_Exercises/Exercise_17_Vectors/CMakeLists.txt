@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_17_vectors source)
-add_sycl_executable(exercise_17_vectors solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_17_vectors solution)
+endif()

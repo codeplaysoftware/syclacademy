@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_19_work_group_sizes source)
-add_sycl_executable(exercise_19_work_group_sizes solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_19_work_group_sizes solution)
+endif()

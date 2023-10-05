@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_02_hello_world source)
-add_sycl_executable(exercise_02_hello_world solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_02_hello_world solution)
+endif()

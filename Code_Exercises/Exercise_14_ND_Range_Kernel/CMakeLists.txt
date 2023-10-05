@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_14_nd_range_kernel source)
-add_sycl_executable(exercise_14_nd_range_kernel solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_14_nd_range_kernel solution)
+endif()

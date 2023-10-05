@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_05_device_selection source)
-add_sycl_executable(exercise_05_device_selection solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_05_device_selection solution)
+endif()

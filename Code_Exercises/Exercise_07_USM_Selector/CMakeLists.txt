@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_07_usm_selector source)
-add_sycl_executable(exercise_07_usm_selector solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_07_usm_selector solution)
+endif()

@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_11_in_order_queue source)
-add_sycl_executable(exercise_11_in_order_queue solution)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_11_in_order_queue solution)
+endif()
