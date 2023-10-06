@@ -191,6 +191,13 @@ always be required.
 This will enable building the solutions for each exercise as well as the source
 files. This is disabled by default.
 
+-DSYCL_ACADEMY_BUILD_EXERCISES
+
+The default for this option when not specified is ALL - all exercises (execept no. 20) will be configured and built.
+The option can used explicitly, i.e., **-DSYCL_ACADEMY_BUILD_EXERCISES=ALL**.
+To build an individual exercise, use this option along with the number of the exercise to build.
+For example **-DSYCL_ACADEMY_BUILD_EXERCISES=2**.
+
 #### Additional cmake arguments for hipSYCL
 
 When building with hipSYCL, cmake will additionally require you to specify the
