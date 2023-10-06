@@ -23,7 +23,9 @@ message(STATUS ">> Top level")
 option(SYCL_ACADEMY_USE_COMPUTECPP "Configure to compile with ComputeCpp" OFF)
 option(SYCL_ACADEMY_USE_DPCPP "Configure to compile with Intel DPC++" OFF)
 option(SYCL_ACADEMY_USE_HIPSYCL "Configure to compile with AMD hipSYCL" OFF)
-option(SYCL_ACADEMY_ENABLE_SOLUTIONS "Include solution files in project" OFF)
+option(SYCL_ACADEMY_ENABLE_SOLUTIONS "Include solution source files in the project" OFF)
+# State which exercises to build. ALL = build all or give a number for a particular exercise.
+set(SYCL_ACADEMY_BUILD_EXERCISES "ALL" CACHE STRING "Some user-specified option")
 
 # Variables
 
@@ -46,6 +48,17 @@ endif()
 if (${SYCL_IMPLEMENTATIONS_USED} GREATER 1)
   message(FATAL_ERROR "Multiple SYCL implementations specified, please specify only one of the following "
   "set one of SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_HIPSYCL or SYCL_ACADEMY_USE_DPCPP to ON.")
+endif()
+set(argokcounter 0)
+if (${SYCL_ACADEMY_BUILD_EXERCISES} GREATER 0)
+  math(EXPR argokcounter ${argokcounter}+1)
+endif()
+if (${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "ALL")
+  math(EXPR argokcounter ${argokcounter}+1)
+endif()
+if (${argokcounter} EQUAL 0)
+  message(FATAL_ERROR "Option SYCL_ACADEMY_BUILD_EXERCISES was not specified. The option can be specified with either "
+  "ALL or the number of the exercise i.e. 3 equals build exercise 3.")
 endif()
 
 # Common setup

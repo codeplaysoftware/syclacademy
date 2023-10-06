@@ -8,7 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_09_synchronization source)
+add_sycl_executable(9 exercise_09_synchronization source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(exercise_09_synchronization solution)
+  add_sycl_executable(9 exercise_09_synchronization solution)
 endif()

@@ -8,7 +8,23 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-function(add_sycl_executable prefix source)
+message(STATUS ">> CMake Exercises")
+message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
+
+function(add_sycl_executable exercise_number prefix source)
+  # Validate commmand line input arguments
+  set(argokcounter 0)
+  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "ALL")
+    math(EXPR argokcounter ${counter}+1)
+  endif()
+  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "${exercise_number}")
+    math(EXPR argokcounter ${counter}+1)
+  endif()
+  if(${argokcounter} EQUAL 0)
+    return()
+  endif()
+
+  message(STATUS ">> CMake Exercise ${exercise_number}")
   add_executable("${prefix}_${source}" "${source}.cpp")
   target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_LANGUAGE_VERSION=2020)
   if(${SYCL_ACADEMY_USE_COMPUTECPP})
@@ -22,6 +38,7 @@ function(add_sycl_executable prefix source)
   set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON)  
   add_test(${prefix}_${source} ${prefix}_${source})
+  message(STATUS "<< CMake Exercise ${exercise_number}")
 endfunction()
 
 function(add_sycl_executable_dpcpp prefix source)
@@ -47,3 +64,5 @@ add_subdirectory(Exercise_16_Coalesced_Global_Memory)
 add_subdirectory(Exercise_17_Vectors)
 add_subdirectory(Exercise_18_Local_Memory_Tiling)
 add_subdirectory(Exercise_19_Work_Group_Sizes)
+
+message(STATUS "<< CMake Exercises")
