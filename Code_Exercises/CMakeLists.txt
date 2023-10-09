@@ -14,9 +14,7 @@ message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
 function(add_sycl_executable_computecpp prefix source)
   add_executable("${prefix}_${source}" "${source}.cpp")
   target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_LANGUAGE_VERSION=2020)
-  if(${SYCL_ACADEMY_USE_COMPUTECPP})
-    target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_ACADEMY_USE_COMPUTECPP)
-  endif()
+  target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_ACADEMY_USE_COMPUTECPP)
   target_include_directories("${prefix}_${source}" PRIVATE
     ${PROJECT_SOURCE_DIR}/Utilities/include 
     ${PROJECT_SOURCE_DIR}/External/stb)
@@ -27,7 +25,14 @@ function(add_sycl_executable_computecpp prefix source)
 endfunction()
 
 function(add_sycl_executable_hipSYCL prefix source)
-  add_sycl_executable_computecpp(prefix source)
+  add_executable("${prefix}_${source}" "${source}.cpp")
+  target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_LANGUAGE_VERSION=2020)
+  target_include_directories("${prefix}_${source}" PRIVATE
+    ${PROJECT_SOURCE_DIR}/Utilities/include 
+    ${PROJECT_SOURCE_DIR}/External/stb)
+  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads) 
+  target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
+  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)  
 endfunction()
 
 function(add_sycl_executable_dpcpp prefix source)
