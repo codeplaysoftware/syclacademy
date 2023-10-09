@@ -11,20 +11,7 @@
 message(STATUS ">> CMake Exercises")
 message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
 
-function(add_sycl_executable exercise_number prefix source)
-  # Validate commmand line input arguments
-  set(script_argOkCounter 0)
-  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "ALL")
-    math(EXPR script_argOkCounter ${counter}+1)
-  endif()
-  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "${exercise_number}")
-    math(EXPR script_argOkCounter ${counter}+1)
-  endif()
-  if(${script_argOkCounter} EQUAL 0)
-    return()
-  endif()
-
-  message(STATUS ">> CMake Exercise ${exercise_number}")
+function(add_sycl_executable_computecpp prefix source)
   add_executable("${prefix}_${source}" "${source}.cpp")
   target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_LANGUAGE_VERSION=2020)
   if(${SYCL_ACADEMY_USE_COMPUTECPP})
@@ -33,17 +20,50 @@ function(add_sycl_executable exercise_number prefix source)
   target_include_directories("${prefix}_${source}" PRIVATE
     ${PROJECT_SOURCE_DIR}/Utilities/include 
     ${PROJECT_SOURCE_DIR}/External/stb)
-  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads)
+  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads) 
   target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
-  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON)  
+  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)  
   add_test(${prefix}_${source} ${prefix}_${source})
-  message(STATUS "<< CMake Exercise ${exercise_number}")
+endfunction()
+
+function(add_sycl_executable_hipSYCL prefix source)
+  add_sycl_executable_computecpp(prefix source)
 endfunction()
 
 function(add_sycl_executable_dpcpp prefix source)
   # Not implemented
 endfunction()
+
+function(add_sycl_executable exercise_number prefix source)
+  # Validate commmand line input arguments
+  set(script_argOkCounter 0)
+  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "ALL")
+    math(EXPR script_argOkCounter ${script_argOkCounter}+1)
+  endif()
+  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "${exercise_number}")
+    math(EXPR script_argOkCounter ${script_argOkCounter}+1)
+  endif()
+  if(${script_argOkCounter} EQUAL 0)
+    # Skip this exercise, not selected.
+    return()
+  endif()
+
+  message(STATUS ">> CMake Exercise ${exercise_number}")
+  
+  if (SYCL_ACADEMY_USE_COMPUTECPP)
+    add_sycl_executable_computecp(prefix source)
+  endif()
+  if (SYCL_ACADEMY_USE_DPCPP)
+    add_sycl_executable_dpcpp(prefix source)
+  endif()
+  if (SYCL_ACADEMY_USE_HIPSYCL)
+    add_sycl_executable_hipSYCL(prefix source)
+  endif()
+
+  message(STATUS "<< CMake Exercise ${exercise_number}")
+endfunction()
+
+
 
 add_subdirectory(Exercise_01_Compiling_with_SYCL)
 add_subdirectory(Exercise_02_Hello_World)
