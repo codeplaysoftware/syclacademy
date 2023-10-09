@@ -83,11 +83,20 @@ if (SYCL_ACADEMY_USE_COMPUTECPP)
   find_package(ComputeCpp REQUIRED)
 endif()
 
-# No further DPC++ setup required here beyond normal DPC++ installation 
+# DPC++ setup 
+if (SYCL_ACADEMY_USE_DPCPP)
+  set(DPCPP_DIR ${SYCL_ACADEMY_INSTALL_ROOT}/lib/cmake/hipSYCL)
+  find_package(hipSYCL CONFIG REQUIRED PATHS)
+endif()
 
 # hipSYCL setup
 
 if (SYCL_ACADEMY_USE_HIPSYCL)
+  if (NOT SYCL_ACADEMY_INSTALL_ROOT)
+  message(FATAL_ERROR "SYCL implementation root not provided, please specify "
+    "the path to the root of the chosen SYCL implementation using "
+    "SYCL_ACADEMY_INSTALL_ROOT=<path/to/install/root>.")
+  endif()
   set(hipSYCL_DIR ${SYCL_ACADEMY_INSTALL_ROOT}/lib/cmake/hipSYCL)
   find_package(hipSYCL CONFIG REQUIRED PATHS)
 endif()
