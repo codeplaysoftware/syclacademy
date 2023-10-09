@@ -47,7 +47,8 @@ if (${SYCL_IMPLEMENTATIONS_USED} EQUAL 0)
 endif()
 if (${SYCL_IMPLEMENTATIONS_USED} GREATER 1)
   message(FATAL_ERROR "Multiple SYCL implementations specified, please specify only one of the following "
-  "set one of SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_HIPSYCL or SYCL_ACADEMY_USE_DPCPP to ON.")
+  "set one of SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_HIPSYCL or SYCL_ACADEMY_USE_DPCPP to ON. "
+  "Clear the CMake cache (delete the build directory) if a previous option was entered.")
 endif()
 set(script_argOkCounter 0)
 if (${SYCL_ACADEMY_BUILD_EXERCISES} GREATER 0)
@@ -85,8 +86,7 @@ endif()
 
 # DPC++ setup 
 if (SYCL_ACADEMY_USE_DPCPP)
-  set(DPCPP_DIR ${SYCL_ACADEMY_INSTALL_ROOT}/lib/cmake/hipSYCL)
-  find_package(hipSYCL CONFIG REQUIRED PATHS)
+
 endif()
 
 # hipSYCL setup
