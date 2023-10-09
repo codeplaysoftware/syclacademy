@@ -13,14 +13,14 @@ message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
 
 function(add_sycl_executable exercise_number prefix source)
   # Validate commmand line input arguments
-  set(argokcounter 0)
+  set(script_argOkCounter 0)
   if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "ALL")
-    math(EXPR argokcounter ${counter}+1)
+    math(EXPR script_argOkCounter ${counter}+1)
   endif()
   if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "${exercise_number}")
-    math(EXPR argokcounter ${counter}+1)
+    math(EXPR script_argOkCounter ${counter}+1)
   endif()
-  if(${argokcounter} EQUAL 0)
+  if(${script_argOkCounter} EQUAL 0)
     return()
   endif()
 
