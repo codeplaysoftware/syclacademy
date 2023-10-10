@@ -211,10 +211,7 @@ Available backends are:
 * `hip`  - HIP backend for AMD GPUs. Requires specification of targets of the form gfxXYZ, e.g. gfx906 for Vega 20, gfx900 for Vega 10
 * `spirv` - use clang SYCL driver to generate spirv (experimental)
 
-### Compiling directly (DPC++ only)
-
-If you are using DPC++ there is no CMake integration, but it is very simple to
-use the DPC++ compiler directly.
+### Getting started with compiling DPC++
 
 First you have to ensure that your environment is configured to use DPC++ (note
 if you are using the Intel DevCloud then you don't need to do this step).
@@ -238,6 +235,8 @@ Once that's done you can invoke the DPC++ compiler as follows:
 
 Where `<syclacademy_root>` is the path to the root directory of where you cloned
 this repository. Note that on Windows you need to add the option /EHsc to avoid exception handling error. 
+
+The CMake configuration can also be used to build the exercises, see the section **Configuring using CMake** above.
 
 ## Working on the Exercises
 Once you have a working SYCL compiler, you are ready to start writing some SYCL code. To find the first exercise:
