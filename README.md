@@ -194,10 +194,19 @@ files. This is disabled by default.
 -DSYCL_ACADEMY_BUILD_EXERCISES
 
 The default for this option when not specified is ALL - all exercises (except no. 20) will be configured and built.
-The option can used explicitly, i.e., 
-`-DSYCL_ACADEMY_BUILD_EXERCISES=ALL`.
+The option can used explicitly, i.e., `-DSYCL_ACADEMY_BUILD_EXERCISES=ALL`.
 To build an individual exercise, use this option along with the number of the exercise to build.
 For example `-DSYCL_ACADEMY_BUILD_EXERCISES=2`.
+
+-DCMAKE_BUILD_TYPE=Release
+
+The build configuration for all exercises defaults to a debug build if this option is not specified.
+
+#### Additional cmake arguments for DCP++
+
+-DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+
+This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake module package to assist it in its configuration. To command line arguments must be used to initiate this configuration correctly.
 
 #### Additional cmake arguments for hipSYCL
 
