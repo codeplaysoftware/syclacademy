@@ -6,13 +6,22 @@
 
   You should have received a copy of the license along with this work.  If not,
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
+
+  Envoking CMake from the command line example usage:
+  cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=2 
+  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 ]]
 
 # Almost all CMake files should start with this
 # You should always specify a range with the newest
 # and oldest tested versions of CMake. This will ensure
-# you pick up the best policies.
-cmake_minimum_required(VERSION 3.11...3.27)
+# you pick up the best policies. Minimum version required
+# by /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadNeSYCL.txt
+if(WIN32)
+  cmake_minimum_required(VERSION 3.23...3.27)
+else()
+  cmake_minimum_required(VERSION 3.20...3.27)
+endif()
 
 project (SYCLAcademy)
 
@@ -85,8 +94,13 @@ if (SYCL_ACADEMY_USE_COMPUTECPP)
 endif()
 
 # DPC++ setup 
-if (SYCL_ACADEMY_USE_DPCPP)
 
+if (SYCL_ACADEMY_USE_DPCPP)
+# For DPCPP module to work, find_package to work, use the options
+# -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx on the command line.
+# See /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadMeSYCL.txt
+  set(dpcpp_DIR /opt/intel/oneapi/compiler/latest/linux/IntelSYCL)
+  find_package(IntelSYCL REQUIRED)
 endif()
 
 # hipSYCL setup
