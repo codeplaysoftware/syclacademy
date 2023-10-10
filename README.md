@@ -152,7 +152,7 @@ implementation you are wishing to build for.
 * An appropriate build system for the platform you are targeting (CMake, Ninja,
 Make, Visual Studio).
 
-### Configuring using CMake (ComputeCpp CE and hipSYCL only)
+### Configuring using CMake
 
 Clone this repository, there are some additional dependencies configured as git
 sub-modules so make sure to clone those as well. Then simply invoke CMake as
