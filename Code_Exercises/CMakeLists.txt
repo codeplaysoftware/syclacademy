@@ -11,25 +11,6 @@
 message(STATUS ">> CMake Exercises")
 message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
 
-# CMake function to build a ComputeCPP configuration and create executable binaries
-# from ComputeCPP libraries. 
-function( add_sycl_executable_computecpp prefix source )
-  if(NOT DEFINED ${CMAKE_BUILD_TYPE})
-    set(CMAKE_BUILD_TYPE "DEBUG")
-  endif()
-
-  add_executable("${prefix}_${source}" "${source}.cpp")
-  target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_LANGUAGE_VERSION=2020)
-  target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_ACADEMY_USE_COMPUTECPP)
-  target_include_directories("${prefix}_${source}" PRIVATE
-    ${PROJECT_SOURCE_DIR}/Utilities/include 
-    ${PROJECT_SOURCE_DIR}/External/stb)
-  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads) 
-  target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
-  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)  
-  add_test(${prefix}_${source} ${prefix}_${source})
-endfunction()
-
 # CMake function to build a hipSYCL configuration and create executable binaries
 # from hipSYCL libraries. 
 function( add_sycl_executable_hipSYCL prefix source )
@@ -89,9 +70,6 @@ function( add_sycl_executable exercise_number prefix source )
 
   message(STATUS ">> CMake Exercise ${exercise_number} ${source}")
   
-  if (SYCL_ACADEMY_USE_COMPUTECPP)
-    add_sycl_executable_computecp(${prefix} ${source})
-  endif()
   if (SYCL_ACADEMY_USE_DPCPP)
     add_sycl_executable_dpcpp(${prefix} ${source})
   endif()
