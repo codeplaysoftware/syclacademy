@@ -17,30 +17,6 @@ Academy repository.
 
 Depending on the SYCL implementation used, the steps to verify your environment might vary.
 
-#### When using ComputeCpp
-
-ComputeCpp includes a tool called `computecpp_info` which lists all the
-devices available on your machine and displays which are setup with the correct
-drivers.
-
-Open a console and run the executable located in the 'bin' directory of the
-ComputeCpp release package:
-
-```
-./computecpp_info
-```
-
-Look for the lines that say:
-```
-  Device is supported                     : YES - Tested internally by Codeplay
-  Software Ltd.
-```
-
-You can also add the option --verbose to display further information about the
-devices.
-
-From this output you can confirm your environment is setup correctly.
-
 #### When using hipSYCL
 
 With hipSYCL, you can skip this step. If you suspect later that your environment might not be set up correctly, you can set the environment variable `HIPSYCL_DEBUG_LEVEL=3` and execute your program. hipSYCL will then print (among many other things) all devices that it can find, for example:
@@ -82,12 +58,22 @@ Once that is done build your source file with your chosen build system.
 Once you've done that simply build the exercise with your chosen build system
 and invoke the executable.
 
-
 #### Build And Execution Hints
 
-For DPC++ (using the Intel DevCloud):
+For DPC++:
+Using CMake to configure then build the exercise:
 ```sh
-icpx -fsycl -o sycl-ex-1 -I../External/Catch2/single_include ../Code_Exercises/Exercise_01_compiling_with_SYCL/source.cpp
+mkdir build
+cd build
+cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=1 
+  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+make
+./Code_Exercises/Exercise_01_compiling_with_sycl/exercise_01_compiling_with_sycl_source
+```
+Alternatively from a terminal at the command line:
+```sh
+icpx -fsycl -o sycl-ex-1 -I../External/Catch2/single_include ../Code_Exercises/Exercise_01_compiling_with_sycl/source.cpp
+./sycl-ex-1
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only available through the job queue.
@@ -97,14 +83,6 @@ So wrap the binary into a script `job_submission` and run:
 ```sh
 qsub job_submission
 ```
-
-For ComputeCpp:
-```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_01_compiling_with_sycl_source
-./Code_Exercises/Exercise_01_Compiling_with_SYCL/exercise_01_compiling_with_sycl_source
-```
-
 
 For hipSYCL:
 ```sh

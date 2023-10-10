@@ -39,8 +39,34 @@ changing the `range` and `offset` of the two `buffer`s.
 
 ## Build and execution hints
 
-```
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_13_configuring_queues_source
+For DPC++:
+Using CMake to configure then build the exercise:
+```sh
+mkdir build
+cd build
+cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=13
+  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+make
 ./Code_Exercises/Exercise_13_Load_Balancing/exercise_13_load_balancing_source
+```
+Alternatively from a terminal at the command line:
+```sh
+icpx -fsycl -o sycl-ex-13 -I../External/Catch2/single_include ../Code_Exercises/Exercise_13_Load_Balancing/source.cpp
+./sycl-ex-13
+```
+
+For hipSYCL:
+```sh
+# <target specification> is a list of backends and devices to target, for example
+# "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
+# The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
+cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
+make exercise_13_load_balancing_source
+./Code_Exercises/Exercise_13_Load_Balancing/exercise_13_load_balancing_source
+```
+alternatively, without cmake:
+```sh
+cd Code_Exercises/Exercise_13_Load_Balancing
+/path/to/hipsycl/bin/syclcc -o sycl-ex-13 -I../../External/Catch2/single_include --hipsycl-targets="<target specification>" source.cpp
+./sycl-ex-13
 ```

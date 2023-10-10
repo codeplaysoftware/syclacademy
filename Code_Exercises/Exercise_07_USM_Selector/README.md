@@ -26,9 +26,20 @@ create a `queue` using it to select its device, remember to handle errors.
 
 #### Build And Execution Hints
 
-For DPC++ (using the Intel DevCloud):
+For DPC++:
+Using CMake to configure then build the exercise:
+```sh
+mkdir build
+cd build
+cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=7 
+  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+make
+./Code_Exercises/Exercise_07_USM_Selector/exercise_07_usm_selector_source
+```
+Alternatively from a terminal at the command line:
 ```sh
 icpx -fsycl -o sycl-ex-7 -I../External/Catch2/single_include ../Code_Exercises/Exercise_07_USM_Selector/source.cpp
+./sycl-ex-7
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only available through the job queue.
@@ -38,14 +49,6 @@ So wrap the binary into a script `job_submission` and run:
 ```sh
 qsub job_submission
 ```
-
-For ComputeCpp:
-```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_07_usm_selector_source
-./Code_Exercises/Exercise_07_USM_Selector/exercise_07_usm_selector_source
-```
-
 
 For hipSYCL:
 ```sh
