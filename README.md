@@ -70,32 +70,32 @@ A playlist of video content is [also available][video-playlist]. Though note tha
 slides and exercises may have changed since these videos were created so they
 may not match completely.
 
-| Lesson | Title | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
-|--------|-------|--------|----------|--------|----------|------------|-------|---------|
-| 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes | Yes |
-| 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
-| 03 | Managing Data | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes | Yes |
-| 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes | Yes |
-| 05 | Device Discovery | [slides][lesson-5-slides] | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes | Yes |
-| 06 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes | Yes |
-| 07 | Introduction to USM | [slides][lesson-7-slides] | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes | Yes |
-| 08 | Using USM | [slides][lesson-8-slides] | [exercise][lesson-8-exercise] | [source][lesson-8-source] | [solution][lesson-8-solution] | Yes | Yes | Yes |
-| 09 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes | Yes |
-| 10 | Data and Dependencies | [slides][lesson-10-slides] | [exercise][lesson-10-exercise] | [source][lesson-10-source] | [solution][lesson-10-solution] | Yes | Yes | Yes |
-| 11 | In Order Queue | [slides][lesson-11-slides] | [exercise][lesson-11-exercise] | [source][lesson-11-source] | [solution][lesson-11-solution] | Yes | Yes | Yes |
-| 12 | Advanced Data Flow | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes | Yes |
-| 13 | Multiple Devices | [slides][lesson-13-slides] | [exercise][lesson-13-exercise] | [source][lesson-13-source] | [solution][lesson-13-solution] | Yes | Yes | Yes |
-| 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes | Yes |
-| 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] |  | [solution][lesson-15-solution] | Yes | Yes | Yes |
-| 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes | Yes |
-| 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes | Yes |
-| 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes | Yes |
-| 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes | Yes |
+| Lesson | Title | Slides | Exercise | Source | Solution | DPC++ | hipSYCL |
+|--------|-------|--------|----------|--------|----------|-------|---------|
+| 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution]  Yes | Yes |
+| 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes |
+| 03 | Managing Data | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] | Yes | Yes |
+| 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes |
+| 05 | Device Discovery | [slides][lesson-5-slides] | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes |
+| 06 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes |
+| 07 | Introduction to USM | [slides][lesson-7-slides] | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes |
+| 08 | Using USM | [slides][lesson-8-slides] | [exercise][lesson-8-exercise] | [source][lesson-8-source] | [solution][lesson-8-solution] | Yes | Yes |
+| 09 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes |
+| 10 | Data and Dependencies | [slides][lesson-10-slides] | [exercise][lesson-10-exercise] | [source][lesson-10-source] | [solution][lesson-10-solution] | Yes | Yes |
+| 11 | In Order Queue | [slides][lesson-11-slides] | [exercise][lesson-11-exercise] | [source][lesson-11-source] | [solution][lesson-11-solution] | Yes | Yes |
+| 12 | Advanced Data Flow | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes |
+| 13 | Multiple Devices | [slides][lesson-13-slides] | [exercise][lesson-13-exercise] | [source][lesson-13-source] | [solution][lesson-13-solution] | Yes | Yes |
+| 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
+| 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] |  | [solution][lesson-15-solution] | Yes | Yes |
+| 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes |
+| 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes |
+| 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes |
+| 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes |
 
 
 ## Building the Exercises
 
-The exercises can be built for ComputeCpp CE (minimum v2.6.0), DPC++ and hipSYCL.
+The exercises can be built for DPC++ and hipSYCL.
 
 ### Supported Platforms
 
@@ -106,16 +106,15 @@ all of the exercises.
 
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
-| ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.7.0 |
-| DPC++ | [Intel DevCloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.4	|
-| hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> Nvidia GPU (CUDA) | Latest develop branch |
+| DPC++ | [Intel DevCloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)* | 2021.4	|
+| hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> NVIDIA GPU (CUDA) | Latest develop branch |
 
 \* See [here](troubleshooting-for-computecpp) for troubleshooting when using
 ComputeCpp with Visual Studio post toolset version 14.26.
 
-\*\* Supported in open source project only
+\* Supported in open source project only
 
-\*\*\* See [here][rocm-gpus] for the official list of GPUs supported by AMD for
+\*\* See [here][rocm-gpus] for the official list of GPUs supported by AMD for
 ROCm. We do not recommend using GPUs earlier than gfx9 (Vega 10 and Vega 20
 chips).
 
@@ -123,11 +122,6 @@ chips).
 
 First you'll need to install your chosen SYCL implementation and any
 dependencies they require.
-
-#### Installing ComputeCpp
-
-To set up ComputeCpp download the [ComputeCpp CE package][computecpp-download]
-and follow the [getting started instructions][computecpp-getting-started].
 
 #### Installing DPC++
 
@@ -152,7 +146,7 @@ implementation you are wishing to build for.
 * An appropriate build system for the platform you are targeting (CMake, Ninja,
 Make, Visual Studio).
 
-### Configuring using CMake (ComputeCpp CE and hipSYCL only)
+### Configuring using CMake 
 
 Clone this repository, there are some additional dependencies configured as git
 sub-modules so make sure to clone those as well. Then simply invoke CMake as
@@ -174,7 +168,6 @@ For `<cmake_generator>` / `<cmake_arch>` we recommend:
 
 For `sycl_implementation` this can be one of:
 
-* `SYCL_ACADEMY_USE_COMPUTECPP`
 * `SYCL_ACADEMY_USE_HIPSYCL`
 * `SYCL_ACADEMY_USE_DPCPP`
 
@@ -221,7 +214,6 @@ Available backends are:
 * `hip`  - HIP backend for AMD GPUs. Requires specification of targets of the form gfxXYZ, e.g. gfx906 for Vega 20, gfx900 for Vega 10
 * `spirv` - use clang SYCL driver to generate spirv (experimental)
 
-
 ### Compiling directly (DPC++ only)
 
 If you are using DPC++ there is no CMake integration, but it is very simple to
@@ -250,33 +242,6 @@ Once that's done you can invoke the DPC++ compiler as follows:
 Where `<syclacademy_root>` is the path to the root directory of where you cloned
 this repository. Note that on Windows you need to add the option /EHsc to avoid exception handling error. 
 
-### Troubleshooting for ComputeCpp on Windows
-
-If you are using ComputeCpp with a more recent version of Visual Sutdio 2019
-which has a toolset version greater than 14.26 you may encounter compilation
-errors in the C++ STL it's likely due to an unsupported version of the Visual
-Studio toolset, if you encounter this the solution is to configure the project
-to use an earlier troolset version, you can use the following steps to do this.
-
-* As a pre-requisite, open the Visual Studio 2019 Installer, select "Modify" and
-then open the "Individual components" tab and check the following components:
-  * `MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.26)`
-  * `C++/CLI support for v142 build tools (14.26)`
-* First we recommend opening the root directory of the SYCL Academy repository
-in Visual Studio 2019 and configuring CMake this way rather than running CMake
-on the command line as this makes configurating the toolset version easier.
-* Ensure that you are building in Release mode.
-* Next, add the following option to the CMake configuration:
-  * `-DCOMPUTECPP_DEVICE_COMPILER_FLAGS=-D_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH"`
-* Open `CMakeSettings.json` in the root directory and add the following:
-```
-  "environments": [
-    {
-      "VCToolsVersion" :  "14.26"
-    }
-  ],
-```
-
 ## Working on the Exercises
 Once you have a working SYCL compiler, you are ready to start writing some SYCL code. To find the first exercise:
 ```
@@ -295,12 +260,8 @@ Once you have completed any given exercise make sure to compare your implementat
 
 Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/introduction-to-sycl/introduction-to-sycl-2) tutorial introduces the concepts of SYCL. The website also provides the ability to compile and execute SYCL code from your web browser.
 
-
-
 SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 
-[computecpp-download]: https://developer.codeplay.com
-[computecpp-getting-started]: https://developer.codeplay.com/products/computecpp/ce/guides/getting-started?
 [dpcpp-getting-started]: https://software.intel.com/content/www/us/en/develop/articles/installation-guide-for-intel-oneapi-toolkits.html
 [intel-devcloud]: https://intelsoftwaresites.secure.force.com/devcloud/oneapi
 [docker-container-oneapi]: https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-intel-oneapi-base-linux/top/using-containers.html

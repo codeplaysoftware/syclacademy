@@ -1,6 +1,3 @@
-[submodule "External/computecpp-sdk"]
-	path = External/computecpp-sdk
-	url = https://github.com/codeplaysoftware/computecpp-sdk.git
 [submodule "External/stb"]
 	path = External/stb
 	url = https://github.com/nothings/stb.git
