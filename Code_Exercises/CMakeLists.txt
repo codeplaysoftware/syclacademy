@@ -67,7 +67,8 @@ function( add_sycl_executable_dpcpp prefix source )
   endif()
   
   add_executable(${TARGET_NAME} "${source}.cpp")
-  add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp")
+  # This function is from IntelSYCL cmake module
+  add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp") 
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/Catch2/single_include")
   target_link_libraries(${TARGET_NAME} PUBLIC Catch2::Catch2)
 endfunction()
@@ -86,7 +87,7 @@ function( add_sycl_executable exercise_number prefix source )
     return()
   endif()
 
-  message(STATUS ">> CMake Exercise ${exercise_number}")
+  message(STATUS ">> CMake Exercise ${exercise_number} ${source}")
   
   if (SYCL_ACADEMY_USE_COMPUTECPP)
     add_sycl_executable_computecp(${prefix} ${source})
@@ -98,7 +99,7 @@ function( add_sycl_executable exercise_number prefix source )
     add_sycl_executable_hipSYCL(${prefix} ${source})
   endif()
 
-  message(STATUS "<< CMake Exercise ${exercise_number}")
+  message(STATUS "<< CMake Exercise ${exercise_number} ${source}")
 endfunction()
 
 
