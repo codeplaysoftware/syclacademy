@@ -170,12 +170,13 @@ For `<cmake_generator>` / `<cmake_arch>` we recommend:
 
 * Visual Studio 16 2019 / x64 (Windows)
 * Ninja / NA (Windows or Linux)
-* Make / NA (Linux)
+* Make / NA (Linux) i.e. "-GUnix Makefiles"
 
 For `sycl_implementation` this can be one of:
 
 * `SYCL_ACADEMY_USE_COMPUTECPP`
 * `SYCL_ACADEMY_USE_HIPSYCL`
+* `SYCL_ACADEMY_USE_DPCPP`
 
 You can also specify the additional optional options:
 
@@ -189,6 +190,23 @@ always be required.
 
 This will enable building the solutions for each exercise as well as the source
 files. This is disabled by default.
+
+-DSYCL_ACADEMY_BUILD_EXERCISES
+
+The default for this option when not specified is ALL - all exercises (except no. 20) will be configured and built.
+The option can used explicitly, i.e., `-DSYCL_ACADEMY_BUILD_EXERCISES=ALL`.
+To build an individual exercise, use this option along with the number of the exercise to build.
+For example `-DSYCL_ACADEMY_BUILD_EXERCISES=2`.
+
+-DCMAKE_BUILD_TYPE=Release
+
+The build configuration for all exercises defaults to a debug build if this option is not specified.
+
+#### Additional cmake arguments for DCP++
+
+-DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+
+This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake module package to assist it in its configuration. To command line arguments must be used to initiate this configuration correctly.
 
 #### Additional cmake arguments for hipSYCL
 
@@ -388,4 +406,3 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-19-exercise]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/README.md
 [lesson-19-source]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/source.cpp
 [lesson-19-solution]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/solution.cpp
-

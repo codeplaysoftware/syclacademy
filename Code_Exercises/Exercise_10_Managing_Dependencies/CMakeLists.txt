@@ -8,5 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_10_managing_dependencies source)
-add_sycl_executable(exercise_10_managing_dependencies solution)
+add_sycl_executable(10 exercise_10_managing_dependencies source)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(10 exercise_10_managing_dependencies solution)
+endif()

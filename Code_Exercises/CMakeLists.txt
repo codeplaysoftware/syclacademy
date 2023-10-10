@@ -8,31 +8,101 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-function(add_sycl_executable prefix source)
-  add_executable("${prefix}_${source}" "${source}.cpp")
-  target_compile_definitions("${prefix}_${source}" PUBLIC
-    -DSYCL_LANGUAGE_VERSION=2020)
-  if(${SYCL_ACADEMY_USE_COMPUTECPP})
-    target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_ACADEMY_USE_COMPUTECPP)
-  endif()
-  target_include_directories("${prefix}_${source}" PRIVATE
-    ${PROJECT_SOURCE_DIR}/Utilities/include ${PROJECT_SOURCE_DIR}/External/stb)
-  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads)
-  target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
-  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON)
+message(STATUS ">> CMake Exercises")
+message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
 
-  add_sycl_to_target(
-    TARGET "${prefix}_${source}"
-    SOURCES "${source}.cpp"
-  )
-    
+# CMake function to build a ComputeCPP configuration and create executable binaries
+# from ComputeCPP libraries. 
+function( add_sycl_executable_computecpp prefix source )
+  if(NOT DEFINED ${CMAKE_BUILD_TYPE})
+    set(CMAKE_BUILD_TYPE "DEBUG")
+  endif()
+
+  add_executable("${prefix}_${source}" "${source}.cpp")
+  target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_LANGUAGE_VERSION=2020)
+  target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_ACADEMY_USE_COMPUTECPP)
+  target_include_directories("${prefix}_${source}" PRIVATE
+    ${PROJECT_SOURCE_DIR}/Utilities/include 
+    ${PROJECT_SOURCE_DIR}/External/stb)
+  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads) 
+  target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
+  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)  
   add_test(${prefix}_${source} ${prefix}_${source})
 endfunction()
 
-function(add_sycl_executable_dpcpp prefix source)
-  # Not implemented
+# CMake function to build a hipSYCL configuration and create executable binaries
+# from hipSYCL libraries. 
+function( add_sycl_executable_hipSYCL prefix source )
+  if(NOT DEFINED ${CMAKE_BUILD_TYPE})
+	  set(CMAKE_BUILD_TYPE "DEBUG")
+  endif()
+
+  add_executable("${prefix}_${source}" "${source}.cpp")
+  target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_LANGUAGE_VERSION=2020)
+  target_include_directories("${prefix}_${source}" PRIVATE
+    ${PROJECT_SOURCE_DIR}/Utilities/include 
+    ${PROJECT_SOURCE_DIR}/External/stb)
+  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads) 
+  target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
+  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)  
 endfunction()
+
+# CMake function to build a DPC++ configuration and create executable binaries
+# from oneAPI libraries. 
+function( add_sycl_executable_dpcpp prefix source )
+  if(NOT DEFINED ${CMAKE_BUILD_TYPE})
+    set(CMAKE_BUILD_TYPE "DEBUG")
+  endif()
+
+  set(CMAKE_VERBOSE_MAKEFILE ON)
+  set(TARGET_NAME "${prefix}_${source}")
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_COMPILER "icpx")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
+  if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+  else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+  endif()
+  
+  add_executable(${TARGET_NAME} "${source}.cpp")
+  # This function is from IntelSYCL cmake module
+  add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp") 
+  target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/Catch2/single_include")
+  target_link_libraries(${TARGET_NAME} PUBLIC Catch2::Catch2)
+endfunction()
+
+function( add_sycl_executable exercise_number prefix source )
+  # Validate commmand line input arguments
+  set(script_argOkCounter 0)
+  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "ALL")
+    math(EXPR script_argOkCounter ${script_argOkCounter}+1)
+  endif()
+  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "${exercise_number}")
+    math(EXPR script_argOkCounter ${script_argOkCounter}+1)
+  endif()
+  if(${script_argOkCounter} EQUAL 0)
+    # Skip this exercise, not selected.
+    return()
+  endif()
+
+  message(STATUS ">> CMake Exercise ${exercise_number} ${source}")
+  
+  if (SYCL_ACADEMY_USE_COMPUTECPP)
+    add_sycl_executable_computecp(${prefix} ${source})
+  endif()
+  if (SYCL_ACADEMY_USE_DPCPP)
+    add_sycl_executable_dpcpp(${prefix} ${source})
+  endif()
+  if (SYCL_ACADEMY_USE_HIPSYCL)
+    add_sycl_executable_hipSYCL(${prefix} ${source})
+  endif()
+
+  message(STATUS "<< CMake Exercise ${exercise_number} ${source}")
+endfunction()
+
+
 
 add_subdirectory(Exercise_01_Compiling_with_SYCL)
 add_subdirectory(Exercise_02_Hello_World)
@@ -53,3 +123,5 @@ add_subdirectory(Exercise_16_Coalesced_Global_Memory)
 add_subdirectory(Exercise_17_Vectors)
 add_subdirectory(Exercise_18_Local_Memory_Tiling)
 add_subdirectory(Exercise_19_Work_Group_Sizes)
+
+message(STATUS "<< CMake Exercises")

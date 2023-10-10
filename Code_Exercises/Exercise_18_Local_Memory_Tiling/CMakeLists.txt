@@ -8,5 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_18_local_memory_tiling source)
-add_sycl_executable(exercise_18_local_memory_tiling solution)
+add_sycl_executable(18 exercise_18_local_memory_tiling source)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(18 exercise_18_local_memory_tiling solution)
+endif()

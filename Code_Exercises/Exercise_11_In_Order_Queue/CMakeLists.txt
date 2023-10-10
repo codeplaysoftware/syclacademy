@@ -8,5 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_11_in_order_queue source)
-add_sycl_executable(exercise_11_in_order_queue solution)
+add_sycl_executable(11 exercise_11_in_order_queue source)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(11 exercise_11_in_order_queue solution)
+endif()

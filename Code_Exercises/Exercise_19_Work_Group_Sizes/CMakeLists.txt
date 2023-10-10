@@ -8,5 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_19_work_group_sizes source)
-add_sycl_executable(exercise_19_work_group_sizes solution)
+add_sycl_executable(19 exercise_19_work_group_sizes source)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(19 exercise_19_work_group_sizes solution)
+endif()

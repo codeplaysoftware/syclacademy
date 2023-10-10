@@ -8,5 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_17_vectors source)
-add_sycl_executable(exercise_17_vectors solution)
+add_sycl_executable(17 exercise_17_vectors source)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(17 exercise_17_vectors solution)
+endif()
