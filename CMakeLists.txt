@@ -33,8 +33,8 @@ option(SYCL_ACADEMY_USE_COMPUTECPP "Configure to compile with ComputeCpp" OFF)
 option(SYCL_ACADEMY_USE_DPCPP "Configure to compile with Intel DPC++" OFF)
 option(SYCL_ACADEMY_USE_HIPSYCL "Configure to compile with AMD hipSYCL" OFF)
 option(SYCL_ACADEMY_ENABLE_SOLUTIONS "Include solution source files in the project" OFF)
-# State which exercises to build. ALL = build all or give a number for a particular exercise.
-set(SYCL_ACADEMY_BUILD_EXERCISES "ALL" CACHE STRING "Some user-specified option")
+set(SYCL_ACADEMY_BUILD_EXERCISES "ALL" CACHE STRING 
+  "State which exercises to build. ALL = build all or give a number for a particular exercise.")
 
 # Variables
 
