@@ -76,5 +76,3 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 ---
 
 If there are any issues or suggestions relating to the current set of rules, you can reach us at [sycl@codeplay.com](mailto:sycl@codeplay.com).
-
-
