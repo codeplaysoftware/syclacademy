@@ -59,13 +59,7 @@ function( add_sycl_executable_dpcpp prefix source )
   set(CMAKE_CXX_STANDARD 17)
   set(CMAKE_CXX_COMPILER "icpx")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
-  if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
-  else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
-  endif()
-  
+   
   add_executable(${TARGET_NAME} "${source}.cpp")
   # This function is from IntelSYCL cmake module
   add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp") 
