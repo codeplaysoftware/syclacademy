@@ -51,11 +51,11 @@ if(SYCL_ACADEMY_USE_HIPSYCL)
 endif()
 
 if (${SYCL_IMPLEMENTATIONS_USED} EQUAL 0)
-  message(FATAL_ERROR "No SYCL implementation specified, please specify one of the following "
+  message(FATAL_ERROR "No SYCL implementation specified, please set one of the following "
   "SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_HIPSYCL or SYCL_ACADEMY_USE_DPCPP to ON.")
 endif()
 if (${SYCL_IMPLEMENTATIONS_USED} GREATER 1)
-  message(FATAL_ERROR "Multiple SYCL implementations specified, please specify only one of the following "
+  message(FATAL_ERROR "Multiple SYCL implementations specified, please set only one of the following "
   "set one of SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_HIPSYCL or SYCL_ACADEMY_USE_DPCPP to ON. "
   "Clear the CMake cache (delete the build directory) if a previous option was entered.")
 endif()
