@@ -206,7 +206,7 @@ The build configuration for all exercises defaults to a debug build if this opti
 
 -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 
-This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake module package to assist it in its configuration. To command line arguments must be used to initiate this configuration correctly.
+This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake module package to assist it in its configuration. These command line arguments must be used to initiate this configuration correctly.
 
 #### Additional cmake arguments for hipSYCL
 
