@@ -192,7 +192,7 @@ For example `-DSYCL_ACADEMY_BUILD_EXERCISES=2`.
 
 The build configuration for all exercises defaults to a debug build if this option is not specified.
 
-#### Additional cmake arguments for DCP++
+#### Additional cmake arguments for DPC++
 
 -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 
@@ -210,6 +210,14 @@ Available backends are:
 * `cuda` - CUDA backend for NVIDIA GPUs. Requires specification of targets of the form sm_XY, e.g. sm_70 for Volta, sm_60 for Pascal
 * `hip`  - HIP backend for AMD GPUs. Requires specification of targets of the form gfxXYZ, e.g. gfx906 for Vega 20, gfx900 for Vega 10
 * `spirv` - use clang SYCL driver to generate spirv (experimental)
+
+#### CMake usage example
+
+Envoking CMake from the command line example usage:
+```
+  cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=2 
+  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+```
 
 ### Getting started with compiling DPC++
 
