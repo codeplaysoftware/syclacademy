@@ -37,10 +37,7 @@ function( add_sycl_executable_dpcpp prefix source )
 
   set(CMAKE_VERBOSE_MAKEFILE ON)
   set(TARGET_NAME "${prefix}_${source}")
-  set(CMAKE_CXX_STANDARD 17)
-  set(CMAKE_CXX_COMPILER "icpx")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
-    
+      
   add_executable(${TARGET_NAME} "${source}.cpp")
   # This function is from IntelSYCL cmake module
   add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp") 
