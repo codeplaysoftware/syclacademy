@@ -74,6 +74,10 @@ endif()
 
 # Common setup
 
+if(NOT DEFINED ${CMAKE_BUILD_TYPE})
+  set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
 if(SYCL_ACADEMY_USE_COMPUTECPP)
 list(APPEND CMAKE_MODULE_PATH
   "${CMAKE_SOURCE_DIR}/External/computecpp-sdk/cmake/Modules/")
