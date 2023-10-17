@@ -49,8 +49,7 @@ if (${SYCL_IMPLEMENTATIONS_USED} EQUAL 0)
 endif()
 if (${SYCL_IMPLEMENTATIONS_USED} GREATER 1)
   message(FATAL_ERROR "Multiple SYCL implementations specified, please set only one of the following "
-  "set one of SYCL_ACADEMY_USE_ADAPTIVECPP or SYCL_ACADEMY_USE_DPCPP to ON. "
-  "Clear the CMake cache (delete the build directory) if a previous option was entered.")
+  "set one of SYCL_ACADEMY_USE_ADAPTIVECPP or SYCL_ACADEMY_USE_DPCPP to ON. ")
 endif()
 set(script_argOkCounter 0)
 set(script_maxExerciseNumber 19)
