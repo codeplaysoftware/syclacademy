@@ -94,7 +94,7 @@ if (SYCL_ACADEMY_USE_COMPUTECPP)
   find_package(ComputeCpp REQUIRED)
 endif()
 
-# DPC++ setup 
+# DPC++ setup
 
 if (SYCL_ACADEMY_USE_DPCPP)
 # For DPCPP module to work, find_package to work, use the options
