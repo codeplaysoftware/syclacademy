@@ -70,7 +70,7 @@ A playlist of video content is [also available][video-playlist]. Though note tha
 slides and exercises may have changed since these videos were created so they
 may not match completely.
 
-| Lesson | Title | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | hipSYCL |
+| Lesson | Title | Slides | Exercise | Source | Solution | ComputeCpp | DPC++ | AdaptiveCpp |
 |--------|-------|--------|----------|--------|----------|------------|-------|---------|
 | 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes | Yes |
 | 02 | Enqueueing a Kernel | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] | Yes | Yes | Yes |
@@ -95,7 +95,7 @@ may not match completely.
 
 ## Building the Exercises
 
-The exercises can be built for ComputeCpp CE (minimum v2.6.0), DPC++ and hipSYCL.
+The exercises can be built for ComputeCpp CE (minimum v2.6.0), DPC++ and AdaptiveCpp.
 
 ### Supported Platforms
 
@@ -108,7 +108,7 @@ all of the exercises.
 |----------------|---------------------|-------------------|------------------|
 | ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.7.0 |
 | DPC++ | [Intel DevCloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.4	|
-| hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> Nvidia GPU (CUDA) | Latest develop branch |
+| AdaptiveCpp | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> Nvidia GPU (CUDA) | Latest develop branch |
 
 \* See [here](troubleshooting-for-computecpp) for troubleshooting when using
 ComputeCpp with Visual Studio post toolset version 14.26.
@@ -138,9 +138,9 @@ You can also use a [Docker* image][docker-container-oneapi].
 If you are using the [Intel DevCloud][intel-devcloud] then the latest version of DPC++ will
 already be installed and available in the path.
 
-#### Installing hipSYCL
+#### Installing AdaptiveCpp 
 
-You will need a hipSYCL build from September 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install hipSYCL.
+You will need an AdaptiveCpp (formly hipSYCL) build from September 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install AdaptiveCpp.
 
 ### Pre-requisites
 
@@ -175,7 +175,7 @@ For `<cmake_generator>` / `<cmake_arch>` we recommend:
 For `sycl_implementation` this can be one of:
 
 * `SYCL_ACADEMY_USE_COMPUTECPP`
-* `SYCL_ACADEMY_USE_HIPSYCL`
+* `SYCL_ACADEMY_USE_ADAPTIVECPP`
 * `SYCL_ACADEMY_USE_DPCPP`
 
 You can also specify the additional optional options:
@@ -208,9 +208,9 @@ The build configuration for all exercises defaults to a debug build if this opti
 
 This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake module package to assist it in its configuration. These command line arguments must be used to initiate this configuration correctly.
 
-#### Additional cmake arguments for hipSYCL
+#### Additional cmake arguments for AdaptiveCpp
 
-When building with hipSYCL, cmake will additionally require you to specify the
+When building with AdapticeCpp, CMake will additionally require you to specify the
 target platform using `-DHIPSYCL_TARGETS=<target specification>`. 
 `<target specification>` is a list of backends and devices to target, for example
 `-DHIPSYCL_TARGETS="omp;hip:gfx900,gfx906"` compiles for CPUs with the OpenMP backend
