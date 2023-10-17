@@ -100,7 +100,7 @@ if (SYCL_ACADEMY_USE_DPCPP)
 # For DPCPP module to work, find_package to work, use the options
 # -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx on the command line.
 # See /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadMeSYCL.txt
-  set(dpcpp_DIR /opt/intel/oneapi/compiler/latest/linux/IntelSYCL)
+  set(IntelSYCL_DIR /opt/intel/oneapi/compiler/latest/linux/IntelSYCL)
   find_package(IntelSYCL REQUIRED)
 endif()
 
