@@ -28,7 +28,7 @@ message(STATUS ">> Top level")
 
 option(SYCL_ACADEMY_USE_COMPUTECPP "Configure to compile with ComputeCpp" OFF)
 option(SYCL_ACADEMY_USE_DPCPP "Configure to compile with Intel DPC++" OFF)
-option(SYCL_ACADEMY_USE_HIPSYCL "Configure to compile with AMD hipSYCL" OFF)
+option(SYCL_ACADEMY_USE_ADAPTIVECPP "Configure to compile with AdaptiveCpp" OFF)
 option(SYCL_ACADEMY_ENABLE_SOLUTIONS "Include solution source files in the project" OFF)
 set(SYCL_ACADEMY_BUILD_EXERCISES "ALL" CACHE STRING 
   "State which exercises to build. ALL = build all or give a number for a particular exercise.")
@@ -43,17 +43,17 @@ endif()
 if(SYCL_ACADEMY_USE_DPCPP)
   math(EXPR SYCL_IMPLEMENTATIONS_USED ${SYCL_IMPLEMENTATIONS_USED}+1)
 endif()
-if(SYCL_ACADEMY_USE_HIPSYCL)
+if(SYCL_ACADEMY_USE_ADAPTIVECPP)
   math(EXPR SYCL_IMPLEMENTATIONS_USED ${SYCL_IMPLEMENTATIONS_USED}+1)
 endif()
 
 if (${SYCL_IMPLEMENTATIONS_USED} EQUAL 0)
   message(FATAL_ERROR "No SYCL implementation specified, please set one of the following "
-  "SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_HIPSYCL or SYCL_ACADEMY_USE_DPCPP to ON.")
+  "SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_ADAPTIVECPP or SYCL_ACADEMY_USE_DPCPP to ON.")
 endif()
 if (${SYCL_IMPLEMENTATIONS_USED} GREATER 1)
   message(FATAL_ERROR "Multiple SYCL implementations specified, please set only one of the following "
-  "set one of SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_HIPSYCL or SYCL_ACADEMY_USE_DPCPP to ON. "
+  "set one of SYCL_ACADEMY_USE_COMPUTECPP, SYCL_ACADEMY_USE_ADAPTIVECPP or SYCL_ACADEMY_USE_DPCPP to ON. "
   "Clear the CMake cache (delete the build directory) if a previous option was entered.")
 endif()
 set(script_argOkCounter 0)
@@ -105,9 +105,9 @@ if (SYCL_ACADEMY_USE_DPCPP)
   find_package(IntelSYCL REQUIRED)
 endif()
 
-# hipSYCL setup
+# ADAPTIVECPP setup
 
-if (SYCL_ACADEMY_USE_HIPSYCL)
+if (SYCL_ACADEMY_USE_ADAPTIVECPP)
   if (NOT SYCL_ACADEMY_INSTALL_ROOT)
   message(FATAL_ERROR "SYCL implementation root not provided, please specify "
     "the path to the root of the chosen SYCL implementation using "
