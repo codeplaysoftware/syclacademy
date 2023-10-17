@@ -12,11 +12,8 @@
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 ]]
 
-# Almost all CMake files should start with this
-# You should always specify a range with the newest
-# and oldest tested versions of CMake. This will ensure
-# you pick up the best policies. Minimum version required
-# by /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadNeSYCL.txt
+# Minimum version required by 
+# /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadNeSYCL.txt
 if(WIN32)
   cmake_minimum_required(VERSION 3.23...3.27)
 else()
