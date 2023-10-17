@@ -11,9 +11,9 @@
 message(STATUS ">> CMake Exercises")
 message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
 
-# CMake function to build a hipSYCL configuration and create executable binaries
-# from hipSYCL libraries. 
-function( add_sycl_executable_hipSYCL prefix source )
+# CMake function to build ab AdaptiveCpp configuration and create executable binaries
+# from AdaptiveCpp libraries. 
+function( add_sycl_executable_adaptivecpp prefix source )
   if(NOT DEFINED ${CMAKE_BUILD_TYPE})
 	  set(CMAKE_BUILD_TYPE "DEBUG")
   endif()
@@ -64,8 +64,8 @@ function( add_sycl_executable exercise_number prefix source )
   if (SYCL_ACADEMY_USE_DPCPP)
     add_sycl_executable_dpcpp(${prefix} ${source})
   endif()
-  if (SYCL_ACADEMY_USE_HIPSYCL)
-    add_sycl_executable_hipSYCL(${prefix} ${source})
+  if (SYCL_ACADEMY_USE_ADAPTIVECPP)
+    add_sycl_executable_adaptivecpp(${prefix} ${source})
   endif()
 
   message(STATUS "<< CMake Exercise ${exercise_number} ${source}")
