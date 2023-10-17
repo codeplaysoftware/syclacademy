@@ -70,6 +70,10 @@ endif()
 
 # Common setup
 
+if(NOT DEFINED ${CMAKE_BUILD_TYPE})
+  set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
 find_package(Threads REQUIRED)
 add_subdirectory(Utilities)
 

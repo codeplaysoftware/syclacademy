@@ -14,10 +14,6 @@ message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
 # CMake function to build ab AdaptiveCpp configuration and create executable binaries
 # from AdaptiveCpp libraries. 
 function( add_sycl_executable_adaptivecpp prefix source )
-  if(NOT DEFINED ${CMAKE_BUILD_TYPE})
-	  set(CMAKE_BUILD_TYPE "DEBUG")
-  endif()
-
   add_executable("${prefix}_${source}" "${source}.cpp")
   target_compile_definitions("${prefix}_${source}" PUBLIC -DSYCL_LANGUAGE_VERSION=2020)
   target_include_directories("${prefix}_${source}" PRIVATE
@@ -31,10 +27,6 @@ endfunction()
 # CMake function to build a DPC++ configuration and create executable binaries
 # from oneAPI libraries. 
 function( add_sycl_executable_dpcpp prefix source )
-  if(NOT DEFINED ${CMAKE_BUILD_TYPE})
-    set(CMAKE_BUILD_TYPE "DEBUG")
-  endif()
-
   set(CMAKE_VERBOSE_MAKEFILE ON)
   set(TARGET_NAME "${prefix}_${source}")
       
