@@ -131,7 +131,7 @@ already be installed and available in the path.
 
 #### Installing AdaptiveCpp
 
-You will need a AdaptiveCpp (formerly hipSYCL) build from September 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install AdaptiveCpp.
+You will need a AdaptiveCpp (formerly hipSYCL) build from September 2021 or newer. Refer to the [AdaptiveCpp installation instructions][adaptivecpp-installing] for details on how to install AdaptiveCpp.
 
 ### Pre-requisites
 
@@ -271,7 +271,7 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [docker-container-oneapi]: https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-intel-oneapi-base-linux/top/using-containers.html
 [oneAPI-system-requirements]: https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-base-toolkit-system-requirements.html
 
-[hipsycl-installing]: https://github.com/illuhad/hipSYCL/blob/develop/doc/installing.md
+[adaptivecpp-installing]: https://github.com/AdaptiveCpp/AdaptiveCpp/blob/develop/doc/installing.md
 [rocm-gpus]: https://github.com/RadeonOpenCompute/ROCm#supported-gpus
 [spack]: https://github.com/spack/spack
 
