@@ -223,7 +223,7 @@ Available backends are:
 
 #### CMake usage example
 
-Envoking CMake from the command line example usage:
+Invoking CMake from the command line example usage:
 ```
   cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=2 
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
