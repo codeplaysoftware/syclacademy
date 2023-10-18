@@ -7,7 +7,7 @@
   You should have received a copy of the license along with this work.  If not,
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 
-  Envoking CMake from the command line example usage:
+  Invoking CMake from the command line example usage:
   cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=2 
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 ]]
