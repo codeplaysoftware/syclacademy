@@ -57,10 +57,9 @@ Using CMake to configure then build the exercise:
 ```sh
 mkdir build
 cd build
-cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=2 
+cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON 
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make
-./Code_Exercises/Exercise_02_Hello_World/exercise_02_hello_world_source
+make exercise_2
 ```
 Alternatively from a terminal at the command line:
 ```sh
@@ -76,19 +75,19 @@ So wrap the binary into a script `job_submission` and run:
 qsub job_submission
 ```
 
-For hipSYCL:
+For AdaptiveCpp:
 ```sh
 # <target specification> is a list of backends and devices to target, for example
 # "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
-cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
-make exercise_02_hello_world_source
-./Code_Exercises/Exercise_02_Hello_World/exercise_02_hello_world_source
+cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF
+-DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DADAPTIVECPP_TARGETS="<target specification>" ..
+make exercise_2
 ```
-alternatively, without cmake:
+alternatively, without CMake:
 ```sh
 cd Code_Exercises/Exercise_02_Hello_World
-/path/to/hipsycl/bin/syclcc -o sycl-ex-2 -I../../External/Catch2/single_include --hipsycl-targets="<target specification>" source.cpp
+/path/to/adaptivecpp/bin/syclcc -o sycl-ex-2 -I../../External/Catch2/single_include --adaptivecpp-targets="<target specification>" source.cpp
 ./sycl-ex-2
 ```
 

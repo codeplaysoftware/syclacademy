@@ -8,7 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(4 exercise_04_handling_errors source)
+# Exercise exercise_04_handling_errors
+add_sycl_executable(exercise_4 source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(4 exercise_04_handling_errors solution)
+  add_sycl_executable(exercise_4 solution)
 endif()

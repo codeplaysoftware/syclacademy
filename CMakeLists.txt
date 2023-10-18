@@ -8,7 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 
   Invoking CMake from the command line example usage:
-  cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=2 
+  cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON 
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 ]]
 
@@ -22,15 +22,11 @@ endif()
 
 project (SYCLAcademy)
 
-message(STATUS ">> Top level")
-
 # CMake input options
 
 option(SYCL_ACADEMY_USE_DPCPP "Configure to compile with Intel DPC++" OFF)
 option(SYCL_ACADEMY_USE_ADAPTIVECPP "Configure to compile with AdaptiveCpp" OFF)
 option(SYCL_ACADEMY_ENABLE_SOLUTIONS "Include solution source files in the project" OFF)
-set(SYCL_ACADEMY_BUILD_EXERCISES "ALL" CACHE STRING 
-  "State which exercises to build. ALL = build all or give a number for a particular exercise.")
 
 # Variables
 
@@ -50,22 +46,6 @@ endif()
 if (${SYCL_IMPLEMENTATIONS_USED} GREATER 1)
   message(FATAL_ERROR "Multiple SYCL implementations specified, please set only one of the following "
   "set one of SYCL_ACADEMY_USE_ADAPTIVECPP or SYCL_ACADEMY_USE_DPCPP to ON. ")
-endif()
-set(script_argOkCounter 0)
-set(script_maxExerciseNumber 19)
-if (${SYCL_ACADEMY_BUILD_EXERCISES} GREATER ${script_maxExerciseNumber})
-  message(FATAL_ERROR "Exercise ${SYCL_ACADEMY_BUILD_EXERCISES} does not exist. "
-  "Please specify an exercise number between 1 and ${script_maxExerciseNumber}.")
-endif()
-if (${SYCL_ACADEMY_BUILD_EXERCISES} GREATER 0)
-  math(EXPR script_argOkCounter ${script_argOkCounter}+1)
-endif()
-if (${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "ALL")
-  math(EXPR script_argOkCounter ${script_argOkCounter}+1)
-endif()
-if (${script_argOkCounter} EQUAL 0)
-  message(FATAL_ERROR "Option SYCL_ACADEMY_BUILD_EXERCISES was not specified. The option can be specified with either "
-  "ALL or the number of the exercise i.e. 3 equals build exercise 3.")
 endif()
 
 # Common setup
@@ -104,5 +84,3 @@ endif()
 enable_testing()
 add_subdirectory(External/Catch2)
 add_subdirectory(Code_Exercises)
-
-message(STATUS "<< Top level finish")

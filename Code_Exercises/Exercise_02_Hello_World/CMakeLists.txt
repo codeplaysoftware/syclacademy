@@ -8,7 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(2 exercise_02_hello_world source)
+# Exercise exercise_02_hello_world
+add_sycl_executable(exercise_2 source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(2 exercise_02_hello_world solution)
+  add_sycl_executable(exercise_2 solution)
 endif()

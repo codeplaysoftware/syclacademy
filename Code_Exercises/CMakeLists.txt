@@ -8,9 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-message(STATUS ">> CMake Exercises")
-message(STATUS "SYCL_ACADEMY_BUILD_EXERCISES ${SYCL_ACADEMY_BUILD_EXERCISES}")
-
 # CMake function to build ab AdaptiveCpp configuration and create executable binaries
 # from AdaptiveCpp libraries. 
 function( add_sycl_executable_adaptivecpp prefix source )
@@ -27,7 +24,6 @@ endfunction()
 # CMake function to build a DPC++ configuration and create executable binaries
 # from oneAPI libraries. 
 function( add_sycl_executable_dpcpp prefix source )
-  set(CMAKE_VERBOSE_MAKEFILE ON)
   set(TARGET_NAME "${prefix}_${source}")
       
   add_executable(${TARGET_NAME} "${source}.cpp")
@@ -37,30 +33,13 @@ function( add_sycl_executable_dpcpp prefix source )
   target_link_libraries(${TARGET_NAME} PUBLIC Catch2::Catch2)
 endfunction()
 
-function( add_sycl_executable exercise_number prefix source )
-  # Validate commmand line input arguments
-  set(script_argOkCounter 0)
-  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "ALL")
-    math(EXPR script_argOkCounter ${script_argOkCounter}+1)
-  endif()
-  if(${SYCL_ACADEMY_BUILD_EXERCISES} STREQUAL "${exercise_number}")
-    math(EXPR script_argOkCounter ${script_argOkCounter}+1)
-  endif()
-  if(${script_argOkCounter} EQUAL 0)
-    # Skip this exercise, not selected.
-    return()
-  endif()
-
-  message(STATUS ">> CMake Exercise ${exercise_number} ${source}")
-  
+function( add_sycl_executable prefix source )
   if (SYCL_ACADEMY_USE_DPCPP)
     add_sycl_executable_dpcpp(${prefix} ${source})
   endif()
   if (SYCL_ACADEMY_USE_ADAPTIVECPP)
     add_sycl_executable_adaptivecpp(${prefix} ${source})
   endif()
-
-  message(STATUS "<< CMake Exercise ${exercise_number} ${source}")
 endfunction()
 
 
@@ -84,5 +63,3 @@ add_subdirectory(Exercise_16_Coalesced_Global_Memory)
 add_subdirectory(Exercise_17_Vectors)
 add_subdirectory(Exercise_18_Local_Memory_Tiling)
 add_subdirectory(Exercise_19_Work_Group_Sizes)
-
-message(STATUS "<< CMake Exercises")

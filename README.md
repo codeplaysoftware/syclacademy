@@ -181,13 +181,6 @@ always be required.
 This will enable building the solutions for each exercise as well as the source
 files. This is disabled by default.
 
--DSYCL_ACADEMY_BUILD_EXERCISES
-
-The default for this option when not specified is ALL - all exercises (except no. 20) will be configured and built.
-The option can used explicitly, i.e., `-DSYCL_ACADEMY_BUILD_EXERCISES=ALL`.
-To build an individual exercise, use this option along with the number of the exercise to build.
-For example `-DSYCL_ACADEMY_BUILD_EXERCISES=2`.
-
 -DCMAKE_BUILD_TYPE=Release
 
 The build configuration for all exercises defaults to a debug build if this option is not specified.
@@ -215,8 +208,7 @@ Available backends are:
 
 Invoking CMake from the command line example usage:
 ```
-  cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=2 
-  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+  cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 ```
 
 ### Getting started with compiling DPC++

@@ -58,27 +58,24 @@ Using CMake to configure then build the exercise:
 ```sh
 mkdir build
 cd build
-cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_BUILD_EXERCISES=15 
-  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make
-./Code_Exercises/Exercise_15_Image_Convolution/exercise_15_image_convolution_reference
+cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+make exercise_15
 ```
 Alternatively from a terminal at the command line:
 ```sh
 icpx -fsycl -o sycl-ex-15 -I../../Utilities/include/ -I../../External/stb reference.cpp
 ```
 
-For hipSYCL:
+For AdaptiveCpp:
 ```sh
 # <target specification> is a list of backends and devices to target, for example
 # "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
-cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
-make exercise_15_image_convolution_reference
-./Code_Exercises/Exercise_15_Image_Convolution/exercise_15_image_convolution_reference
+cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DADAPTIVECPP_TARGETS="<target specification>" ..
+make exercise_15
 ```
-alternatively, without cmake:
+alternatively, without CMake:
 ```sh
 cd Code_Exercises/Exercise_15_Image_Convolution
-/path/to/hipsycl/bin/syclcc -o sycl-ex-15 -I../../Utilities/include/ -I../../External/stb --hipsycl-targets="<target specification>" reference.cpp
+/path/to/adaptivecpp/bin/syclcc -o sycl-ex-15 -I../../Utilities/include/ -I../../External/stb --adaptivecpp-targets="<target specification>" reference.cpp
 ```

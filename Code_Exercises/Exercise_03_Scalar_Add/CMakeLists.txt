@@ -8,7 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(3 exercise_03_scalar_add source)
+# Exercise exercise_03_scalar_add
+add_sycl_executable(exercise_3 source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(3 exercise_03_scalar_add solution)
+  add_sycl_executable(exercise_3 solution)
 endif()
