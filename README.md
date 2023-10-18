@@ -131,7 +131,7 @@ already be installed and available in the path.
 
 #### Installing AdaptiveCpp
 
-You will need a AdaptiveCpp (formly hipSYCL) build from September 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install AdaptiveCpp.
+You will need a AdaptiveCpp (formerly hipSYCL) build from September 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install AdaptiveCpp.
 
 ### Pre-requisites
 
