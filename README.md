@@ -56,6 +56,18 @@ Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
 University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
 and University of the West of Scotland.
 
+## Workshop Specific Information
+
+While these materials are intended to be used independently, they prove useful in in workshops (we have used at CPPcon, ISC, SC, DevSummits, and other conferences).
+
+Therefore, there is a directory in this repository (Workshop_Specifics) that contain information expressly only for specific workshops. These will purposefully not be updated after the particular workshop, although they may be great input for writing material for the future workshops.
+
+## SYCL Book
+
+While these materials are intended to be used independently, the SYCL book is an excellent resources for learning more.
+
+The second edition SYCL book is a free download from Apress, it is titled "Data Parallel C++" and teaches using C++ with SYCL with numerous examples.  We highly recommend this book, and it is available for download from [HERE](https://rd.springer.com/book/10.1007/978-1-4842-9691-2).  It is also available as a printed edition (identical content) from book sellers [e.g., Amazon](https://www.amazon.com/Data-Parallel-Programming-Accelerated-Systems/dp/1484296907).
+
 ## Lesson Curriculum
 
 The SYCL Academy curriculum is divided up into a number of short lessons
@@ -106,12 +118,8 @@ all of the exercises.
 
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
-| ComputeCpp | Windows 10 Visual Studio 2019 (64bit)* <br> Ubtuntu 18.04 (64bit) | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) | CE 2.7.0 |
-| DPC++ | [Intel DevCloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.4	|
-| hipSYCL | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> Nvidia GPU (CUDA) | Latest develop branch |
-
-\* See [here](troubleshooting-for-computecpp) for troubleshooting when using
-ComputeCpp with Visual Studio post toolset version 14.26.
+| DPC++ | [Intel Developer Cloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)** | 2021.4	|
+| AdaptiveCpp (formerly hipSYCL) | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> Nvidia GPU (CUDA) | Latest develop branch |
 
 \*\* Supported in open source project only
 
@@ -124,21 +132,16 @@ chips).
 First you'll need to install your chosen SYCL implementation and any
 dependencies they require.
 
-#### Installing ComputeCpp
-
-To set up ComputeCpp download the [ComputeCpp CE package][computecpp-download]
-and follow the [getting started instructions][computecpp-getting-started].
-
 #### Installing DPC++
 
 To set up DPC++ follow the [getting started instructions][dpcpp-getting-started].
 
 You can also use a [Docker* image][docker-container-oneapi].
 
-If you are using the [Intel DevCloud][intel-devcloud] then the latest version of DPC++ will
+If you are using the [Intel Developer Cloud][intel-devcloud] then the latest version of DPC++ will
 already be installed and available in the path.
 
-#### Installing hipSYCL
+#### Installing AdaptiveCpp/hipSYCL
 
 You will need a hipSYCL build from September 2021 or newer. Refer to the [hipSYCL installation instructions][hipsycl-installing] for details on how to install hipSYCL.
 
@@ -152,7 +155,7 @@ implementation you are wishing to build for.
 * An appropriate build system for the platform you are targeting (CMake, Ninja,
 Make, Visual Studio).
 
-### Configuring using CMake (ComputeCpp CE and hipSYCL only)
+### Configuring using CMake (AdaptiveCpp only)
 
 Clone this repository, there are some additional dependencies configured as git
 sub-modules so make sure to clone those as well. Then simply invoke CMake as
