@@ -8,4 +8,5 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_15_image_convolution reference)
+# Exercise exercise_15_image_convolution
+add_sycl_executable(exercise_15 reference)

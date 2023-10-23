@@ -8,5 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_13_load_balancing source)
-add_sycl_executable(exercise_13_load_balancing solution)
+# Exercise exercise_13_load_balancing
+add_sycl_executable(exercise_13 source)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_13 solution)
+endif()

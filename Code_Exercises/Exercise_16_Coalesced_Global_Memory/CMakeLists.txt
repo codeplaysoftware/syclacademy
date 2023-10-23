@@ -8,5 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(exercise_16_coalesced_global_memory source)
-add_sycl_executable(exercise_16_coalesced_global_memory solution)
+# Exercise exercise_16_coalesced_global_memory
+add_sycl_executable(exercise_16 source)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
+  add_sycl_executable(exercise_16 solution)
+endif()
