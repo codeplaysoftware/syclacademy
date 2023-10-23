@@ -1,13 +1,14 @@
+
 # SC23 Tutorial Resources
 
 - SC23 Tutorial Resources
-  - [Online PVC system available](#developer-cloud)
-    - [Get Developer Cloud Account](#get-developer-cloud)
-    - [Web browser login Developer Cloud](#web-developer-cloud)
-    - [ssh login Developer Cloud](#ssh-developer-cloud)
-    - [Best ssh configuration](#ssh-advice)
-  - [Download the SYCL Book](#book)
-  - [How Developer Cloud SLURM nodes are organized](#nodeorganization)
+  - [Online PVC system available](#online-pvc-system-available)
+    - [Get Developer Cloud Account](#get-developer-cloud-Accoun)
+    - [Web browser login Developer Cloud](#web-browser-login-developer-cloud)
+    - [ssh login Developer Cloud](#ssh-login-developer-cloud)
+    - [Best ssh configuration](#best-ssh-configuration)
+  - [Download the SYCL Book](#download-the-sycl-book)
+  - [How Developer Cloud SLURM nodes are organized](#how-developer-cloud-slurm-nodes-are-organized)
 
 - More information, for the curious
   - [SSH Setup](#ssh-setup)
@@ -32,15 +33,19 @@
   - [FAQs: Super Important Tips that may be non-obvious](#faqs-super-important-tips-that-may-be-non-obvious)
 
 ---
-## Online PVC system available<div id='developer-cloud/'>
+## Online PVC system available
+
+For the tutorial, you are welcome to use any system you wish.
+
+Intel has provide free access, for learning purposes, to using systems with Xeon processors and four PVC cards with tools preinstalled.  It is quick and easy to get going which this option for the tutorial.
 
 --- 
-## Get Developer Cloud Account<div id='get-developer-cloud/'>
+## Get Developer Cloud Account
 
 Create an account (or sign-in) at [cloud.intel.com](https://cloud.intel.com).
 
 --- 
-## Web browser login Developer Cloud<div id='web-developer-cloud/'>
+## Web browser login Developer Cloud
 
 Once you are logged in, launch a Jupyter notebook by clicking the "Launch JupyterLab" in the upper right of the web page [console.cloud.intel.com/training](https://console.cloud.intel.com/training).
 
@@ -51,7 +56,7 @@ Open a terminal, and make note of your username (it is long) since you may want 
 Note: when we use Jupyter to access the training material, we arel automatically connected to a worker node with PVCs where we can edit/compile/debug as well as run our applications.
 
 --- 
-## ssh login Developer Cloud<div id='ssh-developer-cloud/'>
+## ssh login Developer Cloud
 
 Although it is not advertised, you login supports ssh as well.  You'll need to know your username (which is long) from your initial login (see above).
 
@@ -82,7 +87,7 @@ It is *important* to understand that the initial ssh brings us to a head node wh
 The source command sets up the tools (preinstalled) to be on your paths and ready to use.
 
 --- 
-## Best ssh configuration<div id='ssh-advice/'>
+## Best ssh configuration
 We do recommend making it easier and more reliable by adding this to your ~/.ssh/config and which allows us to simply use "ssh mydevcloud"
 
 ```bash
@@ -97,7 +102,7 @@ UserKnownHostsFile=/dev/null
 ```
 
 --- 
-## Download the SYCL Book<div id='book/'>
+## Download the SYCL Book
 
 The SYCL book is an excellent resources for learning more.  We highly recommend having a copy of the newly released (October 2023) 'second edition' of the book.
 
@@ -111,7 +116,7 @@ The second edition can easily be differentiated from the first edition because t
 
 
 --- 
-## How Developer Cloud SLURM nodes are organized<div id='nodeorganization/'>
+## How Developer Cloud SLURM nodes are organized
 
 If you login via Jupyter, you will be connected to a worker node directly.
 
@@ -128,7 +133,7 @@ This IS a system with round-the-clock access to systems with 4th Gen Intel® Xeo
 The following collection of information may be useful, but is not really necessary for our tutorial.
 
 ---
-## SSH Setup<div id='ssh-setup'/>
+## SSH Setup
 
 This information explains step-by-step how to get a ssh key. If you already know how, you do not need to read this section. If you already have a strong enough key, you do not need to create a new one.
 
@@ -152,7 +157,7 @@ ssh-keygen -o -a 100 -t ed25519 -f C:\Users\YourID\.ssh\id_ed25519_idc
 
 The passphrase is optional and you can hit enter for no pass phrase.  This will result in two files being generated: `id_ed25519_idc` and `id_ed25519_idc.pub` take care of these files as they are the private and public key pair that you will need.  Never ever share anything other than the public key (the .pub file).
 
-### SSH folder and file permissions<div id='ssh-permissions'>
+### SSH folder and file permissions
 
 Ensure that permissions are correct when on Linux or MacOS - these are the commands to force that:
 
@@ -165,14 +170,14 @@ chmod 400 ~/.ssh/*.pub
 ```
 
 --- 
-## Environment Setup<div id='environment-setup'/>  
+## Environment Setup
 
 Enter `source /opt/intel/oneapi/setvars.sh` and the oneAPI development environment will be initialized.
 
 Enter `conda env list` and activate the python environment of your choice.  Both Tensorflow and Pytorch environments have Jupyter installed.  If you don't like those environments create your own conda environment and customize to your liking. 
 
 ---
-## Verify it works / Troubleshoot<div id='troubleshoot'>
+## Verify it works / Troubleshoot
 
 Please verify that your environment works at this point enough to "see" the PVC (GPUs).  If you cannot, there is little point in doing more until we fix it so you *can* see the GPUs.
 
@@ -264,7 +269,7 @@ In the future all you need to do is login in to the IDC, establish the tunnel an
 
 
 
-## Additional Software<div id='additional-software'/>
+## Additional Software
 
 It's possible to install additional software if regular user permissions are the only requirements.  For example to install <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/get-started-with-intel-distribution-for-python.html">the Intel® Distribution for Python</a> follow these steps:  Miniconda is already installed, but you will be creating a virtual environment in your home directory.  
 
@@ -276,7 +281,7 @@ It's possible to install additional software if regular user permissions are the
 Keep in mind you have 20GB of storage in your home directory for all software and data.
 
 ---  
-## Common Slurm Commands<div id='common-commands'/>
+## Common Slurm Commands
 
 ```bash
 sinfo -al (What Nodes are available)
@@ -296,7 +301,7 @@ srun --pty bash
 ```
 
 ---  
-## Sample GPU Test Code<div id='sample-gpu-test-code'/>
+## Sample GPU Test Code
 
 Here is a sample GPU test code that demonstrates functionality and how to offload the application execution to a `compute node`.  Follow the below steps:
 
@@ -328,7 +333,7 @@ srun a.out
 If successful it should return Device: Intel(R) Data Center GPU Max 1100.  Demonstrating that you successfully compiled a SYCL application and offloaded it's execution to a GPU on the compute node.
 
 ---  
-## An Example Script<div id='some-example-scripts'/>
+## An Example Script
 
 This will email you at the start and completion of your job.  
 
@@ -345,7 +350,7 @@ srun ./my_a.out
 ```
 
 ---  
-## Running MPI<div id='mpi'/>
+## Running MPI
 
 When using MPI, you should set these environment variables (put in your ~/.bashrc to always have them):
 ```bash
@@ -373,7 +378,7 @@ Unfortunately, adding these to your ~/.bashrc will not work becasue they are add
 Visit the [MPI with SYCL example page](etc/MPI.md) for a quick example of how to get a SYCL Hello World from 40 different connections to GPUs (40 ranks).
 
 ---
-## If you use MobaXterm<div id="MobaXterm">
+## If you use MobaXterm
 
 If you like using ModaXterm, here are notes from a user (thank you Yuning!) on the steps to make it fully work:
 
@@ -408,7 +413,7 @@ Step3: Launch Jupyter notebook in MobaXterm (use the IP address 10.10.10.X you w
 jupyter-lab --ip 10.10.10.X --no-browser   
 
 ---
-## VTune, Advisor, PTrace - and other things you will get later<div id='securitynogoes'>
+## VTune, Advisor, PTrace - and other things you will get later
 
 VTune, Advisor, and PTrace will come later - not now.
 We will not install or offer tools that give system wide insight, due to serious security concerns that exist when you have a very diverse community of users.
@@ -416,7 +421,7 @@ This means that VTune, Advisor, and PTrace will not be installed or activated.
 We do plan to offer more isolated systems in the future which will host these highly useful tools.  We love them and it pains us to have to leave them off these systems.
 
 ---
-## FAQs: Super Important Tips that may be non-obvious<div id='faq'>
+## FAQs: Super Important Tips that may be non-obvious
 
 Please read these carefully, many may solve obstacles you encounter.
 
