@@ -8,7 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(12 exercise_12_temporary_data source)
+# Exercise exercise_12_temporary_data
+add_sycl_executable(exercise_12 source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(12 exercise_12_temporary_data solution)
+  add_sycl_executable(exercise_12 solution)
 endif()

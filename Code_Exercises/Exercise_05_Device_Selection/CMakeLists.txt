@@ -8,7 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-add_sycl_executable(5 exercise_05_device_selection source)
+# Exercise exercise_05_device_selection
+add_sycl_executable(exercise_5 source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(5 exercise_05_device_selection solution)
+  add_sycl_executable(exercise_5 solution)
 endif()

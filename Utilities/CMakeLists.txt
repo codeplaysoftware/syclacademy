@@ -9,4 +9,4 @@
 ]]
 
 # TODO(Gordon) Create target for Utilities
-# Required by CMake, do not remove.
+# Required by CMake. Do not remove.
