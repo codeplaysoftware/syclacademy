@@ -47,14 +47,14 @@ icpx -fsycl -o sycl-ex-18 -I../External/Catch2/single_include ../Code_Exercises/
 For AdaptiveCpp:
 ```sh
 # <target specification> is a list of backends and devices to target, for example
-# "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
+# "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
-cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DADAPTIVECPP_TARGETS="<target specification>" ..
+cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DACPP_TARGETS="<target specification>" ..
 make exercise_14
 ```
 alternatively, without CMake:
 ```sh
 cd Code_Exercises/Exercise_18_Local_Memory_Tiling
-/path/to/adaptivecpp/bin/syclcc -o sycl-ex-18 -I../../External/Catch2/single_include --adaptivecpp-targets="<target specification>" source.cpp
+/path/to/adaptivecpp/bin/acpp -o sycl-ex-18 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
 ./sycl-ex-18
 ```
