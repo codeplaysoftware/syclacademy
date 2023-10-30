@@ -19,14 +19,21 @@ Depending on the SYCL implementation used, the steps to verify your environment 
 
 #### When using AdaptiveCpp
 
-With AdaptiveCpp, you can skip this step. If you suspect later that your environment might not be set up correctly, you can set the environment variable `ACPP_DEBUG_LEVEL=3` and execute your program. AdaptiveCpp will then print (among many other things) all devices that it can find, for example:
-```sh
-[AdaptiveCpp Info] Discovered devices from backend 'OpenMP': 
-[AdaptiveCpp Info]   device 0: 
-[AdaptiveCpp Info]     vendor: the AdaptiveCpp project
-[AdaptiveCpp Info]     name: AdaptiveCpp OpenMP host device
+With AdaptiveCpp, you can skip this step. If you suspect later that your environment might not be set up correctly, you can run `acpp-info -l` in the `bin`  directory of your AdaptiveCpp installation. It will then print the backends and devices that it sees, for example:
 ```
-*Note: You may not see this output in this exercise because we do not yet actually use any SYCL functionality. Consequently, there is no need for the AdaptiveCpp runtime to launch and print diagnostic information.*
+$ acpp-info -l
+=================Backend information===================
+Loaded backend 0: OpenCL
+  Found device: Intel(R) UHD Graphics 620 [0x5917]
+  Found device: ComputeAorta x86_64
+  Found device: Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz
+Loaded backend 1: OpenMP
+  Found device: hipSYCL OpenMP host device
+Loaded backend 2: CUDA
+  Found device: NVIDIA GeForce MX150
+Loaded backend 3: Level Zero
+  Found device: Intel(R) UHD Graphics 620 [0x5917]
+```
 
 ### 3.) Configuring the exercise project
 
@@ -94,7 +101,7 @@ make exercise_1
 alternatively, without CMake:
 ```sh
 cd Code_Exercises/Exercise_01_compiling_with_SYCL
-/path/to/AdaptiveCpp/bin/acpp -o sycl-ex-1 -I../../External/Catch2/single_include --hipsycl-targets="<target specification>" source.cpp
+/path/to/AdaptiveCpp/bin/acpp -o sycl-ex-1 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
 ./sycl-ex-1
 ```
 
