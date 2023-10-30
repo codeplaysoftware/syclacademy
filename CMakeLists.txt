@@ -75,8 +75,8 @@ if (SYCL_ACADEMY_USE_ADAPTIVECPP)
     "the path to the root of the chosen SYCL implementation using "
     "SYCL_ACADEMY_INSTALL_ROOT=<path/to/install/root>.")
   endif()
-  set(hipSYCL_DIR ${SYCL_ACADEMY_INSTALL_ROOT}/lib/cmake/hipSYCL)
-  find_package(hipSYCL CONFIG REQUIRED PATHS)
+  set(AdaptiveCpp_DIR ${SYCL_ACADEMY_INSTALL_ROOT}/lib/cmake/AdaptiveCpp)
+  find_package(AdaptiveCpp CONFIG REQUIRED PATHS)
 endif()
 
 # Exercises
