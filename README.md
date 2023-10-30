@@ -1,4 +1,4 @@
-# SYCL Academy
+# SYCL Academy for SC23
 
 ![SYCL Academy](sycl_academy_black.png#gh-light-mode-only "SYCL Academy")
 ![SYCL Academy](sycl_academy_white.png#gh-dark-mode-only "SYCL Academy")
@@ -7,23 +7,13 @@ This repository provides materials that can be used for teaching SYCL. The
 materials are provided using the "Creative Commons Attribution Share Alike 4.0
 International" license.
 
-## What is SYCL?
-
-If you're not familiar with SYCL or would like some further resources for
-learning about SYCL below are a list of useful resources:
-
-*  Read a description of SYCL on the [Khronos website SYCL page](https://www.khronos.org/sycl/).
-*  Go to the Khronos website to find [a list of SYCL resources](https://www.khronos.org/sycl/resources).
-*  Check out the [SYCL 2020 reference guide](https://www.khronos.org/registry/SYCL/).
-*  Browse SYCL news, blog posts, videos, projects and more on the [sycl.tech community website](https://sycl.tech/)
-*  Get a list of the [available SYCL implementations](https://sycl.tech/#get-sycl)
-
 ### How to use the Materials
 
 To use these materials simply clone this repository including the required submodules.
+Don't forget to use the correct branch for SC23!
 
 ```
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
+git clone --recursive --branch sc23 https://github.com/codeplaysoftware/syclacademy.git
 ```
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
@@ -56,19 +46,8 @@ Edinburgh, Federal University of Sao Carlos, University of Glasgow, Heriot Watt
 University, Universitat Innsbruck, Universidad de Málaga, University of Salerno
 and University of the West of Scotland.
 
-## Lesson Curriculum
+## Lesson Curriculum for SC23
 
-The SYCL Academy curriculum is divided up into a number of short lessons
-consisting of slides for presenting the material and a more detailed write-up,
-each accompanied by a tutorial for getting hands on experience with the subject
-matter.
-
-Each of the lessons are designed to be self contained modules in order to
-support both academic and training style teaching environments. 
-
-A playlist of video content is [also available][video-playlist]. Though note that these
-slides and exercises may have changed since these videos were created so they
-may not match completely.
 
 | Lesson | Title | Slides | Exercise | Source | Solution | DPC++ | AdaptiveCpp |
 |--------|-------|--------|----------|--------|----------|-------|---------|
@@ -78,19 +57,8 @@ may not match completely.
 | 04 | Handling Errors | [slides][lesson-4-slides] | [exercise][lesson-4-exercise] | [source][lesson-4-source] | [solution][lesson-4-solution] | Yes | Yes |
 | 05 | Device Discovery | [slides][lesson-5-slides] | [exercise][lesson-5-exercise] | [source][lesson-5-source] | [solution][lesson-5-solution] | Yes | Yes |
 | 06 | Data Parallelism | [slides][lesson-6-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes |
-| 07 | Introduction to USM | [slides][lesson-7-slides] | [exercise][lesson-7-exercise] | [source][lesson-7-source] | [solution][lesson-7-solution] | Yes | Yes |
-| 08 | Using USM | [slides][lesson-8-slides] | [exercise][lesson-8-exercise] | [source][lesson-8-source] | [solution][lesson-8-solution] | Yes | Yes |
-| 09 | Asynchronous Execution | [slides][lesson-9-slides] | [exercise][lesson-9-exercise] | [source][lesson-9-source] | [solution][lesson-9-solution] | Yes | Yes |
-| 10 | Data and Dependencies | [slides][lesson-10-slides] | [exercise][lesson-10-exercise] | [source][lesson-10-source] | [solution][lesson-10-solution] | Yes | Yes |
-| 11 | In Order Queue | [slides][lesson-11-slides] | [exercise][lesson-11-exercise] | [source][lesson-11-source] | [solution][lesson-11-solution] | Yes | Yes |
-| 12 | Advanced Data Flow | [slides][lesson-12-slides] | [exercise][lesson-12-exercise] | [source][lesson-12-source] | [solution][lesson-12-solution] | Yes | Yes |
-| 13 | Multiple Devices | [slides][lesson-13-slides] | [exercise][lesson-13-exercise] | [source][lesson-13-source] | [solution][lesson-13-solution] | Yes | Yes |
 | 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
-| 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] |  | [solution][lesson-15-solution] | Yes | Yes |
-| 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes |
-| 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes |
-| 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes |
-| 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes |
+| 08 | Matrix Transpose | [slides][lesson-08-slides] | [exercise][lesson-08-exercise] | [source][lesson-08-source] | [solution][lesson-08-solution] | Yes | Yes |
 
 
 ## Building the Exercises
@@ -363,3 +331,8 @@ SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
 [lesson-19-exercise]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/README.md
 [lesson-19-source]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/source.cpp
 [lesson-19-solution]: ./Code_Exercises/Exercise_19_Work_Group_Sizes/solution.cpp
+
+[lesson-08-slides]: ./Lesson_Materials/Lecture_08_GPU_Programming_Principles/
+[lesson-08-exercise]: ./Code_Exercises/Exercise_08_Matrix_Transpose/README.md
+[lesson-08-source]: ./Code_Exercises/Exercise_08_Matrix_Transpose/source.cpp
+[lesson-08-solution]: ./Code_Exercises/Exercise_08_Matrix_Transpose/solution.cpp
