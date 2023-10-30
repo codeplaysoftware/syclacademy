@@ -11,6 +11,8 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#include <sycl/sycl.hpp>
+
 TEST_CASE("usm_selector", "usm_selector_source") {
 
   // Task: create a queue to a device which supports USM allocations
