@@ -48,8 +48,13 @@
  *
 */
 
+
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
+
+#include <sycl/sycl.hpp>
+
+class scalar_add;
 
 TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
   int a = 18, b = 24, r = 0;
