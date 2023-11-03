@@ -41,8 +41,31 @@ method of synchronization and copy back.
 
 ## Build and execution hints
 
+For DPC++:
+Using CMake to configure then build the exercise:
+```sh
+mkdir build
+cd build
+cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+make exercise_14
 ```
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_IMPLEMENTATION_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_14_nd_range_kernel_source
-./Code_Exercises/Exercise_14_ND_Range_Kernel/exercise_14_nd_range_kernel_source
+Alternatively from a terminal at the command line:
+```sh
+icpx -fsycl -o sycl-ex-14 -I../External/Catch2/single_include ../Code_Exercises/Exercise_14_ND_Range_Kernel/source.cpp
+./sycl-ex-14
+```
+
+For AdaptiveCpp:
+```sh
+# <target specification> is a list of backends and devices to target, for example
+# "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
+# The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
+cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DADAPTIVECPP_TARGETS="<target specification>" ..
+make exercise_14
+```
+alternatively, without CMake:
+```sh
+cd Code_Exercises/Exercise_14_ND_Range_Kernel
+/path/to/adaptivecpp/bin/syclcc -o sycl-ex-14 -I../../External/Catch2/single_include --adaptivecpp-targets="<target specification>" source.cpp
+./sycl-ex-14
 ```
