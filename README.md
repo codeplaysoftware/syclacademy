@@ -74,7 +74,7 @@ all of the exercises.
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
 | DPC++ | [Intel DevCloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)* | 2021.4	|
-| AdaptiveCpp | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> NVIDIA GPU (CUDA) | Latest develop branch |
+| AdaptiveCpp | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> NVIDIA GPU (CUDA)<br> Intel GPU (Level Zero)<br> Intel CPU, GPU (OpenCL) | 23.10.0 from Nov 1, 2023 or newer |
 
 \* Supported in open source project only
 
@@ -161,15 +161,17 @@ This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake modu
 #### Additional cmake arguments for AdaptiveCpp
 
 When building with AdaptiveCpp, cmake will additionally require you to specify the
-target platform using `-DHIPSYCL_TARGETS=<target specification>`. 
-`<target specification>` is a list of backends and devices to target, for example
-`-DHIPSYCL_TARGETS="omp;hip:gfx900,gfx906"` compiles for CPUs with the OpenMP backend
-and for AMD Vega 10 and Vega 20 GPUs using the HIP backend.
-Available backends are:
+target platform using `-DACPP_TARGETS=<target specification>`. 
+`<target specification>` is a list of compilation flows to enable and devices to target, for example
+`-DACPP_TARGETS="omp;generic"` compiles for CPUs using OpenMP and GPUs using the generic single-pass compiler.
+
+Available compilation flows are:
 * `omp` - OpenMP CPU backend
+* `generic` - Generic single-pass compiler. Generates a binary that runs on AMD, NVIDIA and Intel GPUs using runtime compilation
 * `cuda` - CUDA backend for NVIDIA GPUs. Requires specification of targets of the form sm_XY, e.g. sm_70 for Volta, sm_60 for Pascal
 * `hip`  - HIP backend for AMD GPUs. Requires specification of targets of the form gfxXYZ, e.g. gfx906 for Vega 20, gfx900 for Vega 10
-* `spirv` - use clang SYCL driver to generate spirv (experimental)
+
+When in doubt, use `-DACPP_TARGETS=omp;generic`.
 
 #### CMake usage example
 
