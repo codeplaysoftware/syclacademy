@@ -224,8 +224,8 @@ auto scratchpad = sycl::local_accessor&lt;int, dims&gt;(sycl::range{workGroupSiz
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
-						* Local memory is allocated via an `accessor` with the `access::target::local` access target.
-						* Unlike regular `accessor`s they are not created with a `buffer`, they allocate memory per work-group for the duration of the kernel function.
+						* Local memory is allocated via an `local_accessor`.
+						* Unlike regular `accessor`s, `local_accessor`s are not created with a `buffer`. They allocate memory per work-group for the duration of the kernel function.
 						* The `range` provided is the number of elements of the specified type to allocate per work-group.
 					</div>
 				</section>
