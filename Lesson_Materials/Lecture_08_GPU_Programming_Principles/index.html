@@ -350,7 +350,7 @@ auto scratchpad = sycl::local_accessor&lt;int, dims&gt;(sycl::range{workGroupSiz
 						<div class="col" data-markdown>
 							* However note that this does not apply across work-group boundaries.
 							* So if you write in a work-item of one work-group and then read it in a work-item of another work-group you again have a data race.
-							* Furthermore, remember that work-items can only access their own local memory and not that of any other work-groups.
+							* Furthermore, remember that work-items can only access their own local memory and not that of any other work-groups. Thus a data race between different work-groups only happens with the global memory accesses.
 						</div>
 					</div>
 				</section>
