@@ -9,7 +9,10 @@ If you have extra time, before the next lecture starts, please experiment a litt
 
 ### 1.) Installing a SYCL implementation
 
-To install a SYCL implementation, follow the instructions in the README.md of the SYCL Academy repository.
+Before you start the exercise please set yourself up with an account and access to the [DevCloud.](https://tinyurl.com/getdevcloud)
+
+This will be used to run through the hands-on exercises and includes the DPC++ compiler that will be used 
+to build your SYCL code.
 
 ### 2.) Verifying your environment
 
