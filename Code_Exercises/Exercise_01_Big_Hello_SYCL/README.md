@@ -78,18 +78,28 @@ mkdir build
 cd build
 ```
 
+If the clone HANGS when on Intel Developer Cloud - do the following steps:
+1. exit the worker nodes: type 'exit'
+2. now try the git command again (from above, remove the directory if rerunning git complains it exists - and then run git)
+3. go back to a worker node: type 'srun --pty bash'
+4. continue with the mkdir and cd from above, and so on
+
 ### 4.) Compile and run
 
 Simply build the exercise with your chosen build system and invoke the executable.
-
+If you are on Developer Cloud, you can view the image easily using the browser with JupyterLab to visit the photo (blurred_goldfish.png).
 
 #### Build And Execution Hints
 
 For DPC++ (using the Intel DevCloud):
 ```sh
-icpx -fsycl -o sycl-ex-1 ../Code_Exercises/Exercise_01_Big_Hello_SYCL/source.cpp
-./sycl-ex-1
+cd ~/syclacademy/Code_Exercises/Exercise_01_Big_Hello_SYCL
+icpx -fsycl -o sycl-ex-1 source.cpp
+cp ../Images/goldfish.png  .
+./sycl-ex-1 goldfish.png
 ```
+
+If you get an error "Command 'icpx' not found" that means you need to first type: source /opt/intel/oneapi/setvars.sh
 
 For hipSYCL:
 ```sh
@@ -103,9 +113,10 @@ make exercise_01_big_hello_sycl
 ```
 alternatively, without cmake:
 ```sh
-cd Code_Exercises/Exercise_01_Big_Hello_SYCL/exercise_01_big_hello_sycl
+cd ~/syclacademy/Code_Exercises/Exercise_01_Big_Hello_SYCL
 /path/to/hipsycl/bin/syclcc -o sycl-ex-1 --hipsycl-targets="<target specification>" source.cpp
-./sycl-ex-1
+cp ../Images/goldfish.png  .
+./sycl-ex-1 goldfish.png
 ```
 
 
@@ -115,8 +126,8 @@ Two experiments to consider:
 
 1. Change one of the program kernels to print "Hello, World". You will want to add these two lines of code (can you figure out where and make it work?):
 ```
-auto os = sycl::stream{128, 128, cgh2}; // or chg1 instead of chg2 depending on which kernel you add it to
-cgh.single_task<hello_world>([=]() { os << "Hello World!\n"; });
+auto os = sycl::stream{128, 128, cghX}; // X in chgX will depend on which kernel you add it to
+cghX.single_task([=]() { os << "Hello World!\n"; });
 ```
 
 2. Bonus points if you can put the Hello World print routine onto a third accelerator instead of using one of the two already being used (the code finds 4 devices (possibly not unique - but we'll discuss that later) and the code only uses 2 of them)
