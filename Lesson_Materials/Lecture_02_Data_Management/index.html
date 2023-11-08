@@ -1,455 +1,471 @@
-<!DOCTYPE html>
+!<!DOCTYPE html>
 
 <html>
-	<head>
-	    <meta charset="utf-8">
-		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
-		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
-		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
-		<script>
-			// This is needed when printing the slides to pdf
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-		<script>
-		    // This is used to display the static images on each slide,
-			// See global-images in this html file and custom.css
-			(function() {
-				if(window.addEventListener) {
-					window.addEventListener('load', () => {
-						let slides = document.getElementsByClassName("slide-background");
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+    <link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+    <link rel="stylesheet" href="../common-revealjs/css/custom.css">
+    <script>
+      // This is needed when printing the slides to pdf
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+<      link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <script>
+      // This is used to display the static images on each slide,
+      // See global-images in this html file and custom.css
+      (function() {
+	  if(window.addEventListener) {
+	      window.addEventListener('load', () => {
+		  let slides = document.getElementsByClassName("slide-background");
+		  
+		  if (slides.length === 0) {
+		      slides = document.getElementsByClassName("pdf-page")
+		  }
+		  
+		  // Insert global images on each slide
+		  for(let i = 0, max = slides.length; i < max; i++) {
+		      let cln = document.getElementById("global-images").cloneNode(true);
+		      cln.removeAttribute("id");
+		      slides[i].appendChild(cln);
+		  }
+		  
+		  // Remove top level global images
+		  let elem = document.getElementById("global-images");
+		  elem.parentElement.removeChild(elem);
+	      }, false);
+	  }
+      })();
+    </script>
+    <style>
+      .container{
+	  display: flex;
+      }
+      .col{
+	  flex: 1;
+      }
+      .codesize1{
+	  font-size: 14px;
+      }
+      .codesize2{
+	  font-size: 21px;
+      }
+      .codesize3{
+	  font-size: 28px;
+      }
+      .codesize4{
+	  font-size: 35px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+	<div id="global-images" class="global-images">
+	  <img src="../common-revealjs/images/sycl_academy.png" />
+	  <img src="../common-revealjs/images/sycl_logo.png" />
+	  <img src="../common-revealjs/images/trademarks.png" />
+	</div>
+	<section data-markdown
+		 data-separator="^---\n"
+		 data-separator-vertical="^vvv\n"
+		 data-separator-notes="^Speaker Notes:">
+	  <textarea data-template>
 
-						if (slides.length === 0) {
-							slides = document.getElementsByClassName("pdf-page")
-						}
+<!-- Ideally, only the markdown below needs editting to change slides. Focus on content! -->
 
-						// Insert global images on each slide
-						for(let i = 0, max = slides.length; i < max; i++) {
-							let cln = document.getElementById("global-images").cloneNode(true);
-							cln.removeAttribute("id");
-							slides[i].appendChild(cln);
-						}
+## Enqueuing a Kernels and Sharing Data
+---
+## Learning Objectives
+* Key concepts: Queues, Kernels, Sharing Data
+* Cool useful extras:
+  * sycl::Stream (debug out)
+  * Profiling (kernel timing)
+---
+## Learning Objectives
+* Key concepts: <mark>Queues</mark>, Kernels, Sharing Data
+* Cool useful extras:
+  * sycl::Stream (debug out)
+  * Profiling (kernel timing)
+---
+#### The queue
+<!-- Class 'container' is used to reduce font size for a section ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
+  <ul>
+    <li> In SYCL all work is submitted via commands to a `queue`.
+    <li> The `queue` has an associated device that any commands enqueued to it will target.
+    <li> There are several different ways to construct a `queue`.
+    <li> The most straight forward is to default construct one.
+    <li> This will have the SYCL runtime choose a device for you.
+  </ul>
+</div>
+---
+#### Precursor
+<!-- Class 'container' is used to reduce font size for a section ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
+  <ul>
+    <li> In SYCL there are two models for managing data:
+      <ul>
+	<li> The buffer/accessor model.
+	<li> The USM (unified shared memory) model.
+      </ul>
+    <li> Which model you choose can have an effect on how you enqueue kernel functions.
+    <li> For now we are going to focus on the buffer/accessor model.
+  </ul>
+</div>
+---
+#### Command groups
+<!-- Two column magic needs HTML in the markdown ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
 
-						// Remove top level global images
-						let elem = document.getElementById("global-images");
-						elem.parentElement.removeChild(elem);
-					}, false);
-				}
-			})();
-		</script>
-		
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<div id="global-images" class="global-images">
-					<img src="../common-revealjs/images/sycl_academy.png" />
-					<img src="../common-revealjs/images/sycl_logo.png" />
-					<img src="../common-revealjs/images/trademarks.png" />
-				</div>
-				<!--Slide 1-->
-				<section>
-					<div class="hbox" data-markdown>
-						## Enqueuing a Kernel
-					</div>
-				</section>
-				<!--Slide 2-->
-				<section class="hbox" data-markdown>
-					## Learning Objectives
-					* Learn about queues and how to submit work to them
-					* Learn how to compose command groups
-					* Learn how to define kernel functions
-					* Learn about the rules and restrictions on kernel functions
-					* Learn how to stream text from a kernel function to the console.
-                </section>
-				<!--Slide 3-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### The queue
-					</div>
-					<div class="container" data-markdown>
-						* In SYCL all work is submitted via commands to a `queue`.
-						* The `queue` has an associated device that any commands enqueued to it will target.
-						* There are several different ways to construct a `queue`.
-						* The most straight forward is to default construct one.
-						* This will have the SYCL runtime choose a device for you.
-					</div>
-				</section>
-				<!--Slide 4-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Precursor
-					</div>
-					<div class="container" data-markdown>
-						* In SYCL there are two models for managing data:
-						  * The buffer/accessor model.
-						  * The USM (unified shared memory) model.
-						* Which model you choose can have an effect on how you enqueue kernel functions.
-						* For now we are going to focus on the buffer/accessor model.
-					</div>
-				</section>
-				<!--Slide 5-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Command groups
-					</div>
-					<div class="container">
-						<div class="col">
-							<div class="col-left-1" data-markdown>
-								![SYCL](../common-revealjs/images/command_group.png "SYCL")
-							</div>
-						</div>
-						<div class="col" data-markdown>
-							* In the buffer/accessor model commands must be enqueued via command groups.
-							* A command group represents a series of commands to be executed by a device.
-							* These commands include:
-							  * Invoking kernel functions on a device.
-							  * Copying data to and from a device.
-							  * Waiting on other commands to complete.
-						</div>
-					</div>
-				</section>
-				<!--Slide 6-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Composing command groups
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/composing_a_command_group.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
-							* Command groups are composed by calling the `submit` member function on a `queue`.
-							* The `submit` function takes a command group function which acts as a factory for composing the command group.
-							* The `submit` function creates a `handler` and passes it into the command group function.
-							* The `handler` then composes the command group.
-						</div>
-					</div>
-				</section>
-				<!--Slide 7-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Composing command groups
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+  <div class="col">
+    <img align="left" src="../common-revealjs/images/command_group.png" alt="SYCL">
+  </div>
+
+  <div class="col">
+    <ul>
+      <li> In the buffer/accessor model commands must be enqueued via command groups.
+      <li> A command group represents a series of commands to be executed by a device.
+      <li> These commands include:
+	<ul>
+	  <li> Invoking kernel functions on a device.
+	  <li> Copying data to and from a device.
+	  <li> Waiting on other commands to complete.
+	</ul>
+    </ul>
+  </div>
+---
+#### Composing command groups
+<!-- Two column magic needs HTML in the markdown ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
+
+  <div class="col">
+    <img align="left" src="../common-revealjs/images/composing_a_command_group.png" alt="SYCL">
+  </div>
+
+  <div class="col">
+    <ul>
+      <li> Command groups are composed by calling the `submit` member function on a `queue`.
+      <li> The `submit` function takes a command group function which acts as a factory for composing the command group.
+      <li> The `submit` function creates a `handler` and passes it into the command group function.
+      <li> The `handler` then composes the command group.
+    </ul>
+  </div>
+</div>
+---
+#### Composing command groups
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 <mark>gpuQueue.submit([&](handler &cgh){</mark>
   
   /* Command group function */
   
 <mark>});</mark>
-							</code></pre>
-						</div>
-						<div class="col-right-1" data-markdown>
-							* The `submit` member function takes a C++ function object, which takes a reference to a `handler`.
-							* The function object can be a lambda expression or a class with a function call operator.
-							* The body of the function object represents the command group function.
-						</div>
-					</div>
-				</section>
-				<!--Slide 8-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Composing command groups
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre></div>
+
+  <div class="col">
+    <ul>
+      <li> The `submit` member function takes a C++ function object, which takes a reference to a `handler`.
+      <li> The function object can be a lambda expression or a class with a function call operator.
+      <li> The body of the function object represents the command group function.
+    </ul>
+  </div>
+</div>
+---
+#### Composing command groups
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 <mark>gpuQueue.submit([&](handler &cgh){</mark>
   
   /* Command group function */
   
 <mark>});</mark>
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* The command group function is processed exactly once when `submit` is called.
-							* At this point all the commands and requirements declared inside the command group function are processed to produce a command group.
-							* The command group is then submitted asynchronously to the scheduler.
-						</div>
-					</div>
-				</section>
-				<!--Slide 9-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Composing command groups
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre>
+  </div>
+
+  <div class="col">
+    <ul>
+      <li> The command group function is processed exactly once when `submit` is called.
+      <li> At this point all the commands and requirements declared inside the command group function are processed to produce a command group.
+      <li> The command group is then submitted asynchronously to the scheduler.
+    </ul>
+  </div>
+</div>
+---
+#### Composing command groups
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 gpuQueue.submit([&](handler &cgh){
 
   /* Command group function */
   
 })<mark>.wait();</mark>
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* The `queue` will not wait for commands to complete on destruction.
-							* However `submit` returns an `event` to allow you to synchronize with the completion of the commands.
-							* Here we call `wait` on the `event` to immediately wait for it to complete.
-							* There are other ways to do this, that will be covered in later lectures.
-						</div>
-					</div>
-				</section>
-				<!--Slide 10-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Scheduling
-					</div>
-					<div class="container" data-markdown>
-						![SYCL](../common-revealjs/images/scheduling.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-						* Once `submit` has created a command group it will submit it to the scheduler.
-						* The scheduler will then execute the commands on the target device
-							once all dependencies and requirements are satisfied.
-					</div>
-				</section>
-				<!--Slide 11-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Scheduling
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/common_scheduler.png "SYCL")
-						</div>
-					</div>
-					<div class="container" data-markdown>
-						* The same scheduler is used for all queues.
-						* This allows sharing dependency information.
-					</div>
-				</section>
-				<!--Slide 12-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Enqueuing SYCL Kernel Functions
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre>
+  </div>
+
+  <div class="col">
+    <ul>
+      <li> The `queue` will not wait for commands to complete on destruction.
+      <li> However `submit` returns an `event` to allow you to synchronize with the completion of the commands.
+      <li> Here we call `wait` on the `event` to immediately wait for it to complete.
+      <li> There are other ways to do this, that will be covered in later lectures.
+    </ul>
+  </div>
+</div>
+---
+#### Scheduling
+![SYCL](../common-revealjs/images/scheduling.png "SYCL")
+
+* Once `submit` has created a command group it will submit it to the scheduler.
+* The scheduler will then execute the commands on the target device once all dependencies and requirements are satisfied.
+---
+#### Scheduling
+![SYCL](../common-revealjs/images/common_scheduler.png "SYCL")
+
+* The same scheduler is used for all queues.
+* This allows sharing dependency information.
+---
+## Learning Objectives
+* Key concepts: Queues, <mark>Kernels</mark>, Sharing Data
+* Cool useful extras:
+  * sycl::Stream (debug out)
+  * Profiling (kernel timing)
+---
+#### Enqueuing SYCL Kernel Functions
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 class my_kernel;
 
 gpuQueue.submit([&](handler &cgh){
 
-  <mark>cgh.single_task&lt;my_kernel&gt;([=]() {</mark>
+  <mark>cgh.single_task\<my_kernel\>(\[=\]() {</mark>
     /* kernel code */
   <mark>});</mark>
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* SYCL kernel functions are defined using one of the kernel function invoke APIs provided by the `handler`.
-							* These add a SYCL kernel function command to the command group.
-							* There can only be one SYCL kernel function command in a command group.
-							* Here we use `single_task`.
-						</div>
-					</div>
-				</section>
-				<!--Slide 13-->
-				<section>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre>
+  </div>
+
+  <div class="col">
+    <ul>
+      <li> SYCL kernel functions are defined using one of the kernel function invoke APIs provided by the `handler`.
+      <li> These add a SYCL kernel function command to the command group.
+      <li> There can only be one SYCL kernel function command in a command group.
+      <li> Here we use `single_task`.
+    </ul>
+  </div>
+</div>
+---
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 class my_kernel;
 
 gpuQueue.submit([&](handler &cgh){
 								
-  cgh.single_task&lt;my_kernel&gt;(<mark>[=]() {</mark>
+  cgh.single_task\<my_kernel\>(<mark>\[=\]() {</mark>
     <mark>/* kernel code */</mark>
   <mark>}</mark>); 
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* The kernel function invoke APIs take a function object representing the kernel function.
-							* This can be a lambda expression or a class with a function call operator.
-							* This is the entry point to the code that is compiled to execute on the device.
-						</div>
-					</div>
-				</section>
-				<!--Slide 14-->
-				<section>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre>
+  </div>
+
+  <div class="col">
+    <ul>
+      <li> The kernel function invoke APIs take a function object representing the kernel function.
+      <li> This can be a lambda expression or a class with a function call operator.
+      <li> This is the entry point to the code that is compiled to execute on the device.
+    </ul>
+  </div>
+</div>
+---
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 class my_kernel;
 
 gpuQueue.submit([&](handler &cgh){
 								
-  cgh.single_task&lt;my_kernel&gt;(<mark>[=]() {</mark>
+  cgh.single_task\< my_kernel \>(<mark>\[=\]() {</mark>
     <mark>/* kernel code */</mark>
   <mark>}</mark>); 
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* Different kernel invoke APIs take different parameters describing the iteration space to be invoked in.
-							* Different kernel invoke APIs can also expect different arguments to be passed to the function object.
-							* The `single_task` function describes a kernel function that is invoked exactly once, so there are no additional parameters or arguments.
-						</div>
-					</div>
-				</section>
-				<!--Slide 15-->
-				<section>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre>
+  </div>
+
+  <div class="col">
+    <ul>
+      <li> Different kernel invoke APIs take different parameters describing the iteration space to be invoked in.
+      <li> Different kernel invoke APIs can also expect different arguments to be passed to the function object.
+      <li> The `single_task` function describes a kernel function that is invoked exactly once, so there are no additional parameters or arguments.
+    </ul>
+  </div>
+</div>
+---
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 <mark>class my_kernel;</mark>
 
 gpuQueue.submit([&](handler &cgh){
 								
-  cgh.single_task&lt;<mark>my_kernel</mark>&gt;([=]() {
+  cgh.single_task\<<mark>my_kernel</mark>\>(\[=\]() {
     /* kernel code */
   }); 
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* The template parameter passed to `single_task` is used to name the kernel function.
-							* This is necessary when defining kernel functions with lambdas to allow the host and device compilers to communicate.
-							* SYCL 2020 allows kernel lambdas to be unnamed, but not all implementations support that yet.
-						</div>
-					</div>
-				</section>
-				<!--Slide 16-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL kernel function rules
-					</div>
-					<div class=container data-markdown>
-						* Must be defined using a C++ lambda or function object, they cannot be a function pointer or std::function.
-						* Must always capture or store members by-value.
-						* SYCL kernel functions declared with a lambda ~~must be named using a forward declarable C++ type, declared in global scope~~ can be anonymous since SYCL 2020!
-						* SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name.
-					</div>
-				</section>
-				<!--Slide 17-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL kernel function restrictions
-					</div>
-					<div class=container data-markdown>
-						* No dynamic allocation
-						* No dynamic polymorphism
-						* No function pointers
-						* No recursion
-					</div>
-				</section>
-				<!--Slide 18-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Kernels as function objects
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre>
+  </div>
+
+  <div class="col">
+    <ul>
+      <li> The template parameter passed to `single_task` is used to name the kernel function.
+      <li> This is necessary when defining kernel functions with lambdas to allow the host and device compilers to communicate.
+      <li> SYCL 2020 allows kernel lambdas to be unnamed.
+    </ul>
+  </div>
+</div>
+---
+#### SYCL kernel function rules
+
+* Must be defined using a C++ lambda or function object, they cannot be a function pointer or std::function.
+* Must always capture or store members by-value.
+* SYCL kernel function names follow C++ ODR rules, which means you cannot have two kernels with the same name.
+---
+#### SYCL kernel function restrictions
+
+* No dynamic allocation
+* No dynamic polymorphism
+* No function pointers
+* No recursion
+---
+#### Kernels as function objects
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 class my_kernel;
 
 queue gpuQueue;
-gpuQueue.submit([&](handler &cgh){
 
-  cgh.single_task&lt;my_kernel&gt;([=]() {
+gpuQueue.submit([&](handler &cgh){
+  cgh.single_task\<my_kernel\>(\[=\]() {
     /* kernel code */
   }); 
+
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* All the examples of SYCL kernel functions up until now have been defined using lambda expressions.
-						</div>
-					</div>
-				</section>
-				<!--Slide 19-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Kernels as function objects
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre>
+  </div>
+
+  <div class="col">
+    All the examples of SYCL kernel functions up until now have been defined using lambda expressions.
+  </div>
+</div>
+---
+#### Kernels as function objects
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
+struct my_kernel { 
+  void operator()(){ 
+    /* kernel function */
+  }
+    </code></pre>
+  </div>
+
+  <div class="col">
+    As well as defining SYCL kernels using lambda expressions. You can also define a SYCL kernel using a regular C++ function object.
+  </div>
+</div>
+---
+#### Kernels as function objects
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 struct my_kernel { 
   void operator()(){ 
     /* kernel function */
   }
 };
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* As well as defining SYCL kernels using lambda expressions,
-								You can also define a SYCL kernel using a regular C++ function object.
-						</div>
-					</div>
-				</section>
-				<!--Slide 20-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Kernels as function objects
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
-struct my_kernel { 
-  void operator()(){ 
-    /* kernel function */
-  }
-};
-							</code></pre>
-							<code><pre>
+    </code></pre>
+    <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 queue gpuQueue;
 gpuQueue.submit([&](handler &cgh){
 								
   cgh.single_task(<mark>my_kernel{}</mark>); 
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* To use a C++ function object you simply construct an instance of the type and pass it to `single_task`.
-							* Notice you no longer need to name the SYCL kernel.
-						</div>
-					</div>
-				</section>
-				<!--Slide 21-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Streams
-					</div>
-					<div class=container data-markdown>
-						* A `stream` can be used in a kernel function to print text to the console from the device, similarly to how you would with `std::cout`.
-						* The `stream` is a buffered output stream so the output may not appear until the kernel function is complete.
-						* The `stream` is useful for debugging, but should not be relied on in performance critical code.
-					</div>
-				</section>
-				<!--Slide 22-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Streams
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
+    </code></pre>
+  </div>
+  <div class="col">
+    To use a C++ function object you simply construct an instance of the type and pass it to `single_task`.
+  </div>
+</div>
+---
+## Learning Objectives
+* Key concepts: Queues, Kernels, <mark>Sharing Data</mark>
+* Cool useful extras:
+  * sycl::Stream (debug out)
+  * Profiling (kernel timing)
+---
+
+
+
+
+
+
+
+
+
+
+---
+## Learning Objectives
+* Key concepts: Queues, Kernels, Sharing Data
+* Cool useful extras:
+  * <mark>sycl::Stream</mark> (debug out)
+  * Profiling (kernel timing)
+---
+#### sycl::Stream
+
+* A `stream` can be used in a kernel function to print text to the console from the device, similarly to how you would with `std::cout`.
+* The `stream` is a buffered output stream so the output may not appear until the kernel function is complete.
+* The `stream` is useful for debugging, but should not be relied on in performance critical code.
+---
+#### sycl::Stream
+<pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 sycl::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* A `stream` must be constructed in the command group function, as a `handler` is required.
-						* The constructor also takes a `size_t` parameter specifying the total size of the buffer that will store the text.
-						* It also takes a second `size_t` parameter specifying the work-item buffer size.
-						* The work-item buffer size represents the cache that each invocation of the kernel function (in the case of `single_task` 1) has for composing a stream of text.
-					</div>
-				</section>
-				<!--Slide 23-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Streams
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+</code></pre>
+
+* A `stream` must be constructed in the command group function, as a `handler` is required.
+  * 1st Constructor `size_t` parameter specifies the total size of the buffer to store output text.
+  * 2nd Constructor `size_t` parameter specifies the work-item buffer size.
+---
+#### sycl::Stream
+<pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
+sycl::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
+</code></pre>
+
+* The work-item buffer size represents the cache that each invocation of the kernel function (in the case of `single_task` 1) has for composing a stream of text.
+* In other words, the maximum amount of text that invocation may produce.
+---
+#### sycl::Stream
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize1" data-trim data-noescape data-line-numbers="">
 class my_kernel;
 
 queue gpuQueue;
@@ -457,26 +473,25 @@ gpuQueue.submit([&](handler &cgh){
 
   <mark>auto os = sycl::stream(1024, 1024, cgh);</mark>
 
-  cgh.single_task&lt;my_kernel&gt;([=]() {
+  cgh.single_task(\[=\]() {
     /* kernel code */
   }); 
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* Here we construct a `stream` in our command group function with a buffer size of `1024` and a work-item size of also `1024`.
-							* This means that the total text that the stream can receive is 1024 bytes.
-						</div>
-					</div>
-				</section>
-				<!--Slide 24-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Streams
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
+    </code></pre>
+  </div>
+  <div class="col">
+    <ul>
+      <li> Here we construct a `stream` in our command group function with a buffer size of `1024` and a work-item size of also `1024`.
+      <li> This means that the total text that the stream can receive is 1024 bytes.
+    </ul>
+  </div>
+</div>
+---
+#### sycl::Stream
+<div class="container">
+
+  <div class="col">
+    <pre><code class="codesize1" data-trim data-noescape data-line-numbers="">
 class my_kernel;
 
 queue gpuQueue;
@@ -484,46 +499,70 @@ gpuQueue.submit([&](handler &cgh){
 
   auto os = sycl::stream(1024, 1024, cgh);
 
-  cgh.single_task&lt;my_kernel&gt;([=]() {
+  cgh.single_task\<my_kernel\>(\[=\]() {
     <mark>os << "Hello world!\n";</mark>
   }); 
 }).wait();
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* Next we capture the `stream` in the kernel function's lambda expression.
-							* Then we can print `"Hello World!"` to the console using the `<<` operator.
-							* This is where the work-item size comes in, this is the cache available to store text on the right-hand-size of the `<<` operator.
-						</div>
-					</div>
-				</section>
-				<!--Slide 22-->
-				<section>
-					<div class="hbox" data-markdown>
-						## Questions
-					</div>
-				</section>
-				<!--Slide 23-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Exercise
-					</div>
-					<div class="container" data-markdown>
-						Code_Exercises/Exercise_2_Hello_World/source
-					</div>
-					<div class="container" data-markdown>
-						Implement a SYCL application which enqueues a kernel function to a device and streams "Hello world!" to the console.
-					</div>
-				</section>
-			</div>
-		</div>
-		<script src="../common-revealjs/js/reveal.js"></script>
-		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
-		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
-		<script src="../common-revealjs/plugin/notes/notes.js"></script>
-		<script>
-			Reveal.initialize({mouseWheel: true, defaultNotes: true});
-			Reveal.configure({ slideNumber: true });
-		</script>
-	</body>
+    </code></pre>
+  </div>
+  <div class="col">
+    <ul>
+      <li> Next we capture the `stream` in the kernel function.
+      <li> Then we can print "Hello World!" to the console using the << operator.
+      <li> This is where the work-item size comes in, this is the cache available to store text on the right-hand-size of the << operator.
+    </ul>
+  </div>
+</div>
+---
+## Learning Objectives
+* Key concepts: Queues, Kernels, Sharing Data
+* Cool useful extras:
+  * sycl::Stream (debug out)
+  * <mark>Profiling</mark> (kernel timing)
+---
+### Enable Kernel Profiling
+<pre><code class="codesize3" data-trim data-noescape data-line-numbers="">
+sycl::property::queue::enable_profiling{}
+</code></pre>
+* Extremely valuable capability
+* (Technically) SYCL does not require that every device supports this
+---
+### Enable Kernel Profiling
+<pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
+double time1A =
+    (e1.template get_profiling_info<
+         sycl::info::event_profiling::
+             command_end>() -
+     e1.template get_profiling_info<
+         sycl::info::event_profiling::
+             command_start>());
+</code></pre>
+* Data is available after a kernel completes
+* Timing code is from SYCL book (2nd edition)
+  * Covered in Chapter 13: look around figures 13-6 through 13-8.
+---
+### Questions?
+#### Exercise
+Code_Exercises/Exercise_02_Data_Management
+  * TBD
+
+
+
+
+
+	  </textarea>
+	</section>
+      </div>
+    </div>
+    <script src="../common-revealjs/js/reveal.js"></script>
+    <script src="../common-revealjs/plugin/markdown/marked.js"></script>
+    <script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+    <script src="../common-revealjs/plugin/notes/notes.js"></script>
+    <script>
+      Reveal.initialize({mouseWheel: true, defaultNotes: true,margin:0.04});
+      Reveal.configure({ slideNumber: true });
+    </script>
+  </body>
 </html>
+
+
