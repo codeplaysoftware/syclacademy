@@ -78,6 +78,12 @@ mkdir build
 cd build
 ```
 
+If the clone HANGS when on Intel Developer Cloud - do the following steps:
+1. exit the worker nodes: type 'exit'
+2. now try the git command again (from above, remove the directory if rerunning git complains it exists - and then run git)
+3. go back to a worker node: type 'srun --pty bash'
+4. continue with the mkdir and cd from above, and so on
+
 ### 4.) Compile and run
 
 Simply build the exercise with your chosen build system and invoke the executable.
