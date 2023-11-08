@@ -1,3 +1,5 @@
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
 [submodule "External/stb"]
 	path = External/stb
 	url = ../../nothings/stb.git
