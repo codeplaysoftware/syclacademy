@@ -1,6 +1,6 @@
 [submodule "External/stb"]
 	path = External/stb
-	url = ../nothings/stb.git
+	url = ../../nothings/stb.git
 [submodule "External/Catch2"]
 	path = External/Catch2
-	url = ../catchorg/Catch2.git
+	url = ../../catchorg/Catch2.git
