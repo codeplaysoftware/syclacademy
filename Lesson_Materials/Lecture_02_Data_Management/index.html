@@ -258,7 +258,7 @@ class my_kernel;
 
 gpuQueue.submit([&](handler &cgh){
 
-  <mark>cgh.single_task\<my_kernel\>(\[=\]() {</mark>
+  <mark>cgh.single_task\<my_kernel\>([=]() {</mark>
     /* kernel code */
   <mark>});</mark>
 }).wait();
@@ -283,7 +283,7 @@ class my_kernel;
 
 gpuQueue.submit([&](handler &cgh){
 								
-  cgh.single_task\<my_kernel\>(<mark>\[=\]() {</mark>
+  cgh.single_task\<my_kernel\>(<mark>[=]() {</mark>
     <mark>/* kernel code */</mark>
   <mark>}</mark>); 
 }).wait();
@@ -307,7 +307,7 @@ class my_kernel;
 
 gpuQueue.submit([&](handler &cgh){
 								
-  cgh.single_task\< my_kernel \>(<mark>\[=\]() {</mark>
+  cgh.single_task\< my_kernel \>(<mark>[=]() {</mark>
     <mark>/* kernel code */</mark>
   <mark>}</mark>); 
 }).wait();
@@ -331,7 +331,7 @@ gpuQueue.submit([&](handler &cgh){
 
 gpuQueue.submit([&](handler &cgh){
 								
-  cgh.single_task\<<mark>my_kernel</mark>\>(\[=\]() {
+  cgh.single_task\<<mark>my_kernel</mark>\>([=]() {
     /* kernel code */
   }); 
 }).wait();
@@ -370,7 +370,7 @@ class my_kernel;
 queue gpuQueue;
 
 gpuQueue.submit([&](handler &cgh){
-  cgh.single_task\<my_kernel\>(\[=\]() {
+  cgh.single_task\<my_kernel\>([=]() {
     /* kernel code */
   }); 
 
@@ -786,7 +786,7 @@ gpuQueue.submit([&](handler &cgh){
 
   <mark>auto os = sycl::stream(1024, 1024, cgh);</mark>
 
-  cgh.single_task(\[=\]() {
+  cgh.single_task([=]() {
     /* kernel code */
   }); 
 }).wait();
@@ -812,7 +812,7 @@ gpuQueue.submit([&](handler &cgh){
 
   auto os = sycl::stream(1024, 1024, cgh);
 
-  cgh.single_task\<my_kernel\>(\[=\]() {
+  cgh.single_task\<my_kernel\>([=]() {
     <mark>os << "Hello world!\n";</mark>
   }); 
 }).wait();
