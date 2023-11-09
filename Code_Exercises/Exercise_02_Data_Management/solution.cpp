@@ -25,14 +25,12 @@ this code doesn't check for limits (bad, bad, bad!)
 // MAKE_TASK2_PI - adds a task to a second accelerator
 // BONUS_CREDIT_01 - adds a 'print Hello World' task to a
 // third accelerator
-// BONUS_CREDIT_02 - adds
-//
 //
 
 #define MYDEBUGS
 #define MAKE_TASK2_PI
 #define BONUS_CREDIT_01
-#define BONUS_CREDIT_02
+#define SOLVE_02_USM_FOR_PI
 
 #include <algorithm>
 #include <array>
@@ -228,19 +226,29 @@ int main(int argc, char* argv[]) {
     //
 
 #ifdef MAKE_TASK2_PI
+#ifdef SOLVE_02_USM_FOR_PI
+    auto d4 = (int *)sycl::malloc_shared( sizeof(int)*200, myQueue2 );
+#else
     std::array<int, 200> d4;
+#endif
     // inspired and based upon:
     // https://cs.uwaterloo.ca/~alopez-o/math-faq/mathtext/node12.html
     // and
     // https://crypto.stanford.edu/pbc/notes/pi/code.html
     // (retrieved September 13, 2023)
     //
+#ifndef SOLVE_02_USM_FOR_PI
     sycl::buffer outD4(d4);
+#endif
     sycl::event e2 =
         myQueue2.submit([&](sycl::handler& cgh2) {
+#ifdef SOLVE_02_USM_FOR_PI
+  #define outAccessor d4
+#else
           auto outAccessor =
               outD4.get_access<sycl::access::mode::write>(
                   cgh2);
+#endif
           cgh2.single_task([=]() {
             int r[2800 + 1];
             int i, k;
@@ -395,8 +403,8 @@ int main(int argc, char* argv[]) {
               for (int i = 0; i < channels; ++i) {
                 auto channelOffset = sycl::id(0, i);
                 sum[i] +=
-                    inAccessor[srcOffset + channelOffset] *
-                    filterAccessor[filterOffset +
+		  inAccessor[srcOffset + channelOffset] *
+		  filterAccessor[filterOffset +
                                    channelOffset];
               }
             }
@@ -453,9 +461,13 @@ int main(int argc, char* argv[]) {
 #ifdef MAKE_TASK2_PI
       e2.wait();  // make sure all digits are done being
                   // computed
+#ifdef SOLVE_02_USM_FOR_PI
+  #define myD4 d4
+#else
       sycl::host_accessor myD4(
           outD4);  // the scope of the buffer continues - so
                    // we must not use d4[] directly
+#endif
       std::cout << "First 800 digits of pi: ";
       for (int i = 0; i < 200; ++i) printf("%.4d", myD4[i]);
       std::cout << "\n";
