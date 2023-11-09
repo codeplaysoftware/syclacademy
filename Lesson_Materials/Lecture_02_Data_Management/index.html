@@ -11,7 +11,7 @@
       var link = document.createElement( 'link' );
       link.rel = 'stylesheet';
       link.type = 'text/css';
-<      link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
       document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
     <script>
@@ -59,6 +59,15 @@
       .codesize4{
 	  font-size: 35px;
       }
+      .bulletsized1{
+	  font-size: 50%;
+      }
+      .bulletsized2{
+	  font-size: 70%;
+      }
+      .bulletsized3{
+	  font-size: 85%;
+      }
     </style>
   </head>
   <body>
@@ -82,13 +91,13 @@
 ## Learning Objectives
 * Key concepts: Queues, Kernels, Sharing Data
 * Cool useful extras:
-  * sycl::Stream (debug out)
+  * sycl::stream (debug out)
   * Profiling (kernel timing)
 ---
 ## Learning Objectives
 * Key concepts: <mark>Queues</mark>, Kernels, Sharing Data
 * Cool useful extras:
-  * sycl::Stream (debug out)
+  * sycl::stream (debug out)
   * Profiling (kernel timing)
 ---
 #### The queue
@@ -237,7 +246,7 @@ gpuQueue.submit([&](handler &cgh){
 ## Learning Objectives
 * Key concepts: Queues, <mark>Kernels</mark>, Sharing Data
 * Cool useful extras:
-  * sycl::Stream (debug out)
+  * sycl::stream (debug out)
   * Profiling (kernel timing)
 ---
 #### Enqueuing SYCL Kernel Functions
@@ -418,33 +427,337 @@ gpuQueue.submit([&](handler &cgh){
 ## Learning Objectives
 * Key concepts: Queues, Kernels, <mark>Sharing Data</mark>
 * Cool useful extras:
-  * sycl::Stream (debug out)
+  * sycl::stream (debug out)
   * Profiling (kernel timing)
 ---
+# Sharing (Managing) Data
+---
+#### Memory Models
+* In SYCL there are two models for managing data:
+  * The buffer/accessor model.
+  * The USM (unified shared memory) model.
+* Which model you choose can have an effect on how you enqueue kernel functions.
+---
+#### CPU and GPU Memory
+<!-- Two column magic needs HTML in the markdown ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
 
+  <div class="col">
+    <ul>
+      <li> A GPU has its own memory, separate to CPU memory.
+      <li> In order for the GPU to use memory from the CPU, the following actions must take place (either explicitly or implicitly):
+	<ul>
+	  <li> Memory allocation on the GPU.
+	  <li> Data migration from the CPU to the allocation on the GPU.
+	  <li> Some computation on the GPU.
+	  <li> Migration of the result back to the CPU.
+	</ul>
+    </ul>
+  </div>
 
+  <div class="col">
+    <img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
+  </div>
+</div>
+---
+#### CPU and GPU Memory
+<!-- Two column magic needs HTML in the markdown ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
 
+  <div class="col">
+    <ul>
+      <li> Memory transfers between CPU and a device (GPU) are a bottleneck.
+      <li> We want to minimize these transfers, when possible.
+    </ul>
+  </div>
 
+  <div class="col">
+    <img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
+  </div>
+</div>
+---
+#### USM Allocation Types
+<div class="bulletsized2">
+There are different ways USM memory can be allocated: host, device and shared.
+</div>
 
+<img src="../common-revealjs/images/Figure6-1bookUSMtypes.png" alt="SYCL" width="70%">
 
+<div class="bulletsized2">
+(from book)
+</div>
+---
+#### Using USM - Malloc Device
 
+<pre><code class="codesize2" data-trim data-line-numbers="">
+// Allocate memory on device
+T *device_ptr = sycl::malloc_device&lt;&zwnj;T&gt;(n, myQueue);
 
+// Copy data to device
+myQueue.memcpy(device_ptr, cpu_ptr, n * sizeof(T));
 
+// ...
+// Do some computation on device
+// ...
 
+// Copy data back to CPU
+myQueue.memcpy(result_ptr, device_ptr, n * sizeof(T)).wait();
+
+// Free allocated data
+sycl::free(device_ptr, myQueue);
+</code></pre>
+
+* It is important to free memory after it has been used to avoid memory leaks.
+---
+#### Using USM - Malloc Shared
+
+<pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
+// Allocate shared memory 
+T *shared_ptr = sycl::malloc_shared&lt;&zwnj;T&gt;(n, myQueue);
+
+// Shared memory can be accessed on host as well as device
+for (auto i = 0; i &lt;&zwnj; n; ++i)
+  shared_ptr[i] = i;
+
+// ...
+// Do some computation on device
+// ...
+
+// Free allocated data
+sycl::free(shared_ptr, myQueue);
+</code></pre>
+
+* Shared memory is accessible on host and device.
+* Performance of shared memory accesses may be poor depending on platform.
+---
+#### SYCL Buffers & Accessors
+* SYCL provides an API which takes care of allocations and memcpys, as well as some other things.
+---
+#### SYCL Buffers & Accessors
+* The buffer/accessor model separates the storage and access of data 
+  * A SYCL buffer manages data across the host and any number of devices 
+  * A SYCL accessor requests access to data on the host or on a device for a specific SYCL kernel function
+---
+#### SYCL Buffers & Accessors
+* Accessors are also used to access data within a SYCL kernel function
+  * This means they are declared in the host code but captured by and then accessed within a SYCL kernel function
+---
+#### SYCL Buffers & Accessors
+<!-- Two column magic needs HTML in the markdown ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
+
+  <div class="col">
+    <ul>
+      <li> A SYCL buffer can be constructed with a pointer to host memory
+      <li> For the lifetime of the buffer this memory is owned by the SYCL runtime
+      <li> When a buffer object is constructed it will not allocate or copy to device memory at first
+      <li> This will only happen once the SYCL runtime knows the data needs to be accessed and where it needs to be accessed
+    </ul>
+  </div>
+
+  <div class="col">
+    <img src="../common-revealjs/images/buffer-hostmemory.png" alt="Buffer Host Memory">
+  </div>
+</div>
+---
+#### SYCL Buffers & Accessors
+<ul>
+  <li> Constructing an accessor specifies a request to access the data managed by the buffer
+  <li> There are a range of different types of accessor which provide different ways to access data
+</ul>
+<img src="../common-revealjs/images/buffer-hostmemory-accessor.png" alt="Buffer Host Memory Accessor">
+---
+#### SYCL Buffers & Accessors
+<!-- Two column magic needs HTML in the markdown ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
+
+  <div class="col">
+    <ul>
+      <li> When an accessor is constructed it is associated with a command group via the handler object
+      <li> This connects the buffer that is being accessed, the way in which it’s being accessed and the device that the command group is being submitted to
+    </ul>
+  </div>
+
+  <div class="col">
+    <img src="../common-revealjs/images/buffer-hostmemory-accessor-cg.png" alt="Buffer Host Memory Accessor CG">
+  </div>
+</div>
+---
+#### SYCL Buffers & Accessors
+<!-- Two column magic needs HTML in the markdown ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
+
+  <div class="col">
+    <ul>
+      <li> Once the SYCL scheduler selects the command group to be executed it must first satisfy its data dependencies
+      <li> If necessary, this includes allocating and copying the data to the device accessing that data
+      <li> If the most recent copy of the data is already on the device then the runtime will not copy again
+    </ul>
+  </div>
+
+  <div class="col">
+    <img src="../common-revealjs/images/buffer-hostmemory-accessor-cg-device.png" alt="Buffer Host Memory Accessor CG Device">
+  </div>
+</div>
+---
+#### SYCL Buffers & Accessors
+<!-- Two column magic needs HTML in the markdown ; unfortunately as a side-effect some markdown stops working so we resort to HTML -->
+<div class="container">
+
+  <div class="col">
+    <ul>
+      <li> Data will remain in device memory after kernels finish executing until another accessor requests access in a different device or on the host
+      <li> When the buffer object is destroyed it will wait for any outstanding work that is accessing the data to complete and then copy back to the original host memory
+    </ul>
+  </div>
+
+  <div class="col">
+    <img src="../common-revealjs/images/buffer-destroyed.png" alt="Buffer Destroyed">
+  </div>
+</div>
+---
+#### SYCL Buffers & Accessors
+
+<pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
+T var = 42;
+
+{
+  // Create buffer pointing to var.
+
+  <mark>auto buf = sycl::buffer{&var, sycl::range&lt;&zwnj;1&gt;{1}};</mark>
+
+  // ...
+  // Do some computation on device. Use accessors to access buffer
+  // ...
+    
+} // var updated here
+
+assert(var != 42);
+</code></pre>
+
+<div class="bulletsized1">
+  <ul>
+    <li> A buffer is associated with a type, range and dimensionality. Dimensionality must be either 1, 2 or 3.
+    <li> Usually type and dimensionality can be inferred using CTAD.
+    <li> If a buffer is associated with some allocation in host memory, the host memory will be updated only once the buffer goes out of scope.
+  </ul>
+</div>
+---
+#### Accessor class
+<img src="../common-revealjs/images/accessor-types.png" alt="Accessor Types">
+---
+#### Accessor class
+<ul>
+  <li> There are many different ways to use the accessor class.
+    <ul>
+      <li> Accessing data on a device.
+      <li> Accessing data immediately in the host application.
+      <li> Allocating local memory.
+    </ul>
+  <li> For now we are going to focus on accessing data on a device.
+</ul>
+---
+#### Constructing an accessor
+<pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
+auto acc = sycl::accessor{bufA, cgh};
+</code></pre>
+
+<div class="bulletsized2">
+  <ul>
+    <li> There are many ways to construct an accessor.
+    <li> The accessor class supports CTAD so it's not necessary to specify all of the template arguments.
+    <li> The most common way to construct an accessor is from a buffer and a handler associated with the command	group function you are within.
+      <ul>
+	<li> The element type and dimensionality are inferred from the buffer.
+	<li> The access_mode is defaulted to access_mode::read_write.
+      </ul>
+  </ul>
+</div>
+---
+#### Specifying the access mode
+
+<pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
+auto readAcc = sycl::accessor{bufA, cgh, sycl::read_only};
+auto writeAcc = sycl::accessor{bufB, cgh, sycl::write_only};
+</code></pre>
+
+<div class="bulletsized2">
+  <ul>
+    <li> When constructing an accessor you will likely also want to specify the access_mode
+    <li> You can do this by passing one of the CTAD tags:
+      <ul>
+	<li> read_only will result in access_mode::read.
+	<li> write_only will result in access_mode::write.
+      </ul>
+  </ul>
+</div>
+---
+#### Specifying no initialization
+
+<pre><code class="codesize3" data-trim data-noescape data-line-numbers="">
+auto acc = sycl::accessor{buf, cgh, sycl::no_init};
+</code></pre>
+<ul>
+  <li> When constructing an accessor you may also want to discard the original data of a buffer.
+  <li> You can do this by passing the no_init property.
+</ul>
+---
+#### Using Accessors
+
+<pre><code class="codesize1" data-trim data-noescape data-line-numbers="">
+T var = 42;
+
+{
+  // Create buffer pointing to var.
+  auto bufA = sycl::buffer{&var, sycl::range&lt;&zwnj;1&gt;{1}};
+  auto bufB = sycl::buffer{&var, sycl::range&lt;&zwnj;1&gt;{1}};
+
+  q.submit([&](sycl::handler &cgh) {
+	auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+	auto accB = sycl::accessor{bufA, cgh, sycl::no_init};
+
+    cgh.single_task&lt;&zwnj;mykernel&gt;(...); // Do some work
+  });
+  
+} // var updated here
+</code></pre>
+<ul>
+  <li> Buffers and accessors take care of memory migration, as well as dependency analysis.
+  <li> More to come later on dependencies.
+</ul>
+---
+#### operator[]
+<pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
+gpuQueue.submit([&](handler &cgh){
+  auto inA = sycl::accessor{bufA, cgh, sycl::read_only};
+  auto inB = sycl::accessor{bufB, cgh, sycl::read_only};
+  auto out = sycl::accessor{bufO, cgh, sycl::write_only};
+  cgh.single_task&lt;&zwnj;mykernel&gt;([=]{
+    <mark>out[0] = inA[0] + inB[0];</mark>
+  }); 
+});
+</code></pre>
+<div class="bulletsized2">
+  <ul>
+    <li> As well as specifying data dependencies an accessor	can also be used to access the data from within a kernel function.
+    <li> You can do this by calling operator[] on the accessor.
+    <li> operator[] for USM pointers must take a size_t,  whereas operator[] for accessors can take a multi-dimensional sycl::id or a size_t.
+  </ul>
+</dev>
 ---
 ## Learning Objectives
 * Key concepts: Queues, Kernels, Sharing Data
 * Cool useful extras:
-  * <mark>sycl::Stream</mark> (debug out)
+  * <mark>sycl::stream</mark> (debug out)
   * Profiling (kernel timing)
 ---
-#### sycl::Stream
+#### sycl::stream
 
 * A `stream` can be used in a kernel function to print text to the console from the device, similarly to how you would with `std::cout`.
 * The `stream` is a buffered output stream so the output may not appear until the kernel function is complete.
 * The `stream` is useful for debugging, but should not be relied on in performance critical code.
 ---
-#### sycl::Stream
+#### sycl::stream
 <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 sycl::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
 </code></pre>
@@ -453,7 +766,7 @@ sycl::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
   * 1st Constructor `size_t` parameter specifies the total size of the buffer to store output text.
   * 2nd Constructor `size_t` parameter specifies the work-item buffer size.
 ---
-#### sycl::Stream
+#### sycl::stream
 <pre><code class="codesize2" data-trim data-noescape data-line-numbers="">
 sycl::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
 </code></pre>
@@ -461,7 +774,7 @@ sycl::stream(size_t bufferSize, size_t workItemBufferSize, handler &cgh);
 * The work-item buffer size represents the cache that each invocation of the kernel function (in the case of `single_task` 1) has for composing a stream of text.
 * In other words, the maximum amount of text that invocation may produce.
 ---
-#### sycl::Stream
+#### sycl::stream
 <div class="container">
 
   <div class="col">
@@ -487,7 +800,7 @@ gpuQueue.submit([&](handler &cgh){
   </div>
 </div>
 ---
-#### sycl::Stream
+#### sycl::stream
 <div class="container">
 
   <div class="col">
@@ -517,7 +830,7 @@ gpuQueue.submit([&](handler &cgh){
 ## Learning Objectives
 * Key concepts: Queues, Kernels, Sharing Data
 * Cool useful extras:
-  * sycl::Stream (debug out)
+  * sycl::stream (debug out)
   * <mark>Profiling</mark> (kernel timing)
 ---
 ### Enable Kernel Profiling
@@ -541,14 +854,15 @@ double time1A =
 * Timing code is from SYCL book (2nd edition)
   * Covered in Chapter 13: look around figures 13-6 through 13-8.
 ---
-### Questions?
+## Questions?
+---
 #### Exercise
+
 Code_Exercises/Exercise_02_Data_Management
-  * TBD
 
+Modify the program to use USM instead of buffers for sharing the pi calculation results.
 
-
-
+Bonus exercise: convert the image processing to use USM instead of buffers.
 
 	  </textarea>
 	</section>
