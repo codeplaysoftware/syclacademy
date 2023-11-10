@@ -1,4 +1,4 @@
-!<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
   <head>
@@ -47,6 +47,27 @@
       .col{
 	  flex: 1;
       }
+      .codesize1{
+	  font-size: 14px;
+      }
+      .codesize2{
+	  font-size: 21px;
+      }
+      .codesize3{
+	  font-size: 28px;
+      }
+      .codesize4{
+	  font-size: 35px;
+      }
+      .bulletsized1{
+	  font-size: 50%;
+      }
+      .bulletsized2{
+	  font-size: 70%;
+      }
+      .bulletsized3{
+	  font-size: 85%;
+      }
     </style>
   </head>
   <body>
@@ -56,7 +77,13 @@
 	  <img src="../common-revealjs/images/sycl_academy.png" />
 	  <img src="../common-revealjs/images/sycl_logo.png" />
 	  <img src="../common-revealjs/images/trademarks.png" />
+	  <img src="../common-revealjs/images/sc23.png" />
 	</div>
+	<section>
+		<div class="container" data-markdown>
+			![SYCL](../common-revealjs/images/sc23-title.png "SYCL")
+		</div>
+	</section>
 	<section data-markdown
 		 data-separator="^---\n"
 		 data-separator-vertical="^vvv\n"
@@ -93,6 +120,12 @@ A first example of SYCL code. Elements will be explained in coming sections!
   * device control (kernels of work, memory)
 * SYCL is modern C++
 * SYCL is open, multivendor, multiarchitecture
+---
+## Focus on Understanding the Three Key Capabilities:
+
+* find devices / connect to devices
+* share data with devices (get data to and from)
+* offload computations to devices
 ---
 #### What is SYCL?
 SYCL is a ***single source***, high-level, standard C++ programming model, that can target a range of heterogeneous platforms.
@@ -315,17 +348,16 @@ So how do you compile a source file to also target the GPU?
 * Visit https://www.khronos.org/sycl/ to find the latest SYCL specifications
 * Checkout the documentation provided with one of the SYCL implementations.
 ---
-## Questions
+## Questions?
 ---
 #### Exercise
-Code_Exercises/Exercise_1_Big_Hello_SYCL/source
+Code_Exercises/Exercise_01_Big_Hello_SYCL
   * Everyone set up to compile
   * Everyone set up to run
   * First program has a little of everything
   * Focus on compile and run, and we'll grow from there
 
-
-
+Bonus exercise: add a stream output of Hello, World!
 
 	  </textarea>
 	</section>

@@ -1,70 +1,50 @@
 # SYCL Academy
 
-## Exercise 4: Handling Errors
+## Exercise 3: Handling Errors
 
 ---
 
-In this exercise you will learn how to handle synchronous and asynchronous
-exceptions.
+In this exercise, you will learn how to handle synchronous and asynchronous
+exceptions.  Specifically, you will introduce a few errors and catch them
+using standard C++ try catch.  Of course, asynchornous errors are caught
+by the SYCL runtime and made available to us to handle with standard C++
+mechanisms which only support a synchronous model directly.
+
+We assume you have your environment set up to compile, since we did that in Exercise 01.
+Ask for help if you have not completed Exercise 01 - we are here to help!
+
+This exercise uses the solution from Exercise 02 as it's basis, which was based on Exercise 01.
+It should look familiar.
+If you have extra time, we hope you'll explore making more additions or changes.
 
 ---
 
-### 1.) Catch synchronous exception handling
+### 1.) JAMES WORKING ON THIS...
 
-Synchronous errors, such as failure to construct an object, are reported
-immediately  by  the  runtime  throwing  an  exception.
 
-To catch synchronous exceptions simply wrap your application in a try catch
-block and catch a SYCL `exception` and print out the error message provided by
-the `what` member function.
 
-### 2. ) Catch and asynchronous exceptions
+TBD
+TBD
+TBD
+TBD
+TBD
+TBD
+TBD
+TBD
+TBD
+TBD
 
-Asynchronous  errors, such  as  an  error  occurring  during execution of a
-kernel on a device, are reported via user-supplied asynchronous error-handlers.
 
-To catch asynchronous exceptions create an async handler using a lambda
-expression which takes an `exception_list`, iterates over it and rethrows the
-exceptions to be caught by the surrounding try-catch block.
+
+
+
 
 #### Build And Execution Hints
 
 For DPC++ (using the Intel DevCloud):
 ```sh
-icpx -fsycl -o sycl-ex-4 -I../External/Catch2/single_include ../Code_Exercises/Exercise_04_Handling_Errors/source.cpp
+cd ~/syclacademy/Code_Exercises/Exercise_03_Error_Handling
+icpx -fsycl -o sycl-ex-3 source.cpp
+cp ../Images/goldfish.png  .
+./sycl-ex-3 goldfish.png
 ```
-In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
-especially some features like longer walltime and multi-node computation is only available through the job queue.
-Please refer to the [guide][devcloud-job-submission].
-
-So wrap the binary into a script `job_submission` and run:
-```sh
-qsub job_submission
-```
-
-For ComputeCpp:
-```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_04_handling_errors_source
-./Code_Exercises/Exercise_04_Handling_Errors/exercise_04_handling_errors source
-```
-
-
-For hipSYCL:
-```sh
-# <target specification> is a list of backends and devices to target, for example
-# "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
-# The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
-cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
-make exercise_04_handling_errors_source
-./Code_Exercises/Exercise_04_Handling_Errors/exercise_04_handling_errors_source
-```
-alternatively, without cmake:
-```sh
-cd Code_Exercises/Exercise_04_Handling_Errors
-/path/to/hipsycl/bin/syclcc -o sycl-ex-4 -I../../External/Catch2/single_include --hipsycl-targets="<target specification>" source.cpp
-./sycl-ex-4
-```
-
-
-[devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

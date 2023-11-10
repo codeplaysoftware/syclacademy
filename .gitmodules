@@ -1,6 +1,8 @@
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
 [submodule "External/stb"]
 	path = External/stb
-	url = https://github.com/nothings/stb.git
+	url = ../../nothings/stb.git
 [submodule "External/Catch2"]
 	path = External/Catch2
-	url = https://github.com/catchorg/Catch2.git
+	url = ../../catchorg/Catch2.git

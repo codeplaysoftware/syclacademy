@@ -64,7 +64,13 @@ You must upload your public key (ed25519 or RSA 4096 level of strength). If you 
 
 If you want information on how to create a key, please refer to [SSH Setup](#ssh-setup).
 
-Once you have a key registered with your account, you can then login with ssh (see our next note for recommendation to improve on this).  Simply use:
+Once you have a key registered with your account, we have to do a slightly strange sequence to convince the Intel system to upload your key into the training SLURM nodes.
+visit [console.cloud.intel.com click training then click any class - this link should magically do all that](https://console.cloud.intel.com/training/detail/9b8933a6-b466-4c69-8217-9a09d084a55a)
+
+Now, select the "Options" and then click the "Launch using SSH".   This will actually pop up a window with the actual command for the next step. It also magically put your ssh key in the right place for the next step.
+
+Finally - after you uploaded a key and did the little step above to force it to propogate to the training SLURM nodes (which we will ssh into), 
+you can then login with ssh (see our next note for recommendation to improve on this).  Simply use:
 
 ```bash
 ssh <your really long user name>@idcbetabatch.eglb.intel.com
@@ -80,7 +86,11 @@ source /opt/intel/oneapi/setvars.sh
 
 If your ssh fails, first be sure you have an internet connection without proxies. If you are sitting behind a firewall, you will have to figure out how to set up the right proxy information with ssh.
 
-If you ssh fails because the system is refusing to use your key, it is nearly always a permissions issue.  Please carefully follow the instruction on how to ensure permissions are correct by reviewing [SSH folder and file permissions](#ssh-folder-and-file-permissions).
+If you ssh fails because the system is refusing to use your key, it is nearly always a permissions issue.  Please carefully follow the instruction on how to ensure permissions are correct on your local machine by reviewing [SSH folder and file permissions](#ssh-folder-and-file-permissions).
+
+It is possible you did not upload your key correctly, or you did not trigger the magical copying by clicking "Launch using SSH" above.  Try the steps again, or grab an instructor (esp. James Reinders), or both.
+
+Do not hestitate to ask an instructor for help!
 
 It is *important* to understand that the initial ssh brings us to a head node where we should immdeiately us the "srun" command. Please be well versed in [How Developer Cloud SLURM nodes are organized](#nodeorganization) on the organization of the Developer Cloud SLURM setup (it's a little unusual). Always use 'srun --pty bash' as soon as you ssh to a head node.
 
