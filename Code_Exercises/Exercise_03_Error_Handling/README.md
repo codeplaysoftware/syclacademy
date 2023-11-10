@@ -41,15 +41,6 @@ So wrap the binary into a script `job_submission` and run:
 ```sh
 qsub job_submission
 ```
-
-For ComputeCpp:
-```sh
-cmake -DSYCL_ACADEMY_USE_COMPUTECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/computecpp ..
-make exercise_04_handling_errors_source
-./Code_Exercises/Exercise_04_Handling_Errors/exercise_04_handling_errors source
-```
-
-
 For hipSYCL:
 ```sh
 # <target specification> is a list of backends and devices to target, for example

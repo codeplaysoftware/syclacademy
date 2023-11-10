@@ -74,8 +74,6 @@ Clone this repository ensuring that you include sub-modules.
 
 ```
 git clone --recursive --branch sc23 --single-branch https://github.com/codeplaysoftware/syclacademy.git
-mkdir build
-cd build
 ```
 
 If the clone HANGS when on Intel Developer Cloud - do the following steps:
@@ -106,6 +104,8 @@ For hipSYCL:
 # <target specification> is a list of backends and devices to target, for example
 # "omp;hip:gfx900,gfx906" compiles for CPUs with the OpenMP backend and for AMD Vega 10 (gfx900) and Vega 20 (gfx906) GPUs using the HIP backend.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
+mkdir build
+cd build
 cmake -DSYCL_ACADEMY_USE_HIPSYCL=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/hipsycl -DHIPSYCL_TARGETS="<target specification>" ..
 make exercise_01_big_hello_sycl
 ./Code_Exercises/Exercise_01_Big_Hello_SYCL/exercise_01_big_hello_sycl

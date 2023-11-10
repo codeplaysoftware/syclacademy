@@ -49,15 +49,6 @@ pointer provided to the `buffer` but this is not guaranteed.
 
 #### Build And Execution Hints
 
-For DPC++:
-Using CMake to configure then build the exercise:
-```sh
-mkdir build
-cd build
-cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make exercise_9
-```
-Alternatively from a terminal at the command line:
 ```sh
 icpx -fsycl -o sycl-ex-9 -I../External/Catch2/single_include ../Code_Exercises/Exercise_09_Synchronization/source.cpp
 ./sycl-ex-9
