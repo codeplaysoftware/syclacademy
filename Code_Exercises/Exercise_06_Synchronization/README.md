@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 9: Synchronization
+## Exercise 6: Synchronization
 ---
 
 In this exercise you will learn how to use different techniques for
@@ -50,8 +50,8 @@ pointer provided to the `buffer` but this is not guaranteed.
 #### Build And Execution Hints
 
 ```sh
-icpx -fsycl -o sycl-ex-9 -I../External/Catch2/single_include ../Code_Exercises/Exercise_09_Synchronization/source.cpp
-./sycl-ex-9
+icpx -fsycl -o sycl-ex-6 -I../External/Catch2/single_include ../Code_Exercises/Exercise_06_Synchronization/source.cpp
+./sycl-ex-6
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only available through the job queue.
@@ -68,13 +68,13 @@ For AdaptiveCpp:
 # "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
 cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DACPP_TARGETS="<target specification>" ..
-make exercise_9
+make exercise_6
 ```
 alternatively, without CMake:
 ```sh
-cd Code_Exercises/Exercise_09_Synchronization
-/path/to/adaptivecpp/bin/acpp -o sycl-ex-9 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
-./sycl-ex-9
+cd Code_Exercises/Exercise_06_Synchronization
+/path/to/adaptivecpp/bin/acpp -o sycl-ex-6 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
+./sycl-ex-6
 ```
 
 
