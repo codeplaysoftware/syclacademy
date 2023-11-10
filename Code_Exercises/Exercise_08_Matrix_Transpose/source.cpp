@@ -16,6 +16,43 @@
                 local_acc{localRange, cgh};
 */
 
+/* Visualization
+ 
+ The tiling should work as follows:
+
+ The groupOffset will need to be inverted, as well as the localId.
+
+ In:                                      Out:
+ +----------------------------+           +----------------------------+
+ |             group  ^       |           |       ^                    |
+ |           Offset[1]|       |           |       |                    |
+ |                    V       |           |       |                    |
+ |<------------------>+-------+           |       |                    |
+ |   groupOffset[0]   |1     2|           |       |groupOffset[0]      |
+ |                    | tile  |           |       |                    |
+ |                    |3     4| ------->  |       |                    |
+ |                    +-------+           |       V                    |
+ |                            |           |       +-------+            |
+ |                            |           |       |1     3|            |
+ |                            |           |       | tile  |            |
+ |                            |           |       |2     4|            |
+ +----------------------------+           +-------+-------+------------+
+                                           <----->
+                                           groupOffset[1]
+
+Within a tile, each work item is assigned to a single value:
+
+InTile:               OutTile:
++------------+        +------------+
+|   local  ^ |        |  local^    |
+|   Id[1]  | |        |  Id[0]|    |
+|          V |------->|       |    |
+|<-------->* |        |       V    |
+|localId[0]  |        |<----->*    |
++------------+        +------------+
+                      localId[1]
+*/
+
 #include <iostream>
 #include <vector>
 
@@ -73,10 +110,37 @@ int main() {
           },
           100, "Naive matrix transpose");
 
+      // Task: Transpose a matrix using local memory
       util::benchmark(
           [&]() {
             q.submit([&](sycl::handler &cgh) {
-              // TODO implement a tiled local memory matrix transpose.
+              auto inAcc = sycl::accessor{inBuf, cgh, sycl::read_only};
+              auto outAcc = sycl::accessor{outBuf, cgh, sycl::write_only,
+                                            sycl::property::no_init{}};
+              // TODO 1: Allocate local memory for the kernel function by 
+              // creating a 2-dimentional `local_accessor` with the size equal
+              // to the localRange
+
+              cgh.parallel_for(ndRange, [=](sycl::nd_item<2> item) {
+                auto globalId = item.get_global_id();
+                auto globalIdTranspose = sycl::id{globalId[1], globalId[0]};
+                // TODO 2a: Get the with-in-a-work-group thread id with 
+                // `get_local_id()` member function
+
+                // TODO 2b: Calculate group index offset (bw globalId and localId)
+                
+                // TODO 2c: Get `localIdTranspose` and `groupOffsetTranspose`
+
+                // TODO 2d: Read from global memory in row major and write to local
+                // memory in column major (using `localIdTranspose` and `globalId`)
+                
+                // TODO 2e: Synchronize the work-group via a `barrier` to avoid data race
+
+                // TODO 2f: Read from local memory in row major and write to global
+                // memory in row major fashion (using `localId` and `groupOffsetTranspose`)
+                outAcc[globalIdTranspose] = inAcc[globalId];
+
+                });
             });
             q.wait_and_throw();
           },
