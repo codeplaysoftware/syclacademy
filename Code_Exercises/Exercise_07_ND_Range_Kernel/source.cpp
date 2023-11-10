@@ -56,23 +56,95 @@
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
+#include <sycl/sycl.hpp>
+
+class vector_add_1;
+class vector_add_2;
+
+TEST_CASE("range_kernel_with_item", "nd_range_kernel_source") {
+  constexpr size_t dataSize = 1024;
+
+  float a[dataSize], b[dataSize], r[dataSize];
+  for (int i = 0; i < dataSize; ++i) {
+    a[i] = static_cast<float>(i);
+    b[i] = static_cast<float>(i);
+    r[i] = 0.0f;
+  }
+
+  try {
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
+
+    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
+    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
+    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
+
+    gpuQueue.submit([&](sycl::handler& cgh) {
+      sycl::accessor accA{bufA, cgh, sycl::read_only};
+      sycl::accessor accB{bufB, cgh, sycl::read_only};
+      sycl::accessor accR{bufR, cgh, sycl::write_only};
+
+      // TODO 1a: Replace `sycl::id` with `sycl::item`
+      cgh.parallel_for<vector_add_1>(
+          sycl::range{dataSize}, 
+          [=](sycl::id<1> idx) {
+          // TODO 1b: Retrieve the `idx` from `item` with `get_id()` member function  
+            accR[idx] = accA[idx] + accB[idx];
+          });
+    });
+
+    gpuQueue.throw_asynchronous();
+  } catch (const sycl::exception& e) {
+    std::cout << "Exception caught: " << e.what() << std::endl;
+  }
+
+  for (int i = 0; i < dataSize; ++i) {
+    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
+  }
+}
+
 
 TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
   constexpr size_t dataSize = 1024;
 
-  int a[dataSize], b[dataSize], r[dataSize];
+  float a[dataSize], b[dataSize], r[dataSize];
   for (int i = 0; i < dataSize; ++i) {
-    a[i] = i;
-    b[i] = i;
-    r[i] = 0;
+    a[i] = static_cast<float>(i);
+    b[i] = static_cast<float>(i);
+    r[i] = 0.0f;
   }
 
-  // Task: parallelise the vector add kernel using nd_range
-  for (int i = 0; i < dataSize; ++i) {
-    r[i] = a[i] + b[i];
+  try {
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
+
+    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
+    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
+    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
+
+    gpuQueue.submit([&](sycl::handler& cgh) {
+      sycl::accessor accA{bufA, cgh, sycl::read_only};
+      sycl::accessor accB{bufB, cgh, sycl::read_only};
+      sycl::accessor accR{bufR, cgh, sycl::write_only};
+
+      // TODO 2a: Replace `sycl::range` with `sycl::nd_range{globalRange, localRange}`.
+      // `dataSize` can be chosen as `GlobalRange` for now. 
+      // `localRange` is the size of the "thread block" of your choice.
+      //
+      // TODO 2b: Replace `sycl::id` with `sycl::nd_item`
+      cgh.parallel_for<vector_add_2>(
+          sycl::range{dataSize}, 
+          [=](sycl::id<1> idx) {
+          // TODO 2c: Retrieve the `idx` from `nd_item`.
+          // One option is with the `get_global_linear_id()` member function  
+            accR[idx] = accA[idx] + accB[idx];
+          });
+    });
+
+    gpuQueue.throw_asynchronous();
+  } catch (const sycl::exception& e) {
+    std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
   }
 }

@@ -19,11 +19,11 @@ class vector_add_2;
 TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   constexpr size_t dataSize = 1024;
 
-  int a[dataSize], b[dataSize], r[dataSize];
+  float a[dataSize], b[dataSize], r[dataSize];
   for (int i = 0; i < dataSize; ++i) {
-    a[i] = i;
-    b[i] = i;
-    r[i] = 0;
+    a[i] = static_cast<float>(i);
+    b[i] = static_cast<float>(i);
+    r[i] = 0.0f;
   }
 
   try {
@@ -51,7 +51,7 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
   }
 }
 
@@ -59,11 +59,11 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   constexpr size_t dataSize = 1024;
   constexpr size_t workGroupSize = 128;
 
-  int a[dataSize], b[dataSize], r[dataSize];
+  float a[dataSize], b[dataSize], r[dataSize];
   for (int i = 0; i < dataSize; ++i) {
-    a[i] = i;
-    b[i] = i;
-    r[i] = 0;
+    a[i] = static_cast<float>(i);
+    b[i] = static_cast<float>(i);
+    r[i] = 0.0f;
   }
 
   try {
@@ -93,6 +93,6 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
   }
 }
