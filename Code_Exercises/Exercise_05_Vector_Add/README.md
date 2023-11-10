@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 6: Vector Add
+## Exercise 5: Vector Add
 
 ---
 
@@ -43,12 +43,12 @@ Using CMake to configure then build the exercise:
 mkdir build
 cd build
 cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make exercise_6
+make exercise_5
 ```
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o sycl-ex-6 -I../External/Catch2/single_include ../Code_Exercises/Exercise_06_Vector_Add/source.cpp
-./sycl-ex-6
+icpx -fsycl -o sycl-ex-5 -I../External/Catch2/single_include ../Code_Exercises/Exercise_05_Vector_Add/source.cpp
+./sycl-ex-5
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
 especially some features like longer walltime and multi-node computation is only available through the job queue.
@@ -65,13 +65,13 @@ For AdaptiveCpp:
 # "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
 cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DACPP_TARGETS="<target specification>" ..
-make exercise_6
+make exercise_5
 ```
 alternatively, without CMake:
 ```sh
-cd Code_Exercises/Exercise_06_Vector_Add
-/path/to/adaptivecpp/bin/acpp -o sycl-ex-6 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
-./sycl-ex-6
+cd Code_Exercises/Exercise_05_Vector_Add
+/path/to/adaptivecpp/bin/acpp -o sycl-ex-5 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
+./sycl-ex-5
 ```
 
 

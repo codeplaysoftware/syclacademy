@@ -39,7 +39,7 @@
 */
 
 #define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+//#include <catch2/catch.hpp>
 
 TEST_CASE("vector_add", "vector_add_solution") {
   constexpr size_t dataSize = 1024;
@@ -52,8 +52,28 @@ TEST_CASE("vector_add", "vector_add_solution") {
   }
 
   // Task: Compute r[i] = a[i] + b[i] in parallel on the SYCL device
+  
+  // TODO: Comment out the computation in line 56 - 58 
   for (int i = 0; i < dataSize; ++i) {
     r[i] = a[i] + b[i];
+  }
+
+  try {
+    // TODO 1a: Create a `queue` with your choice of `selector` 
+
+    // TODO 2: Create `buffers` for input a, b and output r which all have a size of `dataSize`
+
+    // TODO 3a: Submit a command group functor for execution on a queue. This functor
+    // encapsulates the kernel and the data needed for its execution.
+    
+    // TODO 3b: Inside the command group functor, create `accessor`s for each `buffer`s
+
+    // TODO 4: Implement a vector-add kernel with `parallel_for` and lambda function
+    
+    // TODO 3c (Optional): Throw asynchronous exceptions if any
+    
+  } catch (const sycl::exception& e) {
+    // TODO 1b: Print out error messages of synchronous exceptions if any
   }
 
   for (int i = 0; i < dataSize; ++i) {
