@@ -23,10 +23,16 @@ this code doesn't check for limits (bad, bad, bad!)
 // These control some optional code
 // MYDEBUGS - is very chatty to help follow code actions
 // MAKE_TASK2_PI - adds a task to a second accelerator
+// BONUS_CREDIT_01 - adds a 'print Hello World' task to a
+// third accelerator
 //
 
-#define MYDEBUGS
+//#define MYDEBUGS
 #define MAKE_TASK2_PI
+//#define BONUS_CREDIT_01
+//#define SOLVE_02_USM_FOR_PI
+#define SOLVE_03_MAKE_ERRRORS
+#define SOLVE_03_MAKE_ERRRORS_ADD_KERNEL_ASSERT
 
 #include <algorithm>
 #include <array>
@@ -40,9 +46,91 @@ this code doesn't check for limits (bad, bad, bad!)
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
+#ifdef SOLVE_03_MAKE_ERRRORS
+// borrowed from figure 5-3 in book
+// Our example asynchronous handler function
+auto handle_async_error = [](sycl::exception_list elist) {
+  for (auto &e : elist) {
+    try {
+      std::rethrow_exception(e);
+    } catch (sycl::exception e) {
+      std::cout << "Caught SYCL ASYNC exception!!\n";
+    } catch (...) {
+      std::cout << "Caught unknown exception in the ASYNC handler???\n";
+    }
+  }
+};
+auto second_handle_async_error = [](sycl::exception_list elist) {
+  for (auto &e : elist) {
+    try {
+      std::rethrow_exception(e);
+    } catch (sycl::exception e) {
+      std::cout << "2nd Handler Caught SYCL ASYNC exception!!\n";
+    } catch (...) {
+      std::cout << "2nd Handler Caught the Something Went Wrong\n";
+    }
+  }
+};
+class something_when_wrong {} ;
+#endif
+
+
 int main(int argc, char* argv[]) {
   const char* inFile = argv[1];
   char* outFile;
+
+#ifdef SOLVE_03_MAKE_ERRRORS
+  try {
+    // borrowed from Figure 5-2 in book
+    sycl::buffer<int> b{sycl::range{16}};
+    sycl::buffer<int> b2{b, sycl::id{8}, sycl::range{16}};
+  } catch (sycl::exception e) {
+    std::cout << "Caught SYCL exception: " << e.what()
+              << std::endl;
+  } catch (std::exception &e) {
+    std::cout << "Caught std exception: " << e.what() << "\n";
+  } catch (...) {
+    std::cout << "Caught unknown exception\n";
+  }
+  
+  try {
+    sycl::queue quick_queue;
+    // synchronous error
+    // adapted from https://developer.codeplay.com/products/computecpp/ce/2.11.0/guides/sycl-guide/error-handling
+    sycl::event e2c =
+      quick_queue.submit([&](sycl::handler& cgh2c) {
+	auto err_range = sycl::nd_range<1>(sycl::range<1>(1), sycl::range<1>(10));
+        cgh2c.parallel_for(err_range, [=](sycl::nd_item<1>) {});
+      });
+  } catch (sycl::exception e) {
+    std::cout << "Another SYCL exception caught: " << e.what()
+              << std::endl;
+  } catch (std::exception &e) {
+    std::cout << "Another? Caught std exception: " << e.what() << "\n";
+  } catch (...) {
+    std::cout << "Another? Caught unknown exception\n";
+  }
+
+
+  try {
+    sycl::queue quick_queue( second_handle_async_error );
+    // asynchronous error
+    // adapted from 5-3 in book
+    sycl::event e2d =
+        quick_queue.submit([&](sycl::handler& cgh2d) {
+	  cgh2d.host_task([]() {
+	    throw( something_when_wrong{} );
+	  });
+	});
+  } catch (sycl::exception e) {
+    std::cout << "Host task SYCL exception caught: " << e.what()
+              << std::endl;
+  } catch (std::exception &e) {
+    std::cout << "Host task Caught std exception: " << e.what() << "\n";
+  } catch (...) {
+    std::cout << "Host task Caught unknown exception\n";
+  }
+#endif
 
   //
   // require and parse a single file name
@@ -105,8 +193,13 @@ int main(int argc, char* argv[]) {
     auto RootDevices = P.get_devices();
     // auto C = sycl::context(RootDevices);
     for (auto& D : RootDevices) {
+#ifdef SOLVE_03_MAKE_ERRRORS
+      myQueues[howmany_devices++] = sycl::queue(
+          D, handle_async_error, sycl::property::queue::enable_profiling{});
+#else
       myQueues[howmany_devices++] = sycl::queue(
           D, sycl::property::queue::enable_profiling{});
+#endif
       if (howmany_devices >= MAXDEVICES) break;
     }
   } catch (sycl::exception e) {
@@ -215,6 +308,20 @@ int main(int argc, char* argv[]) {
         std::chrono::steady_clock::now();  // Start timing
 #endif
 
+#ifdef SOLVE_03_MAKE_ERRRORS_ADD_KERNEL_ASSERT
+    // uses a useful DPC++ extension - we should encourage this into the standard
+    // asynchronous error
+    sycl::event e2b =
+        myQueue2.submit([&](sycl::handler& cgh2b) {
+          cgh2b.single_task([=]() {
+	    assert(0 && "Die now");
+	  });
+	});
+    if (! myQueue2.get_device().has(sycl::aspect::ext_oneapi_native_assert)) {
+      std::cout << "The assert extension to support in a kernel is not available for this device - so not async was thrown.\n";
+    }
+#endif
+
     //
     // This "second task" is very serial - and is here as
     // a demostration, and definitely a bottleneck because
@@ -222,19 +329,29 @@ int main(int argc, char* argv[]) {
     //
 
 #ifdef MAKE_TASK2_PI
+#ifdef SOLVE_02_USM_FOR_PI
+    auto d4 = (int *)sycl::malloc_shared( sizeof(int)*200, myQueue2 );
+#else
     std::array<int, 200> d4;
+#endif
     // inspired and based upon:
     // https://cs.uwaterloo.ca/~alopez-o/math-faq/mathtext/node12.html
     // and
     // https://crypto.stanford.edu/pbc/notes/pi/code.html
     // (retrieved September 13, 2023)
-    //
+
+#ifndef SOLVE_02_USM_FOR_PI
     sycl::buffer outD4(d4);
-    sycl::event e2 =
+#endif
+  sycl::event e2 =
         myQueue2.submit([&](sycl::handler& cgh2) {
+#ifdef SOLVE_02_USM_FOR_PI
+  #define outAccessor d4
+#else
           auto outAccessor =
               outD4.get_access<sycl::access::mode::write>(
                   cgh2);
+#endif
           cgh2.single_task([=]() {
             int r[2800 + 1];
             int i, k;
@@ -265,6 +382,47 @@ int main(int argc, char* argv[]) {
               c = d % 10000;
             }
           });
+        });
+#endif
+
+    //
+    // Bonus activity for Exercise 01.
+    // This "third task" is another demostration of
+    // a single task and printing using sycl::stream.
+    //
+
+#ifdef BONUS_CREDIT_01
+    sycl::queue myQueue3 =
+        myQueues[(howmany_devices > 2) ? 2 : 0];
+    std::cout << "Second queue is running on "
+              << myQueue2.get_device()
+                     .get_info<sycl::info::device::name>();
+#ifdef SYCL_EXT_INTEL_DEVICE_INFO
+#if SYCL_EXT_INTEL_DEVICE_INFO >= 2
+    if (myQueue2.get_device().has(
+            sycl::aspect::ext_intel_device_info_uuid)) {
+      auto UUID =
+          myQueue2.get_device()
+              .get_info<
+                  sycl::ext::intel::info::device::uuid>();
+      char bar[1024];
+      sprintf(
+          bar,
+          "\nUUID = "
+          "%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u",
+          UUID[0], UUID[1], UUID[2], UUID[3], UUID[4],
+          UUID[5], UUID[6], UUID[7], UUID[8], UUID[9],
+          UUID[10], UUID[11], UUID[12], UUID[13], UUID[14],
+          UUID[15]);
+      std::cout << bar;
+    }
+#endif
+#endif
+    sycl::event e3 =
+        myQueue2.submit([&](sycl::handler& cgh3) {
+          auto os = sycl::stream{128, 128, cgh3};
+          cgh3.single_task(
+              [=]() { os << "Hello World!\n"; });
         });
 #endif
 
@@ -348,8 +506,8 @@ int main(int argc, char* argv[]) {
               for (int i = 0; i < channels; ++i) {
                 auto channelOffset = sycl::id(0, i);
                 sum[i] +=
-                    inAccessor[srcOffset + channelOffset] *
-                    filterAccessor[filterOffset +
+		  inAccessor[srcOffset + channelOffset] *
+		  filterAccessor[filterOffset +
                                    channelOffset];
               }
             }
@@ -406,9 +564,13 @@ int main(int argc, char* argv[]) {
 #ifdef MAKE_TASK2_PI
       e2.wait();  // make sure all digits are done being
                   // computed
+#ifdef SOLVE_02_USM_FOR_PI
+  #define myD4 d4
+#else
       sycl::host_accessor myD4(
           outD4);  // the scope of the buffer continues - so
                    // we must not use d4[] directly
+#endif
       std::cout << "First 800 digits of pi: ";
       for (int i = 0; i < 200; ++i) printf("%.4d", myD4[i]);
       std::cout << "\n";
@@ -427,8 +589,12 @@ int main(int argc, char* argv[]) {
 #endif
     }
   } catch (sycl::exception e) {
-    std::cout << "Exception caught: " << e.what()
+    std::cout << "Big TRY clause - Exception caught: " << e.what()
               << std::endl;
+  } catch (std::exception &e) {
+    std::cout << "Big TRY clause - Caught std exception: " << e.what() << "\n";
+  } catch (...) {
+    std::cout << "Big TRY clause - Caught unknown exception\n";
   }
 
   util::write_image(outImage, outFile);
