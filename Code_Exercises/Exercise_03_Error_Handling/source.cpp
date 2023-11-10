@@ -23,10 +23,14 @@ this code doesn't check for limits (bad, bad, bad!)
 // These control some optional code
 // MYDEBUGS - is very chatty to help follow code actions
 // MAKE_TASK2_PI - adds a task to a second accelerator
+// BONUS_CREDIT_01 - adds a 'print Hello World' task to a
+// third accelerator
 //
 
-#define MYDEBUGS
+//#define MYDEBUGS
 #define MAKE_TASK2_PI
+//#define BONUS_CREDIT_01
+//#define SOLVE_02_USM_FOR_PI
 
 #include <algorithm>
 #include <array>
@@ -39,6 +43,7 @@ this code doesn't check for limits (bad, bad, bad!)
 
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
+
 
 int main(int argc, char* argv[]) {
   const char* inFile = argv[1];
@@ -222,19 +227,29 @@ int main(int argc, char* argv[]) {
     //
 
 #ifdef MAKE_TASK2_PI
+#ifdef SOLVE_02_USM_FOR_PI
+    auto d4 = (int *)sycl::malloc_shared( sizeof(int)*200, myQueue2 );
+#else
     std::array<int, 200> d4;
+#endif
     // inspired and based upon:
     // https://cs.uwaterloo.ca/~alopez-o/math-faq/mathtext/node12.html
     // and
     // https://crypto.stanford.edu/pbc/notes/pi/code.html
     // (retrieved September 13, 2023)
-    //
+
+#ifndef SOLVE_02_USM_FOR_PI
     sycl::buffer outD4(d4);
-    sycl::event e2 =
+#endif
+  sycl::event e2 =
         myQueue2.submit([&](sycl::handler& cgh2) {
+#ifdef SOLVE_02_USM_FOR_PI
+  #define outAccessor d4
+#else
           auto outAccessor =
               outD4.get_access<sycl::access::mode::write>(
                   cgh2);
+#endif
           cgh2.single_task([=]() {
             int r[2800 + 1];
             int i, k;
@@ -265,6 +280,47 @@ int main(int argc, char* argv[]) {
               c = d % 10000;
             }
           });
+        });
+#endif
+
+    //
+    // Bonus activity for Exercise 01.
+    // This "third task" is another demostration of
+    // a single task and printing using sycl::stream.
+    //
+
+#ifdef BONUS_CREDIT_01
+    sycl::queue myQueue3 =
+        myQueues[(howmany_devices > 2) ? 2 : 0];
+    std::cout << "Second queue is running on "
+              << myQueue2.get_device()
+                     .get_info<sycl::info::device::name>();
+#ifdef SYCL_EXT_INTEL_DEVICE_INFO
+#if SYCL_EXT_INTEL_DEVICE_INFO >= 2
+    if (myQueue2.get_device().has(
+            sycl::aspect::ext_intel_device_info_uuid)) {
+      auto UUID =
+          myQueue2.get_device()
+              .get_info<
+                  sycl::ext::intel::info::device::uuid>();
+      char bar[1024];
+      sprintf(
+          bar,
+          "\nUUID = "
+          "%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u.%u",
+          UUID[0], UUID[1], UUID[2], UUID[3], UUID[4],
+          UUID[5], UUID[6], UUID[7], UUID[8], UUID[9],
+          UUID[10], UUID[11], UUID[12], UUID[13], UUID[14],
+          UUID[15]);
+      std::cout << bar;
+    }
+#endif
+#endif
+    sycl::event e3 =
+        myQueue2.submit([&](sycl::handler& cgh3) {
+          auto os = sycl::stream{128, 128, cgh3};
+          cgh3.single_task(
+              [=]() { os << "Hello World!\n"; });
         });
 #endif
 
@@ -348,8 +404,8 @@ int main(int argc, char* argv[]) {
               for (int i = 0; i < channels; ++i) {
                 auto channelOffset = sycl::id(0, i);
                 sum[i] +=
-                    inAccessor[srcOffset + channelOffset] *
-                    filterAccessor[filterOffset +
+		  inAccessor[srcOffset + channelOffset] *
+		  filterAccessor[filterOffset +
                                    channelOffset];
               }
             }
@@ -406,9 +462,13 @@ int main(int argc, char* argv[]) {
 #ifdef MAKE_TASK2_PI
       e2.wait();  // make sure all digits are done being
                   // computed
+#ifdef SOLVE_02_USM_FOR_PI
+  #define myD4 d4
+#else
       sycl::host_accessor myD4(
           outD4);  // the scope of the buffer continues - so
                    // we must not use d4[] directly
+#endif
       std::cout << "First 800 digits of pi: ";
       for (int i = 0; i < 200; ++i) printf("%.4d", myD4[i]);
       std::cout << "\n";
@@ -427,8 +487,12 @@ int main(int argc, char* argv[]) {
 #endif
     }
   } catch (sycl::exception e) {
-    std::cout << "Exception caught: " << e.what()
+    std::cout << "Big TRY clause - Exception caught: " << e.what()
               << std::endl;
+  } catch (std::exception &e) {
+    std::cout << "Big TRY clause - Caught std exception: " << e.what() << "\n";
+  } catch (...) {
+    std::cout << "Big TRY clause - Caught unknown exception\n";
   }
 
   util::write_image(outImage, outFile);
