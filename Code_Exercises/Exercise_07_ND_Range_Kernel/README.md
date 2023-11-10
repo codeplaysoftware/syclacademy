@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 14: ND Range Kernel
+## Exercise 7: ND Range Kernel
 ---
 
 In this exercise you will learn how to enqueue ND range kernel functions.
@@ -9,7 +9,7 @@ In this exercise you will learn how to enqueue ND range kernel functions.
 
 ### 1.) Use items in parallel_for
 
-Using the application from any exercise so far or creating a new one, enqueue a
+Using the vector-add application from the exercise 5, enqueue a
 kernel function using the `parallel_for` variant which takes a `range` but has
 the kernel function take an `item`.
 
@@ -22,7 +22,7 @@ an `accessor` you have to retrieve the `id`, you can do this by calling the
 
 ### 2.) Enqueue an ND range kernel
 
-Using the application from any exercise so far or creating a new one, enqueue an
+Using the vector-add application from the exercise 5, enqueue an
 ND range kernel function using the `parallel_for` variant which takes an
 `nd_range`.
 
@@ -44,8 +44,8 @@ method of synchronization and copy back.
 For DPC++:
 
 ```sh
-icpx -fsycl -o sycl-ex-14 -I../External/Catch2/single_include ../Code_Exercises/Exercise_14_ND_Range_Kernel/source.cpp
-./sycl-ex-14
+icpx -fsycl -o sycl-ex-7 -I../External/Catch2/single_include ../Code_Exercises/Exercise_7_ND_Range_Kernel/source.cpp
+./sycl-ex-7
 ```
 
 For AdaptiveCpp:
@@ -54,11 +54,11 @@ For AdaptiveCpp:
 # "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
 cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DACPP_TARGETS="<target specification>" ..
-make exercise_14
+make exercise_7
 ```
 alternatively, without CMake:
 ```sh
-cd Code_Exercises/Exercise_14_ND_Range_Kernel
-/path/to/adaptivecpp/bin/acpp -o sycl-ex-14 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
-./sycl-ex-14
+cd Code_Exercises/Exercise_7_ND_Range_Kernel
+/path/to/adaptivecpp/bin/acpp -o sycl-ex-7 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
+./sycl-ex-7
 ```
