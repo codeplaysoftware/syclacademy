@@ -39,9 +39,10 @@
 */
 
 #define CATCH_CONFIG_MAIN
-//#include <catch2/catch.hpp>
+#include <catch2/catch.hpp>
+#include <sycl/sycl.hpp>
 
-TEST_CASE("vector_add", "vector_add_solution") {
+TEST_CASE("vector_add", "vector_add_source") {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -66,7 +67,7 @@ TEST_CASE("vector_add", "vector_add_solution") {
     // TODO 3a: Submit a command group functor for execution on a queue. This functor
     // encapsulates the kernel and the data needed for its execution.
     
-    // TODO 3b: Inside the command group functor, create `accessor`s for each `buffer`s
+    // TODO 3b: In the command group functor, create `accessor`s for each `buffer`s
 
     // TODO 4: Implement a vector-add kernel with `parallel_for` and lambda function
     
