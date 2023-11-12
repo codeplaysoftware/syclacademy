@@ -29,6 +29,7 @@ is no need to use any of the preexisting code.  Either of the
 following two code choices will do the trick if add at the start of
 main().
 
+```
     // CHOICE 1
     // borrowed from Figure 5-2 in book
     // always bad buffer code
@@ -44,7 +45,7 @@ main().
 	auto err_range = sycl::nd_range<1>(sycl::range<1>(1), sycl::range<1>(10));
         cgh2c.parallel_for(err_range, [=](sycl::nd_item<1>) {});
       });
-
+```
 
 The key things are this: once we put either code in our application,
 it will be forcibly terminated due to violation of SYCL rules
@@ -62,12 +63,14 @@ Let's surround our error producing code (from the first step) with a try { CODE 
 
 Wrap our code with a standard C++ try/catch construct.  We'll start by only catching SYCL exceptions.
 
+```
   try {
     // code from step 1
   } catch (sycl::exception e) {
     std::cout << "Caught SYCL exception: " << e.what()
               << std::endl;
   }
+```
 
 This gives us enough control that we do not terminate our application.
 That's good because our goal for this exercise it to produce mulitple
@@ -88,6 +91,7 @@ In order to be a little more complete, we can add a few lines
 (completely unnecesssary for this exercise) to catch more than just
 SYCL exceptions. We do that extending the catches something like this:
 
+```
   } catch (sycl::exception e) {
     std::cout << "Caught SYCL exception: " << e.what()
               << std::endl;
@@ -96,6 +100,7 @@ SYCL exceptions. We do that extending the catches something like this:
   } catch (...) {
     std::cout << "Caught unknown exception\n";
   }
+```
 
 With these in place, there will not be any exception within the try
 block that defaults to terminating the application. This allows us to
@@ -156,7 +161,7 @@ with an explanation. That's what happened in the prior step.
 Now, we will change our code to introduce a handler that puts us back
 in control with our own code instead of the default.
 
-
+```
 auto we_handle_async_error = [](sycl::exception_list elist) {
   for (auto &e : elist) {
     try {
@@ -168,10 +173,13 @@ auto we_handle_async_error = [](sycl::exception_list elist) {
     }
   }
 };
+```
 
 Finally, change the queue constructor to use our error handler instead of the default:
 
+```
     sycl::queue quick_queue( we_handle_async_error );
+```
 
 Compile and run the application. We should see this asynchronous error
 noted without terminating the program now. This is in addition to the
@@ -201,6 +209,7 @@ that it is not supported by the device. That shows a nice example of
 checking for a feature - even if we did it after it didn't work.  Here
 is the code you'd see if you peaked in solution.cpp:
 
+```
     sycl::event e2b =
         myQueue2.submit([&](sycl::handler& cgh2b) {
           cgh2b.single_task([=]() {
@@ -210,7 +219,7 @@ is the code you'd see if you peaked in solution.cpp:
     if (! myQueue2.get_device().has(sycl::aspect::ext_oneapi_native_assert)) {
       std::cout << "The assert extension to support in a kernel is not available for this device - so no async was thrown.\n";
     }
-
+```
 
 #### Build And Execution Hints
 
