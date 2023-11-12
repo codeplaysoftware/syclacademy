@@ -9,4 +9,6 @@
 ]]
 
 add_sycl_executable(exercise_01_big_hello_sycl source)
+if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
 add_sycl_executable(exercise_01_big_hello_sycl solution)
+endif()
