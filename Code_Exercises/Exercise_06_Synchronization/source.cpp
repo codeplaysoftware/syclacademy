@@ -48,11 +48,17 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("synchronization_usm", "synchronization_source") {
-  // Use your code from Exercise 3 to start
+  // Use your code from Exercise 5 to start
+  // TODO 1a: Allocate device memory
+  // TODO 1b: submit 1 kernels who Initialize a device array too 42
+  // TODO 2b: Allocate host memory and submit a 2nd command to copy back the data to host.
   REQUIRE(true);
 }
 
 TEST_CASE("synchronization_buffer_acc", "synchronization_source") {
-  // Use your code from Exercise 3 to start
+  // Use your code from Exercise 5 to start
+  // TODO 1a: Allocate "host" memory"
+  // TODO 1b: submit 1 kernels who Initialize a device array too 42 with buffer
+  // TODO 2b: Verify if you host memory have been mofied on the host
   REQUIRE(true);
 }
