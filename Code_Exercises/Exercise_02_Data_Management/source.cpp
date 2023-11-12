@@ -225,13 +225,15 @@ int main(int argc, char* argv[]) {
     //
 
 #ifdef MAKE_TASK2_PI
+    // TODO 1: Allocate d4 on USM with `sycl::malloc_shared`
     std::array<int, 200> d4;
     // inspired and based upon:
     // https://cs.uwaterloo.ca/~alopez-o/math-faq/mathtext/node12.html
     // and
     // https://crypto.stanford.edu/pbc/notes/pi/code.html
     // (retrieved September 13, 2023)
-    //
+    
+    // TODO 2a: Remove buffer `outD4` and accessor `outAccessor` declarations
     sycl::buffer outD4(d4);
     sycl::event e2 =
         myQueue2.submit([&](sycl::handler& cgh2) {
@@ -264,6 +266,8 @@ int main(int argc, char* argv[]) {
                 if (i == 0) break;
                 d *= i;
               }
+            // TODO 2b: write/access to d4 directly as d4 was allocated with
+            // `shared_malloc`. To achieve this, replace `outAccessor` with the `d4` pointer.
               outAccessor[hold++] = c + d / 10000;
               c = d % 10000;
             }

@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_06_vector_add
-add_sycl_executable(exercise_6 source)
+# Exercise exercise_05_vector_add
+add_sycl_executable(exercise_5 source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(exercise_6 solution)
+  add_sycl_executable(exercise_5 solution)
 endif()

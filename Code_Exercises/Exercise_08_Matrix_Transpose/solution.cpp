@@ -109,9 +109,7 @@ int main() {
               auto inAcc = sycl::accessor{inBuf, cgh, sycl::read_only};
               auto outAcc = sycl::accessor{outBuf, cgh, sycl::write_only,
                                            sycl::property::no_init{}};
-              auto localAcc = sycl::accessor<T, 2, 
-                                  sycl::access::mode::read_write, 
-                                  sycl::access::target::local>(localRange, cgh);
+              auto localAcc = sycl::local_accessor<T, 2>(localRange, cgh);
 
               cgh.parallel_for<tiled>(ndRange, [=](sycl::nd_item<2> item) {
                 auto globalId = item.get_global_id();
