@@ -10,6 +10,9 @@
  * SYCL Quick Reference
  * ~~~~~~~~~~~~~~~~~~~~
  *
+ * // Get the device from the queue
+ * auto dev = defaultQueue.get_device();
+ *
  * // Make a child class of sycl::device_selector
  * class my_functor_selector : public sycl::device_selector {
  *   // Overload operator() for sycl::device.
