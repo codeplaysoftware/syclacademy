@@ -124,10 +124,11 @@ We'll just steal an example from figure 5-3 in the book:
 
 declare this before main:
 
-class something_when_wrong {} ;
+`class something_when_wrong {} ;`
 
 and add this to the start of main():
 
+```
     sycl::queue quick_queue;
     sycl::event e2d =
         quick_queue.submit([&](sycl::handler& cgh2d) {
@@ -135,6 +136,7 @@ and add this to the start of main():
 	    throw( something_when_wrong{} );
 	  });
 	});
+```
 
 We are using "host_task" in which we are allowed to do a throw. Device
 code is not allowed to do a throw. We'll comment a bit more on this in
