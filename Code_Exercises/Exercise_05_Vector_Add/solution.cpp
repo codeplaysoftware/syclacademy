@@ -16,11 +16,11 @@ TEST_CASE("vector_add", "synchronization_buffer_acc") {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize];
-  sycl::queue Q{};
+  sycl::queue defaultQueue;
 
   try {
     auto bufA = sycl::buffer{a, sycl::range{dataSize}};
-    Q.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler& cgh) {
           sycl::accessor accA{bufA, cgh, sycl::write_only};
           cgh.parallel_for(
               sycl::range{dataSize},
