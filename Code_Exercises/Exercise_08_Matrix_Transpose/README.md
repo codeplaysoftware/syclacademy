@@ -45,7 +45,7 @@ make exercise_8
 ```
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o sycl-ex-8 -I ../../Utilities/include ../Code_Exercises/Exercise_08_Vector_Add/source.cpp
+icpx -fsycl -o sycl-ex-8 -I ../../Utilities/include ../Code_Exercises/Exercise_08_Matrix_Transpose/source.cpp
 ./sycl-ex-8
 ```
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
@@ -67,7 +67,7 @@ make exercise_8
 ```
 alternatively, without CMake:
 ```sh
-cd Code_Exercises/Exercise_08_Vector_Add
+cd Code_Exercises/Exercise_08_Matrix_Transpose
 /path/to/adaptivecpp/bin/acpp -o sycl-ex-8 -I ../../Utilities/include source.cpp --acpp-targets="<target specification>" source.cpp
 ./sycl-ex-8
 ```

@@ -118,8 +118,8 @@ int main() {
               auto outAcc = sycl::accessor{outBuf, cgh, sycl::write_only,
                                             sycl::property::no_init{}};
               // TODO 1: Allocate local memory for the kernel function by 
-              // creating a 2-dimentional `local_accessor` with the size equal
-              // to the localRange
+              // creating an 2-dimentional `local_accessor` with the size equal
+              // to the `localRange`
 
               cgh.parallel_for(ndRange, [=](sycl::nd_item<2> item) {
                 auto globalId = item.get_global_id();
