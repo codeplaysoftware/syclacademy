@@ -65,9 +65,17 @@
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
-					* Learn about how commands are enqueued asynchronously
-					* Learn about the different reasons for synchronization
-					* Learn about the different ways to perform synchronization
+					* Learn about how commands are enqueued asynchronously.
+					* Learn about the different reasons for synchronization.
+					* Learn about the different ways to perform synchronization.
+				</section>
+				<!--Slide 2.1-->
+					<section class="hbox" data-markdown>
+					## Side note about the term synchronization
+					* Unbigious term.
+					* The SYCL specification clarified you the usage of the word synchronization.
+					  * `https://github.com/KhronosGroup/SYCL-Docs/pull/484`.
+					* In this talks, we will use `synchronization` to mean "wait", and "two copies of data are made consistent".
 				</section>
 				<!--Slide 3-->
 				<section>
@@ -76,6 +84,7 @@
 					</div>
 					<div class="container" data-markdown>
 						* All command submitted to a `queue` are done so asynchronously.
+						  * `sycl::malloc` and friends are blocking (they are not command submitted)
 						* The functions return immediately and the command is run in a background thread.
 						* This includes individual commands like `memcpy` and collections of commands derived from a command group.
 						* This means you have to synchronize with those commands.
@@ -91,7 +100,7 @@
 					</div>
 					<div class="container" data-markdown>
 						* Await completion of a kernel function.
-						* Await the results of a computation.
+						* Await the results of a computation
 						* Await error conditions which come from a failure to execute any of the commands.
 					</div>
 				</section>
@@ -104,8 +113,60 @@
 						There are two ways ways to synchronize with kernel functions.
 					</div>
 					<div class="container" data-markdown>
-						* Calling `wait` on an `event` object returned from enqueuing a kernel function command, either via a command group or a shortcut function.
+						* Calling `wait` on an `event` object returned from enqueuing a command, either via a command group or a shortcut function.
 						* Calling `wait` or `wait_and_throw` on the `queue` itself.
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with kernel functions (USM)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+auto devicePtr = malloc_device&lt;int&gt;(1024, queue);
+
+queue.cpy(devicePtr, data, 1024*sizeof(int))<mark>.wait();</mark>
+
+queue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+  [=](sycl::id&lt;1&gt; idx){
+  devicePtr[idx] = /* some computation */
+})<mark>.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Calling `wait` on an `event` object returned from functions such as `memcpy` or the `queue` shortcuts will wait for that specific command to complete.
+							* Again this is how we have synchronized in our examples so far.
+						</div>
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronizing with kernel functions (USM)
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+auto devicePtr = malloc_device&lt;int&gt;(1024, queue);
+
+queue.memcpy(devicePtr, data, 1024*sizeof(int));
+
+<mark>queue.wait();</mark>
+
+queue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+  [=](sycl::id&lt;1&gt; idx){
+  devicePtr[idx] = /* some computation */
+});
+
+<mark>queue.wait();</mark>
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Again calling `wait` or `wait_and_throw` on a `queue` will wait for all commands enqueued to it to complete.
+							* Note you generally don't want to call `wait` on the `queue` after every command, instead you want to create dependencies between commands, which we cover in the next lecture.
+						</div>
 					</div>
 				</section>
 				<!--Slide 6-->
@@ -116,11 +177,11 @@
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-buf = sycl::buffer(data, sycl::range{1024});
+sycl::buffer buff{data, sycl::range{1024}};
 
-gpuQueue.submit([&](sycl::handler &cgh){
+queue.submit([&](sycl::handler &cgh){
   auto acc = sycl::accessor{buf, cgh};
-      
+
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
     acc[idx] = /* some computation */
@@ -143,77 +204,23 @@ gpuQueue.submit([&](sycl::handler &cgh){
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-buf = sycl::buffer(data, sycl::range{1024});
+sycl::buffer buff{data, sycl::range{1024}};
 
-gpuQueue.submit([&](sycl::handler &cgh){
+queue.submit([&](sycl::handler &cgh){
   auto acc = sycl::accessor{buf, cgh};
-      
+
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
     acc[idx] = /* some computation */
   });
 });
 
-<mark>gpuQueue.wait();</mark>
+<mark>queue.wait();</mark>
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
 							* Calling `wait` or `wait_and_throw` on a `queue` will wait for all commands enqueued to it to complete.
 							* Note that command groups do not create commands to copy data back to the host application.
-						</div>
-					</div>
-				</section>
-				<!--Slide 8-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Synchronizing with kernel functions (USM)
-					</div>
-					<div class="container">
-						<div class="col">
-							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, gpuQueue));
-
-gpuQueue.memcpy(devicePtr, data, sizeof(int))<mark>.wait();</mark>
-
-gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
-  [=](sycl::id&lt;1&gt; idx){
-  devicePtr[idx] = /* some computation */
-})<mark>.wait();</mark>
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* Calling `wait` on an `event` object returned from functions such as `memcpy` or the `queue` shortcuts will wait for that specific command to complete.
-							* Again this is how we have synchronized in our examples so far.
-						</div>
-					</div>
-				</section>
-				<!--Slide 9-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Synchronizing with kernel functions (USM)
-					</div>
-					<div class="container">
-						<div class="col">
-							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, gpuQueue));
-
-gpuQueue.memcpy(devicePtr, data, sizeof(int));
-
-<mark>gpuQueue.wait();</mark>
-
-gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
-  [=](sycl::id&lt;1&gt; idx){
-  devicePtr[idx] = /* some computation */
-});
-
-<mark>gpuQueue.wait();</mark>
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* Again calling `wait` or `wait_and_throw` on a `queue` will wait for all commands enqueued to it to complete.
-							* Note you generally don't want to call `wait` on the `queue` after every command, instead you want to create dependencies between commands, which we cover in the next lecture.
 						</div>
 					</div>
 				</section>
@@ -240,11 +247,11 @@ gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-gpuQueue.memcpy(data, devicePtr, sizeof(int))<mark>.wait();</mark>
+queue.memcpy(data, devicePtr, sizeof(int))<mark>.wait();</mark>
 							</code></pre>
 							<code class="code-100pc"><pre>
-gpuQueue.memcpy(data, devicePtr, sizeof(int));
-<mark>gpuQueue.wait();</mark>
+queue.memcpy(data, devicePtr, sizeof(int));
+<mark>queue.wait();</mark>
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
@@ -260,12 +267,12 @@ gpuQueue.memcpy(data, devicePtr, sizeof(int));
 					</div>
 					<div class="container">
 						<div class="col">
-							<code class="code-100pc"><pre>
-buf = sycl::buffer(data, sycl::range{1024});
+							<code class="code-60pc"><pre>
+sycl::buffer buff{data, sycl::range{1024}};
 
-gpuQueue.submit([&](sycl::handler &cgh){
+queue.submit([&](sycl::handler &cgh){
   auto acc = sycl::accessor{buf, cgh};
-									  
+
   cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
     [=](sycl::id&lt;1&gt; idx){
     acc[idx] = /* some computation */
@@ -296,16 +303,17 @@ gpuQueue.submit([&](sycl::handler &cgh){
 						<div class="col">
 							<code class="code-100pc"><pre>
 <mark>{</mark>
-  buf = sycl::buffer(data, sycl::range{1024});
+  sycl::buffer buff{data, sycl::range{1024}};
 
-  gpuQueue.submit([&](sycl::handler &cgh){
+  queue.submit([&](sycl::handler &cgh){
     auto acc = sycl::accessor{buf, cgh};
-									  
+
     cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
       [=](sycl::id&lt;1&gt; idx){
       acc[idx] = /* some computation */
     });
   });
+  data[/* some index */] // Will have the Device computed value
 <mark>}</mark>
 							</code></pre>
 						</div>
