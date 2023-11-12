@@ -35,7 +35,7 @@ using the `get_info` member function template.
 ### 2.) Try other device selectors
 
 Replace the default selector with one of the other standard device selectors
-that are provided by SYCL such as the `cpu_selector_v`, `gpu_selector_v` 
+that are provided by SYCL such as the `sycl::cpu_selector_v`, `sycl::gpu_selector_v` 
 and see which device those choose.
 
 ### 3.) Create your own device selector
