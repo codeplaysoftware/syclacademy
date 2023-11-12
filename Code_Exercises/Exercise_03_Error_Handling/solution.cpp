@@ -317,8 +317,11 @@ int main(int argc, char* argv[]) {
 	    assert(0 && "Die now");
 	  });
 	});
+    // unfortunately - no drivers for hardware on Intel Developer Cloud
+    // currently support this (as of November 10, 2023) - "coming soon"
+    // this check will print a note mentioning the lack of support
     if (! myQueue2.get_device().has(sycl::aspect::ext_oneapi_native_assert)) {
-      std::cout << "The assert extension to support in a kernel is not available for this device - so not async was thrown.\n";
+      std::cout << "The assert extension to support in a kernel is not available for this device - so no async was thrown.\n";
     }
 #endif
 
