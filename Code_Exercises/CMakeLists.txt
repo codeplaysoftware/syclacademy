@@ -32,6 +32,8 @@ function( add_sycl_executable_dpcpp prefix source )
   # This function is from IntelSYCL cmake module
   add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp") 
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/Catch2/single_include")
+  target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/stb")
+  target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/Utilities/include")
   target_link_libraries(${TARGET_NAME} PUBLIC Catch2::Catch2)
 endfunction()
 
