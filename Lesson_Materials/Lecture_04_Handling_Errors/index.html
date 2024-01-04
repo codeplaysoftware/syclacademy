@@ -91,7 +91,7 @@ int main() {
 
     /* Synchronous code */
 
-    cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+    cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
 
       /* Asynchronous code */
 
@@ -166,7 +166,7 @@ int main() {
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -190,7 +190,6 @@ int main() {
   std::vector&lt;float&gt; dA{ 7, 5, 16, 8 }, dB{ 8, 16, 5, 7 }, dO{ 0, 0, 0, 0 };
   try{
     queue gpuQueue(gpu_selector{}, <mark>async_handler{}</mark>);
-
     buffer bufA{dA};
     buffer bufB{dB};
     buffer bufO{dO};
@@ -200,7 +199,7 @@ int main() {
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -213,8 +212,7 @@ int main() {
 					<div class="bottom-bullets" data-markdown>
 							* Asynchronous errors errors that may have occurred will be thrown after a command group has been submitted to a `queue`.
 							  * To handle these errors you must provide an async handler when constructing the queue object.
-							* Then you must also call the `throw_asynchronous` or `wait_and_throw` member functions of the `queue`
-							class.
+							* Then you must also call the `throw_asynchronous` or `wait_and_throw` member functions of the `queue` class.
 							* This will pass the exceptions to the async handler in the user thread so they can be thrown.
 					</div>
 				</section>
@@ -240,7 +238,7 @@ int main() {
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     }).wait();
@@ -404,7 +402,7 @@ int main() {
       auto inB = accessor{bufB, cgh, read_only};
       auto out = accessor{bufO, cgh, write_only};
 
-      cgh.single_task&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
+      cgh.parallel_for&lt;add&gt;(bufO.get_range(), [=](id&lt;1&gt; i) {
         out[i] = inA[i] + inB[i];
       });
     });
