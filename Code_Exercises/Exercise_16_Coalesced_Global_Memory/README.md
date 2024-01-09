@@ -17,8 +17,8 @@ global memory access patterns in your kernel are coalesced.
 Consider two alternative ways to linearize the global id:
 
 ```
-auto rowMajorLinearId    = (idx[1] * width) + idx[0];  // row-major
-auto columnMajorLinearId = (idx[0] * height) + idx[1];  // column-major
+auto rowMajorLinearId    = sycl::id(globalId[0], globalId[1]);
+auto columnMajorLinearId = sycl::id(globalId[1], globalId[0]);
 ```
 
 Try using both of these and compare the execution time of each.
