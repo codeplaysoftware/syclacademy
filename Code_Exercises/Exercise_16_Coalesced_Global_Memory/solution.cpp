@@ -79,6 +79,12 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
                   ndRange, [=](sycl::nd_item<2> item) {
                     auto globalId = item.get_global_id();
 
+                    auto rowMajorLinearId    = sycl::id(globalId[0], globalId[1]);
+                    auto columnMajorLinearId = sycl::id(globalId[1], globalId[0]);
+
+                    // Set row major or column major
+                    globalId = rowMajorLinearId; 
+
                     auto channelsStride = sycl::range(1, channels);
                     auto haloOffset = sycl::id(halo, halo);
                     auto src = (globalId + haloOffset) * channelsStride;
