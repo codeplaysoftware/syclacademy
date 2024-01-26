@@ -284,15 +284,15 @@ int main(int argc, char* argv[]) {
 #ifdef BONUS_CREDIT_01
     sycl::queue myQueue3 =
         myQueues[(howmany_devices > 2) ? 2 : 0];
-    std::cout << "Second queue is running on "
-              << myQueue2.get_device()
+    std::cout << "Third queue is running on "
+              << myQueue3.get_device()
                      .get_info<sycl::info::device::name>();
 #ifdef SYCL_EXT_INTEL_DEVICE_INFO
 #if SYCL_EXT_INTEL_DEVICE_INFO >= 2
-    if (myQueue2.get_device().has(
+    if (myQueue3.get_device().has(
             sycl::aspect::ext_intel_device_info_uuid)) {
       auto UUID =
-          myQueue2.get_device()
+          myQueue3.get_device()
               .get_info<
                   sycl::ext::intel::info::device::uuid>();
       char bar[1024];
@@ -309,7 +309,7 @@ int main(int argc, char* argv[]) {
 #endif
 #endif
     sycl::event e3 =
-        myQueue2.submit([&](sycl::handler& cgh3) {
+        myQueue3.submit([&](sycl::handler& cgh3) {
           auto os = sycl::stream{128, 128, cgh3};
           cgh3.single_task(
               [=]() { os << "Hello World!\n"; });
