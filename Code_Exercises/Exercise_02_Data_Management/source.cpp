@@ -442,7 +442,7 @@ int main(int argc, char* argv[]) {
           << time1A << " nanoseconds (" << time1A / 1.0e9
           << " seconds)\n";
       std::cout
-          << "chrono: Operationd completed on device1 in "
+          << "chrono: Operation completed on device1 in "
           << time1B * 1000 << " nanoseconds ("
           << time1B * 1000 / 1.0e9 << " seconds)\n";
       std::cout << "chrono more than profiling by "
