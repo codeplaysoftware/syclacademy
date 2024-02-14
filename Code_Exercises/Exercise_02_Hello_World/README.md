@@ -52,6 +52,35 @@ Then use the stream you constructed within the SYCL kernel function to print
 
 #### Build And Execution Hints
 
+If you are using DevCloud via SSH:
+
+If you have not already installed SYCLAcademy, follow this [guide](https://github.com/codeplaysoftware/syclacademy/blob/main/README.md#connecting-to-devcloud-via-ssh) to perform the installation.
+
+From the syclacademy directory
+```
+cd build/Code_Exercises/Exercise_02_Hello_World
+```
+and execute:
+* ```make exercise_2_source``` - to build source.cpp
+* ```make exercise_2_solution``` - to build the solution provided
+* ```make``` - to build both
+
+In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only available through the job queue.
+Please refer to the [guide][devcloud-job-submission].
+
+So wrap the binary into a script `job_submission`
+```sh
+#!/bin/bash
+./exercise_2_source
+```
+and run:
+```sh
+qsub -l nodes=1:gpu:ppn=2 -d . job_submission
+```
+
+The stdout will be stored in ```job_submission.o<job id>``` and stderr in ```job_submission.e<job id>```.
+
 For DPC++:
 Using CMake to configure then build the exercise:
 ```sh
@@ -66,14 +95,7 @@ Alternatively from a terminal at the command line:
 icpx -fsycl -o sycl-ex-2 -I../External/Catch2/single_include ../Code_Exercises/Exercise_02_Hello_World/source.cpp
 ./sycl-ex-2
 ```
-In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
-especially some features like longer walltime and multi-node computation is only available through the job queue.
-Please refer to the [guide][devcloud-job-submission].
 
-So wrap the binary into a script `job_submission` and run:
-```sh
-qsub job_submission
-```
 
 For AdaptiveCpp:
 ```sh

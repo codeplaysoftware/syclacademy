@@ -8,6 +8,7 @@ For this first exercise you simply need to install a SYCL implementation and the
 Academy dependencies and then verify your installation by comping a source file
 for SYCL.
 
+
 ### 1.) Installing a SYCL implementation
 
 To install a SYCL implementation, follow the instructions in the README.md of the SYCL
@@ -35,6 +36,17 @@ Loaded backend 3: Level Zero
   Found device: Intel(R) UHD Graphics 620 [0x5917]
 ```
 
+### If you're using DevCloud via SSH
+
+If you have not already installed SYCLAcademy, follow this [guide](../../README.md#connecting-to-devcloud-via-ssh) to perform the installation.
+
+Go to the exercise 01 directory:
+From the syclacademy directory
+```
+cd build/Code_Exercises/Exercise_01_compiling_with_sycl
+```
+and continue to [4](#4-include-the-sycl-header-file)
+
 ### 3.) Configuring the exercise project
 
 Once you have confirmed your environment is setup and available you are ready to
@@ -44,7 +56,7 @@ First fetch the tutorial samples from GitHub.
 
 Clone this repository ensuring that you include sub-modules.
 
-```
+```sh
 git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
 mkdir build
 cd build
@@ -67,7 +79,33 @@ and invoke the executable.
 
 #### Build And Execution Hints
 
-For DPC++:
+If you are using DevCloud via SSH:
+
+From the syclacademy directory
+```
+cd build/Code_Exercises/Exercise_01_compiling_with_sycl
+```
+and execute:
+* ```make exercise_1_source``` - to build source.cpp
+* ```make exercise_1_solution``` - to build the solution provided
+* ```make``` - to build both
+
+In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
+especially some features like longer walltime and multi-node computation is only available through the job queue.
+Please refer to the [guide][devcloud-job-submission].
+
+So wrap the binary into a script `job_submission`
+```
+#!/bin/bash
+./exercise_1_source
+```
+and run:
+```sh
+qsub -l nodes=1:gpu:ppn=2 -d . job_submission
+```
+
+The stdout will be stored in ```job_submission.o<job id>``` and stderr in ```job_submission.e<job id>```.
+
 Using CMake to configure then build the exercise:
 ```sh
 mkdir build
@@ -80,14 +118,6 @@ Alternatively from a terminal at the command line:
 ```sh
 icpx -fsycl -o sycl-ex-1 -I../External/Catch2/single_include ../Code_Exercises/Exercise_01_compiling_with_sycl/source.cpp
 ./sycl-ex-1
-```
-In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
-especially some features like longer walltime and multi-node computation is only available through the job queue.
-Please refer to the [guide][devcloud-job-submission].
-
-So wrap the binary into a script `job_submission` and run:
-```sh
-qsub job_submission
 ```
 
 For AdaptiveCpp:

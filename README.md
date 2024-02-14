@@ -106,7 +106,7 @@ all of the exercises.
 
 | Implementation | Supported Platforms | Supported Devices | Required Version |
 |----------------|---------------------|-------------------|------------------|
-| DPC++ | [Intel DevCloud](https://tinyurl.com/getdevcloud) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)* | 2021.4	|
+| DPC++ | [Intel DevCloud](#connecting-to-devcloud-via-ssh) <br> Windows 10 Visual Studio 2019 (64bit) <br> Red Hat Enterprise Linux 8, CentOS 8<br> Ubtuntu 18.04 LTS, 20.04 LTS (64bit)<br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)* | 2021.4	|
 | AdaptiveCpp | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> NVIDIA GPU (CUDA)<br> Intel GPU (Level Zero)<br> Intel CPU, GPU (OpenCL) | 23.10.0 from Nov 1, 2023 or newer |
 
 \* Supported in open source project only
@@ -258,10 +258,33 @@ Once you have completed any given exercise make sure to compare your implementat
 
 Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/introduction-to-sycl/introduction-to-sycl-2) tutorial introduces the concepts of SYCL. The website also provides the ability to compile and execute SYCL code from your web browser.
 
-SYCL and the SYCL logo are trademarks of the Khronos Group Inc.
+## Connecting to DevCloud via SSH
+
+* Start by creating an [Intel DevCloud account][intel-devcloud] account if you do not already have one and login in.
+* Initialize the SSH configuration by clicking on [Automated Configuration](https://devcloud.intel.com/oneapi/documentation/connect-with-ssh-linux-macos/) and follow the instructions to setup the SSH configuration file.
+
+## Installing and building the exercises
+
+* SSH into DevCloud (```ssh devcloud```) and execute the following commands:
+```sh
+git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
+module load cmake
+```
+* To create the code_exercises directory structure with the Makefiles:
+```sh
+mkdir build
+cd build
+cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+```
+* Now, navigate to the exercise directory (e.g. Code_exercises/Exercise_01_Compiling_with_SYCL) and execute:
+    * ```make exercise_XX_source``` for compiling the user solution
+    * ```make exercise_XX_solution``` to compile the solution provided with the exercise
+    * ```make``` to build both
+
+You are now ready to start with the first [lesson][lesson-1-slides]. Enjoy !
 
 [dpcpp-getting-started]: https://software.intel.com/content/www/us/en/develop/articles/installation-guide-for-intel-oneapi-toolkits.html
-[intel-devcloud]: https://intelsoftwaresites.secure.force.com/devcloud/oneapi
+[intel-devcloud]: https://consumer.intel.com/intelcorpb2c.onmicrosoft.com/B2C_1A_UnifiedLogin_SISU_CML_SAML/generic/login?entityId=www.intel.com&ui_locales=en
 [docker-container-oneapi]: https://software.intel.com/content/www/us/en/develop/documentation/get-started-with-intel-oneapi-base-linux/top/using-containers.html
 [oneAPI-system-requirements]: https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-base-toolkit-system-requirements.html
 
