@@ -262,26 +262,30 @@ Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/in
 
 * Start by creating an [Intel DevCloud account][intel-devcloud] account if you do not already have one and login in.
 * Initialize the SSH configuration by clicking on [Automated Configuration](https://devcloud.intel.com/oneapi/documentation/connect-with-ssh-linux-macos/) and follow the instructions to setup the SSH configuration file.
-
-## Installing and building the exercises
-
-* SSH into DevCloud (```ssh devcloud```) and execute the following commands:
-```sh
-git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
-module load cmake
-```
-* To create the code_exercises directory structure with the Makefiles:
-```sh
-mkdir build
-cd build
-cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-```
-* Now, navigate to the exercise directory (e.g. Code_exercises/Exercise_01_Compiling_with_SYCL) and execute:
-    * ```make exercise_XX_source``` for compiling the user solution
-    * ```make exercise_XX_solution``` to compile the solution provided with the exercise
-    * ```make``` to build both
+* SSH into DevCloud (```ssh devcloud```)
 
 You are now ready to start with the first [lesson][lesson-1-slides]. Enjoy !
+
+## Building the Exercises for DPC++
+
+* Execute the following command to download SYCLAcademy:
+```sh
+git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
+
+```
+* If you are using **DevCloud**, run:
+ ```sh
+ module load cmake
+ ```
+
+* To create the code_exercises directory structure with the Makefiles:
+```sh
+cd syclacademy
+mkdir build
+cd build
+cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+```
+
 
 [dpcpp-getting-started]: https://software.intel.com/content/www/us/en/develop/articles/installation-guide-for-intel-oneapi-toolkits.html
 [intel-devcloud]: https://consumer.intel.com/intelcorpb2c.onmicrosoft.com/B2C_1A_UnifiedLogin_SISU_CML_SAML/generic/login?entityId=www.intel.com&ui_locales=en

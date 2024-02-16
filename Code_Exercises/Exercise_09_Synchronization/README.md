@@ -49,6 +49,8 @@ pointer provided to the `buffer` but this is not guaranteed.
 
 #### Build And Execution Hints
 
+For DevCloud via SSH follow these [instructions](../devcloud.md).
+
 For DPC++:
 Using CMake to configure then build the exercise:
 ```sh

@@ -81,6 +81,8 @@ and invoke the executable.
 
 If you are using DevCloud via SSH:
 
+If you haven't done so already, follow this [guide](../../README.md#building-the-exercises-for-dpc++) to build the exercise directory structure.
+
 From the syclacademy directory
 ```
 cd build/Code_Exercises/Exercise_01_compiling_with_sycl
@@ -112,7 +114,7 @@ mkdir build
 cd build
 cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make exercise_1
+make exercise_1_source
 ```
 Alternatively from a terminal at the command line:
 ```sh

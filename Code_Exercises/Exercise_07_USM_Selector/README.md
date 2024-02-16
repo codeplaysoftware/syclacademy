@@ -26,6 +26,8 @@ create a `queue` using it to select its device, remember to handle errors.
 
 #### Build And Execution Hints
 
+For DevCloud via SSH follow these [instructions](../devcloud.md).
+
 For DPC++:
 Using CMake to configure then build the exercise:
 ```sh

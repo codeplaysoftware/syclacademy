@@ -53,13 +53,15 @@ filter data; `generate_filter` takes a `filter_type` and a width.
 
 ## Build and execution hints
 
+For DevCloud via SSH follow these [instructions](../devcloud.md).
+
 For DPC++:
 Using CMake to configure then build the exercise:
 ```sh
 mkdir build
 cd build
 cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make exercise_15
+make exercise_15_source
 ```
 Alternatively from a terminal at the command line:
 ```sh
