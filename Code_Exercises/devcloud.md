@@ -5,8 +5,9 @@ If you haven't done so already, follow this [guide](../README.md#building-the-ex
 ## Compiling with DPC++
 
 From the syclacademy directory
-```
+```sh
 cd build/Code_Exercises/<Exercise directory>
+```
 and execute:
 * ```make exercise_<exercise number>_source``` - to build source.cpp
 * ```make exercise_<exercise number>_solution``` - to build the solution provided
