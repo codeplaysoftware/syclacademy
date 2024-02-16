@@ -1,6 +1,6 @@
 ## Using DevCloud via SSH:
 
-If you haven't done so already, follow this [guide](../README.md#building-the-exercises-for-dpc++) to build the exercise directory structure.
+If you haven't done so already, follow this [guide](../README.md#connecting-to-devcloud-via-ssh) to build the exercise directory structure.
 
 ## Compiling with DPC++
 
