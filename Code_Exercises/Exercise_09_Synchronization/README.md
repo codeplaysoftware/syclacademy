@@ -51,42 +51,6 @@ pointer provided to the `buffer` but this is not guaranteed.
 
 For DevCloud via SSH follow these [instructions](../devcloud.md).
 
-For DPC++:
-Using CMake to configure then build the exercise:
-```sh
-mkdir build
-cd build
-cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make exercise_9
-```
-Alternatively from a terminal at the command line:
-```sh
-icpx -fsycl -o sycl-ex-9 -I../External/Catch2/single_include ../Code_Exercises/Exercise_09_Synchronization/source.cpp
-./sycl-ex-9
-```
-In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
-especially some features like longer walltime and multi-node computation is only available through the job queue.
-Please refer to the [guide][devcloud-job-submission].
+For DPC++: [instructions](../dpc.md).
 
-So wrap the binary into a script `job_submission` and run:
-```sh
-qsub job_submission
-```
-
-For AdaptiveCpp:
-```sh
-# <target specification> is a list of backends and devices to target, for example
-# "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
-# The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
-cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DACPP_TARGETS="<target specification>" ..
-make exercise_9
-```
-alternatively, without CMake:
-```sh
-cd Code_Exercises/Exercise_09_Synchronization
-/path/to/adaptivecpp/bin/acpp -o sycl-ex-9 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
-./sycl-ex-9
-```
-
-
-[devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/
+For AdaptiveCpp: [instructions](../adaptivecp.md).

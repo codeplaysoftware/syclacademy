@@ -32,31 +32,6 @@ Compare the performance with local memory and without local memory.
 
 For DevCloud via SSH follow these [instructions](../devcloud.md).
 
-For DPC++:
-Using CMake to configure then build the exercise:
-```sh
-mkdir build
-cd build
-cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make exercise_18_source
-```
-Alternatively from a terminal at the command line:
-```sh
-icpx -fsycl -o sycl-ex-18 -I../External/Catch2/single_include ../Code_Exercises/Exercise_18_Local_Memory_Tiling/source.cpp
-./sycl-ex-18
-```
+For DPC++: [instructions](../dpc.md).
 
-For AdaptiveCpp:
-```sh
-# <target specification> is a list of backends and devices to target, for example
-# "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
-# The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
-cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DACPP_TARGETS="<target specification>" ..
-make exercise_14
-```
-alternatively, without CMake:
-```sh
-cd Code_Exercises/Exercise_18_Local_Memory_Tiling
-/path/to/adaptivecpp/bin/acpp -o sycl-ex-18 -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
-./sycl-ex-18
-```
+For AdaptiveCpp: [instructions](../adaptivecp.md).
