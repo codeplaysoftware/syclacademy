@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## Further Optimizations
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about compute and memory bound algorithms
+					* Learn about optimizing for occupancy
+					* Learn about optimizing for throughput
+				</section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Compute-bound vs memory-bound
+					</div>
+					<div class="container" data-markdown>
+						* When a particular algorithm is applied to a processor such as a GPU it will generally be either compute-bound or memory-bound.
+						* If an algorithm is compute-bound then the limiting factor is occupancy, utilizing the available hardware resources.
+						* If an algorithm is memory-bound then the limiting factor is throughput, reducing memory latency.
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Optimizing for occupancy
+					</div>
+					<div class="container" data-markdown>
+						* Occupancy is a metric used to measure how much of the computing power of a processor such as a GPU is being used.
+						* Optimizing for occupancy means getting the most out of the resources of the GPU.
+						* For memory-bound algorithms you don't necessarily need 100% occupancy, you simply need enough to hide the latency of global memory access.
+						* For compute-bound algorithms occupancy becomes more crucial, even then it's not always possible to achieve 100% occupancy.
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Limiting factors
+					</div>
+					<div class="container" data-markdown>
+						There are a number of factors which can limit occupancy for a given kernel function and the data you pass to it.
+					</div>
+					<div class="container" data-markdown>
+						* Number of work-items required.
+						* Amount of private memory (registers) required by each work-item.
+						* Number of work-items per work-group.
+						* Amount of local memory required by each work-group.
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Choosing an optimal work-group size
+					</div>
+					<div class="container" data-markdown>
+						An important optimization for occupancy is to choose an optimal work-group size.
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Local memory image convolution performance
+					</div>
+					<div class="container"data-markdown>
+						![SYCL](../common-revealjs/images/image_convolution_performance_local_mem.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Choosing an optimal work-group size
+					</div>
+					<div class="container" data-markdown>
+						* It must be smaller than the maximum work-group size for the device you are targeting.
+						* It must be large enough that you are utilizing the hardware concurrency (warp or wavefront)
+						* It should be a power of 2 to allow multiple work-groups to fit into a compute unit.
+						* It's best to experiment with different sizes and benchmark the performance of each.
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Varying work-group size image convolution performance
+					</div>
+					<div class="container"data-markdown>
+						![SYCL](../common-revealjs/images/image_convolution_performance_work_group_sizes.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Reusing data
+					</div>
+					<div class="container" data-markdown>
+						Another important optimization for occupancy is to re-use data as much as possible.
+					</div>
+					<div class="container" data-markdown>
+						* Larger work-group sizes often mean that more work-items can share partial results and overall less memory operations are required.
+						* Though you can hit limitations in the number of work-items required or the amount of local memory required.
+						* If you hit this limitation then you can perform work in batches.
+					</div>
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Work batching
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](../common-revealjs/images/work_distribution.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* If you hit occupancy limitations then each compute unit must process multiple rounds of work-groups and work-items.
+							* This often means reading and writing often the same data again.
+							* Batching work for each work-item that share neighboring data allows you to further share local memory and registers.						
+						</div>
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Optimizing for throughput
+					</div>
+					<div class="container" data-markdown>
+						* Throughput is a metric used to measure how much data is being passed through the GPU.
+						* Optimizing for throughput means getting the most out of the memory bandwidth at the various levels of the memory hierarchy.
+						* The key is to hide the latency of the memory transfers and avoid GPU resources being idle.
+						* This is most important for memory-bound algorithms.
+					</div>
+				</section>
+				<!--Slide 13-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Optimizing for throughput
+					</div>
+					<div class="container" data-markdown>
+						We have seen a number of the techniques to optimize throughput already.
+					</div>
+					<div class="container" data-markdown>
+						* Coalescing global memory access.
+						* Using local memory.
+						* Explicit vectorization.
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Optimizing for throughput
+					</div>
+					<div class="container" data-markdown>
+						There are a number of other optimization to consider, some depend on the application or the target device.
+					</div>
+					<div class="container" data-markdown>
+						* Double buffering.
+						* Using constant memory.
+						* Using texture memory.
+					</div>
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Double buffering
+					</div>
+					<div class="container" data-markdown>
+						* With particularly large data you can hit global memory
+						limitations.
+						* When this happens you need to pipeline the work,
+						execute the kernel function itself multiple times,
+						each time operating on a tile of the input data.
+						* But copying to global memory can be very expensive.
+						* To maintain performance you need to hide the latency
+						of moving the data to the device.					
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Double buffering
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](../common-revealjs/images/double_buffer_1.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* So in this case you have multiple invocation of the
+						kernel function.
+						* And between each invocation the data of the next tile
+						must be moved to the GPU.
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Double buffering
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](../common-revealjs/images/double_buffer_2.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* With the cost of moving data to the GPU being very
+						high so this causes significant gaps where the GPU is
+						idle.
+					</div>
+				</section>
+				<!--Slide 18-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Double buffering
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](../common-revealjs/images/double_buffer_3.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* An option for optimizing this is to double buffer the data being moved to and accessed on the GPU.
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Double buffering
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](../common-revealjs/images/double_buffer_4.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* This allows overlapping of compute and data movement.
+						* This means that while one kernel invocation computes
+						a tile of data the data for the next tile is being
+						moved.
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Use constant memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](../common-revealjs/images/constant_memory.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* Some SYCL devices provide a benefit from using constant memory.
+						* This a dedicated region of global memory that is read-only, and therefore can be faster to access.
+						* Not all devices will benefit from using constant memory.
+						* There is generally a much lower limit to what you can allocate in constant memory.
+						* To use constant memory simply create an `accessor` with the `access::target::constant_buffer` access target.
+					</div>
+				</section>
+				<!--Slide 21-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Use texture memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](../common-revealjs/images/texture_memory.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* Some SYCL devices provide a benefit from using constant memory.
+						* This the texture memory used by the render pipeline.
+						* This can be more efficient when accessing data in a pixel format.
+						* To use texture memory use the `image` class.
+					</div>
+				</section>
+				<!--Slide 22-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Further tips
+					</div>
+					<div class="container" data-markdown>
+						* Profile your kernel functions.
+						* Follow vendor optimization guides.
+						* Tune your algorithms.
+					</div>
+				</section>
+				<!--Slide 23-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
+					</div>
+				</section>
+				<!--Slide 24-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/Work_Group_Sizes/source
+					</div>
+					<div class="container" data-markdown>
+						Try out different work-group sizes and measure the performance.
+					</div>
+					<div class="container" data-markdown>
+						Try out some of the other optimization techniques we've looked at here.
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
