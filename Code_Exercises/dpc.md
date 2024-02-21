@@ -9,10 +9,10 @@ cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON
 To compile,from the syclacademy directory:
 ```sh
 cd build/Code_Exercises/<Exercise directory>
-make exercise_<exercise number>_source
+make <exercise name>_source
 ```
 
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o exercise_<exercise number>_source -I../External/Catch2/single_include ../Code_Exercises/<Exercise directory>/source.cpp
+icpx -fsycl -o <exercise name>_source -I../External/Catch2/single_include ../Code_Exercises/<Exercise directory>/source.cpp
 ```

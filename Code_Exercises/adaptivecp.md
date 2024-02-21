@@ -10,12 +10,12 @@ cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF
 To compile,from the syclacademy directory:
 ```sh
 cd build/Code_Exercises/<Exercise directory>
-make exercise_<exercise number>_source
+make <exercise name>_source
 ```
  
 alternatively, without CMake:
 ```sh
 cd Code_Exercises/<Exercise directory>
-/path/to/adaptivecpp/bin/acpp -o sycl-ex-<exercise number> -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
-./sycl-ex-<exercise number>
+/path/to/adaptivecpp/bin/acpp -o sycl-ex-<exercise name> -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
+./sycl-ex-<exercise name>
 ```

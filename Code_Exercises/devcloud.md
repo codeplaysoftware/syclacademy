@@ -9,13 +9,13 @@ From the syclacademy directory
 cd build/Code_Exercises/<Exercise directory>
 ```
 and execute:
-* ```make exercise_<exercise number>_source``` - to build source.cpp
-* ```make exercise_<exercise number>_solution``` - to build the solution provided
+* ```make <exercise name>_source``` - to build source.cpp
+* ```make <exercise name>_solution``` - to build the solution provided
 * ```make``` - to build both
 
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o exercise_<exercise number>_source -I../External/Catch2/single_include ../Code_Exercises/<Exercise directory>/source.cpp
+icpx -fsycl -o <exercise name>_source -I../External/Catch2/single_include ../Code_Exercises/<Exercise directory>/source.cpp
 ```
 
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
@@ -25,7 +25,7 @@ Please refer to the [guide][devcloud-job-submission].
 So wrap the binary into a script `job_submission`
 ```sh
 #!/bin/bash
-./exercise_<exercise number>_source
+./<exercise name>_source
 ```
 and run:
 ```sh
