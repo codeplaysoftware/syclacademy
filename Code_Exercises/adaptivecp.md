@@ -16,6 +16,6 @@ make <exercise name>_source
 alternatively, without CMake:
 ```sh
 cd Code_Exercises/<Exercise directory>
-/path/to/adaptivecpp/bin/acpp -o sycl-ex-<exercise name> -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
-./sycl-ex-<exercise name>
+/path/to/adaptivecpp/bin/acpp -o sycl-<exercise name>_source -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
+./sycl-<exercise name>_source
 ```
