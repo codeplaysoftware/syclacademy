@@ -264,6 +264,12 @@ Hosted by tech.io, this [SYCL Introduction](https://tech.io/playgrounds/48226/in
 * Initialize the SSH configuration by clicking on [Automated Configuration](https://devcloud.intel.com/oneapi/documentation/connect-with-ssh-linux-macos/) and follow the instructions to setup the SSH configuration file.
 * SSH into DevCloud (```ssh devcloud```)
 
+## Connect to DevCloud via Jupyter Notebooks
+
+* Start by creating an [Intel DevCloud account][intel-devcloud] account if you do not already have one and login in.
+* Go to [training](https://console.cloud.intel.com/training) and click on ```Launch JupyterLab´´´
+* In the ```Jupiter Notebook``` select *File->New->Terminal*
+
 You are now ready to start with the first [lesson][lesson-1-slides]. Enjoy !
 
 ## Building the Exercises for DPC++
@@ -273,7 +279,7 @@ You are now ready to start with the first [lesson][lesson-1-slides]. Enjoy !
 git clone --recursive https://github.com/codeplaysoftware/syclacademy.git
 
 ```
-* If you are using **DevCloud**, run:
+* If you are using **DevCloud via ssh**, run:
  ```sh
  module load cmake
  ```

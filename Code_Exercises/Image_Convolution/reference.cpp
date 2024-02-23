@@ -27,9 +27,9 @@ inline constexpr int halo = filterWidth / 2;
 
 TEST_CASE("image_convolution_naive", "image_convolution_reference") {
   const char* inputImageFile =
-      "../Code_Exercises/Images/dogs.png";
+      "../Images/dogs.png";
   const char* outputImageFile =
-      "../Code_Exercises/Images/blurred_dogs.png";
+      "../Images/blurred_dogs.png";
 
   auto inputImage = util::read_image(inputImageFile, halo);
 
