@@ -32,6 +32,6 @@ Compare the performance with local memory and without local memory.
 
 For DevCloud via SSH follow these [instructions](../devcloud.md).
 
-For DPC++: [instructions](../dpc.md).
+For DPC++: [instructions](../dpcpp.md).
 
-For AdaptiveCpp: [instructions](../adaptivecp.md).
+For AdaptiveCpp: [instructions](../adaptivecpp.md).

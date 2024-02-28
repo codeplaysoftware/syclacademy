@@ -40,7 +40,7 @@ Loaded backend 3: Level Zero
 
 If you have not already installed SYCLAcademy, follow this [guide](../../README.md#connecting-to-devcloud-via-ssh) to perform the installation.
 
-Go to the exercise 01 directory:
+Go to the Compiling_with_SYCL directory:
 From the syclacademy directory
 ```
 cd build/Code_Exercises/Compiling_with_SYCL
@@ -87,8 +87,8 @@ From the syclacademy directory
 ```
 cd build/Code_Exercises/Compiling_with_SYCL
 and execute:
-* ```make compiling_with_sycl_source```   - to build source.cpp
-* ```make compiling_with_sycl_solution``` - to build the solution provided
+* ```make Compiling_with_SYCL_source```   - to build source.cpp
+* ```make Compiling_with_SYCL_solution``` - to build the solution provided
 * ```make``` - to build both
 
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
@@ -98,7 +98,7 @@ Please refer to the [guide][devcloud-job-submission].
 So wrap the binary into a script `job_submission`
 ```
 #!/bin/bash
-./compiling_with_sycl_source
+./Compiling_with_SYCL_source
 ```
 and run:
 ```sh
@@ -113,12 +113,12 @@ mkdir build
 cd build
 cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make exercise_1_source
+make Compiling_with_SYCL_source
 ```
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o sycl-compiling_with_sycl_source -I../External/Catch2/single_include ../Code_Exercises/Compiling_with_SYCL/source.cpp
-./sycl-compiling_with_sycl_source
+icpx -fsycl -o Compiling_with_SYCL_source -I../External/Catch2/single_include ../Code_Exercises/Compiling_with_SYCL/source.cpp
+./Compiling_with_SYCL_source
 ```
 
 For AdaptiveCpp:
@@ -127,13 +127,13 @@ For AdaptiveCpp:
 # "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
 cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/AdaptiveCpp -DACPP_TARGETS="<target specification>" ..
-make compiling_with_sycl_source
+make Compiling_with_SYCL_source
 ```
 alternatively, without CMake:
 ```sh
 cd Code_Exercises/Compiling_with_SYCL
-/path/to/AdaptiveCpp/bin/acpp -o sycl-compiling_with_sycl_source -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
-./sycl-compiling_with_sycl_source
+/path/to/AdaptiveCpp/bin/acpp -o Compiling_with_SYCL_source -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
+./Compiling_with_SYCL_source
 ```
 
 

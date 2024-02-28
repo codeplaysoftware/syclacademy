@@ -59,16 +59,15 @@ If you haven't done so already, follow this [guide](../README.md#connecting-to-d
 
 From the syclacademy directory
 ```sh
-cd build/Code_Exercises/Exercise_15_Image_Convolution
+cd build/Code_Exercises/Image_Convolution
 ```
 and execute:
-* ```make exercise_<exercise number>_source``` - to build source.cpp
-* ```make exercise_<exercise number>_solution``` - to build the solution provided
-* ```make``` - to build both
+* ```make Image_Convolution_reference``` - to build reference.cpp
+* ```make``` - to build reference.cpp
 
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o exercise_15_source -I../../Utilities/include/ -I../../External/stb ../Code_Exercises/Exercise_15_Image_Convolution/reference.cpp
+icpx -fsycl -o Image_Convolution_reference -I../../Utilities/include/ -I../../External/stb ../Code_Exercises/Image_Convolution/reference.cpp
 ```
 
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
@@ -78,7 +77,7 @@ Please refer to the [guide][devcloud-job-submission].
 So wrap the binary into a script `job_submission`
 ```sh
 #!/bin/bash
-./exercise_15_source
+./Image_Convolution_reference
 ```
 and run:
 ```sh
@@ -93,11 +92,11 @@ Using CMake to configure then build the exercise:
 mkdir build
 cd build
 cmake .. "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=OFF -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-make exercise_15_source
+make Image_Convolution_reference
 ```
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o sycl-ex-15 -I../../Utilities/include/ -I../../External/stb reference.cpp
+icpx -fsycl -o Image_Convolution_reference -I../../Utilities/include/ -I../../External/stb reference.cpp
 ```
 
 For AdaptiveCpp:
@@ -106,10 +105,10 @@ For AdaptiveCpp:
 # "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
 # The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
 cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DACPP_TARGETS="<target specification>" ..
-make exercise_15
+make Image_Convolution_reference
 ```
 alternatively, without CMake:
 ```sh
-cd Code_Exercises/Exercise_15_Image_Convolution
-/path/to/adaptivecpp/bin/acpp -o sycl-ex-15 -I../../Utilities/include/ -I../../External/stb --acpp-targets="<target specification>" reference.cpp
+cd Code_Exercises/Image_Convolution
+/path/to/adaptivecpp/bin/acpp -o sycl-Image_Convolution_reference -I../../Utilities/include/ -I../../External/stb --acpp-targets="<target specification>" reference.cpp
 ```

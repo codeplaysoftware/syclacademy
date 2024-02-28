@@ -70,6 +70,6 @@ SYCL API `free` and not the standard C `free`.
 
 For DevCloud via SSH follow these [instructions](../devcloud.md).
 
-For DPC++: [instructions](../dpc.md).
+For DPC++: [instructions](../dpcpp.md).
 
-For AdaptiveCpp: [instructions](../adaptivecp.md).
+For AdaptiveCpp: [instructions](../adaptivecpp.md).
