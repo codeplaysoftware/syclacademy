@@ -84,3 +84,11 @@ endif()
 enable_testing()
 add_subdirectory(External/Catch2)
 add_subdirectory(Code_Exercises)
+
+# Create the Image directory
+# Set source and destination paths
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/Code_Exercises/Images/")
+set(DESTINATION_DIR "${CMAKE_BINARY_DIR}/Code_Exercises/Images/")
+
+# Copy all files from source to destination using file(COPY ...)
+file(COPY ${SOURCE_DIR} DESTINATION ${DESTINATION_DIR})
