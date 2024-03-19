@@ -24,56 +24,59 @@ enum Direction
   COL,
   ROW
 };
+
 /**
- * @brief The ImageConvolutionFunctor class represents a functor for performing image convolution.
+ * @brief ImageConvolutionFunctor class
  * 
- * This class is templated on the data type of the image elements. It provides methods for setting 
- * the input and output buffers, setting the filter buffer, setting the SYCL handler, and 
- * performing the convolution operation. The convolution operation is performed by the operator() 
- * method, which takes a SYCL nd_item and a direction as input. The operator() method applies the 
- * convolution filter to the input image and stores the result in the output image buffer.
+ * This class represents a functor for performing image convolution. It takes 
+ * an input accessor, an output accessor, a filter accessor, and a direction 
+ * as input parameters. The functor applies the convolution operation on the 
+ * input image using the provided filter and stores the result in the output 
+ * image. The direction parameter determines whether the convolution is 
+ * performed along the rows or columns of the image.
  * 
- * The ImageConvolutionFunctor class also contains private member variables for storing the filter, 
- * input, and output buffers, as well as accessors for these buffers. It also stores the halo size 
- * and filter width.
+ * @tparam dataT The data type of the image elements
  */
 template <typename dataT>
 class ImageConvolutionFunctor
 {
 
 public:
-  ImageConvolutionFunctor(sycl::buffer<dataT, 1> *filter) : filter_(filter)
-  {
-    filterWidth_ = filter_->get_range()[0];
-    halo_ = filterWidth_ / 2;
-    out_ = NULL;
-  }
-  ImageConvolutionFunctor()
-  {
-    filter_ = NULL;
-    out_ = NULL;
-  }
 /**
- * @brief The operator method of the ImageConvolutionFunctor class performs image convolution
- *        using a given filter.
+ * @brief ImageConvolutionFunctor constructor
  * 
- * @details Takes a sycl::nd_item<2> object and a Direction enum as parameters.
- *        The method calculates the global ID of the item, initializes a sum variable, a filter offset,
- *        and a source offset based on the global ID and the halo size. 
- *        It then checks the direction parameter and performs the convolution operation accordingly.
- *        For the ROW direction, it iterates over the halo range and calculates the source offset for
- *        each row, and adds the product of the input accessor at the source offset and the filter
- *        accessor at the filter offset to the sum. For the COL direction, it iterates over the halo
- *        range and calculates the source offset for each column, and adds the product of the input
- *        accessor at the source offset and the filter accessor at the filter offset to the sum.
- *        Finally, it checks if the output accessor range is different from the input accessor range
- *        and assigns the sum to the output accessor  at the global ID (final buffer), or assigns
- *        the sum to the output accessor at the global ID plus the halo size (intermediate buffer).
+ * This constructor initializes an ImageConvolutionFunctor object with the provided
+ * input accessor, output accessor, filter accessor, and direction. It also calculates
+ * the filter width and the halo size based on the filter accessor.
  * 
- * @param item The sycl::nd_item<2> object representing the item being processed.
- * @param dir The Direction enum indicating the direction of the convolution operation (ROW or COL).
+ * @tparam dataT The data type of the image elements
+ * @param inputAcc The input accessor for the image
+ * @param outputAcc The output accessor for the image
+ * @param filterAcc The filter accessor for the convolution operation
+ * @param dir The direction of the convolution operation (ROW or COL)
+ */  
+  ImageConvolutionFunctor<dataT>(const sycl::accessor<dataT, 2, sycl::access::mode::read>& inputAcc,
+      const sycl::accessor<dataT, 2, sycl::access::mode::write>& outputAcc,
+      const sycl::accessor<dataT, 1, sycl::access::mode::read>& filterAcc,
+      Direction dir) :
+          inputAcc_(inputAcc), outputAcc_(outputAcc), filterAcc_(filterAcc), dir_(dir) {
+            filterWidth_ = filterAcc_.size();
+            halo_ = filterWidth_ / 2;
+          }
+
+/**
+ * @brief ImageConvolutionFunctor operator
+ * 
+ * This operator performs the image convolution operation using the provided input
+ * accessor, output accessor, filter accessor, and direction. It calculates the sum
+ * of the convolution operation for each pixel and stores the result in the output
+ * image. The direction parameter determines whether the convolution is performed
+ * along the rows or columns of the image.
+ * 
+ * @tparam dataT The data type of the image elements
+ * @param item The nd_item representing the current work item
  */
-  void operator()(sycl::nd_item<2> item, Direction dir) const
+  void operator()(sycl::nd_item<2> item) const
   {
     auto globalId = item.get_global_id();
 
@@ -81,7 +84,7 @@ public:
     auto filterOffset = sycl::id(0);
     auto src = globalId + sycl::id(halo_, halo_);
 
-    if (dir == Direction::ROW)
+    if (dir_ == Direction::ROW)
     {
       for (int r = -halo_; r < halo_ + 1; ++r)
       {
@@ -104,50 +107,13 @@ public:
       outputAcc_[globalId + sycl::id(halo_, halo_)] = sum;
   }
 
-  void setBuffers(sycl::buffer<dataT, 2> &in, sycl::buffer<dataT, 2> &out, sycl::buffer<dataT, 1> &filter)
-  {
-    filter_ = &filter;
-    in_ = &in;
-    out_ = &out;
-    filterWidth_ = filter_->get_range()[0];
-    halo_ = filterWidth_ / 2;
-  }
-
-  void setBuffers(sycl::buffer<dataT, 2> &in, sycl::buffer<dataT, 2> &out)
-  {
-
-    if (filter_ == NULL)
-      throw "The filter has to be set first.";
-
-    in_ = &in;
-    out_ = &out;
-  }
-
-  void setBuffers(sycl::buffer<dataT, 2> &out)
-  {
-    if (out_ == NULL)
-      throw "No previous buffers defined.";
-
-    in_ = out_;
-    out_ = &out;
-  }
-
-  void setHandler(sycl::handler &cgh)
-  {
-    filterAcc_ = filter_->template get_access<sycl::access::mode::read>(cgh);
-    inputAcc_ = in_->template get_access<sycl::access::mode::read>(cgh);
-    outputAcc_ = out_->template get_access<sycl::access::mode::write>(cgh);
-  }
-
 private:
-  sycl::buffer<dataT, 1> *filter_;
-  sycl::buffer<dataT, 2> *in_;
-  sycl::buffer<dataT, 2> *out_;
   sycl::accessor<dataT, 2, sycl::access::mode::read> inputAcc_;
   sycl::accessor<dataT, 2, sycl::access::mode::write> outputAcc_;
   sycl::accessor<dataT, 1, sycl::access::mode::read> filterAcc_;
   int halo_;
   int filterWidth_;
+  Direction dir_ = ROW;
 };
 
 util::image_ref<float> linear_blur(int width)
@@ -174,31 +140,6 @@ util::image_ref<float> linear_blur(int width)
   }
 
   return util::image_ref<float>{filterData, width, 1, 4, 0};
-}
-
-/**
- * @brief Run the kernel function.
- * 
- * It takes four parameters: ndRange, cgh, convolve, and dir.
- * - ndRange: A SYCL nd_range object representing the range of work items to be executed.
- * - cgh: A SYCL handler object used to set the handler for the convolve functor.
- * - convolve: An instance of the ImageConvolutionFunctor class templated on imageT.
- * - dir: An enum value representing the direction of the convolution operation.
- * 
- * The function sets the handler for the convolve functor using the setHandler method.
- * It then calls the parallel_for method of the handler to execute the convolution operation.
- * The lambda function passed to parallel_for calls the operator() method of the convolve functor
- * with the current nd_item and direction as arguments.
- * 
- * This function is used to perform image convolution using SYCL.
- */
-template <typename imageT>
-void kernelFunction(sycl::nd_range<2> ndRange, sycl::handler &cgh, ImageConvolutionFunctor<imageT> convolve, Direction dir)
-{
-  convolve.setHandler(cgh);
-
-  cgh.parallel_for(ndRange, [=](sycl::nd_item<2> item)
-                   { convolve(item, dir); });
 }
 
 inline constexpr util::filter_type filterType = util::filter_type::blur;
@@ -260,19 +201,25 @@ TEST_CASE("image_convolution_1D", "1D_solution")
       auto filterBufVec = filterBuf.reinterpret<sycl::float4>(
           filterRange / channels);
 
-      ImageConvolutionFunctor<sycl::float4> convolve(&filterBufVec);
+
 
       util::benchmark(
           [&]()
           {
-            convolve.setBuffers(inBufVec, tempBufVec);
             myQueue.submit([&](sycl::handler &cgh) {
-              kernelFunction<sycl::float4>(ndRange, cgh, convolve, Direction::ROW);
+              ImageConvolutionFunctor<sycl::float4>convolve(inBufVec.get_access<sycl::access::mode::read>(cgh),
+                    tempBufVec.get_access<sycl::access::mode::write>(cgh),
+                    filterBufVec.get_access<sycl::access::mode::read>(cgh),
+                    Direction::ROW);
+               cgh.parallel_for(ndRange, convolve);
             });
 
-            convolve.setBuffers(outBufVec);
             myQueue.submit([&](sycl::handler &cgh) {
-              kernelFunction<sycl::float4>(ndRange, cgh, convolve, Direction::COL);
+              ImageConvolutionFunctor<sycl::float4>convolve(tempBufVec.get_access<sycl::access::mode::read>(cgh),
+                    outBufVec.get_access<sycl::access::mode::write>(cgh),
+                    filterBufVec.get_access<sycl::access::mode::read>(cgh),
+                    Direction::COL);
+              cgh.parallel_for(ndRange, convolve);
             });
 
             myQueue.wait_and_throw();
