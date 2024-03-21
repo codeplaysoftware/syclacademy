@@ -12,8 +12,8 @@
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 ]]
 
-# Minimum version required by 
-# /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadNeSYCL.txt
+# Minimum version required by
+# /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadMeSYCL.txt
 if(WIN32)
   cmake_minimum_required(VERSION 3.23...3.27)
 else()
@@ -50,21 +50,47 @@ endif()
 
 # Common setup
 
-if(NOT DEFINED ${CMAKE_BUILD_TYPE})
-  set(CMAKE_BUILD_TYPE "Debug")
-endif()
-
 find_package(Threads REQUIRED)
 add_subdirectory(Utilities)
 
 # DPC++ setup
 
 if (SYCL_ACADEMY_USE_DPCPP)
-# For DPCPP module to work, find_package to work, use the options
-# -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx on the command line.
-# See /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadMeSYCL.txt
-  set(IntelSYCL_DIR /opt/intel/oneapi/compiler/latest/linux/IntelSYCL)
-  find_package(IntelSYCL REQUIRED)
+  if (${CMAKE_CXX_COMPILER} MATCHES icpx)
+    # For DPCPP module to work, find_package to work, use the options
+    # -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx on the command line.
+    find_package(IntelSYCL REQUIRED)
+    if (DEFINED SYCL_TRIPLE)
+      list(APPEND CMAKE_CXX_FLAGS "-fsycl-targets=${SYCL_TRIPLE}")
+      string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    endif()
+    if (DEFINED AMD_ARCH)
+      if (NOT DEFINED ROCM_DIR)
+        message(FATAL_ERROR "Must specify ROCM_DIR when using icpx with rocm")
+      endif()
+      list(APPEND CMAKE_CXX_FLAGS "-fsycl-targets=amdgcn-amd-amdhsa" "-Xsycl-target-backend" "--offload-arch=${AMD_ARCH}" "--rocm-path=${ROCM_DIR}")
+      string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    endif()
+  else()
+    # Open source clang++ doesn't have IntelSYCL cmake module
+    function(add_sycl_to_target)
+      set(options)
+      set(one_value_args TARGET)
+      set(multi_value_args SOURCES)
+      cmake_parse_arguments(SYCL
+        ""
+        "${one_value_args}"
+        "${multi_value_args}"
+        ${ARGN})
+      target_compile_options(${SYCL_TARGET} PRIVATE "-fsycl"
+        "$<$<BOOL:${SYCL_TRIPLE}>:-fsycl-targets=${SYCL_TRIPLE}>" # Add -fsycl-targets if SYCL_TRIPLE is set
+        "$<$<BOOL:${AMD_ARCH}>:-fsycl-targets=amdgcn-amd-amdhsa;-Xsycl-target-backend;--offload-arch=${AMD_ARCH}>") # Add AMD_ARCH if set
+      target_link_options(${SYCL_TARGET} PRIVATE "-fsycl"
+        "$<$<BOOL:${SYCL_TRIPLE}>:-fsycl-targets=${SYCL_TRIPLE}>" # Add -fsycl-targets if SYCL_TRIPLE is set
+        "$<$<BOOL:${AMD_ARCH}>:-fsycl-targets=amdgcn-amd-amdhsa;-Xsycl-target-backend;--offload-arch=${AMD_ARCH}>") # Add AMD_ARCH if set
+      target_link_libraries(${SYCL_TARGET} PUBLIC libsycl.so)
+    endfunction()
+  endif()
 endif()
 
 # AdaptiveCpp setup
