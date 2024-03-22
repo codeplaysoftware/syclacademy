@@ -193,18 +193,22 @@ This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake modu
 
 #### Additional cmake arguments for AdaptiveCpp
 
-When building with AdaptiveCpp, cmake will additionally require you to specify the
-target platform using `-DACPP_TARGETS=<target specification>`. 
+Sufficiently new (>= 24.02.0), full installations of AdaptiveCpp do not require specifying compilation targets.
+In this case, targets may still be provided optionally. 
+
+For older AdaptiveCpp versions, cmake will require you to specify the compilation targets `-DACPP_TARGETS=<target specification>`. 
 `<target specification>` is a list of compilation flows to enable and devices to target, for example
 `-DACPP_TARGETS="omp;generic"` compiles for CPUs using OpenMP and GPUs using the generic single-pass compiler.
 
+If your AdaptiveCpp installation does not force a compilation target to be provided, but it was built with the generic single-pass compiler disabled (it is enabled by default in all AdaptiveCpp installations built against LLVM >= 14), it is compiling for a default set of targets provided at installation time. If you cannot run the binary on the hardware of your choice, this default set may not be the right one for your hardware and you may have to specify the right targets explicitly.
+
 Available compilation flows are:
 * `omp` - OpenMP CPU backend
-* `generic` - Generic single-pass compiler. Generates a binary that runs on AMD, NVIDIA and Intel GPUs using runtime compilation
-* `cuda` - CUDA backend for NVIDIA GPUs. Requires specification of targets of the form sm_XY, e.g. sm_70 for Volta, sm_60 for Pascal
-* `hip`  - HIP backend for AMD GPUs. Requires specification of targets of the form gfxXYZ, e.g. gfx906 for Vega 20, gfx900 for Vega 10
+* `generic` - Generic single-pass compiler. Generates a binary that runs on host CPU, AMD, NVIDIA and Intel GPUs using runtime compilation
+* `cuda` - CUDA backend for NVIDIA GPUs. Requires specification of targets of the form sm_XY, e.g. sm_70 for Volta, sm_60 for Pascal. E.g: `cuda:sm_70`.
+* `hip`  - HIP backend for AMD GPUs. Requires specification of targets of the form gfxXYZ, e.g. gfx906 for Vega 20, gfx900 for Vega 10. E.g.: `hip:gfx906`.
 
-When in doubt, use `-DACPP_TARGETS=omp;generic`.
+When in doubt, use `-DACPP_TARGETS=generic` as it compiles the fastest, usually generates the fastest binaries, and generates portable binaries.
 
 #### CMake usage example
 
