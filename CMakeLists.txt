@@ -56,21 +56,27 @@ add_subdirectory(Utilities)
 # DPC++ setup
 
 if (SYCL_ACADEMY_USE_DPCPP)
+  if (DEFINED SYCL_TRIPLE)
+    list(APPEND CMAKE_CXX_FLAGS "-fsycl-targets=${SYCL_TRIPLE}")
+  endif()
+  if (DEFINED SYCL_ARCH)
+    if (${SYCL_ARCH} MATCHES pvc)
+      list(APPEND CMAKE_CXX_FLAGS "-Xs" "\"-device pvc\"")
+    else()
+      list(APPEND CMAKE_CXX_FLAGS "-Xsycl-target-backend" "--offload-arch=${SYCL_ARCH}")
+    endif()
+  endif()
+  if (DEFINED ROCM_DIR)
+    list(APPEND CMAKE_CXX_FLAGS "--rocm-path=${ROCM_DIR}")
+  endif()
+  if (DEFINED CUDA_DIR)
+    list(APPEND CMAKE_CXX_FLAGS "--cuda-path=${CUDA_DIR}")
+  endif()
+  string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   if (${CMAKE_CXX_COMPILER} MATCHES icpx)
     # For DPCPP module to work, find_package to work, use the options
     # -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx on the command line.
     find_package(IntelSYCL REQUIRED)
-    if (DEFINED SYCL_TRIPLE)
-      list(APPEND CMAKE_CXX_FLAGS "-fsycl-targets=${SYCL_TRIPLE}")
-      string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    endif()
-    if (DEFINED AMD_ARCH)
-      if (NOT DEFINED ROCM_DIR)
-        message(FATAL_ERROR "Must specify ROCM_DIR when using icpx with rocm")
-      endif()
-      list(APPEND CMAKE_CXX_FLAGS "-fsycl-targets=amdgcn-amd-amdhsa" "-Xsycl-target-backend" "--offload-arch=${AMD_ARCH}" "--rocm-path=${ROCM_DIR}")
-      string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    endif()
   else()
     # Open source clang++ doesn't have IntelSYCL cmake module
     function(add_sycl_to_target)
@@ -82,13 +88,9 @@ if (SYCL_ACADEMY_USE_DPCPP)
         "${one_value_args}"
         "${multi_value_args}"
         ${ARGN})
-      target_compile_options(${SYCL_TARGET} PRIVATE "-fsycl"
-        "$<$<BOOL:${SYCL_TRIPLE}>:-fsycl-targets=${SYCL_TRIPLE}>" # Add -fsycl-targets if SYCL_TRIPLE is set
-        "$<$<BOOL:${AMD_ARCH}>:-fsycl-targets=amdgcn-amd-amdhsa;-Xsycl-target-backend;--offload-arch=${AMD_ARCH}>") # Add AMD_ARCH if set
-      target_link_options(${SYCL_TARGET} PRIVATE "-fsycl"
-        "$<$<BOOL:${SYCL_TRIPLE}>:-fsycl-targets=${SYCL_TRIPLE}>" # Add -fsycl-targets if SYCL_TRIPLE is set
-        "$<$<BOOL:${AMD_ARCH}>:-fsycl-targets=amdgcn-amd-amdhsa;-Xsycl-target-backend;--offload-arch=${AMD_ARCH}>") # Add AMD_ARCH if set
-      target_link_libraries(${SYCL_TARGET} PUBLIC libsycl.so)
+      target_compile_options(${SYCL_TARGET} PRIVATE "-fsycl")
+      target_link_options(${SYCL_TARGET} PRIVATE "-fsycl")
+      target_link_libraries(${SYCL_TARGET} PUBLIC "libsycl.so")
     endfunction()
   endif()
 endif()

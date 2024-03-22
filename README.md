@@ -199,25 +199,38 @@ The build configuration for all exercises defaults to a debug build if this opti
 
 This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake module package to assist it in its configuration. These command line arguments must be used to initiate this configuration correctly.
 
-`SYCL_TRIPLE` can be used to specify a DPC++ compatible SYCL triple. Possible
+`-DSYCL_TRIPLE` can be used to specify a DPC++ compatible SYCL triple. Possible
 values include:
 
+* `amdgcn-amd-amdhsa` - For AMD devices
 * `nvptx64-nvidia-cuda` - For CUDA devices
-* `spir64-gen` - For Intel GPUs
+* `spir64_gen` - For Intel GPUs
 * `native_cpu` - For native CPU SYCL device (dependent on DPCPP version)
 
-If AMD is being targeted, `AMD_ARCH` and `ROCM_DIR` must be set. Possible values
-include:
+`-DSYCL_ARCH` can also be used to specify a device arch. This CMake opt is
+necessary for AMD. Possible values include:
 
-* `gfx90a`
-* `gfx1031`
+* `gfx90a` - For AMD MI200
+* `sm_80` - For NVIDIA A100
+* `pvc` - For Intel PVC
 
-#### AMD CMake example
+It may also be necessary to manually specify the install location of the CUDA or
+ROCM SDK, if this is found in a non-standard location. The flags:
+
+`-DROCM_DIR` and `-DCUDA_DIR` can be used to specify the install dir of the ROCM
+or CUDA SDKs, respectively.
+
+##### DPC++ for AMD CMake example
 
 ```
-  cmake .. -GNinja -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx -DAMD_ARCH=gfx90a -DROCM_DIR=/opt/rocm/5.4.3
+  cmake .. -GNinja -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx _DSYCL_TRIPLE=amdgcn-amd-amdhsa -DSYCL_ARCH=gfx90a -DROCM_DIR=/opt/rocm/5.4.3
 ```
 
+##### DPC++ for CUDA CMake example
+
+```
+  cmake .. -GNinja -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx _DSYCL_TRIPLE=nvptx64-nvidia-cuda -DSYCL_ARCH=sm_61 -DCUDA_DIR=/usr/local/cuda/11.2/
+```
 
 #### Additional cmake arguments for AdaptiveCpp
 
