@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<section>
+					<div class="container" data-markdown>
+						![SYCL](../common-revealjs/images/sc22.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 1-->
+				<section class="hbox">
+					<div class="hbox" data-markdown>
+						## GPU Programming Principles
+					</div>
+				</section>
+				<!--Slide 2-->
+				<section class="hbox" data-markdown>
+					## Learning Objectives
+					* Learn about coalesced global memory access
+					* Learn about the performance impact
+					* Learn about local memory and how to use it.
+                </section>
+				<!--Slide 3-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						* Reading from and writing to global memory is generally very expensive.
+						* It often involves copying data across an off-chip bus.
+						  * This means you generally want to avoid unnecessary accesses.
+						* Memory access operations is done in chunks.
+						  * This means accessing data this is physically close together in memory is more efficient.
+					</div>
+				</section>
+				<!--Slide 4-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_1.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 5-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_2.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_3.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_4.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_5.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 9-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Coalesced global memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./coalesced_global_memory_6.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 10-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row-major vs Column-major
+					</div>
+					<div class="container" data-markdown>
+						* Coalescing global memory access is particularly important when working in multiple dimensions.
+						* This is because when doing so you have to convert from a position in 2d space to a linear memory space.
+						* There are two ways to do this; generally referred to as row-major and column-major.
+					</div>
+				</section>
+				<!--Slide 11-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Row-major vs Column-major
+					</div>
+				</section>
+				<section>
+					<div class="container" data-markdown>
+						![SYCL](./row_col_1.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 12-->
+				<section>
+					<div class="container" data-markdown>
+						![SYCL](./row_col_2.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 13-->
+				<section>
+					<div class="container" data-markdown>
+						![SYCL](./row_col_3.png "SYCL")
+					</div>
+				</section>
+				<!--Slide 14-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Cost of accessing global memory
+					</div>
+					<div class="container" data-markdown>
+						* Global memory is very expensive to access.
+						* Even with coalesced global memory access if you are accessing the same elements multiple times that can be expensive.
+						* Instead you want to cache those values in a lower latency memory.
+					</div>
+				</section>
+				<!--Slide 15-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Using local memory
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](./local_memory.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						* The solution is local memory.
+						* Local memory is generally on-chip and doesn't have a cache as it's managed manually so is much lower latency.
+						* Local memory is a smaller dedicated region of memory per work-group.
+						* Local memory can be used to cache, allowing us to read from global memory just once and then read from local memory instead, often referred to as a scratchpad.
+						* Local memory can be accessed in an uncoalesced fashion without much performance degradation.
+					</div>
+				</section>
+				<!--Slide 16-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Tiling
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./tiling.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* The iteration space of the kernel function is mapped across multiple work-groups.
+							* Each work-group has its own region of local memory.
+							* You want to split the input image data into tiles, one for each work-group.
+						</div>
+					</div>
+				</section>
+				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Local accessors
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+auto scratchpad = sycl::local_accessor&lt;int, dims&gt;(sycl::range{workGroupSize}, cgh);
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* Local memory is allocated via an `accessor` with the `access::target::local` access target.
+						* Unlike regular `accessor`s they are not created with a `buffer`, they allocate memory per work-group for the duration of the kernel function.
+						* The `range` provided is the number of elements of the specified type to allocate per work-group.
+					</div>
+				</section>
+				<!--Slide 18-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container" data-markdown>
+						* Local memory can be used to share partial results between work-items.
+						* When doing so it's important to synchronize between writes and read to memory to ensure all work-items have reached the same point in the program.
+					</div>
+				</section>
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./barrier_1.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* Remember that work-items are not guaranteed to all execute at the same time (in parallel).
+						</div>
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./barrier_2.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* A work-item can share results with other work-items via local (or global) memory.
+						</div>
+					</div>
+				</section>
+				<!--Slide 21-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./barrier_3.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* This means it's possible for a work-item to read a result that hasn't been written to yet.
+							* This creates a data race.
+						</div>
+					</div>
+				</section>
+				<!--Slide 22-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./barrier_4.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* This problem can be solved with a synchronization primitive called a work-group barrier.
+						</div>
+					</div>
+				</section>
+				<!--Slide 23-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./barrier_5.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* When a work-group barrier is inserted work-items will wait until all work-items in the work-group have reached that point.
+						</div>
+					</div>
+				</section>
+				<!--Slide 24-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./barrier_6.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* Only then can any work-items in the work-group continue execution.
+						</div>
+					</div>
+				</section>
+				<!--Slide 25-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./barrier_7.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* So now you can be sure that all of the results that you want to read have been written to.
+						</div>
+					</div>
+				</section>
+				<!--Slide 26-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Synchronization
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./barrier_8.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* However note that this does not apply across work-group boundaries.
+							* So if you write in a work-item of one work-group and then read it in a work-item of another work-group you again have a data race.
+							* Furthermore, remember that work-items can only access their own local memory and not that of any other work-groups.
+						</div>
+					</div>
+				</section>
+				<!--Slide 27-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Group_barrier
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+sycl::group_barrier(item.get_group());
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* Work-group barriers can be invoked by calling `group_barrier` and passing a `group` object.
+						* You can retrieve a `group` object representing the current work-group by calling `get_group` on an `nd_item`.
+						* Note this requires the `nd_range` variant of `parallel_for`.
+					</div>
+				</section>
+				<!--Slide 28-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Matrix Transpose
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./matrix_transpose1.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+						* In the next exercise we will transpose a matrix.
+					</div>
+				</section>
+				<!--Slide 29-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Matrix Transpose
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./matrix_transpose2.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+						* Reading naively from global memory and writing to global memory will give poor performance.
+						* This is because at least one of our memory transactions will be uncoalesced.
+						* Adjacent work items are reading a contiguous block from memory, and writing in a strided fashion into the out array.
+					</div>
+				</section>
+				<!--Slide 30-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Matrix Transpose
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./matrix_transpose4.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+						* Using scratchpad memory can allow us to make uncoalesced loads or stores into local memory, not global memory.
+						* Uncoalesced local memory transactions are less detrimental to performance than uncoalesced global memory transactions.
+					</div>
+				</section>
+				<!--Slide 31-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Matrix Transpose
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](./matrix_transpose5.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+						* Global memory loads and stores are now coalesced.
+						* Adjacent work items are reading and writing contiguous blocks.
+					</div>
+				</section>
+				<!--Slide 32-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Questions
+					</div>
+				</section>
+				<!--Slide 33-->
+				<section>
+					<div class="container" data-markdown>
+						Code_Exercises/Exercise_08_Matrix_Transpose
+					</div>
+					<div class="container" data-markdown>
+						Use good memory access patterns to transpose a matrix.
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
