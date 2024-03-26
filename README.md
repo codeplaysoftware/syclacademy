@@ -196,7 +196,7 @@ This SYCL Academy CMake configuration uses the Intel oneAPI IntelSYCL CMake modu
 Sufficiently new (>= 24.02.0), full installations of AdaptiveCpp do not require specifying compilation targets.
 In this case, targets may still be provided optionally. 
 
-For older AdaptiveCpp versions, cmake will require you to specify the compilation targets `-DACPP_TARGETS=<target specification>`. 
+For older AdaptiveCpp versions, CMake will require you to specify the compilation targets `-DACPP_TARGETS=<target specification>`. 
 `<target specification>` is a list of compilation flows to enable and devices to target, for example
 `-DACPP_TARGETS="omp;generic"` compiles for CPUs using OpenMP and GPUs using the generic single-pass compiler.
 
