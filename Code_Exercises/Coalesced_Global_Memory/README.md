@@ -72,8 +72,11 @@ icpx -fsycl -o Coalesced_Global_Memory_source -I../External/Catch2/single_includ
 For AdaptiveCpp:
 ```sh
 # <target specification> is a list of backends and devices to target, for example
-# "omp;generic" compiles for CPUs with the OpenMP backend and GPUs using the generic single-pass compiler.
-# The simplest target specification is "omp" which compiles for CPUs using the OpenMP backend.
+# "generic" compiles for CPUs and GPUs using the generic single-pass compiler.
+# When in doubt, use "generic" as it usually generates the fastest binaries.
+#
+# Recent, full installations of AdaptiveCpp may not need targets to be provided,
+# compiling for "generic" by default.
 cmake -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_INSTALL_ROOT=/insert/path/to/adaptivecpp -DACPP_TARGETS="<target specification>" ..
 make Coalesced_Global_Memory_source
 ```
