@@ -12,8 +12,8 @@
   -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
 ]]
 
-# Minimum version required by 
-# /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadNeSYCL.txt
+# Minimum version required by
+# /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadMeSYCL.txt
 if(WIN32)
   cmake_minimum_required(VERSION 3.23...3.27)
 else()
@@ -50,21 +50,49 @@ endif()
 
 # Common setup
 
-if(NOT DEFINED ${CMAKE_BUILD_TYPE})
-  set(CMAKE_BUILD_TYPE "Debug")
-endif()
-
 find_package(Threads REQUIRED)
 add_subdirectory(Utilities)
 
 # DPC++ setup
 
 if (SYCL_ACADEMY_USE_DPCPP)
-# For DPCPP module to work, find_package to work, use the options
-# -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx on the command line.
-# See /opt/intel/oneapi/compiler/latest/linux/IntelSYCL/ReadMeSYCL.txt
-  set(IntelSYCL_DIR /opt/intel/oneapi/compiler/latest/linux/IntelSYCL)
-  find_package(IntelSYCL REQUIRED)
+  if (DEFINED SYCL_TRIPLE)
+    list(APPEND CMAKE_CXX_FLAGS "-fsycl-targets=${SYCL_TRIPLE}")
+  endif()
+  if (DEFINED SYCL_ARCH)
+    if (${SYCL_TRIPLE} MATCHES spir64_gen)
+      list(APPEND CMAKE_CXX_FLAGS "-Xs" "\"-device ${SYCL_ARCH}\"")
+    else()
+      list(APPEND CMAKE_CXX_FLAGS "-Xsycl-target-backend" "--offload-arch=${SYCL_ARCH}")
+    endif()
+  endif()
+  if (DEFINED ROCM_DIR)
+    list(APPEND CMAKE_CXX_FLAGS "--rocm-path=${ROCM_DIR}")
+  endif()
+  if (DEFINED CUDA_DIR)
+    list(APPEND CMAKE_CXX_FLAGS "--cuda-path=${CUDA_DIR}")
+  endif()
+  string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  if (${CMAKE_CXX_COMPILER} MATCHES icpx)
+    # For DPCPP module to work, find_package to work, use the options
+    # -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx on the command line.
+    find_package(IntelSYCL REQUIRED)
+  else()
+    # Open source clang++ doesn't have IntelSYCL cmake module
+    function(add_sycl_to_target)
+      set(options)
+      set(one_value_args TARGET)
+      set(multi_value_args SOURCES)
+      cmake_parse_arguments(SYCL
+        ""
+        "${one_value_args}"
+        "${multi_value_args}"
+        ${ARGN})
+      target_compile_options(${SYCL_TARGET} PRIVATE "-fsycl")
+      target_link_options(${SYCL_TARGET} PRIVATE "-fsycl")
+      target_link_libraries(${SYCL_TARGET} PUBLIC "libsycl.so")
+    endfunction()
+  endif()
 endif()
 
 # AdaptiveCpp setup
