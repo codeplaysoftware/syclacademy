@@ -91,6 +91,7 @@ may not match completely.
 | 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes |
 | 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes |
 | 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes |
+| 20 | Matrix Transpose | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
 
 
 ## Building the Exercises
@@ -444,3 +445,8 @@ cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_S
 [lesson-19-exercise]: ./Code_Exercises/Work_Group_Sizes/README.md
 [lesson-19-source]: ./Code_Exercises/Work_Group_Sizes/source.cpp
 [lesson-19-solution]: ./Code_Exercises/Work_Group_Sizes/solution.cpp
+
+[lesson-20-slides]: ./Lesson_Materials/Matrix_Transpose/
+[lesson-20-exercise]: ./Code_Exercises/Matrix_Transpose/README.md
+[lesson-20-source]: ./Code_Exercises/Matrix_Transpose/source.cpp
+[lesson-20-solution]: ./Code_Exercises/Matrix_Transpose/solution.cpp
