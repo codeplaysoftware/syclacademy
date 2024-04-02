@@ -114,7 +114,7 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
           },
           100, "image convolution (coalesced)");
     }
-  } catch (sycl::exception e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 

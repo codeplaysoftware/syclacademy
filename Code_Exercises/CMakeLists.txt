@@ -9,7 +9,6 @@
 ]]
 
 # CMake function to build ab AdaptiveCpp configuration and create executable binaries
-# from AdaptiveCpp libraries. 
 function( add_sycl_executable_adaptivecpp prefix source )
   set(TARGET_NAME "${prefix}_${source}")
   add_executable("${TARGET_NAME}" "${source}.cpp")
