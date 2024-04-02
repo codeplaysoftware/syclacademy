@@ -9,7 +9,7 @@
 ]]
 
 # Exercise exercise_01_compiling_with_sycl
-add_sycl_executable(Compiling_with_SYCL source)
+add_sycl_executable(What_is_SYCL source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(Compiling_with_SYCL solution)
+  add_sycl_executable(What_is_SYCL solution)
 endif()

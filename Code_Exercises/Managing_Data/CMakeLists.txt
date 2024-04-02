@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_08_usm_vector_add
-add_sycl_executable(USM_Vector_Add source)
+# Exercise exercise_03_scalar_add
+add_sycl_executable(Managing_Data source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(USM_Vector_Add solution)
+  add_sycl_executable(Managing_Data solution)
 endif()

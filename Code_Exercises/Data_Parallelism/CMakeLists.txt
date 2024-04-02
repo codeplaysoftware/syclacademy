@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_07_usm_selector
-add_sycl_executable(USM_Selector source)
+# Exercise exercise_06_vector_add
+add_sycl_executable(Data_Parallelism source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(USM_Selector solution)
+  add_sycl_executable(Data_Parallelism solution)
 endif()

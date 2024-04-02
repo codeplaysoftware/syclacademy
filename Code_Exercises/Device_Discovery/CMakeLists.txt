@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_03_scalar_add
-add_sycl_executable(Scalar_Add source)
+# Exercise exercise_05_device_selection
+add_sycl_executable(Device_Discovery source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(Scalar_Add solution)
+  add_sycl_executable(Device_Discovery solution)
 endif()

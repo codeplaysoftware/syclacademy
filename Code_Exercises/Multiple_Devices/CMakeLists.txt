@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_12_temporary_data
-add_sycl_executable(Temporary_Data source)
+# Exercise exercise_13_load_balancing
+add_sycl_executable(Multiple_Devices source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(Temporary_Data solution)
+  add_sycl_executable(Multiple_Devices solution)
 endif()

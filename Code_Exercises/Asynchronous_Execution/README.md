@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 9: Synchronization
+## Exercise 9: Asynchronous_Execution
 ---
 
 In this exercise you will learn how to use different techniques for
