@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_09_synchronization
-add_sycl_executable(Synchronization source)
+# Exercise exercise_08_usm_vector_add
+add_sycl_executable(USM_Data_Parallelism source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(Synchronization solution)
+  add_sycl_executable(USM_Data_Parallelism solution)
 endif()

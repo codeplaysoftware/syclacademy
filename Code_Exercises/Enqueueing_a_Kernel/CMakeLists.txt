@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_05_device_selection
-add_sycl_executable(Device_Selection source)
+# Exercise exercise_02_hello_world
+add_sycl_executable(Enqueueing_a_Kernel source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(Device_Selection solution)
+  add_sycl_executable(Enqueueing_a_Kernel solution)
 endif()

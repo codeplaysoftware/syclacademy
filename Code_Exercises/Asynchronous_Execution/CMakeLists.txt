@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_10_managing_dependencies
-add_sycl_executable(Managing_Dependencies source)
+# Exercise exercise_09_synchronization
+add_sycl_executable(Asynchronous_Execution source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(Managing_Dependencies solution)
+  add_sycl_executable(Asynchronous_Execution solution)
 endif()
