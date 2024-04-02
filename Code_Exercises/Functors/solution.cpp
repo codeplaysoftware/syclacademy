@@ -50,9 +50,10 @@ public:
  * the filter width and the halo size based on the filter accessor.
  * 
  * @tparam dataT The data type of the image elements
- * @param inputAcc The input accessor for the image
- * @param outputAcc The output accessor for the image
- * @param filterAcc The filter accessor for the convolution operation
+ * @param cgh the queue handler
+ * @param in The input buffer for the image
+ * @param out The output buffer for the image
+ * @param filter The filter buffer for the convolution operation
  * @param dir The direction of the convolution operation (ROW or COL)
  */  
   ImageConvolutionFunctor<dataT>(sycl::handler& cgh, sycl::buffer<dataT, 2>& in,
