@@ -119,7 +119,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
           },
           100, "image convolution (tiled)");
     }
-  } catch (sycl::exception e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 

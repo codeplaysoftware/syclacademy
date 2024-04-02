@@ -55,14 +55,14 @@ public:
  * @param filterAcc The filter accessor for the convolution operation
  * @param dir The direction of the convolution operation (ROW or COL)
  */  
-  ImageConvolutionFunctor<dataT>(const sycl::accessor<dataT, 2, sycl::access::mode::read>& inputAcc,
-      const sycl::accessor<dataT, 2, sycl::access::mode::write>& outputAcc,
-      const sycl::accessor<dataT, 1, sycl::access::mode::read>& filterAcc,
-      Direction dir) :
-          inputAcc_(inputAcc), outputAcc_(outputAcc), filterAcc_(filterAcc), dir_(dir) {
-            filterWidth_ = filterAcc_.size();
-            halo_ = filterWidth_ / 2;
-          }
+  ImageConvolutionFunctor<dataT>(sycl::handler& cgh, sycl::buffer<dataT, 2>& in,
+      sycl::buffer<dataT, 2>& out, sycl::buffer<dataT, 1>& filter,  const Direction& dir) : dir_(dir) {
+    inputAcc_ = in.template get_access<sycl::access::mode::read>(cgh);
+    outputAcc_ = out.template get_access<sycl::access::mode::write>(cgh);
+    filterAcc_ = filter.template get_access<sycl::access::mode::read>(cgh);
+    filterWidth_ = filterAcc_.size();
+    halo_ = filterWidth_ / 2;
+    }
 
 /**
  * @brief ImageConvolutionFunctor operator
@@ -207,18 +207,14 @@ TEST_CASE("image_convolution_1D", "1D_solution")
           [&]()
           {
             myQueue.submit([&](sycl::handler &cgh) {
-              ImageConvolutionFunctor<sycl::float4>convolve(inBufVec.get_access<sycl::access::mode::read>(cgh),
-                    tempBufVec.get_access<sycl::access::mode::write>(cgh),
-                    filterBufVec.get_access<sycl::access::mode::read>(cgh),
-                    Direction::ROW);
+              ImageConvolutionFunctor<sycl::float4>convolve(cgh, inBufVec, tempBufVec,
+                    filterBufVec, Direction::ROW);
                cgh.parallel_for(ndRange, convolve);
             });
 
             myQueue.submit([&](sycl::handler &cgh) {
-              ImageConvolutionFunctor<sycl::float4>convolve(tempBufVec.get_access<sycl::access::mode::read>(cgh),
-                    outBufVec.get_access<sycl::access::mode::write>(cgh),
-                    filterBufVec.get_access<sycl::access::mode::read>(cgh),
-                    Direction::COL);
+              ImageConvolutionFunctor<sycl::float4>convolve(cgh, tempBufVec, outBufVec,
+                    filterBufVec, Direction::COL);
               cgh.parallel_for(ndRange, convolve);
             });
 
@@ -227,7 +223,7 @@ TEST_CASE("image_convolution_1D", "1D_solution")
           100, "image convolution (COL and ROW)");
     }
   }
-  catch (sycl::exception e)
+  catch (const sycl::exception& e)
   {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }

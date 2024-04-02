@@ -8,8 +8,7 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_NN:Functors
-# add_sycl_executable(Functors source)
+add_sycl_executable(Functors source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
   add_sycl_executable(Functors solution)
 endif()
