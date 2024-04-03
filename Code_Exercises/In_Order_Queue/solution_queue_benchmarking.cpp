@@ -91,10 +91,10 @@ TEST_CASE("in_order_queue", "in_order_fast") {
  }
  bench_multiple_queues({Q[0]},1); // Trigger JITing
  
- auto kernels_1 =  bench_multiple_queues({Q[0]},1);
+ auto kernels_1 = bench_multiple_queues({Q[0]},1);
  std::cout << "1" << " kernels took: " << kernels_1 << "ms" << std::endl;
 
- auto kernels_N =  bench_multiple_queues(Qs, N_queues);
+ auto kernels_N = bench_multiple_queues(Qs, N_queues);
  std::cout << N << " in-order_fast kernels took: " <<kernels_N << "ms" << std::endl;
  std::cout << "Ratio N/1: " << kernels_N / kernels_1 << std::endl;
 }
