@@ -101,10 +101,9 @@
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-sycl:: queue Q;
-for (auto task: tasks) {
+sycl::queue Q;
+for (std::function task: tasks)
   Q.submit(task);
-}
 Q.wait();
 							</code></pre>
 						</div>
@@ -121,7 +120,7 @@ Q.wait();
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-sycl:: queue Q;
+sycl::queue Q;
 auto e1 = Q.submit(taskA);
 auto e2 = Q.submit([&](sycl::handle &cgh) {
 	cgh.depends_on(e1);
@@ -140,6 +139,7 @@ Q.submit([&](sycl::handle &cgh) {
 						<div class="col" data-markdown>
 							* Define an Ordering manualy (error prone)
 							* Scheduling done automatically (maximize concurrency)
+							* Dynamic scheduling (potentially higher latency overhead than manually crafted scheduling)
 						</div>
 					</div>
 				</section>
@@ -151,16 +151,16 @@ Q.submit([&](sycl::handle &cgh) {
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-sycl:: queue Q{sycl::property::queue::in_order};
-for (auto task: tasks) {
+sycl::queue Q{sycl::property::queue::in_order};
+for (std::function task: tasks)
   Q.submit(task);
-}
 Q.wait();
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
 							* All commands are executed serially
 							* Ease of programming (no race conditions can occur)
+							* Potentialy lower-latency than out-of-order queues
 							* Zero concurrency / Potentially suboptimal performance
 						</div>
 					</div>
@@ -172,18 +172,18 @@ Q.wait();
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-std::vector<sycl:: queue> Qs = map_queues_to_task();
-for (auto [Q,task]: queue_tasks) {
+std::vector<std::function, sycl::queue> queues_tasks;
+for (auto [Q, task]: queues_tasks)
   Q.submit(task);
-}
-for (auto [Q,task]: queue_tasks) {
+
+for (auto [Q, _]: queues_tasks)
   Q.wait();
-}
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* Manual Scheduling (painful to extract full concurrency)
-							* When correcly done, acheive concurency between queues;
+							* Manual Scheduling (tasks need mapped to queues)
+							* Painful to extract full concurrency
+							* When correcly done, acheive concurency between queues
 						</div>
 					</div>
 				</section>
