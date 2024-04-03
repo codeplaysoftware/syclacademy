@@ -16,7 +16,7 @@
   MAD_16(x, y);                                                                                    \
   MAD_16(x, y);
 
-template <class T> static T busy_wait(size_t N, T i) {
+template <class T> static T busy_sleep(size_t N, T i) {
   T x = 1.3f;
   T y = i;
   for (size_t j = 0; j < N; j++) {
@@ -30,7 +30,7 @@ auto bench(sycl::queue Q, int N_kernel) {
 
   const auto s = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < N_kernel; i++) {
-    Q.single_task([=]() { out[i] = busy_wait<double>(1E5, i); });
+    Q.single_task([=]() { out[i] = busy_sleep<float>(2E5, i); });
   }
   Q.wait();
   const auto e = std::chrono::high_resolution_clock::now();
@@ -56,7 +56,7 @@ auto bench_multiple_queues(std::vector<sycl::queue> Qs, int N_kernel_per_queue) 
 
 TEST_CASE("in_order_queue", "in_order_slow") {
  sycl::queue Q{sycl::property::queue::in_order{}};
- bench(Q, 1); // Trigger JITing
+ bench(Q, 1); // Warmup
 
  const int N = 100;
  auto kernels_1 =  bench(Q, 1);
@@ -68,7 +68,7 @@ TEST_CASE("in_order_queue", "in_order_slow") {
 
 TEST_CASE("in_order_queue", "out_of_order") {
  sycl::queue Q;
- bench(Q, 1); // Trigger JITing
+ bench(Q, 1); // Warmup
 
  const int N = 100;
  auto kernels_1 =  bench(Q, 1);
@@ -86,8 +86,8 @@ TEST_CASE("in_order_queue", "in_order_fast") {
 
  std::vector<sycl::queue> Qs;
  for (int i=0; i<N_queues; i++) {
-   sycl::queue Q_{sycl::property::queue::in_order{}};
-   Qs.push_back(Q_);
+   sycl::queue Q{sycl::property::queue::in_order{}};
+   Qs.push_back(Q);
  }
  bench_multiple_queues({Q[0]},1); // Trigger JITing
  
