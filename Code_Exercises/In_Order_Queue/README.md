@@ -32,7 +32,7 @@ necessary to chain commands using `event`s.
 
 ## Exercise 1
 
-### 1.) Naive In-Order is slow
+### 1.) Naive In-Order Execution
 
 Your old coworker is lazy, and put all the kernel in the same in-order queue.
 Performance is poor as kernels cannot execute concurrently. Your goal is to improve it:
