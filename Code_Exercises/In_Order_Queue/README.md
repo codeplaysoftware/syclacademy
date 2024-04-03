@@ -7,6 +7,7 @@ In this exercise you will learn how to create a fixed data flow using an
 in-order `queue`.
 
 ---
+## Exercise 0
 
 ### 1.) In order queue with buffer/accessor model
 
@@ -28,6 +29,16 @@ providing the necessary dependencies described in exercise 10 are still met.
 
 Note that in the USM model when using an in-order `queue` it is no longer
 necessary to chain commands using `event`s.
+
+## Exercise 1
+
+### 1.) Naive In-Order is slow
+
+Your old coworker is lazy, and put all the kernel in the same in-order queue.
+Performance are poor. Your goal is to improve it:
+
+- Using out-of-order queue
+- Using multiple in-order queue
 
 ## Build and execution hints
 
