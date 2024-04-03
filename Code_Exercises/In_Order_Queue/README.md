@@ -35,7 +35,7 @@ necessary to chain commands using `event`s.
 ### 1.) Naive In-Order is slow
 
 Your old coworker is lazy, and put all the kernel in the same in-order queue.
-Performance are poor. Your goal is to improve it:
+Performance is poor as kernels cannot execute concurrently. Your goal is to improve it:
 
 - Using out-of-order queue
 - Using multiple in-order queue
