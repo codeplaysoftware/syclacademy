@@ -54,14 +54,14 @@
 				<!--Slide 1-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
-						## In Order Queues
+						## Queues (In and Out of Orders)
 					</div>
 				</section>
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
 					* Learn about out-of-order and in-order execution
-					* Learn about in-order queues and how to use them
+					* Learn about how to use them for maximal performance
                 </section>
 				<!--Slide 3-->
 				<section>
@@ -74,7 +74,7 @@
 						</div>
 						<div class="col" data-markdown>
 							* SYCL `queue`s are by default out-of-order.
-							* This means commands are allowed to be overlapped and re-ordered or executed concurrently providing dependencies are honoured to ensure consistency.
+							* This means commands are allowed to be overlapped, re-ordered, executed concurrently providing dependencies are honoured to ensure consistency.
 						</div>
 					</div>
 				</section>
@@ -93,57 +93,53 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 5-->
+				<!--Slide 7-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Data flow with buffers and accessors
+						#### Using an out-of-order queue (USM)
 					</div>
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto inOrderQueue = sycl::queue{gpu_selector{},
-  <mark>{sycl::property::queue::in_order{}}</mark>};
+sycl:: queue Q;
+for (auto task: tasks) {
+  Q.submit(task);
+}
+Q.wait();
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* To create an in-order `queue` simply provide the `property::queue::in_order` property to the constructor.
+							* All events can execute concurencly is hardware is avalaible
+							* See exercive for real world data
 						</div>
 					</div>
 				</section>
-				<!--Slide 6-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Using an in-order queue (buffer/accessor)
+						#### Using an out-of-order queue (USM): But how to handle depentency?
 					</div>
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-buf = sycl::buffer(data, sycl::range{1024});
-
-inOrderQueue.submit([&](sycl::handler &cgh){
-  sycl::accessor acc{buf, cgh};
-      
-  cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
-});
-
-inOrderQueue.submit([&](sycl::handler &cgh){
-  sycl::accessor acc{buf, cgh};
-		
-  cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
-    [=](sycl::id&lt;1&gt; idx){
-    acc[idx] = /* some computation */
-  });
-});
-
-<mark>inOrderQueue.wait();</mark>
+sycl:: queue Q;
+auto e1 = Q.submit(taskA);
+auto e2 = Q.submit([&](sycl::handle &cgh) {
+	cgh.depends_on(e1);
+	taskB();
+}
+auto e3 = Q.submit([&](sycl::handle &cgh) {
+	cgh.depends_on(e2);
+	taskC();
+}
+Q.submit([&](sycl::handle &cgh) {
+	cgh.depends_on({e1,e2});
+	taskD();
+}.wait();
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* In the buffer/accessor model in-order `queue`s are used as normal.
-							* The main difference is now that the command groups will now always be executed in the order they are enqueued.
+							* Define an Ordering manualy (error prone)
+							* Scheduling done automaticaly (maxize concurency)
 						</div>
 					</div>
 				</section>
@@ -155,30 +151,37 @@ inOrderQueue.submit([&](sycl::handler &cgh){
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-auto devicePtr   = usm_wrapper&lt;int&gt;(
-  malloc_device&lt;int&gt;(1024, inOrderQueue));
-  
-  inOrderQueue.memcpy(devicePtr, data, sizeof(int));
-  
-  inOrderQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
-  [=](sycl::id&lt;1&gt; idx){
-  devicePtr[idx] = /* some computation */
-});
-
-inOrderQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
-  [=](sycl::id&lt;1&gt; idx){
-  devicePtr[idx] = /* some computation */
-});
-
-inOrderQueue.memcpy(data, devicePtr, sizeof(int));
-
-<mark>inOrderQueue.wait();</mark>
+sycl:: queue Q{sycl::property::queue::in_order};
+for (auto task: tasks) {
+  Q.submit(task);
+}
+Q.wait();
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* In the USM model dependencies are greatly simplified.
-							* It's no longer necessary to chain the commands together with `event` as they execute in the order they are enqueued.
-							* Simply calling `wait` on the the `queue` is sufficient.
+							* All events are executed serialy
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="hbox" data-markdown>
+						#### Using an out-of-order queue (USM): But how to handle concurency
+					</div>
+					<div class="container">
+						<div class="col">
+							<code class="code-100pc"><pre>
+std::vector<sycl:: queue> Qs = map_queues_to_task();
+for (auto [Q,task]: queue_tasks) {
+  Q.submit(task);
+}
+for (auto [Q,task]: queue_tasks) {
+  Q.wait();
+}
+							</code></pre>
+						</div>
+						<div class="col" data-markdown>
+							* Manual Scheduling (painfull to extract full concurency)
+							* When correcly done, acheive conurency between queues;
 						</div>
 					</div>
 				</section>
