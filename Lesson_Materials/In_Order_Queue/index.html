@@ -62,7 +62,7 @@
 					## Learning Objectives
 					* Learn about out-of-order and in-order execution
 					* Learn about how to use them for maximal performance
-                </section>
+        </section>
 				<!--Slide 3-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -109,14 +109,14 @@ Q.wait();
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* All events can execute concurencly is hardware is avalaible
+							* All events can execute concurencly is hardware is avalaible!
 							* See exercive for real world data
 						</div>
 					</div>
 				</section>
 				<section>
 					<div class="hbox" data-markdown>
-						#### Using an out-of-order queue (USM): But how to handle depentency?
+						#### Using an out-of-order queue (USM): But how to handle dependency?
 					</div>
 					<div class="container">
 						<div class="col">
@@ -128,11 +128,11 @@ auto e2 = Q.submit([&](sycl::handle &cgh) {
 	taskB();
 }
 auto e3 = Q.submit([&](sycl::handle &cgh) {
-	cgh.depends_on(e2);
+	cgh.depends_on(e1);
 	taskC();
 }
 Q.submit([&](sycl::handle &cgh) {
-	cgh.depends_on({e1,e2});
+	cgh.depends_on({e2,e3});
 	taskD();
 }.wait();
 							</code></pre>
@@ -160,6 +160,8 @@ Q.wait();
 						</div>
 						<div class="col" data-markdown>
 							* All events are executed serialy
+							* Ease of programing (no race condition)
+							* Zero concurency / Potential suboptimal performance
 						</div>
 					</div>
 				</section>
@@ -181,8 +183,18 @@ for (auto [Q,task]: queue_tasks) {
 						</div>
 						<div class="col" data-markdown>
 							* Manual Scheduling (painfull to extract full concurency)
-							* When correcly done, acheive conurency between queues;
+							* When correcly done, acheive concurency between queues;
 						</div>
+					</div>
+				</section>
+				<!--Slide 8-->
+				<section>
+					<div class="hbox" data-markdown>
+						## Note on buffer/accessors
+						* Best of Both world
+						* Buffer / Accessors handle the dependency for you (no need for `depend on`)
+						* Hence, using in or out of order queues will not change the scemantic of your program!
+						* Can use out-of-order without the drawback.
 					</div>
 				</section>
 				<!--Slide 8-->
@@ -192,6 +204,21 @@ for (auto [Q,task]: queue_tasks) {
 					</div>
 				</section>
 				<!--Slide 17-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Exercise
+					</div>
+					<div class="container" data-markdown>
+						Code_Exercises/In_Order_Queue/source
+					</div>
+					<div class="container" data-markdown>
+						![SYCL](../common-revealjs/images/in_order_diamond_data_flow.png "SYCL")
+					</div>
+					<div class="container" data-markdown>
+						- Transform serial In-order queues submision, to concurent executions.
+						- See speedup
+					</div>
+				</section>
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
