@@ -1,4 +1,4 @@
-#include <sycl.hpp>
+#include <sycl/sycl.hpp>
 
 #define MAD_4(x, y)                                                                                \
   x = y * x + y;                                                                                   \
