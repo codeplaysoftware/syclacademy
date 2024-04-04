@@ -61,7 +61,7 @@
 				<section class="hbox" data-markdown>
 					## Learning Objectives
 					* Learn about out-of-order and in-order execution
-					* Learn about how to use in order queues for maximal performance
+					* Learn about how to use in-order queues for maximal performance
         </section>
 				<!--Slide 3-->
 				<section>
@@ -161,7 +161,7 @@ Q.wait();
 							* All commands are executed serially
 							* Ease of programming (no race conditions can occur)
 							* Potentialy lower-latency than out-of-order queues
-							* Zero concurrency / Potentially suboptimal performance
+							* Doesn't allow concurrency, potentially suboptimal performance
 						</div>
 					</div>
 				</section>
@@ -172,7 +172,7 @@ Q.wait();
 					<div class="container">
 						<div class="col">
 							<code class="code-100pc"><pre>
-std::vector<std::function, sycl::queue> queues_tasks;
+std::vector<std::pair<sycl::queue, std::function>> queues_tasks;
 for (auto [Q, task]: queues_tasks)
   Q.submit(task);
 
@@ -181,9 +181,9 @@ for (auto [Q, _]: queues_tasks)
 							</code></pre>
 						</div>
 						<div class="col" data-markdown>
-							* Manual Scheduling (tasks need mapped to queues)
+							* Manual Scheduling (tasks need to be mapped to queues)
+							* Allow concurency between queues
 							* Painful to extract full concurrency
-							* When correcly done, acheive concurency between queues
 						</div>
 					</div>
 				</section>
@@ -193,7 +193,7 @@ for (auto [Q, _]: queues_tasks)
 						## Note on buffer/accessors
 						* Best of Both worlds
 						* Buffer / Accessors automatically handle dependencies for you (no need for `depends_on`)
-						* Hence, using in or out of order queues with buffer/accessors will not change the semantics of your program!
+						* Hence, using in or out-of-order queues with buffer/accessors will not change the semantics of your program!
 						* Can use out-of-order without any drawbacks.
 					</div>
 				</section>
@@ -212,7 +212,7 @@ for (auto [Q, _]: queues_tasks)
 						Code_Exercises/In_Order_Queue/source_queue_benchmarking.cpp
 					</div>
 					<div class="container" data-markdown>
-						- Transform serial In-order execution to possible concurrent execution (using out-of-queue or multiple in-order queues)
+						- Transform the serial in-order scheduling to allow concurrent execution (using an out-of-order queue or multiple in-order queues)
 						- Mesure speedup
 					</div>
 				</section>
