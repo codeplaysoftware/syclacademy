@@ -45,7 +45,7 @@ template <typename T> auto bench(sycl::queue q, int numKernels) {
   return std::chrono::duration_cast<std::chrono::microseconds>(e - s).count();
 }
 
-// Run busy_sleep numKernels times on a multiple in order queuesusing
+// Run busy_sleep numKernels times on multiple in order queues using
 // single_task
 template <typename T>
 auto bench_multiple_queues(std::vector<sycl::queue> qs,
