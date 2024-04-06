@@ -92,6 +92,7 @@ may not match completely.
 | 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes |
 | 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes |
 | 20 | Matrix Transpose | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
+| 21 | More SYCL Features | [slides][lesson-21-slides] | [exercise][lesson-21-exercise] | [source][lesson-21-source] | [solution][lesson-21-solution] | Yes | Yes |
 
 
 ## Building the Exercises
@@ -403,8 +404,8 @@ cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_S
 
 [lesson-11-slides]: ./Lesson_Materials/In_Order_Queue/
 [lesson-11-exercise]: ./Code_Exercises/In_Order_Queue/README.md
-[lesson-11-source]:   ./Code_Exercises/In_Order_Queue/source.cpp
-[lesson-11-solution]: ./Code_Exercises/In_Order_Queue/solution.cpp
+[lesson-11-source]:   ./Code_Exercises/In_Order_Queue/source_vector_add.cpp
+[lesson-11-solution]: ./Code_Exercises/In_Order_Queue/solution_vector_add.cpp
 
 [lesson-12-slides]: ./Lesson_Materials/Advanced_Data_Flow/
 [lesson-12-exercise]: ./Code_Exercises/Advanced_Data_Flow/README.md
@@ -450,3 +451,8 @@ cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_S
 [lesson-20-exercise]: ./Code_Exercises/Matrix_Transpose/README.md
 [lesson-20-source]:   ./Code_Exercises/Matrix_Transpose/source.cpp
 [lesson-20-solution]: ./Code_Exercises/Matrix_Transpose/solution.cpp
+
+[lesson-21-slides]: ./Lesson_Materials/More_SYCL_Features/
+[lesson-21-exercise]: ./Code_Exercises/More_SYCL_Features/README.md
+[lesson-21-source]:   ./Code_Exercises/More_SYCL_Features/source.cpp
+[lesson-21-solution]: ./Code_Exercises/More_SYCL_Features/solution.cpp
