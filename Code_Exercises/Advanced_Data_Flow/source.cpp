@@ -17,7 +17,7 @@
  * auto buf = sycl::buffer{ptr, sycl::range{n}};
  *
  * // Declare a buffer using host ptr
- * auto buf = sycl::buffer{ptr, sycl::range{n}, 
+ * auto buf = sycl::buffer{ptr, sycl::range{n},
  *                 {sycl::property::buffer::use_host_ptr{}}};
  *
  * // Declare a buffer relating to no host memory

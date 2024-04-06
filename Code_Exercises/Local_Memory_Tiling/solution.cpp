@@ -92,13 +92,13 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
                     auto globalGroupOffset = groupId * localRange;
 
                     /*
-                     * Each work group will need to read a tile of size 
-                     * (localRange[0] + halo * 2, localRange[1] + halo * 2) in order to write a 
-                     * tile of size (localRange[0], localRange[1]). Since the size of the tile 
-                     * we need to read is larger than the workgroup size (localRange), we must 
-                     * do multiple loads per work item. The iterations of the for loop work 
+                     * Each work group will need to read a tile of size
+                     * (localRange[0] + halo * 2, localRange[1] + halo * 2) in order to write a
+                     * tile of size (localRange[0], localRange[1]). Since the size of the tile
+                     * we need to read is larger than the workgroup size (localRange), we must
+                     * do multiple loads per work item. The iterations of the for loop work
                      * are as follows:
-                     * 
+                     *
                      *            <- localRange[0] + halo *2 ->
                      *           +------------------------------+  ^
                      *           |+-----------------++---------+|  |

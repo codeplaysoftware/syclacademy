@@ -22,14 +22,10 @@ class vector_add_second;
 // allowing computation to be split across said devices.
 std::vector<sycl::device> get_two_devices() {
   auto devs = sycl::device::get_devices();
-  if (devs.size() == 0) throw "No devices available";
+  if (devs.size() == 0)
+    throw "No devices available";
   if (devs.size() == 1)
     return {devs[0], devs[0]};
-  
-  // Choose the first non-host devices
-  std::sort(devs.begin(), devs.end(), [](sycl::device &d1, sycl::device &d2) {
-      return !d1.is_host() && d2.is_host(); });
-  
   return {devs[0], devs[1]};
 }
 
