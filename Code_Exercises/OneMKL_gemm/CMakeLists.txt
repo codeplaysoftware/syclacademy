@@ -9,7 +9,9 @@
 ]]
 
 # Exercise exercise_11_onemkl_dgemm
-add_sycl_executable(OneMKL_usm_gemm source)
+add_sycl_executable(OneMKL_gemm source_onemkl_usm_gemm)
+add_sycl_executable(OneMKL_gemm source_onemkl_buffer_gemm)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(OneMKL_usm_gemm solution)
+  add_sycl_executable(OneMKL_gemm solution_onemkl_usm_gemm)
+  add_sycl_executable(OneMKL_gemm solution_onemkl_buffer_gemm)
 endif()

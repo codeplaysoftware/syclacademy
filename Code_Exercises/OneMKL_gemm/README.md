@@ -6,8 +6,8 @@
 In this exercise you will learn how to make use of APIs from oneMKL Interfaces library.
 More specifically to perform a matrix multiplication using GEMM
 
-The source code provides template to perform GEMM using oneMKL's USM API:
-Please refer to the API here: https://spec.oneapi.io/versions/latest/elements/oneMKL/source/domains/blas/gemm.html#gemm-usm-version
+The source code provides template to perform GEMM using oneMKL's USM/buffer API:
+Please refer to the API here: https://spec.oneapi.io/versions/latest/elements/oneMKL/source/domains/blas/gemm.html
 
 ---
 ## Exercise `OneMKL_usm_gemm/source.cpp`
