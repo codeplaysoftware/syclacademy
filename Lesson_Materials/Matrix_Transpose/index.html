@@ -60,8 +60,7 @@
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
-					* Learn about coalesced global memory access
-					* Learn about the performance impact
+					* Learn about coalesced global memory access for performance
 					* Learn about local memory and how to use it.
                 </section>
 				<!--Slide 3-->
@@ -185,10 +184,8 @@
 						![SYCL](./local_memory.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
-						* The solution is local memory.
-						* Local memory is generally on-chip and doesn't have a cache as it's managed manually so is much lower latency.
-						* Local memory is a smaller dedicated region of memory per work-group.
-						* Local memory can be used to cache, allowing us to read from global memory just once and then read from local memory instead, often referred to as a scratchpad.
+						* Local memory is a "manually managed cache", often referred to as scratchpad.
+						* Local memory is a dedicated on-chip cache, shared per work-group.
 						* Local memory can be accessed in an uncoalesced fashion without much performance degradation.
 					</div>
 				</section>
@@ -203,7 +200,7 @@
 						</div>
 						<div class="col" data-markdown>
 							* The iteration space of the kernel function is mapped across multiple work-groups.
-							* Each work-group has its own region of local memory.
+							* Each work-group has its own allocation of local memory.
 							* You want to split the input image data into tiles, one for each work-group.
 						</div>
 					</div>
@@ -219,7 +216,7 @@ auto scratchpad = sycl::local_accessor&lt;int, dims&gt;(sycl::range{workGroupSiz
 						</code></pre>
 					</div>
 					<div class="container" data-markdown>
-						* Local memory is allocated via an `accessor` with the `access::target::local` access target.
+						* Local memory is allocated via a `local_accessor`.
 						* Unlike regular `accessor`s they are not created with a `buffer`, they allocate memory per work-group for the duration of the kernel function.
 						* The `range` provided is the number of elements of the specified type to allocate per work-group.
 					</div>
@@ -244,7 +241,7 @@ auto scratchpad = sycl::local_accessor&lt;int, dims&gt;(sycl::range{workGroupSiz
 							![SYCL](./barrier_1.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
-							* Remember that work-items are not guaranteed to execute all at the same time (in parallel).
+							* Remember that work-items within a workgroup are not guaranteed to execute in lockstep.
 						</div>
 					</div>
 				</section>
