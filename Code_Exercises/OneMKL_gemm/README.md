@@ -13,7 +13,7 @@ Please refer to the API here: https://spec.oneapi.io/versions/latest/elements/on
 ## Exercise `OneMKL_usm_gemm/source.cpp`
 
 The source code invloves matrix array initialization on host and generate reference results on the host.
-`source.cpp` has templates with TODOs to complete the exercise
+`source_*.cpp` has templates with TODOs to complete the exercise
 
 ## Build and execution hints
 
