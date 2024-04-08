@@ -2,15 +2,17 @@
 
 ## Polaris
 
+### Build with DPC++
 ```
-# Load module
-module load oneapi/upstream cmake/3.23.2
-# Compile an example
-clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda SOURCE.cpp
-qsub -I -l select=1,walltime=0:60:00,filesystems=home:grand -A XXX -q YYY
+$ module load oneapi/release/2024.0 cmake
+$ cmake .. -DSYCL_ACADEMY_USE_DPCPP=ON  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_CXX_COMPILER=$(which icpx) -DSYCL_TRIPLE=nvidia_gpu_sm_80
 ```
 
-
+### Build with AdaptiveCpp
+```
+$ MODULEPATH=$MODULEPATH:/home/aalpay/modules module load AdaptiveCpp
+$ cmake .. -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DSYCL_ACADEMY_INSTALL_ROOT=/home/aalpay/local/
+```
 
 # SYCL Academy
 
