@@ -12,4 +12,7 @@
 add_sycl_executable(More_SYCL_Features reduce_naive)
 add_sycl_executable(More_SYCL_Features reduce_atomic)
 add_sycl_executable(More_SYCL_Features reduce_group_algorithms)
-add_sycl_executable(More_SYCL_Features reduce_sycl_reduction)
+# SYCL reductions don't have full support in AdaptiveCpp
+if (NOT SYCL_ACADEMY_USE_ADAPTIVECPP)
+  add_sycl_executable(More_SYCL_Features reduce_sycl_reduction)
+endif()
