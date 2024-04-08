@@ -1,3 +1,17 @@
+# IWOCL 2024 Instructions
+
+## Polaris
+
+```
+# Load module
+module load oneapi/upstream
+# Compile a example
+clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda SOURCE.cpp
+qsub -I -l select=1,walltime=0:60:00,filesystems=home:grand -A XXX -q YYY
+```
+
+
+
 # SYCL Academy
 
 ![SYCL Academy](sycl_academy_black.png#gh-light-mode-only "SYCL Academy")
