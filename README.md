@@ -1,3 +1,19 @@
+# IWOCL 2024 Instructions
+
+## Polaris
+
+### Build with DPC++
+```
+$ module load oneapi/release/2024.0 cmake
+$ cmake .. -DSYCL_ACADEMY_USE_DPCPP=ON  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_CXX_COMPILER=$(which icpx) -DSYCL_TRIPLE=nvidia_gpu_sm_80
+```
+
+### Build with AdaptiveCpp
+```
+$ MODULEPATH=$MODULEPATH:/home/aalpay/modules module load AdaptiveCpp
+$ cmake .. -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DSYCL_ACADEMY_INSTALL_ROOT=/home/aalpay/local/
+```
+
 # SYCL Academy
 
 ![SYCL Academy](sycl_academy_black.png#gh-light-mode-only "SYCL Academy")
