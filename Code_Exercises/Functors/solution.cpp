@@ -57,10 +57,11 @@ public:
  * @param dir The direction of the convolution operation (ROW or COL)
  */  
   ImageConvolutionFunctor<dataT>(sycl::handler& cgh, sycl::buffer<dataT, 2>& in,
-      sycl::buffer<dataT, 2>& out, sycl::buffer<dataT, 1>& filter,  const Direction& dir) : dir_(dir) {
-    inputAcc_ = in.template get_access<sycl::access::mode::read>(cgh);
-    outputAcc_ = out.template get_access<sycl::access::mode::write>(cgh);
-    filterAcc_ = filter.template get_access<sycl::access::mode::read>(cgh);
+      sycl::buffer<dataT, 2>& out, sycl::buffer<dataT, 1>& filter,  const Direction& dir) : 
+      inputAcc_{in, cgh, sycl::read_only},
+      outputAcc_{out, cgh, sycl::write_only},
+      filterAcc_{filterType, cgh, sycl::write_only},
+      dir_(dir) {
     filterWidth_ = filterAcc_.size();
     halo_ = filterWidth_ / 2;
     }
