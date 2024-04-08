@@ -379,7 +379,7 @@ gpuQueue.submit([&](handler &cgh){
   sycl::accessor inA{bufA, cgh, sycl::read_only};
   sycl::accessor inB{bufB, cgh, sycl::read_only};
   sycl::accessor out{bufO, cgh, sycl::write_only};
-  cgh.parallel_for&ltadd&gt(rng, [=](id&lt3&gt i){
+  cgh.parallel_for&ltadd&gt(nd_rng, [=](nd_item&lt3&gt i){
     <mark>auto ptrA = inA.get_pointer();</mark>
     <mark>auto ptrB = inB.get_pointer();</mark>
     <mark>auto ptrO = out.get_pointer();</mark>
