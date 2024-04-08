@@ -73,7 +73,7 @@
 			    (2) oneAPI's oneMKL Interfaces Project
 			    (3) Intel(R) oneAPI's oneMKL Product
 			    https://github.com/oneapi-src/oneMKL?tab=readme-ov-file#onemkl
-			  </section>			  
+			  </section>
 			  <!--Slide 7-->
 			  <section>
 			    <div class="hbox" data-markdown>
@@ -130,6 +130,15 @@ oneapi::mkl::blas::column_major::gemm(gpu_selector,
 				* `$> clang++ -fsycl app.o –L$ONEMKL/lib –lonemkl_blas_mklcpu –lonemkl_blas_cublas`
 			      </div>
 			    </div>
+			  </section>
+			  <!--Slide 3-->
+			  <section class="hbox" data-markdown>
+			    ## Exercise
+			    * Objectives: Learn to use oneMKL GEMM buffer, USM APIs
+			    * What is provided:
+			    ** Boiler plate-code provided (a) to perform GEMM on CPU, (b) Helper function to verify results from oneMKL APIs and CPU
+			    ** Please complete the TODO tasks marked in the `source_*.cpp`.
+			    ** Refer to the solutions at `solution_*.cpp`
 			  </section>
 			</div>
 		</div>

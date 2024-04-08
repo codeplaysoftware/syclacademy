@@ -35,10 +35,6 @@ function( add_sycl_executable_dpcpp prefix source )
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/stb")
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/Utilities/include")
   target_link_libraries(${TARGET_NAME} PUBLIC Catch2::Catch2)
-
-  if (${prefix} STREQUAL OneMKL_gemm)
-    target_link_libraries(${TARGET_NAME} PUBLIC -L$ENV{MKLROOT} -lonemkl)
-  endif()
 endfunction()
 
 function( add_sycl_executable prefix source )
