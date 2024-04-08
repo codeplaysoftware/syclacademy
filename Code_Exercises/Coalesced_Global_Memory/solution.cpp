@@ -30,7 +30,7 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
       "../Images/dogs.png";
   const char* outputImageFile =
       "../Images/blurred_dogs.png";
-  
+
   auto inputImage = util::read_image(inputImageFile, halo);
 
   auto outputImage = util::allocate_image(

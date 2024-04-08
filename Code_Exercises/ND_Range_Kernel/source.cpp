@@ -14,7 +14,7 @@
  * auto q = sycl::queue{};
  *
  * // Construct an in-order queue
- * auto q = sycl::queue{sycl::default_selector_v, 
+ * auto q = sycl::queue{sycl::default_selector_v,
  *        {sycl::property::queue::in_order{}}};
  *
  * // Declare a buffer pointing to ptr
@@ -45,11 +45,11 @@
  *          auto no_init_acc = sycl::accessor{buf, cgh, sycl::no_init};
  * //    2. Enqueue a parallel for:
  * //             i: With range:
- *                    cgh.parallel_for<class mykernel>(sycl::range{n}, 
+ *                    cgh.parallel_for<class mykernel>(sycl::range{n},
  *                    [=](sycl::id<1> i) { // Do something });
  * //             ii: With nd_range:
  *                    cgh.parallel_for<class mykernel>(sycl::nd_range{
- *                        globalRange, localRange}, [=](sycl::nd_item<1> i) { 
+ *                        globalRange, localRange}, [=](sycl::nd_item<1> i) {
  *                        // Do something
  *                      });
 */

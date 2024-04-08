@@ -6,7 +6,7 @@
 
  You should have received a copy of the license along with this
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
- 
+
  * SYCL Quick Reference
  * ~~~~~~~~~~~~~~~~~~~~
  *
@@ -35,8 +35,8 @@
  *      // Some kernel code
  *      });
  * }).wait();
- *    
- * // Construct an accessor for buf 
+ *
+ * // Construct an accessor for buf
  * // (must be done within command group)
  *     auto acc = sycl::accessor{buf, cgh};
  *     auto acc = sycl::accessor{buf, cgh, sycl::read_only};

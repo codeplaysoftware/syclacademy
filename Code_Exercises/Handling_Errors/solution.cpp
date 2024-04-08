@@ -34,6 +34,6 @@ TEST_CASE("handling_errors", "handling_errors_source") {
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
-  
+
   REQUIRE(true);
 }
