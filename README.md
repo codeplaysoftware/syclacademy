@@ -26,14 +26,20 @@
 
 ### Build with DPC++
 ```
-$ module load oneapi/release/2024.0 cmake
-$ cmake .. -DSYCL_ACADEMY_USE_DPCPP=ON  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_CXX_COMPILER=$(which icpx) -DSYCL_TRIPLE=nvidia_gpu_sm_80
+$ module load oneapi/upstream cmake/3.23.2
+$ cmake .. -DSYCL_ACADEMY_USE_DPCPP=ON  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_CXX_COMPILER=clang++ -DSYCL_TRIPLE=nvidia_gpu_sm_80
 ```
 
 ### Build with AdaptiveCpp
 ```
-$ MODULEPATH=$MODULEPATH:/home/aalpay/modules module load AdaptiveCpp
+$ module use /home/aalpay/modules
+$ module load AdaptiveCpp
 $ cmake .. -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DSYCL_ACADEMY_INSTALL_ROOT=/home/aalpay/local/
+```
+
+### Submit job
+```
+$ qsub -I -A alcf_training -q R1826904 -l select=1,walltime=0:60:00,filesystems=home:grand -l walltime=60:00 -I
 ```
 
 # SYCL Academy
