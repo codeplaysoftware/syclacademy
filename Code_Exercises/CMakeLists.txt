@@ -9,27 +9,28 @@
 ]]
 
 # CMake function to build ab AdaptiveCpp configuration and create executable binaries
+# from AdaptiveCpp libraries.
 function( add_sycl_executable_adaptivecpp prefix source )
   set(TARGET_NAME "${prefix}_${source}")
   add_executable("${TARGET_NAME}" "${source}.cpp")
-  add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp") 
-  
+  add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp")
+
   target_include_directories("${prefix}_${source}" PRIVATE
-    ${PROJECT_SOURCE_DIR}/Utilities/include 
+    ${PROJECT_SOURCE_DIR}/Utilities/include
     ${PROJECT_SOURCE_DIR}/External/stb)
-  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads) 
+  target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads)
   target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
-  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)  
+  set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 endfunction()
 
 # CMake function to build a DPC++ configuration and create executable binaries
-# from oneAPI libraries. 
+# from oneAPI libraries.
 function( add_sycl_executable_dpcpp prefix source )
   set(TARGET_NAME "${prefix}_${source}")
-      
+
   add_executable(${TARGET_NAME} "${source}.cpp")
   # This function is from IntelSYCL cmake module
-  add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp") 
+  add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp")
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/Catch2/single_include")
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/stb")
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/Utilities/include")
@@ -64,6 +65,7 @@ add_subdirectory(ND_Range_Kernel)
 add_subdirectory(Image_Convolution)
 add_subdirectory(Coalesced_Global_Memory)
 add_subdirectory(Vectors)
-add_subdirectory(Functors)
 add_subdirectory(Local_Memory_Tiling)
 add_subdirectory(Work_Group_Sizes)
+add_subdirectory(Matrix_Transpose)
+add_subdirectory(Functors)
