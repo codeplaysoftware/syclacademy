@@ -24,7 +24,7 @@
 
 ## Polaris
 
-### Build with DPC++
+### Build with upstream llvm (https://github.com/intel/llvm) 
 ```
 $ module load oneapi/upstream cmake/3.23.2
 $ cmake .. -DSYCL_ACADEMY_USE_DPCPP=ON  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_CXX_COMPILER=clang++ -DSYCL_TRIPLE=nvidia_gpu_sm_80
