@@ -209,14 +209,16 @@ TEST_CASE("image_convolution_1D", "1D_solution")
           [&]()
           {
             myQueue.submit([&](sycl::handler &cgh) {
-              ImageConvolutionFunctor<sycl::float4>convolve(cgh, inBufVec, tempBufVec,
-                    filterBufVec, Direction::ROW);
+              ImageConvolutionFunctor<sycl::float4> convolve(cgh,
+                                    inBufVec, tempBufVec,
+                                    filterBufVec, Direction::ROW);
                cgh.parallel_for(ndRange, convolve);
             });
 
             myQueue.submit([&](sycl::handler &cgh) {
-              ImageConvolutionFunctor<sycl::float4>convolve(cgh, tempBufVec, outBufVec,
-                    filterBufVec, Direction::COL);
+              ImageConvolutionFunctor<sycl::float4> convolve(cgh,
+                                    tempBufVec, outBufVec,
+                                    filterBufVec, Direction::COL);
               cgh.parallel_for(ndRange, convolve);
             });
 
