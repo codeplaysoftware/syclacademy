@@ -38,7 +38,7 @@ template <typename T> auto bench(sycl::queue q, int numKernels) {
 
   auto s = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < numKernels; i++) {
-    q.single_task([=]() { out[i] = busy_sleep<T>(2E5, i); });
+    q.single_task([=] { out[i] = busy_sleep<T>(2E5, i); });
   }
   q.wait();
   auto e = std::chrono::high_resolution_clock::now();
@@ -56,7 +56,7 @@ auto bench_multiple_queues(std::vector<sycl::queue> qs,
   auto s = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < numKernelsPerQueue; i++) {
     for (auto q : qs) {
-      q.single_task([=]() { out[i] = busy_sleep<T>(1E5, i); });
+      q.single_task([=] { out[i] = busy_sleep<T>(1E5, i); });
     }
   }
   for (auto q : qs) {
