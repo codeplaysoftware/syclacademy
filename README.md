@@ -1,4 +1,26 @@
-# IWOCL 2024 Instructions
+# IWOCL 2024
+
+## Schedule
+
+| Section | Start Time |
+|---|----|
+| Intro | 9.15 |
+| SYCL Recap + Mapping Concepts | 9.30 |
+| Queues - In vs Out of Order | 10.00 |
+| Queues Exercise | 10.30 |
+| *Break* | 11.00 |
+| Multiple Devices | 11.30 |
+| More SYCL Features | 12.00 |
+| ND Range | 12.30 |
+| *Lunch* | 13.00 |
+| ND Range Exercise | 14.00 |
+| Matrix Transpose | 14.45 |
+| *Break* | 15.30 |
+| Matrix Transpose Exercise | 16.00 |
+| Libraries and Usage | 16.45 |
+| Libraries and Usage Exercise | 17.00 |
+| *Conclusion* | 17.30 |
+
 
 ## Polaris
 
