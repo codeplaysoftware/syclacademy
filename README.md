@@ -10,8 +10,8 @@
 | Queues Exercise | 10.30 |
 | *Break* | 11.00 |
 | Multiple Devices | 11.30 |
-| More SYCL Features | 12.00 |
-| ND Range | 12.30 |
+| ND Range | 12.00 |
+| More SYCL Features | 12.30 |
 | *Lunch* | 13.00 |
 | ND Range Exercise | 14.00 |
 | Matrix Transpose | 14.45 |
