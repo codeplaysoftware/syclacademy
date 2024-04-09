@@ -32,6 +32,7 @@ $ cmake .. -DSYCL_ACADEMY_USE_DPCPP=ON  -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMA
 
 ### Build with AdaptiveCpp
 ```
+$ module purge
 $ module use /home/aalpay/modules
 $ module load AdaptiveCpp
 $ cmake .. -DSYCL_ACADEMY_USE_ADAPTIVECPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DSYCL_ACADEMY_INSTALL_ROOT=/home/aalpay/local/
