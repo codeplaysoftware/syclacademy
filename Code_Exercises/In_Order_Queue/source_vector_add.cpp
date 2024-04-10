@@ -44,35 +44,21 @@
  *          auto write_acc = sycl::accessor{buf, cgh, sycl::write_only};
  *          auto no_init_acc = sycl::accessor{buf, cgh, sycl::no_init};
  * //    2. Enqueue a parallel for:
- * //             i: With range:
+ * //             i: Without dependent events
  *                    cgh.parallel_for<class mykernel>(sycl::range{n},
  *                    [=](sycl::id<1> i) { // Do something });
- * //             ii: With nd_range:
- *                    cgh.parallel_for<class mykernel>(sycl::nd_range{
- *                        globalRange, localRange}, [=](sycl::nd_item<1> i) {
+ * //             ii: With dependent events
+ *                    cgh.parallel_for<class mykernel>(sycl::range{n},
+ *                    {event1, event2}, [=](sycl::id<1> i) {
  *                        // Do something
  *                      });
+
 */
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
-  constexpr size_t dataSize = 1024;
-
-  int a[dataSize], b[dataSize], r[dataSize];
-  for (int i = 0; i < dataSize; ++i) {
-    a[i] = i;
-    b[i] = i;
-    r[i] = 0;
-  }
-
-  // Task: parallelise the vector add kernel using nd_range
-  for (int i = 0; i < dataSize; ++i) {
-    r[i] = a[i] + b[i];
-  }
-
-  for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
-  }
+TEST_CASE("in_order_queue", "in_order_queue_source") {
+  // Use the Exercise 10 solution to start
+  REQUIRE(true);
 }

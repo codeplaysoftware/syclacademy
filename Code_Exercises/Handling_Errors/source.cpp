@@ -16,7 +16,7 @@
 TEST_CASE("handling_errors", "handling_errors_source") {
 
   // Task: catch synchronous and asynchronous exceptions
-  
+
   auto defaultQueue = sycl::queue{};
 
   auto buf = sycl::buffer<int>(sycl::range{1});

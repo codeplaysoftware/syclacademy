@@ -13,10 +13,6 @@
  * // Default construct a queue
  * auto q = sycl::queue{};
  *
- * // Construct an in-order queue
- * auto q = sycl::queue{sycl::default_selector_v,
- *        {sycl::property::queue::in_order{}}};
- *
  * // Declare a buffer pointing to ptr
  * auto buf = sycl::buffer{ptr, sycl::range{n}};
  *
@@ -44,35 +40,55 @@
  *          auto write_acc = sycl::accessor{buf, cgh, sycl::write_only};
  *          auto no_init_acc = sycl::accessor{buf, cgh, sycl::no_init};
  * //    2. Enqueue a parallel for:
- * //             i: With range:
+ * //             i: Without dependent events
  *                    cgh.parallel_for<class mykernel>(sycl::range{n},
  *                    [=](sycl::id<1> i) { // Do something });
- * //             ii: With nd_range:
- *                    cgh.parallel_for<class mykernel>(sycl::nd_range{
- *                        globalRange, localRange}, [=](sycl::nd_item<1> i) {
+ * //             ii: With dependent events
+ *                    cgh.parallel_for<class mykernel>(sycl::range{n},
+ *                    {event1, event2}, [=](sycl::id<1> i) {
  *                        // Do something
  *                      });
+ *
 */
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
+TEST_CASE("managing_dependencies", "managing_dependencies_source") {
   constexpr size_t dataSize = 1024;
 
-  int a[dataSize], b[dataSize], r[dataSize];
+  int inA[dataSize], inB[dataSize], inC[dataSize], out[dataSize];
   for (int i = 0; i < dataSize; ++i) {
-    a[i] = i;
-    b[i] = i;
-    r[i] = 0;
+    inA[i] = static_cast<float>(i);
+    inB[i] = static_cast<float>(i);
+    inC[i] = static_cast<float>(i);
+    out[i] = 0.0f;
   }
 
-  // Task: parallelise the vector add kernel using nd_range
+  // Task: Run these kernels on the SYCL device, respecting the dependencies
+  // as shown in the README
+
+  // Kernel A
   for (int i = 0; i < dataSize; ++i) {
-    r[i] = a[i] + b[i];
+    inA[i] = inA[i] * 2.0f;
+  }
+
+  // Kernel B
+  for (int i = 0; i < dataSize; ++i) {
+    inB[i] += inA[i];
+  }
+
+  // Kernel C
+  for (int i = 0; i < dataSize; ++i) {
+    inC[i] -= inA[i];
+  }
+
+  // Kernel D
+  for (int i = 0; i < dataSize; ++i) {
+    out[i] = inB[i] + inC[i];
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    REQUIRE(out[i] == i * 2.0f);
   }
 }

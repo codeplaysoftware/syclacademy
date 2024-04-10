@@ -7,6 +7,16 @@ In this exercise you will learn how to create a fixed data flow using an
 in-order `queue`.
 
 ---
+## Exercise `queue_benchmarking`
+
+Your old coworker is lazy, and has enqueued all the kernels in the same in-order queue.
+Performance is poor as kernels cannot execute concurrently. Your goal is to improve it:
+
+- Using one out-of-order queue
+- Using multiple in-order queues
+
+
+## Exercise `vector_add`
 
 ### 1.) In order queue with buffer/accessor model
 

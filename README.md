@@ -88,10 +88,11 @@ may not match completely.
 | 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
 | 15 | Image Convolution | [slides][lesson-15-slides] | [exercise][lesson-15-exercise] |  | [solution][lesson-15-solution] | Yes | Yes |
 | 16 | Coalesced Global Memory | [slides][lesson-16-slides] | [exercise][lesson-16-exercise] | [source][lesson-16-source] | [solution][lesson-16-solution] | Yes | Yes |
-| 17 | Vectorization | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes |
+| 17 | Vectors | [slides][lesson-17-slides] | [exercise][lesson-17-exercise] | [source][lesson-17-source] | [solution][lesson-17-solution] | Yes | Yes |
 | 18 | Local Memory Tiling | [slides][lesson-18-slides] | [exercise][lesson-18-exercise] | [source][lesson-18-source] | [solution][lesson-18-solution] | Yes | Yes |
 | 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes |
 | 20 | Matrix Transpose | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
+| 21 | More SYCL Features | [slides][lesson-21-slides] | [exercise][lesson-21-exercise] | [source][lesson-21-source] | [solution][lesson-21-solution] | Yes | Yes |
 
 
 ## Building the Exercises
@@ -352,101 +353,106 @@ cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_S
 [video-playlist]: https://youtube.com/playlist?list=PLCssnq0MpRdM-IUAYtNSPYck6u3oz7OZQ
 
 [lesson-1-slides]: ./Lesson_Materials/What_is_SYCL/
-[lesson-1-exercise]: ./Code_Exercises/Compiling_with_SYCL/README.md
-[lesson-1-source]: ./Code_Exercises/Compiling_with_SYCL/source.cpp
-[lesson-1-solution]: ./Code_Exercises/Compiling_with_SYCL/solution.cpp
+[lesson-1-exercise]: ./Code_Exercises/What_is_SYCL/README.md
+[lesson-1-source]:   ./Code_Exercises/What_is_SYCL/source.cpp
+[lesson-1-solution]: ./Code_Exercises/What_is_SYCL/solution.cpp
 
-[lesson-2-slides]: ./Lesson_Materials/Enqueuing_a_Kernel/
-[lesson-2-exercise]: ./Code_Exercises/Hello_World/README.md
-[lesson-2-source]: ./Code_Exercises/Hello_World/source.cpp
-[lesson-2-solution]: ./Code_Exercises/Hello_World/solution.cpp
+[lesson-2-slides]: ./Lesson_Materials/Enqueueing_a_Kernel/
+[lesson-2-exercise]: ./Code_Exercises/Enqueueing_a_Kernel/README.md
+[lesson-2-source]:   ./Code_Exercises/Enqueueing_a_Kernel/source.cpp
+[lesson-2-solution]: ./Code_Exercises/Enqueueing_a_Kernel/solution.cpp
 
 [lesson-3-slides]: ./Lesson_Materials/Managing_Data/
-[lesson-3-exercise]: ./Code_Exercises/Scalar_Add/README.md
-[lesson-3-source]: ./Code_Exercises/Scalar_Add/source.cpp
-[lesson-3-solution]: ./Code_Exercises/Scalar_Add/solution.cpp
+[lesson-3-exercise]: ./Code_Exercises/Managing_Data/README.md
+[lesson-3-source]:   ./Code_Exercises/Managing_Data/source.cpp
+[lesson-3-solution]: ./Code_Exercises/Managing_Data/solution.cpp
 
 [lesson-4-slides]: ./Lesson_Materials/Handling_Errors/
 [lesson-4-exercise]: ./Code_Exercises/Handling_Errors/README.md
-[lesson-4-source]: ./Code_Exercises/Handling_Errors/source.cpp
+[lesson-4-source]:   ./Code_Exercises/Handling_Errors/source.cpp
 [lesson-4-solution]: ./Code_Exercises/Handling_Errors/solution.cpp
 
 [lesson-5-slides]: ./Lesson_Materials/Device_Discovery/
-[lesson-5-exercise]: ./Code_Exercises/Device_Selection/README.md
-[lesson-5-source]: ./Code_Exercises/Device_Selection/source.cpp
-[lesson-5-solution]: ./Code_Exercises/Device_Selection/solution.cpp
+[lesson-5-exercise]: ./Code_Exercises/Device_Discovery/README.md
+[lesson-5-source]:   ./Code_Exercises/Device_Discovery/source.cpp
+[lesson-5-solution]: ./Code_Exercises/Device_Discovery/solution.cpp
 
 [lesson-6-slides]: ./Lesson_Materials/Data_Parallelism/
-[lesson-6-exercise]: ./Code_Exercises/Vector_Add/README.md
-[lesson-6-source]: ./Code_Exercises/Vector_Add/source.cpp
-[lesson-6-solution]: ./Code_Exercises/Vector_Add/solution.cpp
+[lesson-6-exercise]: ./Code_Exercises/Data_Parallelism/README.md
+[lesson-6-source]:   ./Code_Exercises/Data_Parallelism/source.cpp
+[lesson-6-solution]: ./Code_Exercises/Data_Parallelism/solution.cpp
 
 [lesson-7-slides]: ./Lesson_Materials/Introduction_to_USM/
-[lesson-7-exercise]: ./Code_Exercises/USM_Selector/README.md
-[lesson-7-source]: ./Code_Exercises/USM_Selector/source.cpp
-[lesson-7-solution]: ./Code_Exercises/USM_Selector/solution.cpp
+[lesson-7-exercise]: ./Code_Exercises/Introduction_to_USM/README.md
+[lesson-7-source]:   ./Code_Exercises/Introduction_to_USM/source.cpp
+[lesson-7-solution]: ./Code_Exercises/Introduction_to_USM/solution.cpp
 
 [lesson-8-slides]: ./Lesson_Materials/Using_USM/
-[lesson-8-exercise]: ./Code_Exercises/USM_Vector_Add/README.md
-[lesson-8-source]: ./Code_Exercises/USM_Vector_Add/source.cpp
-[lesson-8-solution]: ./Code_Exercises/USM_Vector_Add/solution.cpp
+[lesson-8-exercise]: ./Code_Exercises/Using_USM/README.md
+[lesson-8-source]:   ./Code_Exercises/Using_USM/source.cpp
+[lesson-8-solution]: ./Code_Exercises/Using_USM/solution.cpp
 
 [lesson-9-slides]: ./Lesson_Materials/Asynchronous_Execution/
-[lesson-9-exercise]: ./Code_Exercises/Synchronization/README.md
-[lesson-9-source]: ./Code_Exercises/Synchronization/source.cpp
-[lesson-9-solution]: ./Code_Exercises/Synchronization/solution.cpp
+[lesson-9-exercise]: ./Code_Exercises/Asynchronous_Execution/README.md
+[lesson-9-source]:   ./Code_Exercises/Asynchronous_Execution/source.cpp
+[lesson-9-solution]: ./Code_Exercises/Asynchronous_Execution/solution.cpp
 
 [lesson-10-slides]: ./Lesson_Materials/Data_and_Dependencies/
-[lesson-10-exercise]: ./Code_Exercises/Managing_Dependencies/README.md
-[lesson-10-source]: ./Code_Exercises/Managing_Dependencies/source.cpp
-[lesson-10-solution]: ./Code_Exercises/Managing_Dependencies/solution.cpp
+[lesson-10-exercise]: ./Code_Exercises/Data_and_Dependencies/README.md
+[lesson-10-source]:   ./Code_Exercises/Data_and_Dependencies/source.cpp
+[lesson-10-solution]: ./Code_Exercises/Data_and_Dependencies/solution.cpp
 
 [lesson-11-slides]: ./Lesson_Materials/In_Order_Queue/
 [lesson-11-exercise]: ./Code_Exercises/In_Order_Queue/README.md
-[lesson-11-source]: ./Code_Exercises/In_Order_Queue/source.cpp
-[lesson-11-solution]: ./Code_Exercises/In_Order_Queue/solution.cpp
+[lesson-11-source]:   ./Code_Exercises/In_Order_Queue/source_vector_add.cpp
+[lesson-11-solution]: ./Code_Exercises/In_Order_Queue/solution_vector_add.cpp
 
 [lesson-12-slides]: ./Lesson_Materials/Advanced_Data_Flow/
-[lesson-12-exercise]: ./Code_Exercises/Temporary_Data/README.md
-[lesson-12-source]: ./Code_Exercises/Temporary_Data/source.cpp
-[lesson-12-solution]: ./Code_Exercises/Temporary_Data/solution.cpp
+[lesson-12-exercise]: ./Code_Exercises/Advanced_Data_Flow/README.md
+[lesson-12-source]:   ./Code_Exercises/Advanced_Data_Flow/source.cpp
+[lesson-12-solution]: ./Code_Exercises/Advanced_Data_Flow/solution.cpp
 
 [lesson-13-slides]: ./Lesson_Materials/Multiple_Devices/
-[lesson-13-exercise]: ./Code_Exercises/Load_Balancing/README.md
-[lesson-13-source]: ./Code_Exercises/Load_Balancing/source.cpp
-[lesson-13-solution]: ./Code_Exercises/Load_Balancing/solution.cpp
+[lesson-13-exercise]: ./Code_Exercises/Multiple_Devices/README.md
+[lesson-13-source]:   ./Code_Exercises/Multiple_Devices/source.cpp
+[lesson-13-solution]: ./Code_Exercises/Multiple_Devices/solution.cpp
 
 [lesson-14-slides]: ./Lesson_Materials/ND_Range_Kernel/
 [lesson-14-exercise]: ./Code_Exercises/ND_Range_Kernel/README.md
-[lesson-14-source]: ./Code_Exercises/ND_Range_Kernel/source.cpp
+[lesson-14-source]:   ./Code_Exercises/ND_Range_Kernel/source.cpp
 [lesson-14-solution]: ./Code_Exercises/ND_Range_Kernel/solution.cpp
 
 [lesson-15-slides]: ./Lesson_Materials/Image_Convolution/
 [lesson-15-exercise]: ./Code_Exercises/Image_Convolution/README.md
-[lesson-15-source]: ./Code_Exercises/Image_Convolution/source.cpp
+[lesson-15-source]:   ./Code_Exercises/Image_Convolution/source.cpp
 [lesson-15-solution]: ./Code_Exercises/Image_Convolution/reference.cpp
 
 [lesson-16-slides]: ./Lesson_Materials/Coalesced_Global_Memory/
 [lesson-16-exercise]: ./Code_Exercises/Coalesced_Global_Memory/README.md
-[lesson-16-source]: ./Code_Exercises/Coalesced_Global_Memory/source.cpp
+[lesson-16-source]:   ./Code_Exercises/Coalesced_Global_Memory/source.cpp
 [lesson-16-solution]: ./Code_Exercises/Coalesced_Global_Memory/solution.cpp
 
 [lesson-17-slides]: ./Lesson_Materials/Vectors/
 [lesson-17-exercise]: ./Code_Exercises/Vectors/README.md
-[lesson-17-source]: ./Code_Exercises/Vectors/source.cpp
+[lesson-17-source]:   ./Code_Exercises/Vectors/source.cpp
 [lesson-17-solution]: ./Code_Exercises/Vectors/solution.cpp
 
 [lesson-18-slides]: ./Lesson_Materials/Local_Memory_Tiling/
 [lesson-18-exercise]: ./Code_Exercises/Local_Memory_Tiling/README.md
-[lesson-18-source]: ./Code_Exercises/Local_Memory_Tiling/source.cpp
+[lesson-18-source]:   ./Code_Exercises/Local_Memory_Tiling/source.cpp
 [lesson-18-solution]: ./Code_Exercises/Local_Memory_Tiling/solution.cpp
 
 [lesson-19-slides]: ./Lesson_Materials/Work_Group_Sizes/
 [lesson-19-exercise]: ./Code_Exercises/Work_Group_Sizes/README.md
-[lesson-19-source]: ./Code_Exercises/Work_Group_Sizes/source.cpp
+[lesson-19-source]:   ./Code_Exercises/Work_Group_Sizes/source.cpp
 [lesson-19-solution]: ./Code_Exercises/Work_Group_Sizes/solution.cpp
 
 [lesson-20-slides]: ./Lesson_Materials/Matrix_Transpose/
 [lesson-20-exercise]: ./Code_Exercises/Matrix_Transpose/README.md
-[lesson-20-source]: ./Code_Exercises/Matrix_Transpose/source.cpp
+[lesson-20-source]:   ./Code_Exercises/Matrix_Transpose/source.cpp
 [lesson-20-solution]: ./Code_Exercises/Matrix_Transpose/solution.cpp
+
+[lesson-21-slides]: ./Lesson_Materials/More_SYCL_Features/
+[lesson-21-exercise]: ./Code_Exercises/More_SYCL_Features/README.md
+[lesson-21-source]:   ./Code_Exercises/More_SYCL_Features/source.cpp
+[lesson-21-solution]: ./Code_Exercises/More_SYCL_Features/solution.cpp

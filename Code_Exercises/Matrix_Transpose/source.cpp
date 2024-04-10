@@ -11,9 +11,7 @@
  ~~~~~~~~~~~~~~~~~~~~
 
  // Declare a local accessor
- sycl::accessor<T, dims,
-          sycl::access:mode::read_write, sycl::access::target_local>
-                local_acc{localRange, cgh};
+ sycl::local_accessor<T, dims> local_acc{localRange, cgh};
 */
 
 #include <iostream>

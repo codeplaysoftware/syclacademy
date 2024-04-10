@@ -8,10 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_11_in_order_queue
-add_sycl_executable(In_Order_Queue source_vector_add)
-add_sycl_executable(In_Order_Queue source_queue_benchmarking)
+# Exercise exercise_06_vector_add
+add_sycl_executable(Data_Parallelism source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(In_Order_Queue solution_vector_add)
-  add_sycl_executable(In_Order_Queue solution_queue_benchmarking)
+  add_sycl_executable(Data_Parallelism solution)
 endif()
