@@ -111,7 +111,7 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
           },
           100, "image convolution (coalesced)");
     }
-  } catch (sycl::exception e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
