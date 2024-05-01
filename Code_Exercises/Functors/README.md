@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 20: Functors
+## Exercise 22: Functors
 ---
 
 In this exercise you will learn how to use `functors` instead of lambda
