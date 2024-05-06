@@ -304,6 +304,91 @@ auto gpuDevice = device(gpu_selector_v);
 				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
+						#### Accessing Data With Accessors
+					</div>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
+buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
+buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+
+gpuQueue.submit([&](handler &cgh){
+  sycl::accessor inA{bufA, cgh, sycl::read_only};
+  sycl::accessor inB{bufB, cgh, sycl::read_only};
+  sycl::accessor out{bufO, cgh, sycl::write_only};
+  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
+    [=](id&lt1&gt i){ 
+    <mark>out[i] = inA[i] + inB[i];</mark>
+  });
+});
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+							* Here we access the data of the `accessor` by
+							passing in the `id` passed to the SYCL kernel
+							function.
+						</div>
+					</div>
+				</section>
+				<!--Slide 20-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### USM: Malloc_device
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void* malloc_device(size_t numBytes, const queue& syclQueue, const property_list &propList = {});
+
+template &lt;typename T&gt;
+T* malloc_device(size_t count, const queue& syclQueue,  const property_list &propList = {});
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* A USM device allocation is performed by calling one of the `malloc_device` functions.
+						* Both of these functions allocate the specified region of memory on the `device` associated with the specified `queue`.
+						* The pointer returned is only accessible in a kernel function running on that `device`.
+						* Synchronous exception if the device does not have aspect::usm_device_allocations
+						* This is a blocking operation.
+					</div>
+				</section>
+				<!--Slide 22-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### USM: Free
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void free(void* ptr, queue& syclQueue);
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* In order to prevent memory leaks USM device allocations must be free by calling the `free` function.
+						* The `queue` must be the same as was used to allocate the memory.
+						* This is a blocking operation.
+					</div>
+				</section>
+				<!--Slide 23-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### USM: Memcpy
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vector<event> &depEvents);
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* Data can be copied to and from a USM device allocation by calling the `queue`'s `memcpy` member function.
+						* The source and destination can be either a host application pointer or a USM device allocation.
+						* This is an asynchronous operation enqueued to the `queue`.
+						* An `event` is returned which can be used to synchronize with the completion of copy operation.
+						* May depend on other events via `depEvents`
+					</div>
+				</section>
+				<!--Slide 24-->
+				<section>
+					<div class="hbox" data-markdown>
 						#### SYCL execution model
 					</div>
 					<div class="container">
@@ -319,7 +404,7 @@ auto gpuDevice = device(gpu_selector_v);
 
 					</div>
 				</section>
-				<!--Slide 20-->
+				<!--Slide 25-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -335,7 +420,7 @@ auto gpuDevice = device(gpu_selector_v);
 						</div>
 					</div>
 				</section>
-				<!--Slide 21-->
+				<!--Slide 26-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -351,7 +436,7 @@ auto gpuDevice = device(gpu_selector_v);
 						</div>
 					</div>
 				</section>
-				<!--Slide 22-->
+				<!--Slide 27-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -369,7 +454,7 @@ auto gpuDevice = device(gpu_selector_v);
 						</div>
 					</div>
 				</section>
-				<!--Slide 23-->
+				<!--Slide 28-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Expressing parallelism
@@ -410,53 +495,20 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						</div>
 					</div>
 				</section>
-				<!--Slide 24-->
+				<!--Slide 30-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Accessing Data With Accessors
+						#### SYCL Kernels
 					</div>
-					<div class="container">
-						<div class="col-left-3">
-							<code><pre>
-buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
-
-gpuQueue.submit([&](handler &cgh){
-  sycl::accessor inA{bufA, cgh, sycl::read_only};
-  sycl::accessor inB{bufB, cgh, sycl::read_only};
-  sycl::accessor out{bufO, cgh, sycl::write_only};
-  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-    [=](id&lt1&gt i){ 
-    <mark>out[i] = inA[i] + inB[i];</mark>
-  });
-});
-							</code></pre>
-						</div>
-						<div class="col-right-2" data-markdown>
-							* Here we access the data of the `accessor` by
-							passing in the `id` passed to the SYCL kernel
-							function.
-						</div>
+					<div class="container" data-markdown>
+						// add kernel lambda/function object description
+						// then add slides explaining the practical work and how to
+						// glue it all together from scratch
 					</div>
 				</section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				<!--TODO TODO TODO-->
-				<!--Slide 6-->
+				<!--Slide 29-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution example
@@ -465,7 +517,7 @@ gpuQueue.submit([&](handler &cgh){
 						![SYCL](../common-revealjs/images/image_convolution_example.png "SYCL")
 					</div>
 				</section>
-				<!--Slide 7-->
+				<!--Slide 26-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution data flow
@@ -475,8 +527,7 @@ gpuQueue.submit([&](handler &cgh){
 							![SYCL](../common-revealjs/images/image_convolution_data_flow.png "SYCL")
 						</div>
 						<div class="col" data-markdown>
-							* We have a single kernel function.
-							* It must read from the input image data and writes to the output image data.
+							* The kernel must read from the input image data and writes to the output image data.
 							* It must also read from the filter.
 							* The input image data and the filter don't need to be copied back to the host.
 							* The output image data can be uninitialized.
@@ -486,7 +537,7 @@ gpuQueue.submit([&](handler &cgh){
 				<!--Slide 8-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Implementation
+						#### Task
 					</div>
 					<div class="container" data-markdown>
 						* We provide a naive implementation of a SYCL application which implements the image convolution algorithm.
