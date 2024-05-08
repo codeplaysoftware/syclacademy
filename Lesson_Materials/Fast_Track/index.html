@@ -58,12 +58,14 @@
 					</div>
 				</section>
 				<!--Slide 2-->
-				<section class="hbox" data-markdown>
+				<section class="hbox">
+          <div  class="container" data-markdown>
 					## Learning Objectives
+          </div>
 					<div class="container" data-markdown>
 						* Quick SYCL introduction
-						* Understanding a one-page application
-          </data>
+						* Writing a one-page application
+          </div>
 				</section>
 				<!--Slide 3-->
 				<section>
@@ -501,14 +503,82 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						#### SYCL Kernels
 					</div>
 					<div class="container" data-markdown>
-						// add kernel lambda/function object description
+            * SYCL kernels (i.e. the device function the programmer wants
+              executed) are expressed either as C++ function objects or lambdas.
+            * Comparing with other GPU paradigms, kernel arguments are either
+              data members or lambda captures, respectively
+            * For function objects, the member function `operator()(sycl::id)`
+              is the compute function, which is equivalent to the lambda style
 						// then add slides explaining the practical work and how to
 						// glue it all together from scratch
 					</div>
 				</section>
+				<!--Slide 31-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Function object
+					</div>
+					<div class="container" data-markdown>
+            ```c++
+class MyKernel {
+  sycl::accessor<float> input_;
+  float* output_;
 
-				<!--TODO TODO TODO-->
-				<!--Slide 29-->
+  MyKernel(sycl::buffer<float> buf, float* output, sycl::handler& h)
+    : input{buf.get_access(h)}, output_{output} {}
+
+  // const is required
+  void operator()(sycl::item<1> i) const {
+    ; // computation here
+  }
+};
+            ```
+					</div>
+					<div class="container" data-markdown>
+             The members are accessible on the device inside the function call
+             operator.
+					</div>
+				</section>
+				<!--Slide 32-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Lambda function
+					</div>
+					<div class="container" data-markdown>
+            ```c++
+sycl::buffer<float, 1> buf = /* normal init */;
+float * output = sycl::malloc_device(/* params */);
+
+... queue submit as normal ...
+
+auto acc = buf.get_access(h);
+auto func = [=](sycl::item<1> i) {
+  acc[i] = someVal;
+  output[i.get_global_linear_id()] = someOtherVal;
+});
+handler.parallel_for(range, func);
+            ```
+					</div>
+					<div class="container" data-markdown>
+            The variables used implicitly are captured by value and are usable in
+            the kernel.
+					</div>
+				</section>
+				<!--Slide 33-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### SYCL Kernels
+					</div>
+					<div class="container" data-markdown>
+            * These forms are equivalent (as in normal C++) and which one to use
+              depends on preference and use case
+            * Each instance of the kernel has a uniquely valued `sycl::item`
+              describing its position in the iteration space as covered in
+              "SYCL execution model"
+            * Can be used to index into accessors, pointers etc.
+					</div>
+				</section>
+				<!--Slide 34-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution example
@@ -517,7 +587,7 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						![SYCL](../common-revealjs/images/image_convolution_example.png "SYCL")
 					</div>
 				</section>
-				<!--Slide 26-->
+				<!--Slide 35-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution data flow
@@ -534,19 +604,34 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						</div>
 					</div>
 				</section>
-				<!--Slide 8-->
+				<!--Slide 36-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Task
 					</div>
 					<div class="container" data-markdown>
-						* We provide a naive implementation of a SYCL application which implements the image convolution algorithm.
-						* This will be the basis for optimization in later lectures and exercises.
-						* The implementation uses the stb image library to allow us to visualize our results.
-						* The implementation also uses a benchmark function to allow us to measure the performance as we make optimizations.
+            * Write a small application to read the image data, blur it using
+              two passes, then return the data to the host
+            * Error checking isn't necessary but will help with bugs
+            * Solution available in `Code_Exercises/Functors/solution.cpp`
 					</div>
 				</section>
-				<!--Slide 9-->
+				<!--Slide 37-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Gaussian Blur
+					</div>
+					<div class="container" data-markdown>
+            * The blur is implementable in two passes: one vertical, one horizontal
+            * Each item in the iteration space would load a series of pixels to
+              the left and right  (or top and bottom) of its position in the
+              image
+            * Then, multiply with the corresponding element in the filter
+            * Then sum these intermediate results and store them to the output
+            * A dscrete convolution, in other words
+					</div>
+				</section>
+				<!--Slide 38-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Reference image
@@ -555,79 +640,68 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						![SYCL](../common-revealjs/images/dogs.png "SYCL")
 					</div>
 					<div class="container" data-markdown>
-						* We provide a reference image to use in the exercise.
-						* This is in Code_Exercises/Images
-						* This image is a 512x512 RGBA png.
-						* Feel free to use your own image but we recommend
-						keeping to this format.
+* We provide a reference image to use in the exercise.
+* This is in Code_Exercises/Images
+* This image is a 512x512 RGBA png.
+* Feel free to use your own image but we recommend keeping to this format.
+* The read and write functions can be found in `image_conv.h`.
 					</div>
 				</section>
-				<!--Slide 10-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Input/output image locations
-					</div>
-					<div class="container">
-						<code>
-							<pre>
-auto inputImageFile = "../Code_Exercises/Images/dogs.png";
-auto outputImageFile = ../Code_Exercises/Images/blurred_dogs.png";
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* The reference code and the solutions to the remaining
-						exercises use these strings to refernce the location of
-						the input and output image.
-						* Before compiling these you will have to update this to
-						point to the image in the development environment.
-					</div>
-				</section>
-				<!--Slide 11-->
+				<!--Slide 38-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Convolution filters
 					</div>
-					<div class="container">
-						<code>
-							<pre>
-auto filter = util::generate_filter(util::filter_type filterType, int width);
-						</code></pre>
-					</div>
 					<div class="container" data-markdown>
-						* The utility for generating the filter data takes a
-						`filter_type` enum which can be either `identity` or
-						`blur` and a width.
-						* Feel free to experiment with different variations.
-						* Note that the filter width should always be an odd
-						value.
+* `auto filter = util::generate_filter(util::filter_type filterType, int width);`
+* The utility for generating the filter data takes a `filter_type` enum which
+can be either `identity` or `blur` and a width.
+* Feel free to experiment with different variations.
+* Note that the filter width should always be an odd value.
+* The function can be found in `image_conv.h`
 					</div>
 				</section>
-				<!--Slide 12-->
+          <!--Slide 39-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Naive image convolution performance
+						#### Suggested skeleton
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](../common-revealjs/images/image_convolution_performance.png "SYCL")
+It is suggested that the code follow this structure:
+```c++
+class Convolution {
+  // Data members (input, output, filter)
+  // Constructor initialises members for device data
+  Convolution() {}
+  // Implementation of the blur operation
+  void operator()(sycl::item<2> i) {
+    foreach(element: filter)
+      load pixel
+      result += pixel * filter
+
+    store to output
+  }
+};
+
+int main() {
+  load image
+  create device data (buffer or USM)
+  create temporary buffer for first pass
+  create queue
+  submit horizontal pass
+  submit vertical pass
+  output data to file
+}
+```
 					</div>
 				</section>
-				<!--Slide 13-->
+        <!--Slide 40-->
 				<section>
 					<div class="hbox" data-markdown>
-						## Questions
-					</div>
-				</section>
-				<!--Slide 14-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Exercise
+						#### Practical Session
 					</div>
 					<div class="container" data-markdown>
-						Code_Exercises/Image_Convolution/reference
-					</div>
-					<div class="container" data-markdown>
-						Take a look at the naive image convolution code provided
-						and familiarize yourself with it.
+            If you have any questions, please ask the presenter for help
 					</div>
 				</section>
 			</div>
