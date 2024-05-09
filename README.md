@@ -52,9 +52,9 @@ support both academic and training style teaching environments.
 
 | Lesson | Title | Slides | Exercise | Source | Solution | DPC++ | AdaptiveCpp |
 |--------|-------|--------|----------|--------|----------|-------|---------|
-| 01 | What is SYCL | [slides][lesson-22-slides] | [exercise][lesson-6-exercise] | [source][lesson-6-source] | [solution][lesson-6-solution] | Yes | Yes |
-| 14 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
-| 20 | oneMKL GEMM | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
+| 01 | What is SYCL | [slides][lesson-1-slide] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes |
+| 02 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
+| 03 | oneMKL GEMM | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
 
 ## Working on the Exercises on Intel Developer Cloud
 
@@ -292,15 +292,10 @@ The CMake configuration can also be used to build the exercises, see the section
 
 [video-playlist]: https://youtube.com/playlist?list=PLCssnq0MpRdM-IUAYtNSPYck6u3oz7OZQ
 
-[lesson-1-slides]: ./Lesson_Materials/What_is_SYCL/
+[lesson-1-slides]: ./Lesson_Materials/Fast_Track/
 [lesson-1-exercise]: ./Code_Exercises/What_is_SYCL/README.md
 [lesson-1-source]:   ./Code_Exercises/What_is_SYCL/source.cpp
 [lesson-1-solution]: ./Code_Exercises/What_is_SYCL/solution.cpp
-
-[lesson-6-slides]: ./Lesson_Materials/What_is_SYCL
-[lesson-6-exercise]: ./Code_Exercises/What_is_SYCL/README.md
-[lesson-6-source]:   ./Code_Exercises/What_is_SYCL/source.cpp
-[lesson-6-solution]: ./Code_Exercises/What_is_SYCL/solution.cpp
 
 [lesson-14-slides]: ./Lesson_Materials/ND_Range_Kernel/
 [lesson-14-exercise]: ./Code_Exercises/ND_Range_Kernel/README.md
@@ -311,9 +306,3 @@ The CMake configuration can also be used to build the exercises, see the section
 [lesson-20-exercise]: ./Code_Exercises/OneMKL_gemm/README.md
 [lesson-20-source]:   ./Code_Exercises/OneMKL_gemm/source.cpp
 [lesson-20-solution]: ./Code_Exercises/OneMKL_gemm/solution.cpp
-
-[lesson-22-slides]: ./Lesson_Materials/Fast_Track/
-[lesson-22-exercise]: ./Code_Exercises/Functors/README.md
-[lesson-22-source]:   ./Code_Exercises/Functors/source.cpp
-[lesson-22-solution]: ./Code_Exercises/Functors/solution.cpp
-
