@@ -93,7 +93,7 @@ may not match completely.
 | 19 | Further Optimisations | [slides][lesson-19-slides] | [exercise][lesson-19-exercise] | [source][lesson-19-source] | [solution][lesson-19-solution] | Yes | Yes |
 | 20 | Matrix Transpose | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
 | 21 | More SYCL Features | [slides][lesson-21-slides] | [exercise][lesson-21-exercise] | [source][lesson-21-source] | [solution][lesson-21-solution] | Yes | Yes |
-| 22 | Functors | TODO: Make slides | [exercise][lesson-22-exercise] | [source][lesson-22-source] | [solution][lesson-22-solution] | Yes | Yes |
+| 22 | Functors | [slides][lesson-22-slides] | [exercise][lesson-22-exercise] | [source][lesson-22-source] | [solution][lesson-22-solution] | Yes | Yes |
 
 
 ## Building the Exercises
@@ -458,6 +458,7 @@ cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_S
 [lesson-21-source]:   ./Code_Exercises/More_SYCL_Features/source.cpp
 [lesson-21-solution]: ./Code_Exercises/More_SYCL_Features/solution.cpp
 
+[lesson-21-slides]: ./Lesson_Materials/Fast_Track/
 [lesson-22-exercise]: ./Code_Exercises/Functors/README.md
 [lesson-22-source]:   ./Code_Exercises/Functors/source.cpp
 [lesson-22-solution]: ./Code_Exercises/Functors/solution.cpp
