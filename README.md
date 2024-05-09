@@ -458,7 +458,7 @@ cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_S
 [lesson-21-source]:   ./Code_Exercises/More_SYCL_Features/source.cpp
 [lesson-21-solution]: ./Code_Exercises/More_SYCL_Features/solution.cpp
 
-[lesson-21-slides]: ./Lesson_Materials/Fast_Track/
+[lesson-22-slides]: ./Lesson_Materials/Fast_Track/
 [lesson-22-exercise]: ./Code_Exercises/Functors/README.md
 [lesson-22-source]:   ./Code_Exercises/Functors/source.cpp
 [lesson-22-solution]: ./Code_Exercises/Functors/solution.cpp
