@@ -54,7 +54,7 @@
 				<!--Slide 1-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
-						## Half-day Course
+						## A Quick Introduction to SYCL
 					</div>
 				</section>
 				<!--Slide 2-->
@@ -581,13 +581,25 @@ handler.parallel_for(range, func);
 				<!--Slide 34-->
 				<section>
 					<div class="hbox" data-markdown>
+						#### First Exercise
+					</div>
+					<div class="container" data-markdown>
+            * Use Data Parallelism and write a SYCL kernel
+            * The exercise README is in the "Code_Exercises/Data_Parallelism" folder
+            * Follow the guidelines in the README and comments in the source.cpp file
+	    * There is a solution file but only use it if you need to
+					</div>
+				</section>
+				<!--Slide 35-->
+				<section>
+					<div class="hbox" data-markdown>
 						#### Image convolution example
 					</div>
 					<div class="container" data-markdown>
 						![SYCL](../common-revealjs/images/image_convolution_example.png "SYCL")
 					</div>
 				</section>
-				<!--Slide 35-->
+				<!--Slide 36-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution data flow
@@ -602,18 +614,6 @@ handler.parallel_for(range, func);
 							* The input image data and the filter don't need to be copied back to the host.
 							* The output image data can be uninitialized.
 						</div>
-					</div>
-				</section>
-				<!--Slide 36-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Task
-					</div>
-					<div class="container" data-markdown>
-            * Write a small application to read the image data, blur it using
-              two passes, then return the data to the host
-            * Error checking isn't necessary but will help with bugs
-            * Solution available in `Code_Exercises/Functors/solution.cpp`
 					</div>
 				</section>
 				<!--Slide 37-->
@@ -634,6 +634,16 @@ handler.parallel_for(range, func);
 				<!--Slide 38-->
 				<section>
 					<div class="hbox" data-markdown>
+						#### Walkthrough
+					</div>
+					<div class="container" data-markdown>
+            * Explain a more complex example through image convolution
+            * Solution available in `Code_Exercises/Functors/solution.cpp`
+					</div>
+				</section>
+				<!--Slide 39-->
+				<section>
+					<div class="hbox" data-markdown>
 						#### Reference image
 					</div>
 					<div class="col" data-markdown>
@@ -647,7 +657,7 @@ handler.parallel_for(range, func);
 * The read and write functions can be found in `image_conv.h`.
 					</div>
 				</section>
-				<!--Slide 38-->
+				<!--Slide 40-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Convolution filters
@@ -659,49 +669,6 @@ can be either `identity` or `blur` and a width.
 * Feel free to experiment with different variations.
 * Note that the filter width should always be an odd value.
 * The function can be found in `image_conv.h`
-					</div>
-				</section>
-          <!--Slide 39-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Suggested skeleton
-					</div>
-					<div class="container" data-markdown>
-It is suggested that the code follow this structure:
-```c++
-class Convolution {
-  // Data members (input, output, filter)
-  // Constructor initialises members for device data
-  Convolution() {}
-  // Implementation of the blur operation
-  void operator()(sycl::item<2> i) {
-    foreach(element: filter)
-      load pixel
-      result += pixel * filter
-
-    store to output
-  }
-};
-
-int main() {
-  load image
-  create device data (buffer or USM)
-  create temporary buffer for first pass
-  create queue
-  submit horizontal pass
-  submit vertical pass
-  output data to file
-}
-```
-					</div>
-				</section>
-        <!--Slide 40-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Practical Session
-					</div>
-					<div class="container" data-markdown>
-            If you have any questions, please ask the presenter for help
 					</div>
 				</section>
 			</div>
