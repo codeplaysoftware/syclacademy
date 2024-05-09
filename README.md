@@ -297,10 +297,10 @@ The CMake configuration can also be used to build the exercises, see the section
 [lesson-1-source]:   ./Code_Exercises/What_is_SYCL/source.cpp
 [lesson-1-solution]: ./Code_Exercises/What_is_SYCL/solution.cpp
 
-[lesson-6-slides]: ./Lesson_Materials/Data_Parallelism/
-[lesson-6-exercise]: ./Code_Exercises/Data_Parallelism/README.md
-[lesson-6-source]:   ./Code_Exercises/Data_Parallelism/source.cpp
-[lesson-6-solution]: ./Code_Exercises/Data_Parallelism/solution.cpp
+[lesson-6-slides]: ./Lesson_Materials/What_is_SYCL
+[lesson-6-exercise]: ./Code_Exercises/What_is_SYCL/README.md
+[lesson-6-source]:   ./Code_Exercises/What_is_SYCL/source.cpp
+[lesson-6-solution]: ./Code_Exercises/What_is_SYCL/solution.cpp
 
 [lesson-14-slides]: ./Lesson_Materials/ND_Range_Kernel/
 [lesson-14-exercise]: ./Code_Exercises/ND_Range_Kernel/README.md
