@@ -14,7 +14,7 @@ so you can re-visit this after ISC to learn more about SYCL development.
 
 ## Build and execution hints
 
-For DPC++ in the DevCloud follow these [instructions](../../README.md#connect-to-intel-developer-cloud-via-jupyterlab).
+For DPC++ in the DevCloud follow these [instructions](../../README.md#working-on-the-exercises-on-intel-developer-cloud).
 
 For compiling with DPC++ outside the DevCloud follow these [instructions](../dpcpp.md).
 
