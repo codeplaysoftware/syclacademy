@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 14: ND Range Kernel
+## ND Range Kernel
 ---
 
 In this exercise you will learn how to enqueue ND range kernel functions.

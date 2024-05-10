@@ -1,4 +1,23 @@
-## Compiling with DPC++
+## Connect to Intel Developer Cloud via JupyterLab
+
+* Start by creating an [Intel Developer Cloud][intel-devcloud] account if you do not already have one and login in.
+* Go to [training](https://console.cloud.intel.com/training) and click on ```Launch JupyterLab´´´
+* In the ```Jupiter Notebook``` select *File->New->Terminal*
+
+## Building the Exercises with Intel oneAPI DPC++/C++ Compiler
+
+* Execute the following command to download SYCL Academy project (if not already done):
+```sh
+git clone --recursive --branch isc24 https://github.com/codeplaysoftware/syclacademy.git
+```
+* To create the code_exercises directory structure with the Makefiles:
+```sh
+cd syclacademy
+mkdir build
+cd build
+cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
+```
+
 
 From the syclacademy directory
 ```sh
@@ -14,20 +33,4 @@ Alternatively from a terminal at the command line:
 icpx -fsycl -o <exercise name>_source -I../External/Catch2/single_include ../Code_Exercises/<Exercise directory>/source.cpp
 ```
 
-In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,
-especially some features like longer walltime and multi-node computation is only available through the job queue.
-Please refer to the [guide][devcloud-job-submission].
 
-So wrap the binary into a script `job_submission`
-```sh
-#!/bin/bash
-./<exercise name>_source
-```
-and run:
-```sh
-qsub -l nodes=1:gpu:ppn=2 -d . job_submission
-```
-
-The stdout will be stored in ```job_submission.o<job id>``` and stderr in ```job_submission.e<job id>```.
-
-[devcloud-job-submission]: https://devcloud.intel.com/oneapi/documentation/job-submission/

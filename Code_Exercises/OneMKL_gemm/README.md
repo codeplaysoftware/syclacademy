@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 11: Use of oneMKL library
+## Use of oneMKL library
 ---
 
 In this exercise you will learn how to make use of APIs from oneMKL Interfaces library.
