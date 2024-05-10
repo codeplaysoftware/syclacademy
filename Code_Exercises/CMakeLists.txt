@@ -48,6 +48,7 @@ endfunction()
 
 
 
-add_subdirectory(What_is_SYCL)
+add_subdirectory(Introduction_to_SYCL)
 add_subdirectory(ND_Range_Kernel)
 add_subdirectory(OneMKL_gemm)
+add_subdirectory(Image_Convolution_Functors)
