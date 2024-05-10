@@ -16,12 +16,11 @@ learning about SYCL below are a list of useful resources:
 *  Read a description of SYCL on the [Khronos website SYCL page](https://www.khronos.org/sycl/).
 *  Go to the Khronos website to find [a list of SYCL resources](https://www.khronos.org/sycl/resources).
 *  Check out the [SYCL 2020 reference guide](https://www.khronos.org/registry/SYCL/).
-*  Browse SYCL news, blog posts, videos, projects and more on the [sycl.tech community website](https://sycl.tech/)
-*  Get a list of the [available SYCL implementations](https://sycl.tech/#get-sycl)
 
 ## How to use the Materials
 
 To use these materials, simply clone this repository, including the required submodules.
+
 **Make sure you clone the correct branch**
 
 ```
@@ -30,31 +29,26 @@ git clone --recursive --branch isc24 https://github.com/codeplaysoftware/syclaca
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
 in the sub-directory for each topic. To view them simply open the `index.html`
-file in your browser. Your browser will have a "Full Screen" mode that can be
-used to run the presentation, use the right and left cursors to move forward and
-backward in the presentation.
+file in your browser or open the PDF. 
 
 The exercises can be found in `Code_Exercises` in the sub-directory for each
-topic. Each exercise has a markdown document instructing what to do in the
+topic. Each exercise has a README document instructing what to do in the
 exercise, a source file to start with and a solution file to provide an
 example implementation to compare against.
 
 
 ## Lesson Curriculum
 
-The SYCL Academy curriculum is divided up into a number of short lessons
-consisting of slides for presenting the material and a more detailed write-up,
-each accompanied by a tutorial for getting hands on experience with the subject
-matter.
-
-Each of the lessons are designed to be self contained modules in order to
-support both academic and training style teaching environments.
+The tutors at ISC24 will let you know when to run through the exercises. Use the links 
+below to find the necessary files. At the command line just remember that the 
+"Code_Exercises" folder contains the exercises.
 
 | Lesson | Title | Slides | Exercise | Source | Solution | DPC++ | AdaptiveCpp |
 |--------|-------|--------|----------|--------|----------|-------|---------|
 | 01 | What is SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes |
 | 02 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
 | 03 | oneMKL GEMM | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
+| Walkthrough | Image Convolution | NA | [exercise][lesson-22-exercise] | [source][lesson-22-source] | [solution][lesson-22-solution] | Yes | Yes |
 
 ## Working on the Exercises on Intel Developer Cloud
 
@@ -306,3 +300,7 @@ The CMake configuration can also be used to build the exercises, see the section
 [lesson-20-exercise]: ./Code_Exercises/OneMKL_gemm/README.md
 [lesson-20-source]:   ./Code_Exercises/OneMKL_gemm/source.cpp
 [lesson-20-solution]: ./Code_Exercises/OneMKL_gemm/solution.cpp
+
+[lesson-22-exercise]: ./Code_Exercises/Functors/README.md
+[lesson-22-source]:   ./Code_Exercises/Functors/source.cpp
+[lesson-22-solution]: ./Code_Exercises/Functors/solution.cpp
