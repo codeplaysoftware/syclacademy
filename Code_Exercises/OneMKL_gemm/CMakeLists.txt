@@ -12,12 +12,12 @@
 add_sycl_executable(OneMKL_gemm source_onemkl_usm_gemm)
 add_sycl_executable(OneMKL_gemm source_onemkl_buffer_gemm)
 
-target_link_libraries(OneMKL_gemm_source_onemkl_usm_gemm PUBLIC -L$ENV{MKLROOT} -lonemkl)
-target_link_libraries(OneMKL_gemm_source_onemkl_buffer_gemm PUBLIC -L$ENV{MKLROOT} -lonemkl)
+target_link_libraries(OneMKL_gemm_source_onemkl_usm_gemm PUBLIC -qmkl)
+target_link_libraries(OneMKL_gemm_source_onemkl_buffer_gemm PUBLIC -qmkl)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
   add_sycl_executable(OneMKL_gemm solution_onemkl_usm_gemm)
   add_sycl_executable(OneMKL_gemm solution_onemkl_buffer_gemm)
 
-  target_link_libraries(OneMKL_gemm_solution_onemkl_usm_gemm PUBLIC -L$ENV{MKLROOT} -lonemkl)
-  target_link_libraries(OneMKL_gemm_solution_onemkl_buffer_gemm PUBLIC -L$ENV{MKLROOT} -lonemkl)
+  target_link_libraries(OneMKL_gemm_solution_onemkl_usm_gemm PUBLIC -qmkl)
+  target_link_libraries(OneMKL_gemm_solution_onemkl_buffer_gemm PUBLIC -qmkl)
 endif()

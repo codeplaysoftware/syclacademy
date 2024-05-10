@@ -1,6 +1,6 @@
-## Using DevCloud via Jupyter Notebooks:
+## Using Intel Developer Cloud via JupyterLab
 
-If you haven't done so already, follow this [guide](../README.md#connect-to-devcloud-via-jupyter-notebooks) to build the exercise directory structure.
+If you haven't done so already, follow this [guide](../README.md#connect-to-intel-developer-cloud-via-jupyterlab) to build the exercise directory structure.
 
 ## Compiling with DPC++
 
