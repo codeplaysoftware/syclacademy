@@ -64,7 +64,7 @@
 			    * Learn about how to use GEMM APIs from oneMKL with both USM and buffer memory models
 			  </section>
 			  <!--Slide 3-->
-			  <section class="hbox" data-markdown>
+			  <section class="container" data-markdown>
 			    ## Resources
 			    * oneMKL Interfaces: https://github.com/oneapi-src/oneMKL
 			    * oneMKL specification: https://spec.oneapi.io/versions/latest/elements/oneMKL/source/index.html#
@@ -74,7 +74,7 @@
 			    (3) Intel(R) oneAPI's oneMKL Product
 			    https://github.com/oneapi-src/oneMKL?tab=readme-ov-file#onemkl
 			  </section>
-			  <!--Slide 7-->
+			  <!--Slide 4-->
 			  <section>
 			    <div class="hbox" data-markdown>
 			      #### Run-time dispatching
@@ -89,8 +89,11 @@
 sycl::queue cpu_queue(sycl::cpu_selector_v);
 sycl::queue gpu_queue(sycl::gpu_selector_v);
 
-oneapi::mkl::blas::column_major::gemm(cpu_queue, transA, transB, m, ...);
-oneapi::mkl::blas::column_major::gemm(gpu_queue, transA, transB, m, ...);
+using namespace oneapi::mkl;
+blas::column_major::gemm(cpu_queue, 
+                         transA, transB, m, ...);
+blas::column_major::gemm(gpu_queue, 
+                         transA, transB, m, ...);
 				</code></pre>
 			      </div>
 			      <div class="col" data-markdown>
@@ -100,6 +103,7 @@ oneapi::mkl::blas::column_major::gemm(gpu_queue, transA, transB, m, ...);
 			      </div>
 			    </div>
 			  </section>
+			  <!--Slide 5-->
 			  <section>
 			    <div class="hbox" data-markdown>
 			      #### Compile-time dispatching
@@ -114,16 +118,17 @@ oneapi::mkl::blas::column_major::gemm(gpu_queue, transA, transB, m, ...);
 sycl::queue cpu_queue(sycl::cpu_selector_v);
 sycl::queue gpu_queue(sycl::gpu_selector_v);
 
-oneapi::mkl::backend_selector&ltoneapi::mkl::backend::mklcpu&gt cpu_selector(cpu_queue);
-oneapi::mkl::backend_selector&ltoneapi::mkl::backend::cublas&gt gpu_selector(gpu_queue);
+using namespace oneapi::mkl;
+backend_selector&ltbackend::mklcpu&gt cpu_selector(cpu_queue);
+backend_selector&ltbackend::cublas&gt gpu_selector(gpu_queue);
 
-oneapi::mkl::blas::column_major::gemm(cpu_selector,
-                                      transA, transB, m, ...);
-oneapi::mkl::blas::column_major::gemm(gpu_selector,
-                                      transA, transB, m, ...);
+blas::column_major::gemm(cpu_selector, 
+                         transA, transB, m, ...);
+blas::column_major::gemm(gpu_selector, 
+                         transA, transB, m, ...);
 				</code></pre>
 			      </div>
-			      <div class="col" data-markdown>
+			      <div class="container" data-markdown>
 				* Uses a templated backend selector APIs, where the template parameters specify the backends
 				* Application is linked with the required oneMKL backend wrapper libraries
 				* `$> clang++ -fsycl –I$ONEMKL/include app.cpp`
@@ -131,7 +136,7 @@ oneapi::mkl::blas::column_major::gemm(gpu_selector,
 			      </div>
 			    </div>
 			  </section>
-			  <!--Slide 3-->
+			  <!--Slide 6-->
 			  <section class="hbox" data-markdown>
 			    ## Exercise
 			    * Objectives: Learn to use oneMKL GEMM buffer, USM APIs
