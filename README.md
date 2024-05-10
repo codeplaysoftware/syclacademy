@@ -286,10 +286,10 @@ The CMake configuration can also be used to build the exercises, see the section
 
 [video-playlist]: https://youtube.com/playlist?list=PLCssnq0MpRdM-IUAYtNSPYck6u3oz7OZQ
 
-[lesson-1-slides]: ./Lesson_Materials/Fast_Track/
-[lesson-1-exercise]: ./Code_Exercises/What_is_SYCL/README.md
-[lesson-1-source]:   ./Code_Exercises/What_is_SYCL/source.cpp
-[lesson-1-solution]: ./Code_Exercises/What_is_SYCL/solution.cpp
+[lesson-1-slides]: ./Lesson_Materials/Introduction_to_SYCL/
+[lesson-1-exercise]: ./Code_Exercises/Introduction_to_SYCL/README.md
+[lesson-1-source]:   ./Code_Exercises/Introduction_to_SYCL/source.cpp
+[lesson-1-solution]: ./Code_Exercises/Introduction_to_SYCL/solution.cpp
 
 [lesson-14-slides]: ./Lesson_Materials/ND_Range_Kernel/
 [lesson-14-exercise]: ./Code_Exercises/ND_Range_Kernel/README.md
