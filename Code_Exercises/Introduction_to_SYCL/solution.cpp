@@ -6,40 +6,14 @@
 
  You should have received a copy of the license along with this
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
-
- * SYCL Quick Reference
- * ~~~~~~~~~~~~~~~~~~~~
- *
- * // Default construct a queue
- * auto q = sycl::queue{};
- *
- * // Declare a buffer pointing to ptr
- * auto buf = sycl::buffer{ptr, sycl::range{n}};
- *
- * // Submit work to the queue
- * q.submit([&](sycl::handler &cgh) {
- *   // COMMAND GROUP
- * });
- *
- * // Within the command group you can
- * //    1. Declare an accessor to a buffer
- *          auto read_write_acc = sycl::accessor{buf, cgh};
- *          auto read_acc = sycl::accessor{buf, cgh, sycl::read_only};
- *          auto write_acc = sycl::accessor{buf, cgh, sycl::write_only};
- *          auto no_init_acc = sycl::accessor{buf, cgh, sycl::no_init};
- * //    2. Enqueue a single task:
- *          cgh.single_task<class mykernel>([=]() {
- *              // Do something
- *          });
- * //    3. Enqueue a parallel for:
- *          cgh.parallel_for<class mykernel>(sycl::range{n}, [=](sycl::id<1> i) {
- *              // Do something
- *          });
- *
 */
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
+
+#include <sycl/sycl.hpp>
+
+class vector_add;
 
 TEST_CASE("vector_add", "vector_add_solution") {
   constexpr size_t dataSize = 1024;
@@ -51,9 +25,28 @@ TEST_CASE("vector_add", "vector_add_solution") {
     r[i] = 0.0f;
   }
 
-  // Task: Compute r[i] = a[i] + b[i] in parallel on the SYCL device
-  for (int i = 0; i < dataSize; ++i) {
-    r[i] = a[i] + b[i];
+  try {
+    auto defaultQueue = sycl::queue{};
+
+    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
+    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
+    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
+
+    defaultQueue
+        .submit([&](sycl::handler& cgh) {
+          sycl::accessor accA{bufA, cgh, sycl::read_only};
+          sycl::accessor accB{bufB, cgh, sycl::read_only};
+          sycl::accessor accR{bufR, cgh, sycl::write_only};
+
+          cgh.parallel_for<vector_add>(
+              sycl::range{dataSize},
+              [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
+        })
+        .wait();
+
+    defaultQueue.throw_asynchronous();
+  } catch (const sycl::exception& e) {
+    std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {

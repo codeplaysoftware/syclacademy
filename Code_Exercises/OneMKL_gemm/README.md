@@ -20,8 +20,8 @@ The source code invloves matrix array initialization on host and generate refere
 To run the example: ./OneMKL_usm_gemm_solution (or) ./OneMKL_usm_gemm_source
 To verify with CUBLAS debug info, `export CUBLAS_LOGINFO_DB=1` and `export CUBLAS_LOGDEST_DBG=stdout`
 
-For DevCloud follow these [instructions](../devcloud.md).
+For DPC++ in the DevCloud follow these [instructions](../../README.md#connect-to-intel-developer-cloud-via-jupyterlab).
 
-For DPC++: [instructions](../dpcpp.md).
+For compiling with DPC++ outside the DevCloud follow these [instructions](../dpcpp.md).
 
 For AdaptiveCpp: [instructions](../adaptivecpp.md).

@@ -41,8 +41,8 @@ method of synchronization and copy back.
 
 ## Build and execution hints
 
-For DevCloud follow these [instructions](../devcloud.md).
+For DPC++ in the DevCloud follow these [instructions](../../README.md#connect-to-intel-developer-cloud-via-jupyterlab).
 
-For DPC++: [instructions](../dpcpp.md).
+For compiling with DPC++ outside the DevCloud follow these [instructions](../dpcpp.md).
 
 For AdaptiveCpp: [instructions](../adaptivecpp.md).
