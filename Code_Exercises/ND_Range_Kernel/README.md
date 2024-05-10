@@ -41,7 +41,7 @@ method of synchronization and copy back.
 
 ## Build and execution hints
 
-For DevCloud via SSH follow these [instructions](../devcloud.md).
+For DevCloud follow these [instructions](../devcloud.md).
 
 For DPC++: [instructions](../dpcpp.md).
 

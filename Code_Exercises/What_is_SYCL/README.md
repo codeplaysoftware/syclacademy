@@ -37,7 +37,7 @@ the corresponding element of data that the accessor represents.
 
 #### Build And Execution Hints
 
-For DevCloud via SSH follow these [instructions](../devcloud.md).
+For DevCloud follow these [instructions](../devcloud.md).
 
 For DPC++: [instructions](../dpcpp.md).
 
