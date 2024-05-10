@@ -1,7 +1,3 @@
-## Using DevCloud via SSH:
-
-If you haven't done so already, follow this [guide](../README.md#connecting-to-devcloud-via-ssh) to build the exercise directory structure.
-
 ## Compiling with DPC++
 
 From the syclacademy directory
