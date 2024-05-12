@@ -108,37 +108,7 @@
               * Dependency management and scheduling
 					</div>
 				</section>
-				<!--Slide 6-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Image convolution sample application
-					</div>
-					<div class="container" data-markdown>
-						* The algorithm is **embarrassingly parallel**.
-						* Each work-item in the computation can be calculated entirely independently.
-						* The algorithm is computation heavy.
-						* A large number of operations are performed for each work-item in the computation, particularly when using large filters.
-						* The algorithm requires a large bandwidth.
-						* A lot of data must be passed through the GPU to process an image, particularly if the image is very high resolution.
-					</div>
-				</section>
-				<!--Slide 7-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Image convolution definition
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/image_convolution_definition.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
-							* A filter of a given size is applied as a stencil to the position of each pixel in the input image.
-							* Each pixel covered by the filter is then multiples with the corresponding element in the filter.
-							* The result of these multiplications is then summed to give the resulting output pixel.
-							* Here we have a 3x3 gaussian blur approximation as an example.
-						</div>
-					</div>
-				</section>
+
         <!--Slide 8-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -587,7 +557,40 @@ handler.parallel_for(range, func);
             * Use Data Parallelism and write a SYCL kernel
             * The exercise README is in the "Code_Exercises/Introduction_to_SYCL" folder
             * Follow the guidelines in the README and comments in the source.cpp file
-	    * There is a solution file but only use it if you need to
+              * There is a solution file but only use it if you need to
+
+
+					</div>
+				</section>
+								<!--Slide 6-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Image convolution sample application
+					</div>
+					<div class="container" data-markdown>
+						* The algorithm is **embarrassingly parallel**.
+						* Each work-item in the computation can be calculated entirely independently.
+						* The algorithm is computation heavy.
+						* A large number of operations are performed for each work-item in the computation, particularly when using large filters.
+						* The algorithm requires a large bandwidth.
+						* A lot of data must be passed through the GPU to process an image, particularly if the image is very high resolution.
+					</div>
+				</section>
+				<!--Slide 7-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Image convolution definition
+					</div>
+					<div class="container">
+						<div class="col" data-markdown>
+							![SYCL](../common-revealjs/images/image_convolution_definition.png "SYCL")
+						</div>
+						<div class="col" data-markdown>
+							* A filter of a given size is applied as a stencil to the position of each pixel in the input image.
+							* Each pixel covered by the filter is then multiples with the corresponding element in the filter.
+							* The result of these multiplications is then summed to give the resulting output pixel.
+							* Here we have a 3x3 gaussian blur approximation as an example.
+						</div>
 					</div>
 				</section>
 				<!--Slide 35-->
