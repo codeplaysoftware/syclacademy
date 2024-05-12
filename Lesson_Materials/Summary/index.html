@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+		
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<div id="global-images" class="global-images">
+					<img src="../common-revealjs/images/sycl_academy.png" />
+					<img src="../common-revealjs/images/sycl_logo.png" />
+					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/codeplay.png" />
+				</div>
+				<!--Slide 1-->
+				<section class="hbox" data-markdown>
+					## Summary and Recap
+				</section>
+				<!--Slide 2-->
+				<section>
+				<div class="hbox" data-markdown>
+					### SYCL Key concepts
+				</div>
+				<div class="container" data-markdown>
+                * SYCL is a single-source, cross-platform abstraction C++ programming model
+                  * Device code and host code exist in the same file
+                  * Can target multiple heterogeneous APIs, such as OpenCL
+                  * Implementations enable these APIs by implementing SYCL backends
+                * SYCL provides high-level abstractions over common boilerplate code
+                  * Platform/device selection
+                    * Based on the OpenCL platform model
+                  * Buffer creation and data movement, USM
+                  * Dependency management and scheduling
+				</div>
+				</section>
+				<!--Slide 3-->
+				<section> 
+				<div class="hbox" data-markdown>
+				    ### SYCL GPU Best Practices
+				</div>
+				<div class="container" data-markdown>
+					* GPUs are massively parallel throughput devices
+					  * Important to give a GPU lots of work, thousands or millions of work-items
+					* Optimize Memory First
+					  * Monitor and minimize data transfer costs to or from the GPU
+					  * Improve performance by rearrange data or computation for locality
+					* Optimize Compute Next
+					  * Prefer smaller data types, trade precision for performance
+				</div>
+				</section>
+				
+				<!--Slide 4-->
+				<section class="container" data-markdown>
+					### Useful Links
+					* [SYCL2020 Specification](http://tinyurl.com/sycl2020-spec-pdf)
+					*  [sycl.tech community](https://sycl.tech)
+					* AdaptiveCPP:
+					  * https://github.com/AdaptiveCpp/AdaptiveCpp
+					  * [SYCL extensions](https://github.com/AdaptiveCpp/AdaptiveCpp/blob/develop/doc/extensions.md)
+					* oneAPI Data Parallel C++ compiler:
+					  * https://github.com/intel/llvm
+					  * https://tinyurl.com/dpcpp-ext
+					* DPC++ books:
+					  * https://tinyurl.com/dpcpp-book
+					  * http://tinyurl.com/dpcpp-book-2
+					* Code Samples:
+					  * https://github.com/oneapi-src/Velocity-Bench
+					  * https://github.com/oneapi-src/oneAPI-samples
+					
+				</section>
+
+				<!--Slide 5-->
+				<section class="hbox" data-markdown>
+					## Questions
+				</section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script>
+	Reveal.initialize();
+	Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
