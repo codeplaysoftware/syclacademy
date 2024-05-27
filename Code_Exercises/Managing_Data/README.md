@@ -46,7 +46,7 @@ initializing it with just a `range` and no host pointer.
 
 #### Build And Execution Hints
 
-For DevCloud via SSH follow these [instructions](../devcloud.md).
+For DevCloud via JupiterLab follow these [instructions](../devcloudJupyter.md).
 
 For DPC++: [instructions](../dpcpp.md).
 

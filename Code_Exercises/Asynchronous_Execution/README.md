@@ -49,7 +49,7 @@ pointer provided to the `buffer` but this is not guaranteed.
 
 #### Build And Execution Hints
 
-For DevCloud via SSH follow these [instructions](../devcloud.md).
+For DevCloud via JupiterLab follow these [instructions](../devcloudJupyter.md).
 
 For DPC++: [instructions](../dpcpp.md).
 

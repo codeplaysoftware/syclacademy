@@ -33,7 +33,7 @@ the final image.
 
 ## Build and execution hints
 
-For DevCloud via SSH follow these [instructions](../devcloud.md).
+For DevCloud via JupiterLab follow these [instructions](../devcloudJupyter.md).
 
 For DPC++: [instructions](../dpcpp.md).
 

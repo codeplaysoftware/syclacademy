@@ -68,7 +68,7 @@ SYCL API `free` and not the standard C `free`.
 
 #### Build And Execution Hints
 
-For DevCloud via SSH follow these [instructions](../devcloud.md).
+For DevCloud via JupiterLab follow these [instructions](../devcloudJupyter.md).
 
 For DPC++: [instructions](../dpcpp.md).
 

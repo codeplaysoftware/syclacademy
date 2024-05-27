@@ -29,7 +29,7 @@ exceptions to be caught by the surrounding try-catch block.
 
 #### Build And Execution Hints
 
-For DevCloud via SSH follow these [instructions](../devcloud.md).
+For DevCloud via JupiterLab follow these [instructions](../devcloudJupyter.md).
 
 For DPC++: [instructions](../dpcpp.md).
 
