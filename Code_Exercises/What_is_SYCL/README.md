@@ -86,6 +86,7 @@ If you haven't done so already, follow this [guide](../../README.md#building-the
 From the syclacademy directory
 ```
 cd build/Code_Exercises/What_is_SYCL
+```
 and execute:
 * ```make What_is_SYCL_source```   - to build source.cpp
 * ```make What_is_SYCL_solution``` - to build the solution provided
