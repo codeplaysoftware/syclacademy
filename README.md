@@ -24,7 +24,7 @@ To use these materials, simply clone this repository, including the required sub
 **Make sure you clone the correct branch**
 
 ```
-git clone --recursive --branch isc24 https://github.com/codeplaysoftware/syclacademy.git
+git clone --recursive --branch sc24 https://github.com/codeplaysoftware/syclacademy.git
 ```
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
@@ -47,7 +47,7 @@ below to find the necessary files. At the command line just remember that the
 |--------|-------|--------|----------|--------|----------|-------|---------|
 | 01 | Introduction to SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes |
 | 02 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
-| 03 | oneMKL GEMM | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] | Yes | Yes |
+| 03 | Multi Platform with SYCL | [slides][lesson-21-slides] | [exercise][lesson-21-exercise] | [source][lesson-21-source] | [solution][lesson-21-solution] | Yes | Yes |
 | Walkthrough | Image Convolution | NA | [exercise][lesson-22-exercise] | [source][lesson-22-source] | [solution][lesson-22-solution] | Yes | Yes |
 
 ## Working on the Exercises on Intel Developer Cloud
@@ -67,7 +67,7 @@ You are now ready to start with the first [lesson][lesson-1-slides]. Enjoy !
 
 * Execute the following command to download SYCL Academy project (if not already done):
 ```sh
-git clone --recursive --branch isc24 https://github.com/codeplaysoftware/syclacademy.git
+git clone --recursive --branch sc24 https://github.com/codeplaysoftware/syclacademy.git
 ```
 * To create the code_exercises directory structure with the Makefiles:
 ```sh
@@ -296,10 +296,10 @@ The CMake configuration can also be used to build the exercises, see the section
 [lesson-14-source]:   ./Code_Exercises/ND_Range_Kernel/source.cpp
 [lesson-14-solution]: ./Code_Exercises/ND_Range_Kernel/solution.cpp
 
-[lesson-20-slides]: ./Lesson_Materials/OneMKL_gemm/
-[lesson-20-exercise]: ./Code_Exercises/OneMKL_gemm/README.md
-[lesson-20-source]:   ./Code_Exercises/OneMKL_gemm/source.cpp
-[lesson-20-solution]: ./Code_Exercises/OneMKL_gemm/solution.cpp
+[lesson-21-slides]: ./Lesson_Materials/Multi_Platform_With_SYCL/
+[lesson-20-exercise]: ./Code_Exercises/Multi_Platform_With_SYCL/README.md
+[lesson-20-source]:   ./Code_Exercises/Multi_Platform_With_SYCL/source.cpp
+[lesson-20-solution]: ./Code_Exercises/Multi_Platform_With_SYCL/solution.cpp
 
 [lesson-22-exercise]: ./Code_Exercises/Image_Convolution_Functors/README.md
 [lesson-22-source]:   ./Code_Exercises/Image_Convolution_Functors/source.cpp
