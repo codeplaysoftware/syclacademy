@@ -29,22 +29,25 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   try {
     auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
-    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
-    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
-    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
+    auto ptrA = sycl::malloc_device<int>(dataSize, gpuQueue);
+    auto ptrB = sycl::malloc_device<int>(dataSize, gpuQueue);
+    auto ptrR = sycl::malloc_device<int>(dataSize, gpuQueue);
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accA{bufA, cgh, sycl::read_only};
-      sycl::accessor accB{bufB, cgh, sycl::read_only};
-      sycl::accessor accR{bufR, cgh, sycl::write_only};
+    gpuQueue.memcpy(ptrA, a, sizeof(int) * dataSize).wait();
+    gpuQueue.memcpy(ptrB, b, sizeof(int) * dataSize).wait();
 
-      cgh.parallel_for<vector_add_1>(
-          sycl::range{dataSize}, [=](sycl::item<1> itm) {
-            auto globalId = itm.get_id();
-            accR[globalId] = accA[globalId] + accB[globalId];
-          });
-    });
+    gpuQueue.
+      parallel_for<vector_add_1>(sycl::range{dataSize},
+        [=](sycl::item<1> itm) {
+          auto globalId = itm.get_id();
+          ptrR[globalId] = ptrA[globalId] + ptrB[globalId];
+    }).wait();
 
+    gpuQueue.memcpy(r, ptrR, sizeof(int) * dataSize).wait();
+
+    sycl::free(ptrA, gpuQueue);
+    sycl::free(ptrB, gpuQueue);
+    sycl::free(ptrR, gpuQueue);
     gpuQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
@@ -69,24 +72,26 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   try {
     auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
-    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
-    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
-    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
+    auto ptrA = sycl::malloc_device<int>(dataSize, gpuQueue);
+    auto ptrB = sycl::malloc_device<int>(dataSize, gpuQueue);
+    auto ptrR = sycl::malloc_device<int>(dataSize, gpuQueue);
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accA{bufA, cgh, sycl::read_write};
-      sycl::accessor accB{bufB, cgh, sycl::read_write};
-      sycl::accessor accR{bufR, cgh, sycl::read_write};
+    gpuQueue.memcpy(ptrA, a, sizeof(int) * dataSize).wait();
+    gpuQueue.memcpy(ptrB, b, sizeof(int) * dataSize).wait();
 
-      auto ndRange =
-          sycl::nd_range{sycl::range{dataSize}, sycl::range{workGroupSize}};
-
-      cgh.parallel_for<vector_add_2>(ndRange, [=](sycl::nd_item<1> itm) {
+    auto ndRange =
+        sycl::nd_range{sycl::range{dataSize}, sycl::range{workGroupSize}};
+    gpuQueue.parallel_for<vector_add_2>(ndRange,
+      [=](sycl::nd_item<1> itm) {
         auto globalId = itm.get_global_id();
-        accR[globalId] = accA[globalId] + accB[globalId];
-      });
-    });
+        ptrR[globalId] = ptrA[globalId] + ptrB[globalId];
+    }).wait();
 
+    gpuQueue.memcpy(r, ptrR, sizeof(int) * dataSize).wait();
+
+    sycl::free(ptrA, gpuQueue);
+    sycl::free(ptrB, gpuQueue);
+    sycl::free(ptrR, gpuQueue);
     gpuQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
