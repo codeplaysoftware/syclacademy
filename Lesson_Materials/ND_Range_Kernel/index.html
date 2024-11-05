@@ -320,28 +320,19 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 				<!--Slide 17-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Accessing Data With USM Device Pointers
+						#### Accessing Data With Different Ranges
 					</div>
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-auto ptrA = sycl::malloc_device&ltfloat&gt(dA.size(), queue);
-auto ptrB = sycl::malloc_device&ltfloat&gt(dB.size(), queue);
-auto ptrO = sycl::malloc_device&ltfloat&gt(dO.size(), queue);
-
-queue.memcpy(ptrA, dA.data(), sizeof(int) * dA.size()).wait();
-queue.memcpy(ptrB, dB.data(), sizeof(int) * dB.size()).wait();
-
-queue.parallel_for&ltadd&gt(range&lt1&gt(dO.size()),
+queue.parallel_for&ltadd&gt(range&lt1&gt(dataSize),
     [=](<mark>id&lt1&gt i</mark>){
     	<mark>ptrO[i] = ptrA[i] + ptrB[i];</mark>
 });
-
-queue.memcpy(dO.data, ptrO, sizeof(int) * dO.size()).wait();
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>
-							* Here we access the data of the `device pointer` by
+							* Here we access the data of a `USM pointer` by
 							passing in the `id` passed to the SYCL kernel
 							function.
 						</div>
@@ -350,27 +341,18 @@ queue.memcpy(dO.data, ptrO, sizeof(int) * dO.size()).wait();
 				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Accessing Data With USM Device Pointers
+						#### Accessing Data With Different Ranges
 					</div>
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-auto ptrA = sycl::malloc_device&ltfloat&gt(dA.size(), queue);
-auto ptrB = sycl::malloc_device&ltfloat&gt(dB.size(), queue);
-auto ptrO = sycl::malloc_device&ltfloat&gt(dO.size(), queue)
-
-queue.memcpy(ptrA, dA, sizeof(int) * dA.size()).wait();
-queue.memcpy(ptrB, dB, sizeof(int) * dB.size()).wait();
-
-size_t sizeSqrt = std::sqrt(dO.size());
+size_t sizeSqrt = std::sqrt(dataSize);
 auto rng = sycl::range<2>{sizeSqrt, sizeSqrt};
-
+	
 queue.parallel_for&ltadd&gt(rng, [=](<mark>item&lt2&gt itm</mark>){
     <mark>auto linearId = itm.get_linear_id();</mark>
     <mark>ptrO[linearId] = ptrA[linearId] + ptrB[linearId]; </mark>
 });
-
-queue.memcpy(dO.data, ptrO, sizeof(int) * dO.size()).wait();
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>
@@ -385,27 +367,18 @@ queue.memcpy(dO.data, ptrO, sizeof(int) * dO.size()).wait();
 				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Accessing Data With USM Device Pointers
+						#### Accessing Data With Different Ranges
 					</div>
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-auto ptrA = sycl::malloc_device&ltfloat&gt(dA.size(), queue);
-auto ptrB = sycl::malloc_device&ltfloat&gt(dB.size(), queue);
-auto ptrO = sycl::malloc_device&ltfloat&gt(dO.size(), queue)
-
-queue.memcpy(ptrA, dA, sizeof(int) * dA.size()).wait();
-queue.memcpy(ptrB, dB, sizeof(int) * dB.size()).wait();
-
-auto ndRange = sycl::nd_range{sycl::range{dO.size()},
+auto ndRange = sycl::nd_range{sycl::range{dataSize},
                               sycl::range{workGroupSize}};
 
 queue.parallel_for&ltadd&gt(ndRange, [=](<mark>nd_item&lt1&gt itm</mark>){
     <mark>auto globalId = itm.get_global_id();</mark>
     <mark>ptrO[globalId] = ptrA[globalId] + ptrB[globalId]; </mark>
 });
-
-queue.memcpy(dO.data, ptrO, sizeof(int) * dO.size()).wait();
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>

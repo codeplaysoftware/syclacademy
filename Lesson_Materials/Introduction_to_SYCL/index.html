@@ -109,7 +109,7 @@
 					</div>
 				</section>
 
-        <!--Slide 8-->
+        		<!--Slide 6-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL System Topology
@@ -119,7 +119,7 @@
 						* The devices that are available in any given system are determined at runtime through topology discovery.
 					</div>
 				</section>
-				<!--Slide 9-->
+				<!--Slide 7-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Platforms and devices
@@ -134,7 +134,7 @@
 						![SYCL](../common-revealjs/images/devices-1.png "SYCL-Devices")
 					</div>
 				</section>
-        <!--Slide 10-->
+       			<!--Slide 8-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Querying with a device selector
@@ -151,7 +151,7 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 11-->
+				<!--Slide 9-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Querying with a device selector
@@ -172,7 +172,7 @@ auto gpuDevice = device(gpu_selector_v);
 							* A device with a negative score will never be chosen.
 					</div>
 				</section>
-        <!--Slide 12-->
+        		<!--Slide 10-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Queues
@@ -188,7 +188,7 @@ auto gpuDevice = device(gpu_selector_v);
 						</div>
 					</div>
 				</section>
-				<!--Slide 13-->
+				<!--Slide 11-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### In-of-order execution
@@ -203,7 +203,7 @@ auto gpuDevice = device(gpu_selector_v);
 						</div>
 					</div>
 				</section>
-        <!--Slide 14-->
+        		<!--Slide 12-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Memory Models
@@ -215,7 +215,7 @@ auto gpuDevice = device(gpu_selector_v);
 						* Which model you choose can have an effect on how you enqueue kernel functions.
 					</div>
 				</section>
-				<!--Slide 15-->
+				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### CPU and GPU Memory
@@ -230,7 +230,7 @@ auto gpuDevice = device(gpu_selector_v);
 					</div>
 					<img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
 				</section>
-        <!--Slide 16-->
+        		<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Buffers & Accessors
@@ -243,7 +243,7 @@ auto gpuDevice = device(gpu_selector_v);
 						  * This means they are declared in the host code but captured by and then accessed within a SYCL kernel function
 					</div>
 				</section>
-				<!--Slide 17-->
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Buffers & Accessors
@@ -258,7 +258,7 @@ auto gpuDevice = device(gpu_selector_v);
 						</div>
 					</div>
 				</section>
-				<!--Slide 18-->
+				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Buffers & Accessors
@@ -273,7 +273,7 @@ auto gpuDevice = device(gpu_selector_v);
 						</div>
 					</div>
 				</section>
-				<!--Slide 19-->
+				<!--Slide 17-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Accessing Data With Accessors
@@ -303,7 +303,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
-				<!--Slide 20-->
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### USM: Malloc_device
@@ -324,7 +324,7 @@ T* malloc_device(size_t count, const queue& syclQueue,  const property_list &pro
 						* This is a blocking operation.
 					</div>
 				</section>
-				<!--Slide 22-->
+				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### USM: Free
@@ -340,7 +340,7 @@ void free(void* ptr, queue& syclQueue);
 						* This is a blocking operation.
 					</div>
 				</section>
-				<!--Slide 23-->
+				<!--Slide 20-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### USM: Memcpy
@@ -358,7 +358,26 @@ event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vec
 						* May depend on other events via `depEvents`
 					</div>
 				</section>
-				<!--Slide 24-->
+				<!--Slide 21-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### USM: Malloc_shared
+					</div>
+					<div class="container">
+						<code class="code-100pc"><pre>
+void* malloc_shared(size_t numBytes, const queue& syclQueue, const property_list& propList = {})
+
+template &lt;typename T&gt;
+T* malloc_shared(size_t count, const queue& syclQueue, const property_list& propList = {})
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+						* A USM shared allocation is performed by calling one of the `malloc_shared` functions.
+						* Shared allocations implicitly share data between the host and devices; the runtime and backends ensure the data is available when used.
+						* Performance hints may be specified by enqueueing `prefetch` operations
+					</div>
+				</section>
+				<!--Slide 22-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -376,7 +395,7 @@ event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vec
 
 					</div>
 				</section>
-				<!--Slide 25-->
+				<!--Slide 23-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -392,7 +411,7 @@ event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vec
 						</div>
 					</div>
 				</section>
-				<!--Slide 26-->
+				<!--Slide 24-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -408,7 +427,7 @@ event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vec
 						</div>
 					</div>
 				</section>
-				<!--Slide 27-->
+				<!--Slide 25-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -426,7 +445,7 @@ event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vec
 						</div>
 					</div>
 				</section>
-				<!--Slide 28-->
+				<!--Slide 26-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Expressing parallelism
@@ -467,7 +486,7 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						</div>
 					</div>
 				</section>
-				<!--Slide 30-->
+				<!--Slide 27-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Kernels
@@ -483,7 +502,7 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 						// glue it all together from scratch
 					</div>
 				</section>
-				<!--Slide 31-->
+				<!--Slide 28-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Function object
@@ -509,7 +528,7 @@ class MyKernel {
              operator.
 					</div>
 				</section>
-				<!--Slide 32-->
+				<!--Slide 29-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Lambda function
@@ -534,7 +553,7 @@ handler.parallel_for(range, func);
             the kernel.
 					</div>
 				</section>
-				<!--Slide 33-->
+				<!--Slide 30-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL Kernels
@@ -548,7 +567,7 @@ handler.parallel_for(range, func);
             * Can be used to index into accessors, pointers etc.
 					</div>
 				</section>
-				<!--Slide 34-->
+				<!--Slide 31-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### First Exercise
@@ -562,7 +581,7 @@ handler.parallel_for(range, func);
 
 					</div>
 				</section>
-								<!--Slide 6-->
+				<!--Slide 32-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution sample application
@@ -576,7 +595,7 @@ handler.parallel_for(range, func);
 						* A lot of data must be passed through the GPU to process an image, particularly if the image is very high resolution.
 					</div>
 				</section>
-				<!--Slide 7-->
+				<!--Slide 33-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution definition
@@ -593,7 +612,7 @@ handler.parallel_for(range, func);
 						</div>
 					</div>
 				</section>
-				<!--Slide 35-->
+				<!--Slide 34-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution example
@@ -602,7 +621,7 @@ handler.parallel_for(range, func);
 						![SYCL](../common-revealjs/images/image_convolution_example.png "SYCL")
 					</div>
 				</section>
-				<!--Slide 36-->
+				<!--Slide 35-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Image convolution data flow
@@ -619,7 +638,7 @@ handler.parallel_for(range, func);
 						</div>
 					</div>
 				</section>
-				<!--Slide 37-->
+				<!--Slide 36-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Gaussian Blur
@@ -634,7 +653,7 @@ handler.parallel_for(range, func);
             * A dscrete convolution, in other words
 					</div>
 				</section>
-				<!--Slide 38-->
+				<!--Slide 37-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Walkthrough
@@ -644,7 +663,7 @@ handler.parallel_for(range, func);
             * Solution available in `Code_Exercises/Image_Convolution_Functors/solution.cpp`
 					</div>
 				</section>
-				<!--Slide 39-->
+				<!--Slide 38-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Reference image
@@ -660,7 +679,7 @@ handler.parallel_for(range, func);
 * The read and write functions can be found in `image_conv.h`.
 					</div>
 				</section>
-				<!--Slide 40-->
+				<!--Slide 39-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Convolution filters

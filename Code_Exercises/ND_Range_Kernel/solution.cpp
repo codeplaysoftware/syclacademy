@@ -17,24 +17,20 @@ class vector_add_1;
 class vector_add_2;
 
 TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
-  constexpr size_t dataSize = 1024;
-
-  int a[dataSize], b[dataSize], r[dataSize];
-  for (int i = 0; i < dataSize; ++i) {
-    a[i] = i;
-    b[i] = i;
-    r[i] = 0;
-  }
+  constexpr size_t dataSize = 2<<20;
 
   try {
     auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
-    auto ptrA = sycl::malloc_device<int>(dataSize, gpuQueue);
-    auto ptrB = sycl::malloc_device<int>(dataSize, gpuQueue);
-    auto ptrR = sycl::malloc_device<int>(dataSize, gpuQueue);
+    auto ptrA = sycl::malloc_shared<int>(dataSize, gpuQueue);
+    auto ptrB = sycl::malloc_shared<int>(dataSize, gpuQueue);
+    auto ptrR = sycl::malloc_shared<int>(dataSize, gpuQueue);
 
-    gpuQueue.memcpy(ptrA, a, sizeof(int) * dataSize).wait();
-    gpuQueue.memcpy(ptrB, b, sizeof(int) * dataSize).wait();
+    for (int i = 0; i < dataSize; ++i) {
+      ptrA[i] = i;
+      ptrB[i] = i;
+      ptrR[i] = 0;
+    }
 
     gpuQueue.
       parallel_for<vector_add_1>(sycl::range{dataSize},
@@ -43,7 +39,9 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
           ptrR[globalId] = ptrA[globalId] + ptrB[globalId];
     }).wait();
 
-    gpuQueue.memcpy(r, ptrR, sizeof(int) * dataSize).wait();
+    for (int i = 0; i < dataSize; ++i) {
+      REQUIRE(ptrR[i] == i * 2);
+    }
 
     sycl::free(ptrA, gpuQueue);
     sycl::free(ptrB, gpuQueue);
@@ -51,10 +49,6 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
     gpuQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
-  }
-
-  for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
   }
 }
 
@@ -76,18 +70,21 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
     auto ptrB = sycl::malloc_device<int>(dataSize, gpuQueue);
     auto ptrR = sycl::malloc_device<int>(dataSize, gpuQueue);
 
-    gpuQueue.memcpy(ptrA, a, sizeof(int) * dataSize).wait();
-    gpuQueue.memcpy(ptrB, b, sizeof(int) * dataSize).wait();
+    gpuQueue.memcpy(ptrA, a, sizeof(int) * dataSize);
+    gpuQueue.memcpy(ptrB, b, sizeof(int) * dataSize);
+
+    gpuQueue.wait();
 
     auto ndRange =
         sycl::nd_range{sycl::range{dataSize}, sycl::range{workGroupSize}};
-    gpuQueue.parallel_for<vector_add_2>(ndRange,
+    auto event = gpuQueue.parallel_for<vector_add_2>(ndRange,
       [=](sycl::nd_item<1> itm) {
         auto globalId = itm.get_global_id();
         ptrR[globalId] = ptrA[globalId] + ptrB[globalId];
-    }).wait();
+    });
 
-    gpuQueue.memcpy(r, ptrR, sizeof(int) * dataSize).wait();
+    // Depends on the vector add kernel.
+    gpuQueue.memcpy(r, ptrR, sizeof(int) * dataSize, event).wait();
 
     sycl::free(ptrA, gpuQueue);
     sycl::free(ptrB, gpuQueue);
