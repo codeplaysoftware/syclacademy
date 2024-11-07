@@ -40,7 +40,7 @@
 				}
 			})();
 		</script>
-		
+
 	</head>
 	<body>
 		<div class="reveal">
@@ -198,7 +198,7 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 12-->
+				<!--Slide 11-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -213,7 +213,7 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 14-->
+				<!--Slide 12-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL memory model
@@ -229,7 +229,7 @@
 
 					</div>
 				</section>
-				<!--Slide 15-->
+				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL memory model
@@ -244,7 +244,7 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 16-->
+				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL memory model
@@ -260,14 +260,14 @@
 
 					</div>
 				</section>
-				<!--Slide 17-->
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL memory model
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							* Each memory region has a different size and access latency 
+							* Each memory region has a different size and access latency
 							* Global / constant memory is larger than local memory and local memory is larger than private memory
 							* Private memory is faster than local memory and local memory is faster than global / constant memory
 						</div>
@@ -276,7 +276,7 @@
 						</div>
 					</div>
 				</section>
-				<!--Slide 19-->
+				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Expressing parallelism
@@ -284,22 +284,22 @@
 					<div class="container">
 						<div class="col">
 							<code><pre>
-							
-cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
+
+cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>,
   [=](<mark>id&lt1&gt idx</mark>){
     /* kernel function code */
 });
 							</code></pre>
 							<code><pre>
-							
-cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
+
+cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>,
   [=](<mark>item&lt1&gt item</mark>){
     /* kernel function code */
 });
 							</code></pre>
 							<code><pre>
-							
-cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024), 
+
+cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
   range&lt1&gt(32))</mark>,[=](<mark>nd_item&lt1&gt ndItem</mark>){
     /* kernel function code */
 });
@@ -310,102 +310,91 @@ cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024),
 							* An **id** parameter represents the index within the global range
 							____________________________________________________________________________________________
 							* Overload taking a **range** object specifies the global range, runtime decides local range
-							* An **item** parameter represents the global range and the index within the global range
+							* An **item** parameter represents the index within the global range and the global range
 							____________________________________________________________________________________________
 							* Overload taking an **nd_range** object specifies the global and local range
-							* An **nd_item** parameter represents the global and local range and index
+							* An **nd_item** parameter represents the index, global range, and local range
 						</div>
 					</div>
 				</section>
-				<!--Slide 22-->
+				<!--Slide 17-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Accessing Data With Accessors
-					</div>
-					<div class="container" data-markdown>
-					* There are a few different ways to access the data represented by an accessor
-					  *  The subscript operator can take an **id**
-					    * Must be the same dimensionality of the accessor
-					    * For dimensions > 1, linear address is calculated in row major 
-					* Nested subscript operators can be called for each dimension taking a **size_t**
-					  * E.g. a 3-dimensional accessor: acc[x][y][z] = …
-					* A pointer to memory can be retrieved by calling **get_pointer**
-					  * This returns a raw pointer to the data
-					</div>
-				</section>
-				<!--Slide 23-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Accessing Data With Accessors
+						#### Accessing Data With Different Ranges
 					</div>
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
-
-gpuQueue.submit([&](handler &cgh){
-  sycl::accessor inA{bufA, cgh, sycl::read_only};
-  sycl::accessor inB{bufB, cgh, sycl::read_only};
-  sycl::accessor out{bufO, cgh, sycl::write_only};
-  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-    [=](id&lt1&gt i){ 
-    <mark>out[i] = inA[i] + inB[i];</mark>
-  });
+queue.parallel_for&ltadd&gt(range&lt1&gt(dataSize),
+    [=](<mark>id&lt1&gt i</mark>){
+    	<mark>ptrO[i] = ptrA[i] + ptrB[i];</mark>
 });
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>
-							* Here we access the data of the `accessor` by
+							* Here we access the data of a `USM pointer` by
 							passing in the `id` passed to the SYCL kernel
 							function.
 						</div>
 					</div>
 				</section>
-				<!--Slide 24-->
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Accessing Data With Accessors
+						#### Accessing Data With Different Ranges
 					</div>
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
-
-gpuQueue.submit([&](handler &cgh){
-  sycl::accessor inA{bufA, cgh, sycl::read_only};
-  sycl::accessor inB{bufB, cgh, sycl::read_only};
-  sycl::accessor out{bufO, cgh, sycl::write_only};
-  cgh.parallel_for&ltadd&gt(rng, [=](item&lt3&gt i){
-    <mark>auto ptrA = inA.get_pointer();</mark>
-    <mark>auto ptrB = inB.get_pointer();</mark>
-    <mark>auto ptrO = out.get_pointer();</mark>
-    <mark>auto linearId = i.get_linear_id();</mark>
-
-    <mark>ptrA[linearId] = ptrB[linearId] + ptrO[linearId]; </mark>
-  });
+size_t sizeSqrt = std::sqrt(dataSize);
+auto rng = sycl::range<2>{sizeSqrt, sizeSqrt};
+	
+queue.parallel_for&ltadd&gt(rng, [=](<mark>item&lt2&gt itm</mark>){
+    <mark>auto linearId = itm.get_linear_id();</mark>
+    <mark>ptrO[linearId] = ptrA[linearId] + ptrB[linearId]; </mark>
 });
 							</code></pre>
 						</div>
 						<div class="col-right-2" data-markdown>
-							* Here we retrieve the underlying pointer for each
-							of the `accessor`s.
-							* We then access the pointer using the linearized
+							* Here we access the pointer using the linearized
 							`id` by calling the `get_linear_id` member function
 							on the `item`.
-							* Again this linearization is calculated in
+							* This linearization is calculated in
 							row-major order.
 						</div>
 					</div>
 				</section>
-				<!--Slide 25-->
+				<!--Slide 19-->
+				<section>
+					<div class="hbox" data-markdown>
+						#### Accessing Data With Different Ranges
+					</div>
+					<div class="container">
+						<div class="col-left-3">
+							<code><pre>
+auto ndRange = sycl::nd_range{sycl::range{dataSize},
+                              sycl::range{workGroupSize}};
+
+queue.parallel_for&ltadd&gt(ndRange, [=](<mark>nd_item&lt1&gt itm</mark>){
+    <mark>auto globalId = itm.get_global_id();</mark>
+    <mark>ptrO[globalId] = ptrA[globalId] + ptrB[globalId]; </mark>
+});
+							</code></pre>
+						</div>
+						<div class="col-right-2" data-markdown>
+							* Here we access the pointer using the global
+							`id` by calling the `get_global_id` member function
+							on the `nd_item`.
+							* Again, this linearization is calculated in
+							row-major order.
+						</div>
+					</div>
+				</section>
+				<!--Slide 20-->
 				<section class="hbox" data-markdown>
 					## Questions
 				</section>
-				<!--Slide 26-->
+				<!--Slide 21-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise

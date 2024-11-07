@@ -13,12 +13,8 @@ Using the application from any exercise so far or creating a new one, enqueue a
 kernel function using the `parallel_for` variant which takes a `range` but has
 the kernel function take an `item`.
 
-Feel free to use either the buffer/accessor model and feel free to use any
-method of synchronization and copy back.
-
-When using an `item` you cannot pass this directly to the subscript operator of
-an `accessor` you have to retrieve the `id`, you can do this by calling the
-`get_id` member function.
+Feel free to try out different USM pointers and to use any method of
+synchronization and copy back.
 
 ### 2.) Enqueue an ND range kernel
 
@@ -36,8 +32,8 @@ Similarly to to the `item` when using the `nd_item` you cannot pass this
 directly to the subscript operator of an `accessor`, you can retrieve the `id`
 by calling the `get_global_id` member function.
 
-Feel free to use either the buffer/accessor model and feel free to use any
-method of synchronization and copy back.
+Feel free to try out different USM pointers and to use any method of
+synchronization and copy back.
 
 ## Build and execution hints
 
