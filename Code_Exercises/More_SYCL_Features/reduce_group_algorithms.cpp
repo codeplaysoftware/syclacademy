@@ -8,6 +8,8 @@
  *
  */
 
+#include "../helpers.hpp"
+
 #include <benchmark.h>
 #include <sycl/sycl.hpp>
 

@@ -45,7 +45,7 @@
  *
 */
 
-#include <cassert>
+#include "../helpers.hpp"
 
 void test_usm() {
 
@@ -54,7 +54,7 @@ void test_usm() {
   // Task: Compute a+b on the SYCL device using USM
   r = a + b;
 
-  assert(r == 42);
+  SYCLACADEMY_ASSERT(r == 42);
 }
 
 void test_buffer() {
@@ -65,7 +65,7 @@ void test_buffer() {
   // accessor memory model
   r = a + b;
 
-  assert(r == 42);
+  SYCLACADEMY_ASSERT(r == 42);
 }
 
 int main() {

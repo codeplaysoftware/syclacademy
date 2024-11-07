@@ -34,7 +34,7 @@
  *
  */
 
-#include <cassert>
+#include "../helpers.hpp"
 #include <iostream>
 
 int main() {
@@ -44,5 +44,5 @@ int main() {
 
   // Task: Have this message print from the SYCL device instead of the host
 
-  assert(true);
+  SYCLACADEMY_ASSERT(true);
 }

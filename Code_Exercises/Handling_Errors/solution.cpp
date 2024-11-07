@@ -8,6 +8,8 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
+
 #include <sycl/sycl.hpp>
 
 int main() {
@@ -32,5 +34,5 @@ int main() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  assert(true);
+  SYCLACADEMY_ASSERT(true);
 }

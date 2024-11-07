@@ -22,6 +22,8 @@
 // work done by `numIters` `single_task`s here would be better encapsulated in
 // a single `parallel_for` launch with range `numIters`.
 
+#include "../helpers.hpp"
+
 #include <sycl/sycl.hpp>
 
 #include "queue_benchmarking_helpers.hpp"

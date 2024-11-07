@@ -8,7 +8,8 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
 
 // The below tests that the header file has been included
-int main() { assert(true); }
+int main() { SYCLACADEMY_ASSERT(true); }

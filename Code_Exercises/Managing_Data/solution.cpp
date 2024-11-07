@@ -8,6 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
 
 #include <sycl/sycl.hpp>
 
@@ -37,7 +38,7 @@ void test_usm() {
   sycl::free(dev_B, defaultQueue);
   sycl::free(dev_R, defaultQueue);
 
-  assert(r == 42);
+  SYCLACADEMY_ASSERT(r == 42);
 }
 
 void test_buffer() {
@@ -61,7 +62,7 @@ void test_buffer() {
         .wait();
   }
 
-  assert(r == 42);
+  SYCLACADEMY_ASSERT(r == 42);
 }
 
 int main() {

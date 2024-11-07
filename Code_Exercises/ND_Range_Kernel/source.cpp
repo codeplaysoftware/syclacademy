@@ -54,8 +54,7 @@
  *                      });
 */
 
-#include <cassert>
-#include <cstddef>
+#include "../helpers.hpp"
 
 int main() {
   constexpr size_t dataSize = 1024;
@@ -73,6 +72,6 @@ int main() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == i * 2);
+    SYCLACADEMY_ASSERT(r[i] == i * 2);
   }
 }

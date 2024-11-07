@@ -14,6 +14,8 @@
  sycl::local_accessor<T, dims> local_acc{localRange, cgh};
 */
 
+#include "../helpers.hpp"
+
 #include <iostream>
 #include <vector>
 
@@ -82,6 +84,6 @@ int main() {
   }
 
   for (auto i = 0; i < N * N; ++i) {
-    assert(A_T[i] == A_T_comparison[i]);
+    SYCLACADEMY_ASSERT(A_T[i] == A_T_comparison[i]);
   }
 }

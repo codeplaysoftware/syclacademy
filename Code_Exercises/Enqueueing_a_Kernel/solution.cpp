@@ -8,6 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
 
 class hello_world;
@@ -23,5 +24,5 @@ int main() {
       })
       .wait();
 
-  assert(true);
+  SYCLACADEMY_ASSERT(true);
 }

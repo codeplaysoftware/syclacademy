@@ -8,7 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-//#define SYCL_ACADEMY_USING_COMPUTECPP
+#include "../helpers.hpp"
 
 #include <sycl/sycl.hpp>
 
@@ -91,7 +91,7 @@ void test_buffer() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(out[i] == i * 2.0f);
+    SYCLACADEMY_ASSERT(out[i] == i * 2.0f);
   }
 }
 
@@ -162,7 +162,7 @@ void test_usm() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(out[i] == i * 2.0f);
+    SYCLACADEMY_ASSERT(out[i] == i * 2.0f);
   }
 }
 

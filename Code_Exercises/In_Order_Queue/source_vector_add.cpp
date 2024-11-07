@@ -55,9 +55,9 @@
 
 */
 
-#include <cassert>
+#include "../helpers.hpp"
 
 int main() {
   // Use the Exercise 10 solution to start
-  assert(true);
+  SYCLACADEMY_ASSERT(true);
 }

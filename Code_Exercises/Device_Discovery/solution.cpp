@@ -8,6 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
 
 class scalar_add;
@@ -67,5 +68,5 @@ int main() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  assert(r == 42);
+  SYCLACADEMY_ASSERT(r == 42);
 }

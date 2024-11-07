@@ -8,6 +8,8 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
+
 #include <sycl/sycl.hpp>
 
 class vector_add;
@@ -61,6 +63,6 @@ int main() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == i * 2);
+    SYCLACADEMY_ASSERT(r[i] == i * 2);
   }
 }

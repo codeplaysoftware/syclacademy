@@ -43,8 +43,7 @@
 
 */
 
-#include <cassert>
-#include <cstddef>
+#include "../helpers.hpp"
 
 int main() {
   constexpr size_t dataSize = 1024;
@@ -73,6 +72,6 @@ int main() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == static_cast<float>(i) * 2.0f);
+    SYCLACADEMY_ASSERT(r[i] == static_cast<float>(i) * 2.0f);
   }
 }

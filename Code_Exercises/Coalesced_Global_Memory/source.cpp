@@ -8,9 +8,9 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include <cassert>
+#include "../helpers.hpp"
 
 int main() {
   // Use your code from Exercise 15 to start
-  assert(true);
+  SYCLACADEMY_ASSERT(true);
 }

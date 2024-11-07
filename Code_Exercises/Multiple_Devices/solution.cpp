@@ -8,6 +8,8 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
+
 #include <sycl/sycl.hpp>
 
 #include <algorithm>
@@ -89,6 +91,6 @@ int main() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == static_cast<float>(i) * 2.0f);
+    SYCLACADEMY_ASSERT(r[i] == static_cast<float>(i) * 2.0f);
   }
 }

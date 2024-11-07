@@ -8,6 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
 
 #include <sycl/sycl.hpp>
 
@@ -27,5 +28,5 @@ int main() {
 
   defaultQueue.throw_asynchronous();
 
-  assert(true);
+  SYCLACADEMY_ASSERT(true);
 }

@@ -8,6 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
 
 class vector_add_1;
@@ -61,7 +62,7 @@ void test_buffer_event_wait() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == i * 2);
+    SYCLACADEMY_ASSERT(r[i] == i * 2);
   }
 }
 
@@ -98,7 +99,7 @@ void test_buffer_queue_wait() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == i * 2);
+    SYCLACADEMY_ASSERT(r[i] == i * 2);
   }
 }
 
@@ -137,7 +138,7 @@ void test_buffer_buffer_destruction() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == i * 2);
+    SYCLACADEMY_ASSERT(r[i] == i * 2);
   }
 }
 
@@ -189,7 +190,7 @@ void test_usm_event_wait() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == i * 2);
+    SYCLACADEMY_ASSERT(r[i] == i * 2);
   }
 }
 
@@ -239,7 +240,7 @@ void test_usm_queue_wait() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    assert(r[i] == i * 2);
+    SYCLACADEMY_ASSERT(r[i] == i * 2);
   }
 }
 
@@ -277,7 +278,7 @@ void test_buffer_host_accessor() {
         auto hostAccR = bufR.get_host_access(sycl::read_only); // Copy-to-host
 
         for (int i = 0; i < dataSize; ++i) {
-          assert(hostAccR[i] == i * 2);
+          SYCLACADEMY_ASSERT(hostAccR[i] == i * 2);
         }
       }
 

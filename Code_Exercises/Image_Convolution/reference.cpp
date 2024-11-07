@@ -8,6 +8,8 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
+
 #include <algorithm>
 #include <iostream>
 
@@ -114,5 +116,5 @@ int main() {
 
   util::write_image(outputImage, outputImageFile);
 
-  assert(true);
+  SYCLACADEMY_ASSERT(true);
 }
