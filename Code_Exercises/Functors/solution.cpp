@@ -56,7 +56,7 @@ public:
                                  const Direction &dir)
       : inputAcc_{in, cgh, sycl::read_only}, outputAcc_{out, cgh,
                                                         sycl::write_only},
-        filterAcc_{filterType, cgh, sycl::write_only}, dir_(dir) {
+        filterAcc_{filter, cgh, sycl::read_only}, dir_(dir) {
     filterWidth_ = filterAcc_.size();
     halo_ = filterWidth_ / 2;
   }
