@@ -11,9 +11,6 @@
 #include <algorithm>
 #include <iostream>
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 #include <benchmark.h>
@@ -135,7 +132,7 @@ inline constexpr util::filter_type filterType = util::filter_type::blur;
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
-TEST_CASE("image_convolution_1D", "1D_solution") {
+int main() {
   const char *inputImageFile = "../Images/dogs.png";
   const char *outputImageFile = "../Images/blurred_dogs_1D.png";
 
@@ -210,5 +207,5 @@ TEST_CASE("image_convolution_1D", "1D_solution") {
 
   util::write_image(outputImage, outputImageFile);
 
-  REQUIRE(true);
+  assert(true);
 }

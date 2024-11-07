@@ -10,8 +10,6 @@
 
 //#define SYCL_ACADEMY_USING_COMPUTECPP
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
@@ -28,7 +26,7 @@ int usm_selector(const sycl::device& dev) {
   return -1;
 }
 
-TEST_CASE("buffer_accessor_temporary_data", "temporary_data_solution") {
+void test_buffer() {
   constexpr size_t dataSize = 1024;
 
   float in[dataSize], out[dataSize];
@@ -71,11 +69,11 @@ TEST_CASE("buffer_accessor_temporary_data", "temporary_data_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(out[i] == i * 4.0f);
+    assert(out[i] == i * 4.0f);
   }
 }
 
-TEST_CASE("usm_temporary_data", "temporary_data_solution") {
+void test_usm() {
   constexpr size_t dataSize = 1024;
 
   float in[dataSize], out[dataSize];
@@ -122,6 +120,11 @@ TEST_CASE("usm_temporary_data", "temporary_data_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(out[i] == i * 4.0f);
+    assert(out[i] == i * 4.0f);
   }
+}
+
+int main() {
+  test_usm();
+  test_buffer();
 }

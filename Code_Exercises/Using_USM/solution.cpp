@@ -8,21 +8,18 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 class vector_add;
 
-int usm_selector(const sycl::device& dev) {
+int usm_selector(const sycl::device &dev) {
   if (dev.has(sycl::aspect::usm_device_allocations)) {
     return 1;
   }
   return -1;
 }
 
-TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -59,11 +56,11 @@ TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
     sycl::free(devicePtrR, usmQueue);
 
     usmQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }

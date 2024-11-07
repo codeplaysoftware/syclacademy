@@ -44,15 +44,19 @@
  *
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include <cassert>
 
-TEST_CASE("synchronization_usm", "synchronization_source") {
+void test_usm() {
   // Use your code from Exercise 3 to start
-  REQUIRE(true);
+  assert(true);
 }
 
-TEST_CASE("synchronization_buffer_acc", "synchronization_source") {
+void test_buffer() {
   // Use your code from Exercise 3 to start
-  REQUIRE(true);
+  assert(true);
+}
+
+int main() {
+  test_usm();
+  test_buffer();
 }

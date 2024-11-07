@@ -41,16 +41,17 @@
  *          auto write_acc = sycl::accessor{buf, cgh, sycl::write_only};
  *          auto no_init_acc = sycl::accessor{buf, cgh, sycl::no_init};
  * //    2. Enqueue a parallel for:
- *          cgh.parallel_for<class mykernel>(sycl::range{n}, [=](sycl::id<1> i) {
+ *          cgh.parallel_for<class mykernel>(sycl::range{n}, [=](sycl::id<1> i)
+ {
  *              // Do something
  *          });
  *
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include <cassert>
+#include <cstddef>
 
-TEST_CASE("temporary_data", "temporary_data_source") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   float in[dataSize], out[dataSize], tmp[dataSize];
@@ -60,13 +61,13 @@ TEST_CASE("temporary_data", "temporary_data_source") {
     out[i] = 0.0f;
   }
 
-  // Task: run these kernels on a SYCL device, minimising the memory transfers between the host and device
+  // Task: run these kernels on a SYCL device, minimising the memory transfers
+  // between the host and device
 
   // Kernel A
   for (int i = 0; i < dataSize; ++i) {
     tmp[i] = in[i] * 8.0f;
   }
-
 
   // Kernel B
   for (int i = 0; i < dataSize; ++i) {
@@ -74,6 +75,6 @@ TEST_CASE("temporary_data", "temporary_data_source") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(out[i] == i * 4.0f);
+    assert(out[i] == i * 4.0f);
   }
 }

@@ -8,10 +8,10 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include <cassert>
+#include <cstddef>
 
-TEST_CASE("usm_vector_add", "usm_vector_add_source") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -28,6 +28,6 @@ TEST_CASE("usm_vector_add", "usm_vector_add_source") {
 
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }

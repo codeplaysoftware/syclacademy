@@ -22,8 +22,6 @@
 // work done by `numIters` `single_task`s here would be better encapsulated in
 // a single `parallel_for` launch with range `numIters`.
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 #include <sycl/sycl.hpp>
 
 #include "queue_benchmarking_helpers.hpp"
@@ -79,17 +77,17 @@ void run_single_queue(sycl::queue q) {
             << std::endl;
 }
 
-TEST_CASE("in_order_slow", "in_order_queue") {
+void test_in_order_slow() {
   sycl::queue q{sycl::property::queue::in_order{}};
   run_single_queue(q);
 }
 
-TEST_CASE("out_of_order", "in_order_queue") {
+void test_out_of_order() {
   sycl::queue q;
   run_single_queue(q);
 }
 
-TEST_CASE("multiple_in_order_queues", "in_order_queue") {
+void test_multiple_in_order_queues() {
 
   constexpr int numKernelsPerQueue = 10;
   constexpr int numQueues = numIters / numKernelsPerQueue;
@@ -104,9 +102,15 @@ TEST_CASE("multiple_in_order_queues", "in_order_queue") {
   auto singleKernelTime = bench<T>({qs[0]}, 1);
   auto nKernelsTime = bench_multiple_queues<T>(qs, numQueues);
   std::cout << "1 kernel took: " << singleKernelTime << "ms" << std::endl;
-  std::cout << numIters << " in-order kernels took: " << nKernelsTime
-            << "ms" << std::endl;
+  std::cout << numIters << " in-order kernels took: " << nKernelsTime << "ms"
+            << std::endl;
   std::cout << "Ratio N/1: "
             << static_cast<float>(nKernelsTime) / singleKernelTime << std::endl
             << std::endl;
+}
+
+int main() {
+  test_in_order_slow();
+  test_out_of_order();
+  test_multiple_in_order_queues();
 }

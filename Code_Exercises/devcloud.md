@@ -15,7 +15,7 @@ and execute:
 
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o <exercise name>_source -I../External/Catch2/single_include ../Code_Exercises/<Exercise directory>/source.cpp
+icpx -fsycl -o <exercise name>_source ../Code_Exercises/<Exercise directory>/source.cpp
 ```
 
 In Intel DevCloud, to run computational applications, you will submit jobs to a queue for execution on compute nodes,

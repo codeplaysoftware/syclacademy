@@ -8,9 +8,6 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 class kernel_a_1;
@@ -22,15 +19,16 @@ class kernel_b_2;
 class kernel_c_2;
 class kernel_d_2;
 
-int usm_selector(const sycl::device& dev) {
+int usm_selector(const sycl::device &dev) {
   if (dev.has(sycl::aspect::usm_device_allocations)) {
-    if (dev.has(sycl::aspect::gpu)) return 2;
+    if (dev.has(sycl::aspect::gpu))
+      return 2;
     return 1;
   }
   return -1;
 }
 
-TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
+void test_buffer() {
   constexpr size_t dataSize = 1024;
 
   int inA[dataSize], inB[dataSize], inC[dataSize], out[dataSize];
@@ -49,7 +47,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
     auto bufInC = sycl::buffer{inC, sycl::range{dataSize}};
     auto bufOut = sycl::buffer{out, sycl::range{dataSize}};
 
-    defaultQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler &cgh) {
       sycl::accessor acc{bufInA, cgh, sycl::read_write};
 
       cgh.parallel_for<kernel_a_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
@@ -57,7 +55,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    defaultQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler &cgh) {
       sycl::accessor accIn{bufInA, cgh, sycl::read_only};
       sycl::accessor accOut{bufInB, cgh, sycl::read_write};
 
@@ -66,7 +64,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    defaultQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler &cgh) {
       sycl::accessor accIn{bufInA, cgh, sycl::read_only};
       sycl::accessor accOut{bufInC, cgh, sycl::read_write};
 
@@ -75,7 +73,7 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
       });
     });
 
-    defaultQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler &cgh) {
       sycl::accessor accInA{bufInB, cgh, sycl::read_only};
       sycl::accessor accInB{bufInC, cgh, sycl::read_only};
       sycl::accessor accOut{bufOut, cgh, sycl::write_only};
@@ -86,16 +84,16 @@ TEST_CASE("buffer_accessor_diamond", "managing_dependencies_solution") {
     });
 
     defaultQueue.wait_and_throw();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(out[i] == i * 2.0f);
+    assert(out[i] == i * 2.0f);
   }
 }
 
-TEST_CASE("usm_diamond", "usm_vector_add_solution") {
+void test_usm() {
   constexpr size_t dataSize = 1024;
 
   int inA[dataSize], inB[dataSize], inC[dataSize], out[dataSize];
@@ -153,11 +151,16 @@ TEST_CASE("usm_diamond", "usm_vector_add_solution") {
     sycl::free(devicePtrOut, usmQueue);
 
     usmQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(out[i] == i * 2.0f);
+    assert(out[i] == i * 2.0f);
   }
+}
+
+int main() {
+  test_buffer();
+  test_usm();
 }

@@ -134,7 +134,7 @@ int main() {
           },
           numIters, "Tiled local memory matrix transpose");
     }
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 

@@ -11,9 +11,6 @@
 #include <algorithm>
 #include <iostream>
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <benchmark.h>
 #include <image_conv.h>
 
@@ -25,11 +22,9 @@ inline constexpr util::filter_type filterType = util::filter_type::blur;
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
-TEST_CASE("image_convolution_naive", "image_convolution_reference") {
-  const char* inputImageFile =
-      "../Images/dogs.png";
-  const char* outputImageFile =
-      "../Images/blurred_dogs.png";
+int main() {
+  const char *inputImageFile = "../Images/dogs.png";
+  const char *outputImageFile = "../Images/blurred_dogs.png";
 
   auto inputImage = util::read_image(inputImageFile, halo);
 
@@ -61,7 +56,6 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
     auto outBufRange =
         sycl::range(inputImgHeight, inputImgWidth) * sycl::range(1, channels);
 
-
     auto filterRange = filterWidth * sycl::range(1, channels);
 
     {
@@ -72,7 +66,7 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
 
       util::benchmark(
           [&]() {
-            myQueue.submit([&](sycl::handler& cgh) {
+            myQueue.submit([&](sycl::handler &cgh) {
               sycl::accessor inputAcc{inBuf, cgh, sycl::read_only};
               sycl::accessor outputAcc{outBuf, cgh, sycl::write_only};
               sycl::accessor filterAcc{filterBuf, cgh, sycl::read_only};
@@ -114,11 +108,11 @@ TEST_CASE("image_convolution_naive", "image_convolution_reference") {
           },
           100, "image convolution (coalesced)");
     }
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   util::write_image(outputImage, outputImageFile);
 
-  REQUIRE(true);
+  assert(true);
 }

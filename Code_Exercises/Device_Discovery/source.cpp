@@ -43,20 +43,17 @@
  * // Query a device for some things:
  * std::string vendor = dev.get_info<sycl::info::device::vendor>();
  * std::string dev_name = dev.get_info<sycl::info::device::name>();
- * std::string dev_driver_ver = dev.get_info<sycl::info::device::driver_version>();
+ * std::string dev_driver_ver =
+ dev.get_info<sycl::info::device::driver_version>();
  *
  *
 */
-
-
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
 class scalar_add;
 
-TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
+int main() {
   int a = 18, b = 24, r = 0;
 
   try {
@@ -69,7 +66,7 @@ TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
       auto bufR = sycl::buffer{&r, sycl::range{1}};
 
       defaultQueue
-          .submit([&](sycl::handler& cgh) {
+          .submit([&](sycl::handler &cgh) {
             auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
             auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
             auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
@@ -80,9 +77,9 @@ TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
     }
 
     defaultQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  REQUIRE(r == 42);
+  assert(r == 42);
 }

@@ -8,9 +8,6 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 class vector_add_1;
@@ -20,15 +17,16 @@ class vector_add_4;
 class vector_add_5;
 class vector_add_6;
 
-int usm_selector(const sycl::device& dev){
+int usm_selector(const sycl::device &dev) {
   if (dev.has(sycl::aspect::usm_device_allocations)) {
-    if (dev.has(sycl::aspect::gpu)) return 2;
+    if (dev.has(sycl::aspect::gpu))
+      return 2;
     return 1;
   }
   return -1;
 }
 
-TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
+void test_buffer_event_wait() {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -46,7 +44,7 @@ TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
     defaultQueue
-        .submit([&](sycl::handler& cgh) {
+        .submit([&](sycl::handler &cgh) {
           auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
           auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
           auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
@@ -55,19 +53,19 @@ TEST_CASE("buffer_accessor_event_wait", "synchronization_solution") {
               sycl::range{dataSize},
               [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
         })
-        .wait();  // Synchronize
+        .wait(); // Synchronize
 
     defaultQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {  // Copy back
+  } catch (const sycl::exception &e) { // Copy back
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }
 
-TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
+void test_buffer_queue_wait() {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -84,7 +82,7 @@ TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-    defaultQueue.submit([&](sycl::handler& cgh) {
+    defaultQueue.submit([&](sycl::handler &cgh) {
       auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
       auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
       auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
@@ -94,17 +92,17 @@ TEST_CASE("buffer_accessor_queue_wait", "synchronization_solution") {
           [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
     });
 
-    defaultQueue.wait_and_throw();      // Synchronize
-  } catch (const sycl::exception& e) {  // Copy back
+    defaultQueue.wait_and_throw();     // Synchronize
+  } catch (const sycl::exception &e) { // Copy back
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }
 
-TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
+void test_buffer_buffer_destruction() {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -122,7 +120,7 @@ TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
       auto bufB = sycl::buffer{b, sycl::range{dataSize}};
       auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-      defaultQueue.submit([&](sycl::handler& cgh) {
+      defaultQueue.submit([&](sycl::handler &cgh) {
         auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
         auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
         auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
@@ -131,19 +129,19 @@ TEST_CASE("buffer_accessor_buffer_dest", "synchronization_solution") {
             sycl::range{dataSize},
             [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
       });
-    }  // Synchronize and copy-back
+    } // Synchronize and copy-back
 
     defaultQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }
 
-TEST_CASE("usm_event_wait", "synchronization_solution") {
+void test_usm_event_wait() {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -162,10 +160,10 @@ TEST_CASE("usm_event_wait", "synchronization_solution") {
 
     usmQueue.memcpy(devicePtrA, a,
                     sizeof(float) * dataSize)
-        .wait();  // Synchronize
+        .wait(); // Synchronize
     usmQueue.memcpy(devicePtrB, b,
                     sizeof(float) * dataSize)
-        .wait();  // Synchronize
+        .wait(); // Synchronize
 
     usmQueue
         .parallel_for<vector_add_4>(sycl::range{dataSize},
@@ -175,27 +173,27 @@ TEST_CASE("usm_event_wait", "synchronization_solution") {
                                           devicePtrA[globalId] +
                                           devicePtrB[globalId];
                                     })
-        .wait();  // Synchronize
+        .wait(); // Synchronize
 
     usmQueue.memcpy(r, devicePtrR,
                     sizeof(float) * dataSize)
-        .wait();  // Synchronize and copy-back
+        .wait(); // Synchronize and copy-back
 
     sycl::free(devicePtrA, usmQueue);
     sycl::free(devicePtrB, usmQueue);
     sycl::free(devicePtrR, usmQueue);
 
     usmQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }
 
-TEST_CASE("usm_queue_wait", "synchronization_solution") {
+void test_usm_queue_wait() {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -215,7 +213,7 @@ TEST_CASE("usm_queue_wait", "synchronization_solution") {
     usmQueue.memcpy(devicePtrA, a, sizeof(float) * dataSize);
     usmQueue.memcpy(devicePtrB, b, sizeof(float) * dataSize);
 
-    usmQueue.wait();  // Synchronize
+    usmQueue.wait(); // Synchronize
 
     usmQueue.parallel_for<vector_add_5>(
         sycl::range{dataSize}, [=](sycl::id<1> idx) {
@@ -223,29 +221,29 @@ TEST_CASE("usm_queue_wait", "synchronization_solution") {
           devicePtrR[globalId] = devicePtrA[globalId] + devicePtrB[globalId];
         });
 
-    usmQueue.wait();  // Synchronize
+    usmQueue.wait(); // Synchronize
 
     usmQueue.memcpy(r, devicePtrR,
                     sizeof(float) * dataSize)
-        .wait();  // Copy-back
+        .wait(); // Copy-back
 
-    usmQueue.wait();  // Synchronize
+    usmQueue.wait(); // Synchronize
 
     sycl::free(devicePtrA, usmQueue);
     sycl::free(devicePtrB, usmQueue);
     sycl::free(devicePtrR, usmQueue);
 
     usmQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }
 
-TEST_CASE("host_accessor", "synchronization_solution") {
+void test_buffer_host_accessor() {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -263,7 +261,7 @@ TEST_CASE("host_accessor", "synchronization_solution") {
       auto bufB = sycl::buffer{b, sycl::range{dataSize}};
       auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-      defaultQueue.submit([&](sycl::handler& cgh) {
+      defaultQueue.submit([&](sycl::handler &cgh) {
         auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
         auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
         auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
@@ -273,20 +271,29 @@ TEST_CASE("host_accessor", "synchronization_solution") {
             [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
       });
 
-      defaultQueue.wait();  // Synchronize
+      defaultQueue.wait(); // Synchronize
 
       {
-        auto hostAccR = bufR.get_host_access(sycl::read_only);  // Copy-to-host
+        auto hostAccR = bufR.get_host_access(sycl::read_only); // Copy-to-host
 
         for (int i = 0; i < dataSize; ++i) {
-          REQUIRE(hostAccR[i] == i * 2);
+          assert(hostAccR[i] == i * 2);
         }
       }
 
-    }  // Copy-back
+    } // Copy-back
 
     defaultQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
+}
+
+int main() {
+  test_buffer_event_wait();
+  test_buffer_queue_wait();
+  test_buffer_buffer_destruction();
+  test_usm_event_wait();
+  test_usm_queue_wait();
+  test_buffer_host_accessor();
 }

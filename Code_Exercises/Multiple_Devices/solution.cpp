@@ -8,9 +8,6 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 #include <algorithm>
@@ -29,7 +26,7 @@ std::vector<sycl::device> get_two_devices() {
   return {devs[0], devs[1]};
 }
 
-TEST_CASE("load_balancing", "load_balancing_solution") {
+int main() {
   constexpr size_t dataSize = 1024;
   constexpr float ratio = 0.5f;
   constexpr size_t dataSizeFirst = ratio * dataSize;
@@ -92,6 +89,6 @@ TEST_CASE("load_balancing", "load_balancing_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
+    assert(r[i] == static_cast<float>(i) * 2.0f);
   }
 }

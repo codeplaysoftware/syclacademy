@@ -19,7 +19,6 @@ function( add_sycl_executable_adaptivecpp prefix source )
     ${PROJECT_SOURCE_DIR}/Utilities/include
     ${PROJECT_SOURCE_DIR}/External/stb)
   target_link_libraries("${prefix}_${source}" PRIVATE Threads::Threads)
-  target_link_libraries("${prefix}_${source}" PUBLIC Catch2::Catch2)
   set_target_properties("${prefix}_${source}" PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 endfunction()
 
@@ -31,10 +30,8 @@ function( add_sycl_executable_dpcpp prefix source )
   add_executable(${TARGET_NAME} "${source}.cpp")
   # This function is from IntelSYCL cmake module
   add_sycl_to_target(TARGET ${TARGET_NAME} SOURCES "${source}.cpp")
-  target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/Catch2/single_include")
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/External/stb")
   target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/Utilities/include")
-  target_link_libraries(${TARGET_NAME} PUBLIC Catch2::Catch2)
 endfunction()
 
 function( add_sycl_executable prefix source )

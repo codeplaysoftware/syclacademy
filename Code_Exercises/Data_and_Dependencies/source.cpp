@@ -51,10 +51,10 @@
  *
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include <cassert>
+#include <cstddef>
 
-TEST_CASE("managing_dependencies", "managing_dependencies_source") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   int inA[dataSize], inB[dataSize], inC[dataSize], out[dataSize];
@@ -89,6 +89,6 @@ TEST_CASE("managing_dependencies", "managing_dependencies_source") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(out[i] == i * 2.0f);
+    assert(out[i] == i * 2.0f);
   }
 }

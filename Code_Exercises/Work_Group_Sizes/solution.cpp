@@ -11,8 +11,6 @@
 #include <algorithm>
 #include <iostream>
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
@@ -25,7 +23,7 @@ inline constexpr util::filter_type filterType = util::filter_type::blur;
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
-TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
+int main() {
   constexpr auto inputImageFile = "../Images/dogs.png";
   constexpr auto outputImageFile = "../Images/blurred_dogs.png";
 
@@ -125,5 +123,5 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
 
   util::write_image(outputImage, outputImageFile);
 
-  REQUIRE(true);
+  assert(true);
 }

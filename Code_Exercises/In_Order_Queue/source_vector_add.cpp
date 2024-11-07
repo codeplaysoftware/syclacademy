@@ -55,10 +55,9 @@
 
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include <cassert>
 
-TEST_CASE("in_order_queue", "in_order_queue_source") {
+int main() {
   // Use the Exercise 10 solution to start
-  REQUIRE(true);
+  assert(true);
 }

@@ -8,10 +8,9 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include <cassert>
 
-TEST_CASE("image_convolution_tiled", "local_memory_tiling_source") {
+int main() {
   // Use your code from Exercise 17 to start
-  REQUIRE(true);
+  assert(true);
 }

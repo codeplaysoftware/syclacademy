@@ -11,14 +11,10 @@
 #include <algorithm>
 #include <iostream>
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 #include <benchmark.h>
 #include <image_conv.h>
-
 
 class image_convolution;
 
@@ -26,11 +22,9 @@ inline constexpr util::filter_type filterType = util::filter_type::blur;
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
-TEST_CASE("image_convolution_vectorized", "vectors_solution") {
-  const char* inputImageFile =
-      "../Images/dogs.png";
-  const char* outputImageFile =
-      "../Images/blurred_dogs.png";
+int main() {
+  const char *inputImageFile = "../Images/dogs.png";
+  const char *outputImageFile = "../Images/blurred_dogs.png";
 
   auto inputImage = util::read_image(inputImageFile, halo);
 
@@ -78,7 +72,7 @@ TEST_CASE("image_convolution_vectorized", "vectors_solution") {
 
       util::benchmark(
           [&]() {
-            myQueue.submit([&](sycl::handler& cgh) {
+            myQueue.submit([&](sycl::handler &cgh) {
               sycl::accessor inputAcc{inBufVec, cgh, sycl::read_only};
               sycl::accessor outputAcc{outBufVec, cgh, sycl::write_only};
               sycl::accessor filterAcc{filterBufVec, cgh, sycl::read_only};
@@ -111,11 +105,11 @@ TEST_CASE("image_convolution_vectorized", "vectors_solution") {
           },
           100, "image convolution (vectorized)");
     }
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   util::write_image(outputImage, outputImageFile);
 
-  REQUIRE(true);
+  assert(true);
 }

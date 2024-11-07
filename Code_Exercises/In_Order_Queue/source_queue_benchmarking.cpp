@@ -22,8 +22,6 @@
 // work done by `numIters` `single_task`s here would be better encapsulated in
 // a single `parallel_for` launch with range `numIters`.
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 #include <sycl/sycl.hpp>
 
 #include "queue_benchmarking_helpers.hpp"
@@ -45,7 +43,7 @@ template <typename T> auto bench(sycl::queue q, int numKernels) {
   return std::chrono::duration_cast<std::chrono::microseconds>(e - s).count();
 }
 
-TEST_CASE("in_order_slow", "in_order_queue") {
+void test_in_order_slow() {
   sycl::queue q{sycl::property::queue::in_order{}};
   bench<T>(q, 1); // Warmup
 
@@ -57,4 +55,8 @@ TEST_CASE("in_order_slow", "in_order_queue") {
   std::cout << "Ratio N/1: "
             << static_cast<float>(nKernelsTime) / singleKernelTime << std::endl
             << std::endl;
+}
+
+int main() {
+  test_in_order_slow();
 }

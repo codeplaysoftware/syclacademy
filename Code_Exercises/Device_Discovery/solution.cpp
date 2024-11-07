@@ -8,9 +8,6 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 class scalar_add;
@@ -37,7 +34,7 @@ auto intel_gpu_selector2 = [](const sycl::device &dev) {
   return -1;
 };
 
-TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
+int main() {
   int a = 18, b = 24, r = 0;
 
   try {
@@ -70,5 +67,5 @@ TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  REQUIRE(r == 42);
+  assert(r == 42);
 }

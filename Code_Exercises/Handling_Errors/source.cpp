@@ -8,12 +8,10 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
-TEST_CASE("handling_errors", "handling_errors_source") {
+int main() {
 
   // Task: catch synchronous and asynchronous exceptions
 
@@ -29,5 +27,5 @@ TEST_CASE("handling_errors", "handling_errors_source") {
 
   defaultQueue.throw_asynchronous();
 
-  REQUIRE(true);
+  assert(true);
 }

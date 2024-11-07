@@ -11,9 +11,6 @@
 #include <algorithm>
 #include <iostream>
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 #include <benchmark.h>
@@ -25,7 +22,7 @@ inline constexpr util::filter_type filterType = util::filter_type::blur;
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
-TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
+int main() {
   constexpr auto inputImageFile = "../Images/dogs.png";
   constexpr auto outputImageFile = "../Images/blurred_dogs.png";
 
@@ -53,7 +50,7 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
     auto localRange = sycl::range(8, 8);
     auto ndRange = sycl::nd_range(globalRange, localRange);
 
-     auto inBufRange =
+    auto inBufRange =
         sycl::range(inputImgHeight + (halo * 2), inputImgWidth + (halo * 2)) *
         sycl::range(1, channels);
     auto outBufRange =
@@ -81,8 +78,8 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
               sycl::accessor outputAcc{outBufVec, cgh, sycl::write_only};
               sycl::accessor filterAcc{filterBufVec, cgh, sycl::read_only};
 
-              auto scratchpad = sycl::local_accessor<sycl::float4, 2>(
-                  scratchpadRange, cgh);
+              auto scratchpad =
+                  sycl::local_accessor<sycl::float4, 2>(scratchpadRange, cgh);
 
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {
@@ -93,11 +90,12 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
 
                     /*
                      * Each work group will need to read a tile of size
-                     * (localRange[0] + halo * 2, localRange[1] + halo * 2) in order to write a
-                     * tile of size (localRange[0], localRange[1]). Since the size of the tile
-                     * we need to read is larger than the workgroup size (localRange), we must
-                     * do multiple loads per work item. The iterations of the for loop work
-                     * are as follows:
+                     * (localRange[0] + halo * 2, localRange[1] + halo * 2) in
+                     * order to write a tile of size (localRange[0],
+                     * localRange[1]). Since the size of the tile we need to
+                     * read is larger than the workgroup size (localRange), we
+                     * must do multiple loads per work item. The iterations of
+                     * the for loop work are as follows:
                      *
                      *            <- localRange[0] + halo *2 ->
                      *           +------------------------------+  ^
@@ -106,9 +104,8 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
                      *         | ||                 ||         ||  |
                      *     local ||   iteration 1   ||  it 2   ||  |
                      *  Range[1] ||     load        ||  load   ||
-                     *         | ||                 ||         ||  localRange[1] +
-                     *         | ||                 ||         ||  halo * 2
-                     *         V ||                 ||         ||
+                     *         | ||                 ||         ||  localRange[1]
+                     * + | ||                 ||         ||  halo * 2 V || || ||
                      *           |+-----------------++---------+|  |
                      *           |+-----------------++---------+|  |
                      *           ||                 ||         ||  |
@@ -146,11 +143,11 @@ TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
           },
           100, "image convolution (tiled)");
     }
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   util::write_image(outputImage, outputImageFile);
 
-  REQUIRE(true);
+  assert(true);
 }

@@ -8,15 +8,12 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 class vector_add_1;
 class vector_add_2;
 
-TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
+void test_item() {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -33,7 +30,7 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    gpuQueue.submit([&](sycl::handler &cgh) {
       sycl::accessor accA{bufA, cgh, sycl::read_only};
       sycl::accessor accB{bufB, cgh, sycl::read_only};
       sycl::accessor accR{bufR, cgh, sycl::write_only};
@@ -46,16 +43,16 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
     });
 
     gpuQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
 }
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
+void test_nd_item() {
   constexpr size_t dataSize = 1024;
   constexpr size_t workGroupSize = 128;
 
@@ -73,7 +70,7 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
     auto bufB = sycl::buffer{b, sycl::range{dataSize}};
     auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
-    gpuQueue.submit([&](sycl::handler& cgh) {
+    gpuQueue.submit([&](sycl::handler &cgh) {
       sycl::accessor accA{bufA, cgh, sycl::read_write};
       sycl::accessor accB{bufB, cgh, sycl::read_write};
       sycl::accessor accR{bufR, cgh, sycl::read_write};
@@ -88,11 +85,16 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
     });
 
     gpuQueue.throw_asynchronous();
-  } catch (const sycl::exception& e) {
+  } catch (const sycl::exception &e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    assert(r[i] == i * 2);
   }
+}
+
+int main() {
+  test_item();
+  test_nd_item();
 }

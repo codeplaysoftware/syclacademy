@@ -8,12 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <sycl/sycl.hpp>
 
 // The below tests that the header file has been included
-TEST_CASE("empty_sycl_source_file", "compiling_with_sycl_solution") {
-  REQUIRE(true);
-}
+int main() { assert(true); }

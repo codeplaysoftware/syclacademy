@@ -8,15 +8,13 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
 class scalar_add_usm;
 class scalar_add_buff_acc;
 
-TEST_CASE("scalar_add_usm", "scalar_add_solution") {
+void test_usm() {
   int a = 18, b = 24, r = 0;
 
   auto defaultQueue = sycl::queue{};
@@ -39,10 +37,10 @@ TEST_CASE("scalar_add_usm", "scalar_add_solution") {
   sycl::free(dev_B, defaultQueue);
   sycl::free(dev_R, defaultQueue);
 
-  REQUIRE(r == 42);
+  assert(r == 42);
 }
 
-TEST_CASE("scalar_add_buff_acc", "scalar_add_solution") {
+void test_buffer() {
   int a = 18, b = 24, r = 0;
 
   auto defaultQueue = sycl::queue{};
@@ -63,5 +61,10 @@ TEST_CASE("scalar_add_buff_acc", "scalar_add_solution") {
         .wait();
   }
 
-  REQUIRE(r == 42);
+  assert(r == 42);
+}
+
+int main() {
+  test_usm();
+  test_buffer();
 }
