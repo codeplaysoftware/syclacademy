@@ -4,8 +4,6 @@
 #include <iostream>
 
 #define SYCLACADEMY_ASSERT(cond)                                               \
-  if (!(cond)) {                                                               \
-    std::cerr << "Failure in " << __BASE_FILE__ << ":" << __FUNCTION__         \
-              << std::endl;                                                    \
-    std::abort();                                                              \
-  }
+  (static_cast<bool>(cond)                                                     \
+       ? void(0)                                                               \
+       : __assert_fail(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
