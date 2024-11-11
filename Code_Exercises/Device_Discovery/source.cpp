@@ -59,18 +59,18 @@ int main() {
 
   try {
     // Task: add a device selector to create this queue with an Intel GPU
-    auto defaultQueue = sycl::queue{};
+    auto defaultQueue = sycl::queue {};
 
     {
-      auto bufA = sycl::buffer{&a, sycl::range{1}};
-      auto bufB = sycl::buffer{&b, sycl::range{1}};
-      auto bufR = sycl::buffer{&r, sycl::range{1}};
+      auto bufA = sycl::buffer { &a, sycl::range { 1 } };
+      auto bufB = sycl::buffer { &b, sycl::range { 1 } };
+      auto bufR = sycl::buffer { &r, sycl::range { 1 } };
 
       defaultQueue
-          .submit([&](sycl::handler &cgh) {
-            auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
-            auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
-            auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
+          .submit([&](sycl::handler& cgh) {
+            auto accA = sycl::accessor { bufA, cgh, sycl::read_only };
+            auto accB = sycl::accessor { bufB, cgh, sycl::read_only };
+            auto accR = sycl::accessor { bufR, cgh, sycl::write_only };
 
             cgh.single_task<scalar_add>([=]() { accR[0] = accA[0] + accB[0]; });
           })
@@ -78,7 +78,7 @@ int main() {
     }
 
     defaultQueue.throw_asynchronous();
-  } catch (const sycl::exception &e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 

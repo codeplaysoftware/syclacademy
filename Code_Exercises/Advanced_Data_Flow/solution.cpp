@@ -18,7 +18,8 @@ class kernel_b_2;
 
 int usm_selector(const sycl::device& dev) {
   if (dev.has(sycl::aspect::usm_device_allocations)) {
-    if (dev.has(sycl::aspect::gpu)) return 2;
+    if (dev.has(sycl::aspect::gpu))
+      return 2;
     return 1;
   }
   return -1;
@@ -34,31 +35,31 @@ void test_buffer() {
   }
 
   try {
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
+    auto gpuQueue = sycl::queue { sycl::gpu_selector_v };
 
-    auto bufIn = sycl::buffer{in, sycl::range{dataSize}};
-    auto bufInt = sycl::buffer<float>{sycl::range{dataSize}};
-    auto bufOut = sycl::buffer<float>{sycl::range{dataSize}};
+    auto bufIn = sycl::buffer { in, sycl::range { dataSize } };
+    auto bufInt = sycl::buffer<float> { sycl::range { dataSize } };
+    auto bufOut = sycl::buffer<float> { sycl::range { dataSize } };
 
     bufIn.set_final_data(nullptr);
     bufOut.set_final_data(out);
 
     gpuQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accIn{bufIn, cgh, sycl::read_only};
-      sycl::accessor accOut{bufInt, cgh, sycl::write_only};
+      sycl::accessor accIn { bufIn, cgh, sycl::read_only };
+      sycl::accessor accOut { bufInt, cgh, sycl::write_only };
 
-      cgh.parallel_for<kernel_a_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accOut[idx] = accIn[idx] * 8.0f;
-      });
+      cgh.parallel_for<kernel_a_1>(
+          sycl::range { dataSize },
+          [=](sycl::id<1> idx) { accOut[idx] = accIn[idx] * 8.0f; });
     });
 
     gpuQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accIn{bufInt, cgh, sycl::read_only};
-      sycl::accessor accOut{bufOut, cgh, sycl::write_only};
+      sycl::accessor accIn { bufInt, cgh, sycl::read_only };
+      sycl::accessor accOut { bufOut, cgh, sycl::write_only };
 
-      cgh.parallel_for<kernel_b_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accOut[idx] = accIn[idx] / 2.0f;
-      });
+      cgh.parallel_for<kernel_b_1>(
+          sycl::range { dataSize },
+          [=](sycl::id<1> idx) { accOut[idx] = accIn[idx] / 2.0f; });
     });
 
     gpuQueue.wait_and_throw();
@@ -81,7 +82,7 @@ void test_usm() {
   }
 
   try {
-    auto usmQueue = sycl::queue{usm_selector};
+    auto usmQueue = sycl::queue { usm_selector };
 
     auto devicePtrIn = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrInt = sycl::malloc_device<float>(dataSize, usmQueue);
@@ -90,13 +91,13 @@ void test_usm() {
     auto e1 = usmQueue.memcpy(devicePtrIn, in, sizeof(float) * dataSize);
 
     auto e2 = usmQueue.parallel_for<kernel_a_2>(
-        sycl::range{dataSize}, e1, [=](sycl::id<1> idx) {
+        sycl::range { dataSize }, e1, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrInt[globalId] = devicePtrIn[globalId] * 8.0f;
         });
 
     auto e3 = usmQueue.parallel_for<kernel_b_2>(
-        sycl::range{dataSize}, e2, [=](sycl::id<1> idx) {
+        sycl::range { dataSize }, e2, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrOut[globalId] = devicePtrInt[globalId] / 2.0f;
         });

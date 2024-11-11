@@ -12,7 +12,7 @@
 
 #include <sycl/sycl.hpp>
 
-int usm_selector(const sycl::device &dev) {
+int usm_selector(const sycl::device& dev) {
   if (dev.has(sycl::aspect::usm_device_allocations)) {
     return 1;
   }
@@ -21,10 +21,10 @@ int usm_selector(const sycl::device &dev) {
 
 int main() {
   try {
-    auto usmQueue = sycl::queue{usm_selector};
+    auto usmQueue = sycl::queue { usm_selector };
 
     usmQueue.throw_asynchronous();
-  } catch (const sycl::exception &e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 

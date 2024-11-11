@@ -34,7 +34,7 @@ constexpr int numIters = 100;
 
 // Run busy_sleep numKernels times on a single thread using single_task
 template <typename T> auto bench(sycl::queue q, int numKernels) {
-  auto *out = sycl::malloc_device<T>(numKernels, q);
+  auto* out = sycl::malloc_device<T>(numKernels, q);
 
   auto s = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < numKernels; i++) {
@@ -46,7 +46,7 @@ template <typename T> auto bench(sycl::queue q, int numKernels) {
 }
 
 void test_in_order_slow() {
-  sycl::queue q{sycl::property::queue::in_order{}};
+  sycl::queue q { sycl::property::queue::in_order {} };
   bench<T>(q, 1); // Warmup
 
   auto singleKernelTime = bench<T>(q, 1);
@@ -59,6 +59,4 @@ void test_in_order_slow() {
             << std::endl;
 }
 
-int main() {
-  test_in_order_slow();
-}
+int main() { test_in_order_slow(); }

@@ -21,7 +21,7 @@ class kernel_b_2;
 class kernel_c_2;
 class kernel_d_2;
 
-int usm_selector(const sycl::device &dev) {
+int usm_selector(const sycl::device& dev) {
   if (dev.has(sycl::aspect::usm_device_allocations)) {
     if (dev.has(sycl::aspect::gpu))
       return 2;
@@ -42,51 +42,52 @@ void test_buffer() {
   }
 
   try {
-    auto inOrderQueue =
-        sycl::queue{sycl::gpu_selector_v, {sycl::property::queue::in_order{}}};
+    auto inOrderQueue = sycl::queue { sycl::gpu_selector_v,
+                                      { sycl::property::queue::in_order {} } };
 
-    auto bufInA = sycl::buffer{inA, sycl::range{dataSize}};
-    auto bufInB = sycl::buffer{inB, sycl::range{dataSize}};
-    auto bufInC = sycl::buffer{inC, sycl::range{dataSize}};
-    auto bufOut = sycl::buffer{out, sycl::range{dataSize}};
+    auto bufInA = sycl::buffer { inA, sycl::range { dataSize } };
+    auto bufInB = sycl::buffer { inB, sycl::range { dataSize } };
+    auto bufInC = sycl::buffer { inC, sycl::range { dataSize } };
+    auto bufOut = sycl::buffer { out, sycl::range { dataSize } };
 
-    inOrderQueue.submit([&](sycl::handler &cgh) {
-      sycl::accessor accInA{bufInA, cgh, sycl::read_write};
+    inOrderQueue.submit([&](sycl::handler& cgh) {
+      sycl::accessor accInA { bufInA, cgh, sycl::read_write };
 
       cgh.parallel_for<kernel_a_1>(
-          sycl::range{dataSize}, [=](sycl::id<1> idx) { accInA[idx] *= 2.0f; });
+          sycl::range { dataSize },
+          [=](sycl::id<1> idx) { accInA[idx] *= 2.0f; });
     });
 
-    inOrderQueue.submit([&](sycl::handler &cgh) {
-      sycl::accessor accIn{bufInA, cgh, sycl::read_only};
-      sycl::accessor accOut{bufInB, cgh, sycl::read_write};
+    inOrderQueue.submit([&](sycl::handler& cgh) {
+      sycl::accessor accIn { bufInA, cgh, sycl::read_only };
+      sycl::accessor accOut { bufInB, cgh, sycl::read_write };
 
-      cgh.parallel_for<kernel_b_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accOut[idx] += accIn[idx];
-      });
+      cgh.parallel_for<kernel_b_1>(
+          sycl::range { dataSize },
+          [=](sycl::id<1> idx) { accOut[idx] += accIn[idx]; });
     });
 
-    inOrderQueue.submit([&](sycl::handler &cgh) {
-      sycl::accessor accInA{bufInA, cgh, sycl::read_only};
-      sycl::accessor accInC{bufInC, cgh, sycl::read_write};
+    inOrderQueue.submit([&](sycl::handler& cgh) {
+      sycl::accessor accInA { bufInA, cgh, sycl::read_only };
+      sycl::accessor accInC { bufInC, cgh, sycl::read_write };
 
-      cgh.parallel_for<kernel_c_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accInC[idx] -= accInA[idx];
-      });
+      cgh.parallel_for<kernel_c_1>(
+          sycl::range { dataSize },
+          [=](sycl::id<1> idx) { accInC[idx] -= accInA[idx]; });
     });
 
-    inOrderQueue.submit([&](sycl::handler &cgh) {
-      sycl::accessor accInB{bufInB, cgh, sycl::read_only};
-      sycl::accessor accInC{bufInC, cgh, sycl::read_only};
-      sycl::accessor accOut{bufOut, cgh, sycl::write_only};
+    inOrderQueue.submit([&](sycl::handler& cgh) {
+      sycl::accessor accInB { bufInB, cgh, sycl::read_only };
+      sycl::accessor accInC { bufInC, cgh, sycl::read_only };
+      sycl::accessor accOut { bufOut, cgh, sycl::write_only };
 
-      cgh.parallel_for<kernel_d_1>(sycl::range{dataSize}, [=](sycl::id<1> idx) {
-        accOut[idx] = accInB[idx] + accInC[idx];
-      });
+      cgh.parallel_for<kernel_d_1>(
+          sycl::range { dataSize },
+          [=](sycl::id<1> idx) { accOut[idx] = accInB[idx] + accInC[idx]; });
     });
 
     inOrderQueue.wait_and_throw();
-  } catch (const sycl::exception &e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
@@ -108,7 +109,7 @@ void test_usm() {
 
   try {
     auto inOrderQueue =
-        sycl::queue{usm_selector, {sycl::property::queue::in_order{}}};
+        sycl::queue { usm_selector, { sycl::property::queue::in_order {} } };
 
     auto devicePtrInA = sycl::malloc_device<float>(dataSize, inOrderQueue);
     auto devicePtrInB = sycl::malloc_device<float>(dataSize, inOrderQueue);
@@ -121,25 +122,25 @@ void test_usm() {
     inOrderQueue.memcpy(devicePtrOut, out, sizeof(float) * dataSize);
 
     inOrderQueue.parallel_for<kernel_a_2>(
-        sycl::range{dataSize}, [=](sycl::id<1> idx) {
+        sycl::range { dataSize }, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrInA[globalId] = devicePtrInA[globalId] * 2.0f;
         });
 
     inOrderQueue.parallel_for<kernel_b_2>(
-        sycl::range{dataSize}, [=](sycl::id<1> idx) {
+        sycl::range { dataSize }, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrInB[globalId] += devicePtrInA[globalId];
         });
 
     inOrderQueue.parallel_for<kernel_c_2>(
-        sycl::range{dataSize}, [=](sycl::id<1> idx) {
+        sycl::range { dataSize }, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrInC[globalId] -= devicePtrInA[globalId];
         });
 
     inOrderQueue.parallel_for<kernel_d_2>(
-        sycl::range{dataSize}, [=](sycl::id<1> idx) {
+        sycl::range { dataSize }, [=](sycl::id<1> idx) {
           auto globalId = idx[0];
           devicePtrOut[globalId] =
               devicePtrInB[globalId] + devicePtrInC[globalId];
@@ -157,7 +158,7 @@ void test_usm() {
     sycl::free(devicePtrInC, inOrderQueue);
     sycl::free(devicePtrOut, inOrderQueue);
 
-  } catch (const sycl::exception &e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 

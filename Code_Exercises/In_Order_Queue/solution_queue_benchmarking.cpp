@@ -34,7 +34,7 @@ constexpr int numIters = 100;
 
 // Run busy_sleep numKernels times on a single thread using single_task
 template <typename T> auto bench(sycl::queue q, int numKernels) {
-  auto *out = sycl::malloc_device<T>(numKernels, q);
+  auto* out = sycl::malloc_device<T>(numKernels, q);
 
   auto s = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < numKernels; i++) {
@@ -51,7 +51,7 @@ template <typename T>
 auto bench_multiple_queues(std::vector<sycl::queue> qs,
                            int numKernelsPerQueue) {
 
-  auto *out = sycl::malloc_device<T>(numKernelsPerQueue * qs.size(), qs[0]);
+  auto* out = sycl::malloc_device<T>(numKernelsPerQueue * qs.size(), qs[0]);
 
   auto s = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < numKernelsPerQueue; i++) {
@@ -80,7 +80,7 @@ void run_single_queue(sycl::queue q) {
 }
 
 void test_in_order_slow() {
-  sycl::queue q{sycl::property::queue::in_order{}};
+  sycl::queue q { sycl::property::queue::in_order {} };
   run_single_queue(q);
 }
 
@@ -96,12 +96,12 @@ void test_multiple_in_order_queues() {
 
   std::vector<sycl::queue> qs;
   for (int i = 0; i < numQueues; i++) {
-    sycl::queue q{sycl::property::queue::in_order{}};
+    sycl::queue q { sycl::property::queue::in_order {} };
     qs.push_back(q);
   }
-  bench_multiple_queues<T>({qs[0]}, 1); // Warmup
+  bench_multiple_queues<T>({ qs[0] }, 1); // Warmup
 
-  auto singleKernelTime = bench<T>({qs[0]}, 1);
+  auto singleKernelTime = bench<T>({ qs[0] }, 1);
   auto nKernelsTime = bench_multiple_queues<T>(qs, numQueues);
   std::cout << "1 kernel took: " << singleKernelTime << "ms" << std::endl;
   std::cout << numIters << " in-order kernels took: " << nKernelsTime << "ms"

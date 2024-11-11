@@ -36,7 +36,7 @@ using T = double;
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool ValueSame(T a, T b) { return std::fabs(a - b) < 1.0e-08; }
-int VerifyResult(sycl::host_accessor<T, 1> &c_A, T *c_B) {
+int VerifyResult(sycl::host_accessor<T, 1>& c_A, T* c_B) {
   bool MismatchFound = false;
 
   for (size_t i = 0; i < M; i++) {
@@ -61,7 +61,7 @@ int VerifyResult(sycl::host_accessor<T, 1> &c_A, T *c_B) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void print_device_info(sycl::queue &Q) {
+void print_device_info(sycl::queue& Q) {
   std::string sycl_dev_name, sycl_runtime, sycl_driver;
   sycl_dev_name = Q.get_device().get_info<sycl::info::device::name>();
   sycl_driver = Q.get_device().get_info<sycl::info::device::driver_version>();
@@ -120,15 +120,15 @@ int main() {
   }
 
   // Create a SYCL in-order queue targetting GPU device
-  sycl::queue Q{sycl::gpu_selector_v, sycl::property::queue::in_order{}};
+  sycl::queue Q { sycl::gpu_selector_v, sycl::property::queue::in_order {} };
   // Prints some basic info related to the hardware
   print_device_info(Q);
 
   // TODO: Allocate memory on device, (using sycl::malloc_device APIs)
   // Creating 1D buffers for matrices which are bound to host memory array
-  sycl::buffer<T, 1> a{A.data(), sycl::range<1>{M * N}};
-  sycl::buffer<T, 1> b{B.data(), sycl::range<1>{N * P}};
-  sycl::buffer<T, 1> c{C_host.data(), sycl::range<1>{M * P}};
+  sycl::buffer<T, 1> a { A.data(), sycl::range<1> { M * N } };
+  sycl::buffer<T, 1> b { B.data(), sycl::range<1> { N * P } };
+  sycl::buffer<T, 1> c { C_host.data(), sycl::range<1> { M * P } };
 
   // TODO: Use oneMKL GEMM USM API
   oneapi::mkl::transpose transA = oneapi::mkl::transpose::nontrans;
@@ -136,7 +136,7 @@ int main() {
   oneapi::mkl::blas::column_major::gemm(Q, transA, transB, n, m, k, alpha, b,
                                         ldB, a, ldA, beta, c, ldC);
   Q.wait();
-  sycl::host_accessor C_device{c};
+  sycl::host_accessor C_device { c };
 
   // Verify results from oneMKL APIs
   int result = 0;

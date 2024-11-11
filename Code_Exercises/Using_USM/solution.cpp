@@ -14,7 +14,7 @@
 
 class vector_add;
 
-int usm_selector(const sycl::device &dev) {
+int usm_selector(const sycl::device& dev) {
   if (dev.has(sycl::aspect::usm_device_allocations)) {
     return 1;
   }
@@ -32,7 +32,7 @@ int main() {
   }
 
   try {
-    auto usmQueue = sycl::queue{usm_selector};
+    auto usmQueue = sycl::queue { usm_selector };
 
     auto devicePtrA = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrB = sycl::malloc_device<float>(dataSize, usmQueue);
@@ -42,7 +42,7 @@ int main() {
     usmQueue.memcpy(devicePtrB, b, sizeof(float) * dataSize).wait();
 
     usmQueue
-        .parallel_for<vector_add>(sycl::range{dataSize},
+        .parallel_for<vector_add>(sycl::range { dataSize },
                                   [=](sycl::id<1> idx) {
                                     auto globalId = idx[0];
                                     devicePtrR[globalId] =
@@ -58,7 +58,7 @@ int main() {
     sycl::free(devicePtrR, usmQueue);
 
     usmQueue.throw_asynchronous();
-  } catch (const sycl::exception &e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 

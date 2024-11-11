@@ -16,7 +16,7 @@ int main() {
 
   // Task: create a queue to a device which supports USM allocations
   // Remember to check for exceptions
-  auto usmQueue = sycl::queue{};
+  auto usmQueue = sycl::queue {};
 
   SYCLACADEMY_ASSERT(true);
 }

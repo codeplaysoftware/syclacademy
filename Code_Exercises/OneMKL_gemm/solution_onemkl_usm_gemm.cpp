@@ -36,7 +36,7 @@ using T = double;
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool ValueSame(T a, T b) { return std::fabs(a - b) < 1.0e-08; }
-int VerifyResult(T *c_A, T *c_B) {
+int VerifyResult(T* c_A, T* c_B) {
   bool MismatchFound = false;
 
   for (size_t i = 0; i < M; i++) {
@@ -61,7 +61,7 @@ int VerifyResult(T *c_A, T *c_B) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void print_device_info(sycl::queue &Q) {
+void print_device_info(sycl::queue& Q) {
   std::string sycl_dev_name, sycl_runtime, sycl_driver;
   sycl_dev_name = Q.get_device().get_info<sycl::info::device::name>();
   sycl_driver = Q.get_device().get_info<sycl::info::device::driver_version>();
@@ -120,14 +120,14 @@ int main() {
   }
 
   // Create a SYCL in-order queue targetting GPU device
-  sycl::queue Q{sycl::gpu_selector_v, sycl::property::queue::in_order{}};
+  sycl::queue Q { sycl::gpu_selector_v, sycl::property::queue::in_order {} };
   // Prints some basic info related to the hardware
   print_device_info(Q);
 
   // TODO: Allocate memory on device, (using sycl::malloc_device APIs)
-  T *a = sycl::malloc_device<T>((M * N), Q);
-  T *b = sycl::malloc_device<T>((N * P), Q);
-  T *c = sycl::malloc_device<T>((M * P), Q);
+  T* a = sycl::malloc_device<T>((M * N), Q);
+  T* b = sycl::malloc_device<T>((N * P), Q);
+  T* c = sycl::malloc_device<T>((M * P), Q);
   Q.memcpy(a, A.data(), sizeof(T) * M * N);
   Q.memcpy(b, B.data(), sizeof(T) * N * P);
 

@@ -34,7 +34,7 @@ enum Direction { COL, ROW };
  */
 template <typename dataT> class ImageConvolutionFunctor {
 
-public:
+ public:
   /**
    * @brief ImageConvolutionFunctor constructor
    *
@@ -50,13 +50,14 @@ public:
    * @param filter The filter buffer for the convolution operation
    * @param dir The direction of the convolution operation (ROW or COL)
    */
-  ImageConvolutionFunctor<dataT>(sycl::handler &cgh, sycl::buffer<dataT, 2> &in,
-                                 sycl::buffer<dataT, 2> &out,
-                                 sycl::buffer<dataT, 1> &filter,
-                                 const Direction &dir)
-      : inputAcc_{in, cgh, sycl::read_only}, outputAcc_{out, cgh,
-                                                        sycl::write_only},
-        filterAcc_{filter, cgh, sycl::read_only}, dir_(dir) {
+  ImageConvolutionFunctor<dataT>(sycl::handler& cgh, sycl::buffer<dataT, 2>& in,
+                                 sycl::buffer<dataT, 2>& out,
+                                 sycl::buffer<dataT, 1>& filter,
+                                 const Direction& dir)
+      : inputAcc_ { in, cgh, sycl::read_only }
+      , outputAcc_ { out, cgh, sycl::write_only }
+      , filterAcc_ { filter, cgh, sycl::read_only }
+      , dir_(dir) {
     filterWidth_ = filterAcc_.size();
     halo_ = filterWidth_ / 2;
   }
@@ -76,7 +77,7 @@ public:
   void operator()(sycl::nd_item<2> item) const {
     auto globalId = item.get_global_id();
 
-    auto sum = dataT{0.0f, 0.0f, 0.0f, 0.0f};
+    auto sum = dataT { 0.0f, 0.0f, 0.0f, 0.0f };
     auto filterOffset = sycl::id(0);
     auto src = globalId + sycl::id(halo_, halo_);
 
@@ -98,7 +99,7 @@ public:
       outputAcc_[globalId + sycl::id(halo_, halo_)] = sum;
   }
 
-private:
+ private:
   sycl::accessor<dataT, 2, sycl::access::mode::read> inputAcc_;
   sycl::accessor<dataT, 2, sycl::access::mode::write> outputAcc_;
   sycl::accessor<dataT, 1, sycl::access::mode::read> filterAcc_;
@@ -115,7 +116,7 @@ util::image_ref<float> linear_blur(int width) {
 
   int size = width * 4;
 
-  float *filterData = new float[size];
+  float* filterData = new float[size];
 
   for (int i = 0; i < width; ++i) {
     auto index = i * 4;
@@ -127,7 +128,7 @@ util::image_ref<float> linear_blur(int width) {
     filterData[index + 3] = isCenter ? 1.0f : 0.0f;
   }
 
-  return util::image_ref<float>{filterData, width, 1, 4, 0};
+  return util::image_ref<float> { filterData, width, 1, 4, 0 };
 }
 
 inline constexpr util::filter_type filterType = util::filter_type::blur;
@@ -135,8 +136,8 @@ inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
 int main() {
-  const char *inputImageFile = "../Images/dogs.png";
-  const char *outputImageFile = "../Images/blurred_dogs_1D.png";
+  const char* inputImageFile = "../Images/dogs.png";
+  const char* outputImageFile = "../Images/blurred_dogs_1D.png";
 
   auto inputImage = util::read_image(inputImageFile, halo);
 
@@ -146,7 +147,7 @@ int main() {
   auto filter = linear_blur(filterWidth);
 
   try {
-    sycl::queue myQueue{sycl::cpu_selector_v};
+    sycl::queue myQueue { sycl::cpu_selector_v };
 
     std::cout << "Running on "
               << myQueue.get_device().get_info<sycl::info::device::name>()
@@ -170,10 +171,10 @@ int main() {
     auto filterRange = sycl::range(filterWidth * channels);
 
     {
-      auto inBuf = sycl::buffer{inputImage.data(), inBufRange};
-      auto outBuf = sycl::buffer<float, 2>{outBufRange};
-      auto tempBuf = sycl::buffer<float, 2>{inBufRange};
-      auto filterBuf = sycl::buffer{filter.data(), filterRange};
+      auto inBuf = sycl::buffer { inputImage.data(), inBufRange };
+      auto outBuf = sycl::buffer<float, 2> { outBufRange };
+      auto tempBuf = sycl::buffer<float, 2> { inBufRange };
+      auto filterBuf = sycl::buffer { filter.data(), filterRange };
       outBuf.set_final_data(outputImage.data());
 
       auto inBufVec = inBuf.reinterpret<sycl::float4>(inBufRange /
@@ -187,13 +188,13 @@ int main() {
 
       util::benchmark(
           [&]() {
-            myQueue.submit([&](sycl::handler &cgh) {
+            myQueue.submit([&](sycl::handler& cgh) {
               ImageConvolutionFunctor<sycl::float4> convolve(
                   cgh, inBufVec, tempBufVec, filterBufVec, Direction::ROW);
               cgh.parallel_for(ndRange, convolve);
             });
 
-            myQueue.submit([&](sycl::handler &cgh) {
+            myQueue.submit([&](sycl::handler& cgh) {
               ImageConvolutionFunctor<sycl::float4> convolve(
                   cgh, tempBufVec, outBufVec, filterBufVec, Direction::COL);
               cgh.parallel_for(ndRange, convolve);
@@ -203,7 +204,7 @@ int main() {
           },
           100, "image convolution (COL and ROW)");
     }
-  } catch (const sycl::exception &e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 

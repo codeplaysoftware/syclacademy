@@ -26,26 +26,26 @@ void test_item() {
   }
 
   try {
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
+    auto gpuQueue = sycl::queue { sycl::gpu_selector_v };
 
-    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
-    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
-    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
+    auto bufA = sycl::buffer { a, sycl::range { dataSize } };
+    auto bufB = sycl::buffer { b, sycl::range { dataSize } };
+    auto bufR = sycl::buffer { r, sycl::range { dataSize } };
 
-    gpuQueue.submit([&](sycl::handler &cgh) {
-      sycl::accessor accA{bufA, cgh, sycl::read_only};
-      sycl::accessor accB{bufB, cgh, sycl::read_only};
-      sycl::accessor accR{bufR, cgh, sycl::write_only};
+    gpuQueue.submit([&](sycl::handler& cgh) {
+      sycl::accessor accA { bufA, cgh, sycl::read_only };
+      sycl::accessor accB { bufB, cgh, sycl::read_only };
+      sycl::accessor accR { bufR, cgh, sycl::write_only };
 
       cgh.parallel_for<vector_add_1>(
-          sycl::range{dataSize}, [=](sycl::item<1> itm) {
+          sycl::range { dataSize }, [=](sycl::item<1> itm) {
             auto globalId = itm.get_id();
             accR[globalId] = accA[globalId] + accB[globalId];
           });
     });
 
     gpuQueue.throw_asynchronous();
-  } catch (const sycl::exception &e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
@@ -66,19 +66,19 @@ void test_nd_item() {
   }
 
   try {
-    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
+    auto gpuQueue = sycl::queue { sycl::gpu_selector_v };
 
-    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
-    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
-    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
+    auto bufA = sycl::buffer { a, sycl::range { dataSize } };
+    auto bufB = sycl::buffer { b, sycl::range { dataSize } };
+    auto bufR = sycl::buffer { r, sycl::range { dataSize } };
 
-    gpuQueue.submit([&](sycl::handler &cgh) {
-      sycl::accessor accA{bufA, cgh, sycl::read_write};
-      sycl::accessor accB{bufB, cgh, sycl::read_write};
-      sycl::accessor accR{bufR, cgh, sycl::read_write};
+    gpuQueue.submit([&](sycl::handler& cgh) {
+      sycl::accessor accA { bufA, cgh, sycl::read_write };
+      sycl::accessor accB { bufB, cgh, sycl::read_write };
+      sycl::accessor accR { bufR, cgh, sycl::read_write };
 
-      auto ndRange =
-          sycl::nd_range{sycl::range{dataSize}, sycl::range{workGroupSize}};
+      auto ndRange = sycl::nd_range { sycl::range { dataSize },
+                                      sycl::range { workGroupSize } };
 
       cgh.parallel_for<vector_add_2>(ndRange, [=](sycl::nd_item<1> itm) {
         auto globalId = itm.get_global_id();
@@ -87,7 +87,7 @@ void test_nd_item() {
     });
 
     gpuQueue.throw_asynchronous();
-  } catch (const sycl::exception &e) {
+  } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
