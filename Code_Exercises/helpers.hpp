@@ -13,13 +13,14 @@
 #include <cstddef> // for size_t
 
 #ifndef __SYCL_DEVICE_ONLY__
-extern "C" void __assert_fail(const char* __assertion, const char* __file,
-                              unsigned int __line, const char* __function);
-
+#include <cstdio>  // fprintf
+#include <cstdlib> // abort
 #define SYCLACADEMY_ASSERT(cond)                                               \
-  (static_cast<bool>(cond)                                                     \
-       ? void(0)                                                               \
-       : __assert_fail(#cond, __FILE__, __LINE__, __FUNCTION__))
+  if (!(cond)) {                                                               \
+    std::fprintf(stderr, "%s failed in %s:%d:%s\nExiting\n", #cond,            \
+                 __BASE_FILE__, __LINE__, __FUNCTION__);                       \
+    std::abort();                                                              \
+  }
 #else
 #define SYCLACADEMY_ASSERT(cond) void(0);
 #endif
