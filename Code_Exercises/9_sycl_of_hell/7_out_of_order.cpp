@@ -17,9 +17,9 @@ int main(int argc, char **argv) {
   try {
     program.parse_args(argc, argv);
   } catch (const std::runtime_error &err) {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
     std::cout << program;
-    exit(0);
+    std::exit(1);
   }
 
   const auto global_range = program.get<int>("-g");

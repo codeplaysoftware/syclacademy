@@ -17,9 +17,9 @@ int main(int argc, char **argv) {
   try {
     program.parse_args(argc, argv);
   } catch (const std::runtime_error &err) {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
     std::cout << program;
-    exit(0);
+    std::exit(1);
   }
 
   const auto global_range = program.get<int>("-g");
@@ -30,16 +30,13 @@ int main(int argc, char **argv) {
   sycl::queue Q;
   std::cout << "Running on " << Q.get_device().get_info<sycl::info::device::name>() << std::endl;
 
-  // Similar to 
-  // #pragma OMP PARALLEL FOR
-  // for(int idx=0; idx++; idx < global_range)
-  Q.parallel_for(
-       global_range,
-       [=](sycl::id<1> idx) {
-         // Explicit cast because of printf shenaningan.
-         sycl::ext::oneapi::experimental::printf("Hello, World! World rank %d\n",
-                                                 static_cast<int>(idx));
-       });
+  // Similar to
+  //   # pragma OMP PARALLEL FOR
+  //   for(int idx=0; idx++; idx < global_range)
+  Q.parallel_for(global_range, [=](sycl::id<1> idx) {
+    // Explicit cast because of printf shenaningan.
+    sycl::ext::oneapi::experimental::printf("Hello, World! World rank %d\n", static_cast<int>(idx));
+  });
   Q.wait();
 
   return 0;
