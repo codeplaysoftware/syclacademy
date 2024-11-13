@@ -8,8 +8,7 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include "../helpers.hpp"
 
 #include <sycl/sycl.hpp>
 
@@ -22,7 +21,7 @@ int usm_selector(const sycl::device& dev) {
   return -1;
 }
 
-TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -33,7 +32,7 @@ TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
   }
 
   try {
-    auto usmQueue = sycl::queue{usm_selector};
+    auto usmQueue = sycl::queue { usm_selector };
 
     auto devicePtrA = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrB = sycl::malloc_device<float>(dataSize, usmQueue);
@@ -43,7 +42,7 @@ TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
     usmQueue.memcpy(devicePtrB, b, sizeof(float) * dataSize).wait();
 
     usmQueue
-        .parallel_for<vector_add>(sycl::range{dataSize},
+        .parallel_for<vector_add>(sycl::range { dataSize },
                                   [=](sycl::id<1> idx) {
                                     auto globalId = idx[0];
                                     devicePtrR[globalId] =
@@ -64,6 +63,6 @@ TEST_CASE("usm_vector_add", "usm_vector_add_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    SYCLACADEMY_ASSERT(r[i] == i * 2);
   }
 }

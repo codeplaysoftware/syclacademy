@@ -14,5 +14,5 @@ make <exercise name>_source
 
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o <exercise name>_source -I../External/Catch2/single_include ../Code_Exercises/<Exercise directory>/source.cpp
+icpx -fsycl -o <exercise name>_source ../Code_Exercises/<Exercise directory>/source.cpp
 ```

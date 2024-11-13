@@ -11,6 +11,8 @@
  *
  */
 
+#include "../helpers.hpp"
+
 #include <benchmark.h>
 #include <sycl/sycl.hpp>
 
@@ -28,7 +30,7 @@ constexpr int numIters = 100;
 // at a[0].
 template <typename T, size_t workGroupSize>
 inline void workgroup_reduce_local_mem(sycl::local_accessor<T, 1> a,
-                                       sycl::nd_item<1> &item,
+                                       sycl::nd_item<1>& item,
                                        size_t localIdx) {
 #pragma unroll
   for (auto i = workGroupSize; i >= 2; i /= 2) {
@@ -40,7 +42,7 @@ inline void workgroup_reduce_local_mem(sycl::local_accessor<T, 1> a,
   }
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
 
   T a[dataSize];
 
@@ -48,10 +50,10 @@ int main(int argc, char *argv[]) {
     a[i] = static_cast<T>(i);
   }
 
-  auto q = sycl::queue{};
+  auto q = sycl::queue {};
 
-  T *devPtrA = sycl::malloc_device<T>(dataSize, q);
-  T *devPtrB =
+  T* devPtrA = sycl::malloc_device<T>(dataSize, q);
+  T* devPtrB =
       sycl::malloc_device<T>(numWorkGroups, q); // Holds intermediate values
 
   auto e1 = q.memcpy(devPtrA, a, sizeof(T) * dataSize);
@@ -61,7 +63,7 @@ int main(int argc, char *argv[]) {
 
   util::benchmark(
       [&]() {
-        auto e2 = q.submit([&](sycl::handler &cgh) {
+        auto e2 = q.submit([&](sycl::handler& cgh) {
           cgh.depends_on(e1);
           sycl::local_accessor<T, 1> local_mem(workGroupSize, cgh);
 
@@ -87,7 +89,7 @@ int main(int argc, char *argv[]) {
               });
         });
 
-        q.submit([&](sycl::handler &cgh) {
+        q.submit([&](sycl::handler& cgh) {
            cgh.depends_on(e2);
            sycl::local_accessor<T, 1> local_mem(workGroupSize, cgh);
 

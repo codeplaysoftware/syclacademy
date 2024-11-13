@@ -22,8 +22,8 @@
 // work done by `numIters` `single_task`s here would be better encapsulated in
 // a single `parallel_for` launch with range `numIters`.
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include "../helpers.hpp"
+
 #include <sycl/sycl.hpp>
 
 #include "queue_benchmarking_helpers.hpp"
@@ -34,7 +34,7 @@ constexpr int numIters = 100;
 
 // Run busy_sleep numKernels times on a single thread using single_task
 template <typename T> auto bench(sycl::queue q, int numKernels) {
-  auto *out = sycl::malloc_device<T>(numKernels, q);
+  auto* out = sycl::malloc_device<T>(numKernels, q);
 
   auto s = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < numKernels; i++) {
@@ -45,8 +45,8 @@ template <typename T> auto bench(sycl::queue q, int numKernels) {
   return std::chrono::duration_cast<std::chrono::microseconds>(e - s).count();
 }
 
-TEST_CASE("in_order_slow", "in_order_queue") {
-  sycl::queue q{sycl::property::queue::in_order{}};
+void test_in_order_slow() {
+  sycl::queue q { sycl::property::queue::in_order {} };
   bench<T>(q, 1); // Warmup
 
   auto singleKernelTime = bench<T>(q, 1);
@@ -58,3 +58,5 @@ TEST_CASE("in_order_slow", "in_order_queue") {
             << static_cast<float>(nKernelsTime) / singleKernelTime << std::endl
             << std::endl;
 }
+
+int main() { test_in_order_slow(); }

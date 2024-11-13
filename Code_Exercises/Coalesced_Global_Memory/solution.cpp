@@ -8,11 +8,10 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
+#include "../helpers.hpp"
+
 #include <algorithm>
 #include <iostream>
-
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
@@ -25,11 +24,9 @@ inline constexpr util::filter_type filterType = util::filter_type::blur;
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
-TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
-  const char* inputImageFile =
-      "../Images/dogs.png";
-  const char* outputImageFile =
-      "../Images/blurred_dogs.png";
+int main() {
+  const char* inputImageFile = "../Images/dogs.png";
+  const char* outputImageFile = "../Images/blurred_dogs.png";
 
   auto inputImage = util::read_image(inputImageFile, halo);
 
@@ -39,7 +36,7 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
   auto filter = util::generate_filter(util::filter_type::blur, filterWidth);
 
   try {
-    sycl::queue myQueue{sycl::gpu_selector_v};
+    sycl::queue myQueue { sycl::gpu_selector_v };
 
     std::cout << "Running on "
               << myQueue.get_device().get_info<sycl::info::device::name>()
@@ -63,17 +60,17 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
     auto filterRange = filterWidth * sycl::range(1, channels);
 
     {
-      auto inBuf = sycl::buffer{inputImage.data(), inBufRange};
-      auto outBuf = sycl::buffer<float, 2>{outBufRange};
-      auto filterBuf = sycl::buffer{filter.data(), filterRange};
+      auto inBuf = sycl::buffer { inputImage.data(), inBufRange };
+      auto outBuf = sycl::buffer<float, 2> { outBufRange };
+      auto filterBuf = sycl::buffer { filter.data(), filterRange };
       outBuf.set_final_data(outputImage.data());
 
       util::benchmark(
           [&]() {
             myQueue.submit([&](sycl::handler& cgh) {
-              sycl::accessor inputAcc{inBuf, cgh, sycl::read_only};
-              sycl::accessor outputAcc{outBuf, cgh, sycl::write_only};
-              sycl::accessor filterAcc{filterBuf, cgh, sycl::read_only};
+              sycl::accessor inputAcc { inBuf, cgh, sycl::read_only };
+              sycl::accessor outputAcc { outBuf, cgh, sycl::write_only };
+              sycl::accessor filterAcc { filterBuf, cgh, sycl::read_only };
 
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {
@@ -84,7 +81,7 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
                     auto src = (globalId + haloOffset) * channelsStride;
                     auto dest = globalId * channelsStride;
 
-                    float sum[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+                    float sum[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
                     for (int r = 0; r < filterWidth; ++r) {
                       for (int c = 0; c < filterWidth; ++c) {
@@ -102,7 +99,7 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
                     }
 
                     for (size_t i = 0; i < 4; ++i) {
-                      outputAcc[dest + sycl::id{0, i}] = sum[i];
+                      outputAcc[dest + sycl::id { 0, i }] = sum[i];
                     }
                   });
             });
@@ -117,5 +114,5 @@ TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_solution") {
 
   util::write_image(outputImage, outputImageFile);
 
-  REQUIRE(true);
+  SYCLACADEMY_ASSERT(true);
 }

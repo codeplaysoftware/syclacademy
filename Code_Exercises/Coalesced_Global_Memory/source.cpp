@@ -8,10 +8,9 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include "../helpers.hpp"
 
-TEST_CASE("image_convolution_coalesced", "coalesced_global_memory_source") {
+int main() {
   // Use your code from Exercise 15 to start
-  REQUIRE(true);
+  SYCLACADEMY_ASSERT(true);
 }

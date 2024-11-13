@@ -8,23 +8,21 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
+#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
 
 class hello_world;
 
-TEST_CASE("hello_world", "hello_world_solution") {
-  auto defaultQueue = sycl::queue{};
+int main() {
+  auto defaultQueue = sycl::queue {};
 
   defaultQueue
       .submit([&](sycl::handler& cgh) {
-        auto os = sycl::stream{128, 128, cgh};
+        auto os = sycl::stream { 128, 128, cgh };
 
         cgh.single_task<hello_world>([=]() { os << "Hello World!\n"; });
       })
       .wait();
 
-  REQUIRE(true);
+  SYCLACADEMY_ASSERT(true);
 }

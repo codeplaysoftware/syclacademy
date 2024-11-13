@@ -118,7 +118,7 @@ make What_is_SYCL_source
 ```
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o What_is_SYCL_source -I../External/Catch2/single_include ../Code_Exercises/What_is_SYCL/source.cpp
+icpx -fsycl -o What_is_SYCL_source ../Code_Exercises/What_is_SYCL/source.cpp
 ./What_is_SYCL_source
 ```
 
@@ -136,7 +136,7 @@ make What_is_SYCL_source
 alternatively, without CMake:
 ```sh
 cd Code_Exercises/What_is_SYCL
-/path/to/AdaptiveCpp/bin/acpp -o What_is_SYCL_source -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
+/path/to/AdaptiveCpp/bin/acpp -o What_is_SYCL_source --acpp-targets="<target specification>" source.cpp
 ./What_is_SYCL_source
 ```
 

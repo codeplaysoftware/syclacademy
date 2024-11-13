@@ -8,14 +8,12 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
+#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
 
 class vector_add;
 
-TEST_CASE("vector_add", "vector_add_solution") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -26,20 +24,20 @@ TEST_CASE("vector_add", "vector_add_solution") {
   }
 
   try {
-    auto defaultQueue = sycl::queue{};
+    auto defaultQueue = sycl::queue {};
 
-    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
-    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
-    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
+    auto bufA = sycl::buffer { a, sycl::range { dataSize } };
+    auto bufB = sycl::buffer { b, sycl::range { dataSize } };
+    auto bufR = sycl::buffer { r, sycl::range { dataSize } };
 
     defaultQueue
         .submit([&](sycl::handler& cgh) {
-          sycl::accessor accA{bufA, cgh, sycl::read_only};
-          sycl::accessor accB{bufB, cgh, sycl::read_only};
-          sycl::accessor accR{bufR, cgh, sycl::write_only};
+          sycl::accessor accA { bufA, cgh, sycl::read_only };
+          sycl::accessor accB { bufB, cgh, sycl::read_only };
+          sycl::accessor accR { bufR, cgh, sycl::write_only };
 
           cgh.parallel_for<vector_add>(
-              sycl::range{dataSize},
+              sycl::range { dataSize },
               [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
         })
         .wait();
@@ -50,6 +48,6 @@ TEST_CASE("vector_add", "vector_add_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
+    SYCLACADEMY_ASSERT(r[i] == static_cast<float>(i) * 2.0f);
   }
 }

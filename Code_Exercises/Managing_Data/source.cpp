@@ -45,20 +45,19 @@
  *
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include "../helpers.hpp"
 
-TEST_CASE("scalar_add_usm", "scalar_add_source") {
+void test_usm() {
 
   int a = 18, b = 24, r = 0;
 
   // Task: Compute a+b on the SYCL device using USM
   r = a + b;
 
-  REQUIRE(r == 42);
+  SYCLACADEMY_ASSERT(r == 42);
 }
 
-TEST_CASE("scalar_add_buff_acc", "scalar_add_source") {
+void test_buffer() {
 
   int a = 18, b = 24, r = 0;
 
@@ -66,5 +65,10 @@ TEST_CASE("scalar_add_buff_acc", "scalar_add_source") {
   // accessor memory model
   r = a + b;
 
-  REQUIRE(r == 42);
+  SYCLACADEMY_ASSERT(r == 42);
+}
+
+int main() {
+  test_usm();
+  test_buffer();
 }

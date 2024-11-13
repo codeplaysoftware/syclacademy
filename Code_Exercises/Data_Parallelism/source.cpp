@@ -32,16 +32,16 @@
  *              // Do something
  *          });
  * //    3. Enqueue a parallel for:
- *          cgh.parallel_for<class mykernel>(sycl::range{n}, [=](sycl::id<1> i) {
+ *          cgh.parallel_for<class mykernel>(sycl::range{n}, [=](sycl::id<1> i)
+ {
  *              // Do something
  *          });
  *
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include "../helpers.hpp"
 
-TEST_CASE("vector_add", "vector_add_solution") {
+int main() {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -57,6 +57,6 @@ TEST_CASE("vector_add", "vector_add_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
+    SYCLACADEMY_ASSERT(r[i] == static_cast<float>(i) * 2.0f);
   }
 }
