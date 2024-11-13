@@ -1,707 +1,146 @@
 ﻿<!DOCTYPE html>
 
 <html>
-	<head>
-	    <meta charset="utf-8">
-		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
-		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
-		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
-		<script>
-			// This is needed when printing the slides to pdf
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-		<script>
-		    // This is used to display the static images on each slide,
-			// See global-images in this html file and custom.css
-			(function() {
-				if(window.addEventListener) {
-					window.addEventListener('load', () => {
-						let slides = document.getElementsByClassName("slide-background");
+  <head>
+      <meta charset="utf-8">
+    <link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+    <link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+    <link rel="stylesheet" href="../common-revealjs/css/custom.css">
+    <script>
+      // This is needed when printing the slides to pdf
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <script>
+        // This is used to display the static images on each slide,
+      // See global-images in this html file and custom.css
+      (function() {
+        if(window.addEventListener) {
+          window.addEventListener('load', () => {
+            let slides = document.getElementsByClassName("slide-background");
 
-						if (slides.length === 0) {
-							slides = document.getElementsByClassName("pdf-page")
-						}
+            if (slides.length === 0) {
+              slides = document.getElementsByClassName("pdf-page")
+            }
 
-						// Insert global images on each slide
-						for(let i = 0, max = slides.length; i < max; i++) {
-							let cln = document.getElementById("global-images").cloneNode(true);
-							cln.removeAttribute("id");
-							slides[i].appendChild(cln);
-						}
+            // Insert global images on each slide
+            for(let i = 0, max = slides.length; i < max; i++) {
+              let cln = document.getElementById("global-images").cloneNode(true);
+              cln.removeAttribute("id");
+              slides[i].appendChild(cln);
+            }
 
-						// Remove top level global images
-						let elem = document.getElementById("global-images");
-						elem.parentElement.removeChild(elem);
-					}, false);
-				}
-			})();
-		</script>
-		
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<div id="global-images" class="global-images">
-					<img src="../common-revealjs/images/sycl_academy.png" />
-					<img src="../common-revealjs/images/sycl_logo.png" />
-					<img src="../common-revealjs/images/trademarks.png" />
-					<img src="../common-revealjs/images/codeplay.png" />
-				</div>
-				<!--Slide 1-->
-				<section class="hbox">
-					<div class="hbox" data-markdown>
-						## A Quick Introduction to SYCL
-					</div>
-				</section>
-				<!--Slide 2-->
-				<section class="hbox">
-          <div  class="container" data-markdown>
-					## Learning Objectives
+            // Remove top level global images
+            let elem = document.getElementById("global-images");
+            elem.parentElement.removeChild(elem);
+          }, false);
+        }
+      })();
+    </script>
+    
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <div id="global-images" class="global-images">
+          <img src="../common-revealjs/images/sycl_academy.png" />
+          <img src="../common-revealjs/images/sycl_logo.png" />
+          <img src="../common-revealjs/images/trademarks.png" />
+          <img src="../common-revealjs/images/codeplay.png" />
+        </div>
+        <!--Slide 1-->
+        <section class="hbox">
+          <div class="hbox" data-markdown>
+            ## A Quick Introduction to SYCL (with a lot of Hands-on)
           </div>
-					<div class="container" data-markdown>
-						* Quick SYCL introduction
-						* Writing a one-page application
-          </div>
-				</section>
-				<!--Slide 3-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### What is SYCL?
-					</div>
-					<div class="container" data-markdown>
-						![SYCL](../common-revealjs/images/sycl_and_cpp.png "SYCL")
-					</div>
-					<div class="hbox" data-markdown>
-						SYCL is a single source, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
-					</div>
         </section>
-				<!--Slide 4-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### What is SYCL?
-					</div>
-					<div class="container" data-markdown>
-						A first example of SYCL code.
-					</div>
-					<div class="container" data-markdown>
-						![SYCL](../common-revealjs/images/sycl_first_sample_code.png "SYCL")
-					</div>
-				</section>
-				<!--Slide 5-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL Key concepts
-					</div>
-					<div class="container" data-markdown>
+        <!--Slide 2-->
+        <section class="hbox">
+          <div  class="container" data-markdown>
+          ## Learning Objectives
+          </div>
+          <div class="container" data-markdown>
+            * Quick SYCL introduction
+            * Lot of Hands-On code examples to learn key concepts
+            * The goal is to be interactive!
+          </div>
+        </section>
+        <!--Slide 3-->
+        <section>
+          <div class="hbox" data-markdown>
+            #### What is SYCL?
+          </div>
+          <div class="container" data-markdown>
+            ![SYCL](../common-revealjs/images/sycl_and_cpp.png "SYCL")
+          </div>
+          <div class="hbox" data-markdown>
+            SYCL is a single source, high-level, standard C++ programming model, that can target a range of heterogeneous platforms
+          </div>
+        </section>
+        <!--Slide 3-->
+        <section>
+          <div class="hbox" data-markdown>
+            #### What is SYCL?
+          </div>
+          <div class="container" data-markdown>
+              * Backed By Khromos (Vulkan, OpenCL, SPIRV)
+              * Two big implementation (OneAPI, and AdaptiveCPP)
+              * Lot of backends (Cuda, OpenCL, Level Zero, OpenMP)
+              * Used by lot of Codes (HACC, Kokkos, ...)
+              * Spec develoepment in public (https://github.com/KhronosGroup/SYCL-Docs/). Join us!
+          </div>
+        </section>
+        <!--Slide 5-->
+        <section>
+          <div class="hbox" data-markdown>
+            #### SYCL Key concepts
+          </div>
+          <div class="container" data-markdown>
             * SYCL is a C++-based programming model:
               * Device code and host code exist in the same file
               * Device code can use templates and other C++ features
               * Designed with "modern" C++ in mind
             * SYCL provides high-level abstractions over common boilerplate code 
               * Platform/device selection
-              * Buffer creation and data movement
+              * Data movement
               * Kernel function compilation
               * Dependency management and scheduling
-					</div>
-				</section>
+          </div>
+        </section>
+        <!--Slide 5-->
+        <section>
+          <div class="hbox" data-markdown>
+            #### Ecosystem
+          </div>
+          <div class="container" data-markdown>
+            * CUDA -> SYCL Translator: https://github.com/oneapi-src/SYCLomatic)
+            * MKL / RNG (e.g wrapper arround cublas): OneMKL
+            * Thrust Like: OneCCL
+          </div>
+        </section>
+        <!--Slide 5-->
+        <section>
+          <div class="hbox" data-markdown>
+            #### And now Hands-on
+          </div>
+          <div class="container" data-markdown>
+            * `./Code_Exercises/9_sycl_of_hell`
+            * Will introduce Device, Queue, Kernel, Events (all in 20 min)
+          </div>
+        </section>
 
-        		<!--Slide 6-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL System Topology
-					</div>
-					<div class="container" data-markdown>
-						* A SYCL application can execute work across a range of different heterogeneous devices.
-						* The devices that are available in any given system are determined at runtime through topology discovery.
-					</div>
-				</section>
-				<!--Slide 7-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Platforms and devices
-					</div>
-					<div class="container" data-markdown>
-						* The SYCL runtime will discover a set of platforms that are available in the system.
-						  * Each platform represents a backend implementation such as Intel OpenCL or Nvidia CUDA.
-						* The SYCL runtime will also discover all the devices available for each of those platforms.
-						  * CPU, GPU, FPGA, and other kinds of accelerators.
-					</div>
-					<div class="col" data-markdown>
-						![SYCL](../common-revealjs/images/devices-1.png "SYCL-Devices")
-					</div>
-				</section>
-       			<!--Slide 8-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Querying with a device selector
-					</div>
-					<div class="container">
-						<div class="col-left-1" data-markdown>
-							![Device Topology](../common-revealjs/images/topology-1.png "Device-Topology")
-						</div>
-						<div class="col-right-1" data-markdown>
-							* To simplify the process of traversing the system topology SYCL provides device selectors.
-							* A device selector is is a callable C++ object which defines a heuristic for scoring devices.
-							* SYCL provides a number of standard device selectors, e.g. `default_selector_v`, `gpu_selector_v`, etc.
-							* Users can also create their own device selectors.
-						</div>
-					</div>
-				</section>
-				<!--Slide 9-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Querying with a device selector
-					</div>
-					<div class="container">
-						<div class="col-left-1">
-							<code><pre>
-auto gpuDevice = device(gpu_selector_v); 
-							</code></pre>
-						</div>
-						<div class="col-right-1" data-markdown>
-						    ![Device Topology](../common-revealjs/images/topology-1.png "Device-Topology")
-						</div>
-					</div>
-					<div class="container" data-markdown>
-							* A device selector takes a parameter of type `const device &` and gives it a "score".
-							* Used to query all devices and return the one with the highest "score".
-							* A device with a negative score will never be chosen.
-					</div>
-				</section>
-        		<!--Slide 10-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL Queues
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/out_of_order_execution.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
-							* Commands are submitted to devices in SYCL by means of a Queue
-							* SYCL `queue`s are by default out-of-order.
-							* This means commands are allowed to be overlapped, re-ordered, and executed concurrently, providing dependencies are honoured to ensure consistency.
-						</div>
-					</div>
-				</section>
-				<!--Slide 11-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### In-of-order execution
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/in_order_execution.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
-							* SYCL `queue`s can be configured to be in-order.
-							* This mean commands must execute strictly in the order they were enqueued.
-						</div>
-					</div>
-				</section>
-        		<!--Slide 12-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Memory Models
-					</div>
-					<div class="container" data-markdown>
-						* In SYCL there are two models for managing data:
-						  * The buffer/accessor model.
-						  * The USM (unified shared memory) model.
-						* Which model you choose can have an effect on how you enqueue kernel functions.
-					</div>
-				</section>
-				<!--Slide 13-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### CPU and GPU Memory
-					</div>
-					<div class="container" data-markdown>
-						* A GPU has its own memory, separate to CPU memory.
-						* In order for the GPU to use memory from the CPU, the following actions must take place (either explicitly or implicitly):
-						    * Memory allocation on the GPU.
-						    * Data migration from the CPU to the allocation on the GPU.
-						    * Some computation on the GPU.
-						    * Migration of the result back to the CPU.
-					</div>
-					<img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
-				</section>
-        		<!--Slide 14-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL Buffers & Accessors
-					</div>
-					<div class="container" data-markdown>
-						* The buffer/accessor model separates the storage and access of data 
-						  * A SYCL buffer manages data across the host and any number of devices 
-						  * A SYCL accessor requests access to data on the host or on a device for a specific SYCL kernel function
-						* Accessors are also used to access data within a SYCL kernel function
-						  * This means they are declared in the host code but captured by and then accessed within a SYCL kernel function
-					</div>
-				</section>
-				<!--Slide 15-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL Buffers & Accessors
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* When a buffer object is constructed it will not allocate or copy to device memory at first
-							* This will only happen once the SYCL runtime knows the data needs to be accessed and where it needs to be accessed
-						</div>
-						<div class="col" data-markdown>
-							![Buffer Host Memory](../common-revealjs/images/buffer-hostmemory.png "Buffer Host Memory")
-						</div>
-					</div>
-				</section>
-				<!--Slide 16-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL Buffers & Accessors
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* Constructing an accessor specifies a request to access the data managed by the buffer
-							* There are a range of different types of accessor which provide different ways to access data
-						</div>
-						<div class="col" data-markdown>
-							![Buffer Host Memory Accessor](../common-revealjs/images/buffer-hostmemory-accessor.png "Buffer Host Memory Accessor")
-						</div>
-					</div>
-				</section>
-				<!--Slide 17-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Accessing Data With Accessors
-					</div>
-					<div class="container">
-						<div class="col-left-3">
-							<code><pre>
-buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size())); 
-buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size())); 
-buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
-
-gpuQueue.submit([&](handler &cgh){
-  sycl::accessor inA{bufA, cgh, sycl::read_only};
-  sycl::accessor inB{bufB, cgh, sycl::read_only};
-  sycl::accessor out{bufO, cgh, sycl::write_only};
-  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()), 
-    [=](id&lt1&gt i){ 
-    <mark>out[i] = inA[i] + inB[i];</mark>
-  });
-});
-							</code></pre>
-						</div>
-						<div class="col-right-2" data-markdown>
-							* Here we access the data of the `accessor` by
-							passing in the `id` passed to the SYCL kernel
-							function.
-						</div>
-					</div>
-				</section>
-				<!--Slide 18-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### USM: Malloc_device
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-void* malloc_device(size_t numBytes, const queue& syclQueue, const property_list &propList = {});
-
-template &lt;typename T&gt;
-T* malloc_device(size_t count, const queue& syclQueue,  const property_list &propList = {});
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* A USM device allocation is performed by calling one of the `malloc_device` functions.
-						* Both of these functions allocate the specified region of memory on the `device` associated with the specified `queue`.
-						* The pointer returned is only accessible in a kernel function running on that `device`.
-						* Synchronous exception if the device does not have aspect::usm_device_allocations
-						* This is a blocking operation.
-					</div>
-				</section>
-				<!--Slide 19-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### USM: Free
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-void free(void* ptr, queue& syclQueue);
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* In order to prevent memory leaks USM device allocations must be free by calling the `free` function.
-						* The `queue` must be the same as was used to allocate the memory.
-						* This is a blocking operation.
-					</div>
-				</section>
-				<!--Slide 20-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### USM: Memcpy
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-event queue::memcpy(void* dest, const void* src, size_t numBytes, const std::vector<event> &depEvents);
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* Data can be copied to and from a USM device allocation by calling the `queue`'s `memcpy` member function.
-						* The source and destination can be either a host application pointer or a USM device allocation.
-						* This is an asynchronous operation enqueued to the `queue`.
-						* An `event` is returned which can be used to synchronize with the completion of copy operation.
-						* May depend on other events via `depEvents`
-					</div>
-				</section>
-				<!--Slide 21-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### USM: Malloc_shared
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-void* malloc_shared(size_t numBytes, const queue& syclQueue, const property_list& propList = {})
-
-template &lt;typename T&gt;
-T* malloc_shared(size_t count, const queue& syclQueue, const property_list& propList = {})
-						</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* A USM shared allocation is performed by calling one of the `malloc_shared` functions.
-						* Shared allocations implicitly share data between the host and devices; the runtime and backends ensure the data is available when used.
-						* Performance hints may be specified by enqueueing `prefetch` operations
-					</div>
-				</section>
-				<!--Slide 22-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col-left" data-markdown>
-							* SYCL kernel functions are executed by **work-items**
-							* You can think of a work-item as a thread of execution
-							* Each work-item will execute a SYCL kernel function from start to end
-							* A work-item can run on CPU threads, SIMD lanes, GPU threads, or any other kind of processing element
-						</div>
-						<div class="col-right" data-markdown>
-							![Work-Item](../common-revealjs/images/workitem.png "Work-Item")
-						</div>
-
-					</div>
-				</section>
-				<!--Slide 23-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* Work-items are collected together into **work-groups**
-							* The size of work-groups is generally relative to what is optimal on the device being targeted
-							* It can also be affected by the resources used by each work-item
-						</div>
-						<div class="col" data-markdown>
-							![Work-Group](../common-revealjs/images/workgroup.png "Work-Group")
-						</div>
-					</div>
-				</section>
-				<!--Slide 24-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* SYCL kernel functions are invoked within an **nd-range**
-							* An nd-range has a number of work-groups and subsequently a number of work-items
-							* Work-groups always have the same number of work-items
-						</div>
-						<div class="col" data-markdown>
-							![ND-Range](../common-revealjs/images/ndrange.png "ND-Range")
-						</div>
-					</div>
-				</section>
-				<!--Slide 25-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL execution model
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							* The nd-range describes an **iteration space**: how it is composed in terms of work-groups and work-items
-							* An nd-range can be 1, 2 or 3 dimensions
-							* An nd-range has two components
-							  * The **global-range** describes the total number of work-items in each dimension
-							  * The **local-range** describes the number of work-items in a work-group in each dimension
-						</div>
-						<div class="col" data-markdown>
-							![ND-Range](../common-revealjs/images/ndrange-example.png "ND-Range")
-						</div>
-					</div>
-				</section>
-				<!--Slide 26-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Expressing parallelism
-					</div>
-					<div class="container">
-						<div class="col">
-							<code><pre>
-							
-cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
-  [=](<mark>id&lt1&gt idx</mark>){
-    /* kernel function code */
-});
-							</code></pre>
-							<code><pre>
-							
-cgh.parallel_for&ltkernel&gt(<mark>range&lt1&gt(1024)</mark>, 
-  [=](<mark>item&lt1&gt item</mark>){
-    /* kernel function code */
-});
-							</code></pre>
-							<code><pre>
-							
-cgh.parallel_for&ltkernel&gt(nd_range&lt1&gt(<mark>range&lt1&gt(1024), 
-  range&lt1&gt(32))</mark>,[=](<mark>nd_item&lt1&gt ndItem</mark>){
-    /* kernel function code */
-});
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* Overload taking a **range** object specifies the global range, runtime decides local range
-							* An **id** parameter represents the index within the global range
-							____________________________________________________________________________________________
-							* Overload taking a **range** object specifies the global range, runtime decides local range
-							* An **item** parameter represents the global range and the index within the global range
-							____________________________________________________________________________________________
-							* Overload taking an **nd_range** object specifies the global and local range
-							* An **nd_item** parameter represents the global and local range and index
-						</div>
-					</div>
-				</section>
-				<!--Slide 27-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL Kernels
-					</div>
-					<div class="container" data-markdown>
-            * SYCL kernels (i.e. the device function the programmer wants
-              executed) are expressed either as C++ function objects or lambdas.
-            * Comparing with other GPU paradigms, kernel arguments are either
-              data members or lambda captures, respectively
-            * For function objects, the member function `operator()(sycl::id)`
-              is the compute function, which is equivalent to the lambda style
-						// then add slides explaining the practical work and how to
-						// glue it all together from scratch
-					</div>
-				</section>
-				<!--Slide 28-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Function object
-					</div>
-					<div class="container" data-markdown>
-            ```c++
-class MyKernel {
-  sycl::accessor<float> input_;
-  float* output_;
-
-  MyKernel(sycl::buffer<float> buf, float* output, sycl::handler& h)
-    : input{buf.get_access(h)}, output_{output} {}
-
-  // const is required
-  void operator()(sycl::item<1> i) const {
-    ; // computation here
-  }
-};
-            ```
-					</div>
-					<div class="container" data-markdown>
-             The members are accessible on the device inside the function call
-             operator.
-					</div>
-				</section>
-				<!--Slide 29-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Lambda function
-					</div>
-					<div class="container" data-markdown>
-            ```c++
-sycl::buffer<float, 1> buf = /* normal init */;
-float * output = sycl::malloc_device(/* params */);
-
-... queue submit as normal ...
-
-auto acc = buf.get_access(h);
-auto func = [=](sycl::item<1> i) {
-  acc[i] = someVal;
-  output[i.get_global_linear_id()] = someOtherVal;
-});
-handler.parallel_for(range, func);
-            ```
-					</div>
-					<div class="container" data-markdown>
-            The variables used implicitly are captured by value and are usable in
-            the kernel.
-					</div>
-				</section>
-				<!--Slide 30-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### SYCL Kernels
-					</div>
-					<div class="container" data-markdown>
-            * These forms are equivalent (as in normal C++) and which one to use
-              depends on preference and use case
-            * Each instance of the kernel has a uniquely valued `sycl::item`
-              describing its position in the iteration space as covered in
-              "SYCL execution model"
-            * Can be used to index into accessors, pointers etc.
-					</div>
-				</section>
-				<!--Slide 31-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### First Exercise
-					</div>
-					<div class="container" data-markdown>
-            * Use Data Parallelism and write a SYCL kernel
-            * The exercise README is in the "Code_Exercises/Introduction_to_SYCL" folder
-            * Follow the guidelines in the README and comments in the source.cpp file
-              * There is a solution file but only use it if you need to
-
-
-					</div>
-				</section>
-				<!--Slide 32-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Image convolution sample application
-					</div>
-					<div class="container" data-markdown>
-						* The algorithm is **embarrassingly parallel**.
-						* Each work-item in the computation can be calculated entirely independently.
-						* The algorithm is computation heavy.
-						* A large number of operations are performed for each work-item in the computation, particularly when using large filters.
-						* The algorithm requires a large bandwidth.
-						* A lot of data must be passed through the GPU to process an image, particularly if the image is very high resolution.
-					</div>
-				</section>
-				<!--Slide 33-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Image convolution definition
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/image_convolution_definition.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
-							* A filter of a given size is applied as a stencil to the position of each pixel in the input image.
-							* Each pixel covered by the filter is then multiples with the corresponding element in the filter.
-							* The result of these multiplications is then summed to give the resulting output pixel.
-							* Here we have a 3x3 gaussian blur approximation as an example.
-						</div>
-					</div>
-				</section>
-				<!--Slide 34-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Image convolution example
-					</div>
-					<div class="container" data-markdown>
-						![SYCL](../common-revealjs/images/image_convolution_example.png "SYCL")
-					</div>
-				</section>
-				<!--Slide 35-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Image convolution data flow
-					</div>
-					<div class="container">
-						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/image_convolution_data_flow.png "SYCL")
-						</div>
-						<div class="col" data-markdown>
-							* The kernel must read from the input image data and writes to the output image data.
-							* It must also read from the filter.
-							* The input image data and the filter don't need to be copied back to the host.
-							* The output image data can be uninitialized.
-						</div>
-					</div>
-				</section>
-				<!--Slide 36-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Gaussian Blur
-					</div>
-					<div class="container" data-markdown>
-            * The blur is implementable in two passes: one vertical, one horizontal
-            * Each item in the iteration space would load a series of pixels to
-              the left and right  (or top and bottom) of its position in the
-              image
-            * Then, multiply with the corresponding element in the filter
-            * Then sum these intermediate results and store them to the output
-            * A dscrete convolution, in other words
-					</div>
-				</section>
-				<!--Slide 37-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Walkthrough
-					</div>
-					<div class="container" data-markdown>
-            * Explain a more complex example through image convolution
-            * Solution available in `Code_Exercises/Image_Convolution_Functors/solution.cpp`
-					</div>
-				</section>
-				<!--Slide 38-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Reference image
-					</div>
-					<div class="col" data-markdown>
-						![SYCL](../common-revealjs/images/dogs.png "SYCL")
-					</div>
-					<div class="container" data-markdown>
-* We provide a reference image to use in the exercise.
-* This is in Code_Exercises/Images
-* This image is a 512x512 RGBA png.
-* Feel free to use your own image but we recommend keeping to this format.
-* The read and write functions can be found in `image_conv.h`.
-					</div>
-				</section>
-				<!--Slide 39-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Convolution filters
-					</div>
-					<div class="container" data-markdown>
-* `auto filter = util::generate_filter(util::filter_type filterType, int width);`
-* The utility for generating the filter data takes a `filter_type` enum which
-can be either `identity` or `blur` and a width.
-* Feel free to experiment with different variations.
-* Note that the filter width should always be an odd value.
-* The function can be found in `image_conv.h`
-					</div>
-				</section>
-			</div>
-		</div>
-		<script src="../common-revealjs/js/reveal.js"></script>
-		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
-		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
-		<script src="../common-revealjs/plugin/notes/notes.js"></script>
-		<script>
-			Reveal.initialize({mouseWheel: true, defaultNotes: true});
-			Reveal.configure({ slideNumber: true });
-		</script>
-	</body>
+      </div>
+    </div>
+    <script src="../common-revealjs/js/reveal.js"></script>
+    <script src="../common-revealjs/plugin/markdown/marked.js"></script>
+    <script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+    <script src="../common-revealjs/plugin/notes/notes.js"></script>
+    <script>
+      Reveal.initialize({mouseWheel: true, defaultNotes: true});
+      Reveal.configure({ slideNumber: true });
+    </script>
+  </body>
 </html>
