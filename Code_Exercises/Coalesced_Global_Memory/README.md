@@ -65,7 +65,7 @@ make Coalesced_Global_Memory_source
 ```
 Alternatively from a terminal at the command line:
 ```sh
-icpx -fsycl -o Coalesced_Global_Memory_source ../Code_Exercises/Coalesced_Global_Memory/source.cpp
+icpx -fsycl -o Coalesced_Global_Memory_source -I../External/Catch2/single_include ../Code_Exercises/Coalesced_Global_Memory/source.cpp
 ./Coalesced_Global_Memory_source
 ```
 
@@ -83,6 +83,6 @@ make Coalesced_Global_Memory_source
 alternatively, without CMake:
 ```sh
 cd Code_Exercises/Coalesced_Global_Memory
-/path/to/adaptivecpp/bin/acpp -o Coalesced_Global_Memory_source --acpp-targets="<target specification>" source.cpp
+/path/to/adaptivecpp/bin/acpp -o Coalesced_Global_Memory_source -I../../External/Catch2/single_include --acpp-targets="<target specification>" source.cpp
 ./Coalesced_Global_Memory_source
 ```

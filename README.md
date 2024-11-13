@@ -282,7 +282,7 @@ Where `<dpc++_install_root>` is wherever the `oneAPI` directory is installed.
 
 Once that's done you can invoke the DPC++ compiler as follows:
 
-`icpx -fsycl -o a.out source.cpp`
+`icpx -fsycl -I<syclacademy_root>/External/Catch2/single_include -o a.out source.cpp`
 
 Where `<syclacademy_root>` is the path to the root directory of where you cloned
 this repository. Note that on Windows you need to add the option /EHsc to avoid exception handling error.

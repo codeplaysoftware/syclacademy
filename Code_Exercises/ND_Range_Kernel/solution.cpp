@@ -8,14 +8,15 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
 class vector_add_1;
 class vector_add_2;
 
-void test_item() {
+TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -26,19 +27,19 @@ void test_item() {
   }
 
   try {
-    auto gpuQueue = sycl::queue { sycl::gpu_selector_v };
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
-    auto bufA = sycl::buffer { a, sycl::range { dataSize } };
-    auto bufB = sycl::buffer { b, sycl::range { dataSize } };
-    auto bufR = sycl::buffer { r, sycl::range { dataSize } };
+    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
+    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
+    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
     gpuQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accA { bufA, cgh, sycl::read_only };
-      sycl::accessor accB { bufB, cgh, sycl::read_only };
-      sycl::accessor accR { bufR, cgh, sycl::write_only };
+      sycl::accessor accA{bufA, cgh, sycl::read_only};
+      sycl::accessor accB{bufB, cgh, sycl::read_only};
+      sycl::accessor accR{bufR, cgh, sycl::write_only};
 
       cgh.parallel_for<vector_add_1>(
-          sycl::range { dataSize }, [=](sycl::item<1> itm) {
+          sycl::range{dataSize}, [=](sycl::item<1> itm) {
             auto globalId = itm.get_id();
             accR[globalId] = accA[globalId] + accB[globalId];
           });
@@ -50,11 +51,11 @@ void test_item() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
+    REQUIRE(r[i] == i * 2);
   }
 }
 
-void test_nd_item() {
+TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   constexpr size_t dataSize = 1024;
   constexpr size_t workGroupSize = 128;
 
@@ -66,19 +67,19 @@ void test_nd_item() {
   }
 
   try {
-    auto gpuQueue = sycl::queue { sycl::gpu_selector_v };
+    auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
-    auto bufA = sycl::buffer { a, sycl::range { dataSize } };
-    auto bufB = sycl::buffer { b, sycl::range { dataSize } };
-    auto bufR = sycl::buffer { r, sycl::range { dataSize } };
+    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
+    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
+    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
     gpuQueue.submit([&](sycl::handler& cgh) {
-      sycl::accessor accA { bufA, cgh, sycl::read_write };
-      sycl::accessor accB { bufB, cgh, sycl::read_write };
-      sycl::accessor accR { bufR, cgh, sycl::read_write };
+      sycl::accessor accA{bufA, cgh, sycl::read_write};
+      sycl::accessor accB{bufB, cgh, sycl::read_write};
+      sycl::accessor accR{bufR, cgh, sycl::read_write};
 
-      auto ndRange = sycl::nd_range { sycl::range { dataSize },
-                                      sycl::range { workGroupSize } };
+      auto ndRange =
+          sycl::nd_range{sycl::range{dataSize}, sycl::range{workGroupSize}};
 
       cgh.parallel_for<vector_add_2>(ndRange, [=](sycl::nd_item<1> itm) {
         auto globalId = itm.get_global_id();
@@ -92,11 +93,6 @@ void test_nd_item() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
+    REQUIRE(r[i] == i * 2);
   }
-}
-
-int main() {
-  test_item();
-  test_nd_item();
 }

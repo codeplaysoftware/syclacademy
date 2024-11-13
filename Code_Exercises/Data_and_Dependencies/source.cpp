@@ -51,9 +51,10 @@
  *
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-int main() {
+TEST_CASE("managing_dependencies", "managing_dependencies_source") {
   constexpr size_t dataSize = 1024;
 
   int inA[dataSize], inB[dataSize], inC[dataSize], out[dataSize];
@@ -88,6 +89,6 @@ int main() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(out[i] == i * 2.0f);
+    REQUIRE(out[i] == i * 2.0f);
   }
 }

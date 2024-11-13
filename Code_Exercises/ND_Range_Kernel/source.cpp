@@ -54,9 +54,10 @@
  *                      });
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-int main() {
+TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -72,6 +73,6 @@ int main() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
+    REQUIRE(r[i] == i * 2);
   }
 }

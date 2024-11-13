@@ -55,9 +55,10 @@
 
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-int main() {
+TEST_CASE("in_order_queue", "in_order_queue_source") {
   // Use the Exercise 10 solution to start
-  SYCLACADEMY_ASSERT(true);
+  REQUIRE(true);
 }

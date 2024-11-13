@@ -44,19 +44,15 @@
  *
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-void test_usm() {
+TEST_CASE("synchronization_usm", "synchronization_source") {
   // Use your code from Exercise 3 to start
-  SYCLACADEMY_ASSERT(true);
+  REQUIRE(true);
 }
 
-void test_buffer() {
+TEST_CASE("synchronization_buffer_acc", "synchronization_source") {
   // Use your code from Exercise 3 to start
-  SYCLACADEMY_ASSERT(true);
-}
-
-int main() {
-  test_usm();
-  test_buffer();
+  REQUIRE(true);
 }

@@ -8,9 +8,10 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-int main() {
+TEST_CASE("usm_vector_add", "usm_vector_add_source") {
   constexpr size_t dataSize = 1024;
 
   float a[dataSize], b[dataSize], r[dataSize];
@@ -20,13 +21,13 @@ int main() {
     r[i] = 0.0f;
   }
 
-  // Task: Allocate the arrays in USM, and compute r[i] = a[i] + b[i] on the
-  // SYCL device
+  // Task: Allocate the arrays in USM, and compute r[i] = a[i] + b[i] on the SYCL device
   for (int i = 0; i < dataSize; ++i) {
     r[i] = a[i] + b[i];
   }
 
+
   for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
+    REQUIRE(r[i] == i * 2);
   }
 }

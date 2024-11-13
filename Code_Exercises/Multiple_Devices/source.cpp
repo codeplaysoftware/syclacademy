@@ -35,17 +35,17 @@
  *              // Do something
  *          });
  * //    3. Enqueue a parallel for:
- *          cgh.parallel_for<class mykernel>(sycl::range{n}, [=](sycl::id<1> i)
- {
+ *          cgh.parallel_for<class mykernel>(sycl::range{n}, [=](sycl::id<1> i) {
  *              // Do something
  *          });
  *
 
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-int main() {
+TEST_CASE("load_balancing", "load_balancing_source") {
   constexpr size_t dataSize = 1024;
   constexpr float ratio = 0.5f;
   constexpr size_t dataSizeFirst = ratio * dataSize;
@@ -72,6 +72,6 @@ int main() {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == static_cast<float>(i) * 2.0f);
+    REQUIRE(r[i] == static_cast<float>(i) * 2.0f);
   }
 }

@@ -8,8 +8,6 @@
  *
  */
 
-#include "../helpers.hpp"
-
 #include <benchmark.h>
 #include <sycl/sycl.hpp>
 
@@ -19,7 +17,7 @@ constexpr size_t dataSize = 32'768;
 constexpr size_t workGroupSize = 1024;
 constexpr int numIters = 100;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
   T a[dataSize];
 
@@ -27,10 +25,10 @@ int main(int argc, char* argv[]) {
     a[i] = static_cast<T>(i);
   }
 
-  auto q = sycl::queue {};
+  auto q = sycl::queue{};
 
-  T* devA = sycl::malloc_device<T>(dataSize, q);
-  T* devReduced = sycl::malloc_device<T>(1, q); // Holds reduction output
+  T *devA = sycl::malloc_device<T>(dataSize, q);
+  T *devReduced = sycl::malloc_device<T>(1, q); // Holds reduction output
 
   auto e1 = q.memcpy(devA, a, sizeof(T) * dataSize);
   auto e2 = q.fill(devReduced, 0, 1);
@@ -39,8 +37,8 @@ int main(int argc, char* argv[]) {
 
   util::benchmark(
       [&]() {
-        q.submit([&](sycl::handler& cgh) {
-           cgh.depends_on({ e1, e2 });
+        q.submit([&](sycl::handler &cgh) {
+           cgh.depends_on({e1, e2});
            sycl::local_accessor<T, 1> localMem(workGroupSize, cgh);
 
            cgh.parallel_for(myNd, [=](sycl::nd_item<1> item) {

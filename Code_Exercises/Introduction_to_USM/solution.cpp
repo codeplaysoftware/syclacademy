@@ -8,7 +8,8 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
@@ -19,14 +20,14 @@ int usm_selector(const sycl::device& dev) {
   return -1;
 }
 
-int main() {
+TEST_CASE("usm_selector", "usm_selector_solution") {
   try {
-    auto usmQueue = sycl::queue { usm_selector };
+    auto usmQueue = sycl::queue{usm_selector};
 
     usmQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  SYCLACADEMY_ASSERT(true);
+  REQUIRE(true);
 }

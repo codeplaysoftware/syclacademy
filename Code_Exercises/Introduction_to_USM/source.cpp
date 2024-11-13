@@ -8,15 +8,16 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
-int main() {
+TEST_CASE("usm_selector", "usm_selector_source") {
 
   // Task: create a queue to a device which supports USM allocations
   // Remember to check for exceptions
-  auto usmQueue = sycl::queue {};
+  auto usmQueue  = sycl::queue{};
 
-  SYCLACADEMY_ASSERT(true);
+  REQUIRE(true);
 }

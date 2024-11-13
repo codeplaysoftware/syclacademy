@@ -43,8 +43,6 @@ InTile:               OutTile:
 
 */
 
-#include "../helpers.hpp"
-
 #include <iostream>
 #include <vector>
 
@@ -71,30 +69,30 @@ int main() {
   }
 
   try {
-    auto q = sycl::queue {};
+    auto q = sycl::queue{};
 
     std::cout << "Running on "
               << q.get_device().get_info<sycl::info::device::name>() << "\n";
 
-    sycl::range globalRange { N, N };
-    sycl::range localRange { 16, 16 };
-    sycl::nd_range ndRange { globalRange, localRange };
+    sycl::range globalRange{N, N};
+    sycl::range localRange{16, 16};
+    sycl::nd_range ndRange{globalRange, localRange};
 
     {
-      sycl::buffer inBuf { A.data(), globalRange };
-      sycl::buffer outBuf { A_T.data(), globalRange };
-      sycl::buffer compBuf { A_T_comparison.data(), globalRange };
+      sycl::buffer inBuf{A.data(), globalRange};
+      sycl::buffer outBuf{A_T.data(), globalRange};
+      sycl::buffer compBuf{A_T_comparison.data(), globalRange};
 
       util::benchmark(
           [&]() {
-            q.submit([&](sycl::handler& cgh) {
-              sycl::accessor inAcc { inBuf, cgh, sycl::read_only };
-              sycl::accessor compAcc { compBuf, cgh, sycl::write_only,
-                                       sycl::property::no_init {} };
+            q.submit([&](sycl::handler &cgh) {
+              sycl::accessor inAcc{inBuf, cgh, sycl::read_only};
+              sycl::accessor compAcc{compBuf, cgh, sycl::write_only,
+                                     sycl::property::no_init{}};
 
               cgh.parallel_for<naive>(ndRange, [=](sycl::nd_item<2> item) {
                 auto globalId = item.get_global_id();
-                sycl::id globalIdTranspose { globalId[1], globalId[0] };
+                sycl::id globalIdTranspose{globalId[1], globalId[0]};
                 compAcc[globalIdTranspose] = inAcc[globalId];
               });
             });
@@ -104,20 +102,20 @@ int main() {
 
       util::benchmark(
           [&]() {
-            q.submit([&](sycl::handler& cgh) {
-              sycl::accessor inAcc { inBuf, cgh, sycl::read_only };
-              sycl::accessor outAcc { outBuf, cgh, sycl::write_only,
-                                      sycl::property::no_init {} };
-              sycl::local_accessor<T, 2> localAcc { localRange, cgh };
+            q.submit([&](sycl::handler &cgh) {
+              sycl::accessor inAcc{inBuf, cgh, sycl::read_only};
+              sycl::accessor outAcc{outBuf, cgh, sycl::write_only,
+                                    sycl::property::no_init{}};
+              sycl::local_accessor<T, 2> localAcc{localRange, cgh};
 
               cgh.parallel_for<tiled>(ndRange, [=](sycl::nd_item<2> item) {
                 // This kernel assumes that localRange[0] == localRange[1]
                 auto globalId = item.get_global_id();
                 auto localId = item.get_local_id();
-                auto localId_T = sycl::range { localId[1], localId[0] };
+                auto localId_T = sycl::range{localId[1], localId[0]};
                 auto groupOffset = globalId - localId;
                 auto groupOffset_T =
-                    sycl::range { groupOffset[1], groupOffset[0] };
+                    sycl::range{groupOffset[1], groupOffset[0]};
 
                 // Read from global memory in row major and write to local
                 // memory in column major
@@ -141,6 +139,6 @@ int main() {
   }
 
   for (auto i = 0; i < N * N; ++i) {
-    SYCLACADEMY_ASSERT(A_T[i] == A_T_comparison[i]);
+    assert(A_T[i] == A_T_comparison[i]);
   }
 }

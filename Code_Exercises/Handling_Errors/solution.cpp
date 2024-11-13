@@ -8,11 +8,12 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
-int main() {
+TEST_CASE("handling_errors", "handling_errors_source") {
   try {
     auto asyncHandler = [&](sycl::exception_list exceptionList) {
       for (auto& e : exceptionList) {
@@ -20,19 +21,19 @@ int main() {
       }
     };
 
-    auto defaultQueue = sycl::queue { asyncHandler };
+    auto defaultQueue = sycl::queue{asyncHandler};
 
-    auto buf = sycl::buffer<int>(sycl::range { 1 });
+    auto buf = sycl::buffer<int>(sycl::range{1});
 
     defaultQueue.submit([&](sycl::handler& cgh) {
       // This throws an exception: an accessor has a range which is
       // outside the bounds of its buffer.
-      auto acc = buf.get_access(cgh, sycl::range { 2 }, sycl::read_write);
+      auto acc = buf.get_access(cgh, sycl::range{2}, sycl::read_write);
     });
     defaultQueue.wait_and_throw();
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  SYCLACADEMY_ASSERT(true);
+  REQUIRE(true);
 }

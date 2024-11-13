@@ -110,6 +110,7 @@ endif()
 # Exercises
 
 enable_testing()
+add_subdirectory(External/Catch2)
 add_subdirectory(Code_Exercises)
 
 # Create the Image directory

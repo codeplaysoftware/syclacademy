@@ -34,15 +34,15 @@
  *
  */
 
-#include "../helpers.hpp"
-#include <iostream>
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-int main() {
+TEST_CASE("hello_world", "hello_world_source") {
 
   // Print "Hello World!\n"
   std::cout << "Hello World!\n";
 
   // Task: Have this message print from the SYCL device instead of the host
 
-  SYCLACADEMY_ASSERT(true);
+  REQUIRE(true);
 }

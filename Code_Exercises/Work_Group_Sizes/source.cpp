@@ -8,9 +8,10 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-int main() {
+TEST_CASE("image_convolution_work_group_sizes", "work_group_sizes_source") {
   // Use your code from Exercise 18 to start
-  SYCLACADEMY_ASSERT(true);
+  REQUIRE(true);
 }

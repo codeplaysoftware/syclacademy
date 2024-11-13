@@ -8,10 +8,11 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
-
 #include <algorithm>
 #include <iostream>
+
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
@@ -24,7 +25,7 @@ inline constexpr util::filter_type filterType = util::filter_type::blur;
 inline constexpr int filterWidth = 11;
 inline constexpr int halo = filterWidth / 2;
 
-int main() {
+TEST_CASE("image_convolution_tiled", "local_memory_tiling_solution") {
   constexpr auto inputImageFile = "../Images/dogs.png";
   constexpr auto outputImageFile = "../Images/blurred_dogs.png";
 
@@ -36,7 +37,7 @@ int main() {
   auto filter = util::generate_filter(util::filter_type::blur, filterWidth);
 
   try {
-    sycl::queue myQueue { sycl::gpu_selector_v };
+    sycl::queue myQueue{sycl::gpu_selector_v};
 
     std::cout << "Running on "
               << myQueue.get_device().get_info<sycl::info::device::name>()
@@ -61,9 +62,9 @@ int main() {
     auto scratchpadRange = localRange + sycl::range(halo * 2, halo * 2);
 
     {
-      auto inBuf = sycl::buffer { inputImage.data(), inBufRange };
-      auto outBuf = sycl::buffer<float, 2> { outBufRange };
-      auto filterBuf = sycl::buffer { filter.data(), filterRange };
+      auto inBuf = sycl::buffer{inputImage.data(), inBufRange};
+      auto outBuf = sycl::buffer<float, 2>{outBufRange};
+      auto filterBuf = sycl::buffer{filter.data(), filterRange};
       outBuf.set_final_data(outputImage.data());
 
       auto inBufVec = inBuf.reinterpret<sycl::float4>(inBufRange /
@@ -75,13 +76,13 @@ int main() {
 
       util::benchmark(
           [&] {
-            myQueue.submit([&](sycl::handler& cgh) {
-              sycl::accessor inputAcc { inBufVec, cgh, sycl::read_only };
-              sycl::accessor outputAcc { outBufVec, cgh, sycl::write_only };
-              sycl::accessor filterAcc { filterBufVec, cgh, sycl::read_only };
+            myQueue.submit([&](sycl::handler &cgh) {
+              sycl::accessor inputAcc{inBufVec, cgh, sycl::read_only};
+              sycl::accessor outputAcc{outBufVec, cgh, sycl::write_only};
+              sycl::accessor filterAcc{filterBufVec, cgh, sycl::read_only};
 
-              auto scratchpad =
-                  sycl::local_accessor<sycl::float4, 2>(scratchpadRange, cgh);
+              auto scratchpad = sycl::local_accessor<sycl::float4, 2>(
+                  scratchpadRange, cgh);
 
               cgh.parallel_for<image_convolution>(
                   ndRange, [=](sycl::nd_item<2> item) {
@@ -101,7 +102,7 @@ int main() {
 
                     sycl::group_barrier(item.get_group());
 
-                    auto sum = sycl::float4 { 0.0f, 0.0f, 0.0f, 0.0f };
+                    auto sum = sycl::float4{0.0f, 0.0f, 0.0f, 0.0f};
 
                     for (int r = 0; r < filterWidth; ++r) {
                       for (int c = 0; c < filterWidth; ++c) {
@@ -124,5 +125,5 @@ int main() {
 
   util::write_image(outputImage, outputImageFile);
 
-  SYCLACADEMY_ASSERT(true);
+  REQUIRE(true);
 }

@@ -43,34 +43,36 @@
  * // Query a device for some things:
  * std::string vendor = dev.get_info<sycl::info::device::vendor>();
  * std::string dev_name = dev.get_info<sycl::info::device::name>();
- * std::string dev_driver_ver =
- dev.get_info<sycl::info::device::driver_version>();
+ * std::string dev_driver_ver = dev.get_info<sycl::info::device::driver_version>();
  *
  *
 */
 
-#include "../helpers.hpp"
+
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
+
 #include <sycl/sycl.hpp>
 
 class scalar_add;
 
-int main() {
+TEST_CASE("intel_gpu_device_selector", "device_selectors_solution") {
   int a = 18, b = 24, r = 0;
 
   try {
     // Task: add a device selector to create this queue with an Intel GPU
-    auto defaultQueue = sycl::queue {};
+    auto defaultQueue = sycl::queue{};
 
     {
-      auto bufA = sycl::buffer { &a, sycl::range { 1 } };
-      auto bufB = sycl::buffer { &b, sycl::range { 1 } };
-      auto bufR = sycl::buffer { &r, sycl::range { 1 } };
+      auto bufA = sycl::buffer{&a, sycl::range{1}};
+      auto bufB = sycl::buffer{&b, sycl::range{1}};
+      auto bufR = sycl::buffer{&r, sycl::range{1}};
 
       defaultQueue
           .submit([&](sycl::handler& cgh) {
-            auto accA = sycl::accessor { bufA, cgh, sycl::read_only };
-            auto accB = sycl::accessor { bufB, cgh, sycl::read_only };
-            auto accR = sycl::accessor { bufR, cgh, sycl::write_only };
+            auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+            auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+            auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
             cgh.single_task<scalar_add>([=]() { accR[0] = accA[0] + accB[0]; });
           })
@@ -82,5 +84,5 @@ int main() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  SYCLACADEMY_ASSERT(r == 42);
+  REQUIRE(r == 42);
 }
