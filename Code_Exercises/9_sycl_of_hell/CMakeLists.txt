@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(syclOfHell LANGUAGES CXX)   
+
 find_package(IntelSYCL QUIET)
-IF(NOT IntelSYCL_FOUND )
-	find_package(AdaptiveCpp REQUIRED)
-ENDIF()
+find_package(AdaptiveCpp QUIET)
+if(NOT IntelSYCL_FOUND AND NOT AdaptiveCpp_FOUND)
+  message(SEND_ERROR "No SYCL implementation!")
+endif()
 
 file(GLOB files "*.cpp")
 foreach(file_name ${files})
