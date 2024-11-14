@@ -53,8 +53,8 @@ below to find the necessary files. At the command line just remember that the
 
 During the tutorial at SC24 we will use the Intel Developer Cloud environment to run through the hands on exercises.
 
-Set up an account by following the guide [here][https://console.cloud.intel.com/docs/guides/get_started.html].
-Once your account is set up use the [Redeem Coupon][https://console.cloud.intel.com/docs/guides/get_started.html#cloud-credits-and-coupons] 
+Set up an account by following the guide [here](https://console.cloud.intel.com/docs/guides/get_started.html).
+Once your account is set up use the [Redeem Coupon](https://console.cloud.intel.com/docs/guides/get_started.html#cloud-credits-and-coupons)
 using the code from the instructors at SC24. This will give you access to more resources on the cloud system.
 
 ### Using JupyterLab
