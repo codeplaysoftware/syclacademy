@@ -30,7 +30,8 @@ int main(int argc, char **argv) {
   //
   sycl::queue Q{sycl::property::queue::in_order()};
 
-  std::cout << "Running on " << Q.get_device().get_info<sycl::info::device::name>() << "\n";
+  std::cout << "Running on "
+            << Q.get_device().get_info<sycl::info::device::name>() << "\n";
 
   // Allocate Device Memory
   int *A = sycl::malloc_device<int>(global_range, Q);

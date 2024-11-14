@@ -28,14 +28,16 @@ int main(int argc, char **argv) {
   // |  (_| | (_| | | (/_ |   | (_) |
 
   sycl::queue Q;
-  std::cout << "Running on " << Q.get_device().get_info<sycl::info::device::name>() << std::endl;
+  std::cout << "Running on "
+            << Q.get_device().get_info<sycl::info::device::name>() << std::endl;
 
   // Similar to
   //   # pragma OMP PARALLEL FOR
   //   for(int idx=0; idx++; idx < global_range)
   Q.parallel_for(global_range, [=](sycl::id<1> idx) {
     // Explicit cast because of printf shenaningan.
-    sycl::ext::oneapi::experimental::printf("Hello, World! World rank %d\n", static_cast<int>(idx));
+    sycl::ext::oneapi::experimental::printf("Hello, World! World rank %d\n",
+                                            static_cast<int>(idx));
   });
   Q.wait();
 

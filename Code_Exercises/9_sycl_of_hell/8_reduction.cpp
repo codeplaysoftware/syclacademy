@@ -30,17 +30,19 @@ int main(int argc, char **argv) {
   //   | \ (/_ (_| |_| (_  |_ | (_) | |
   //
   sycl::queue Q;
-  std::cout << "Running on " << Q.get_device().get_info<sycl::info::device::name>() << "\n";
+  std::cout << "Running on "
+            << Q.get_device().get_info<sycl::info::device::name>() << "\n";
 
   // Allocate Memory to store the reduction
   int *s = sycl::malloc_shared<int>(1, Q);
   // Submit reduction kernel
-  Q.parallel_for(global_range, sycl::reduction(s, sycl::plus<int>()), [=](auto id, auto &sum) {
-     sum += static_cast<int>(id);
-   }).wait();
+  Q.parallel_for(global_range, sycl::reduction(s, sycl::plus<int>()),
+                 [=](auto id, auto &sum) { sum += static_cast<int>(id); })
+      .wait();
 
   int s_expected = global_range * (global_range - 1) / 2;
 
-  std::cout << "Expected sum: " << s_expected << " | Computed sum: " << *s << std::endl;
+  std::cout << "Expected sum: " << s_expected << " | Computed sum: " << *s
+            << std::endl;
   return s_expected != *s;
 }

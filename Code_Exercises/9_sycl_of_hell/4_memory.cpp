@@ -31,9 +31,11 @@ int main(int argc, char **argv) {
   //                                                                      /
 
   sycl::queue Q;
-  std::cout << "Running on " << Q.get_device().get_info<sycl::info::device::name>() << "\n";
+  std::cout << "Running on "
+            << Q.get_device().get_info<sycl::info::device::name>() << "\n";
 
-  // Allocate 'managed' Memory. The memory is accessible by both the host and the device
+  // Allocate 'managed' Memory. The memory is accessible by both the host and
+  // the device
   int *A = sycl::malloc_shared<int>(global_range, Q);
   // Submit blocking kernel who use the memory
   Q.parallel_for(global_range, [=](auto id) { A[id] = id; });

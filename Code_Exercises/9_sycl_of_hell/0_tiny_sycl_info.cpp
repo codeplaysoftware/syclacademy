@@ -11,13 +11,14 @@ int main() {
   std::vector<sycl::platform> platforms = sycl::platform::get_platforms();
   for (const auto &plat : platforms) {
     // get_info is a template. So we pass the type as an `arguments`.
-    std::cout << "Platform: " << plat.get_info<sycl::info::platform::name>() << " "
-              << plat.get_info<sycl::info::platform::vendor>() << " "
+    std::cout << "Platform: " << plat.get_info<sycl::info::platform::name>()
+              << " " << plat.get_info<sycl::info::platform::vendor>() << " "
               << plat.get_info<sycl::info::platform::version>() << std::endl;
 
     std::vector<sycl::device> devices = plat.get_devices();
     for (const auto &dev : devices)
-      std::cout << "-- Device: " << dev.get_info<sycl::info::device::name>() << " "
-                << (dev.is_gpu() ? "is a gpu" : " is not a gpu") << std::endl;
+      std::cout << "-- Device: " << dev.get_info<sycl::info::device::name>()
+                << " " << (dev.is_gpu() ? "is a gpu" : " is not a gpu")
+                << std::endl;
   }
 }

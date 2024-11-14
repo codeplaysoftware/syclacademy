@@ -35,24 +35,28 @@ int main(int argc, char **argv) {
   //           __              _|
 
   sycl::queue Q;
-  std::cout << "Running on " << Q.get_device().get_info<sycl::info::device::name>() << std::endl;
+  std::cout << "Running on "
+            << Q.get_device().get_info<sycl::info::device::name>() << std::endl;
 
   // nd_range, generate a nd_item who allow use to query
   // loop dispach information
-  Q.parallel_for(sycl::nd_range<1>{global_range, local_range}, [=](sycl::nd_item<1> idx) {
-    // get_global_id return a `size_t`, so implicit narrowing
-    const int world_rank = idx.get_global_id(0);
-    const int work_size = idx.get_global_range(0);
-    const int local_rank = idx.get_local_id(0);
-    const int local_size = idx.get_local_range(0);
-    const int group_rank = idx.get_group(0);
-    const int group_size = idx.get_group_range(0);
+  Q.parallel_for(sycl::nd_range<1>{global_range, local_range},
+                 [=](sycl::nd_item<1> idx) {
+                   // get_global_id return a `size_t`, so implicit narrowing
+                   const int world_rank = idx.get_global_id(0);
+                   const int work_size = idx.get_global_range(0);
+                   const int local_rank = idx.get_local_id(0);
+                   const int local_size = idx.get_local_range(0);
+                   const int group_rank = idx.get_group(0);
+                   const int group_size = idx.get_group_range(0);
 
-    sycl::ext::oneapi::experimental::printf(
-        "Hello, World! World rank/size: %d/%d | Local rank/size: %d/%d | Group "
-        "rank/size: %d/%d\n",
-        world_rank, work_size, local_rank, local_size, group_rank, group_size);
-  });
+                   sycl::ext::oneapi::experimental::printf(
+                       "Hello, World! World rank/size: %d/%d | Local "
+                       "rank/size: %d/%d | Group "
+                       "rank/size: %d/%d\n",
+                       world_rank, work_size, local_rank, local_size,
+                       group_rank, group_size);
+                 });
   Q.wait(); // End of the queue commands
 
   return 0;
