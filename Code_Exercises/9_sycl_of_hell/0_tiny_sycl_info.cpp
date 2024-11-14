@@ -21,4 +21,5 @@ int main() {
                 << " " << (dev.is_gpu() ? "is a gpu" : " is not a gpu")
                 << std::endl;
   }
+  return 0;
 }
