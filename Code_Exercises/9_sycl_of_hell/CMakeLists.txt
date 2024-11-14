@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(syclOfHell LANGUAGES CXX)   
-find_package(IntelSYCL REQUIRED)
+find_package(IntelSYCL QUIET)
+IF(NOT IntelSYCL_FOUND )
+	find_package(AdaptiveCpp REQUIRED)
+ENDIF()
 
 file(GLOB files "*.cpp")
 foreach(file_name ${files})
