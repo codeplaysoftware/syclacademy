@@ -51,7 +51,8 @@ below to find the necessary files. At the command line just remember that the
 
 ## Get Started: Working on the Exercises on Intel Tiber Cloud
 
-During the tutorial at SC24 we will use the Intel Developer Cloud environment to run through the hands on exercises.
+During the tutorial at SC24 we will use the Intel Tiber Cloud environment to run through the hands on exercises.
+This environment has everything already configured and access to GPUs.
 
 Set up an account by following the guide [here](https://console.cloud.intel.com/docs/guides/get_started.html).
 Once your account is set up use the [Redeem Coupon](https://console.cloud.intel.com/docs/guides/get_started.html#cloud-credits-and-coupons)
@@ -60,12 +61,13 @@ using the code from the instructors at SC24. This will give you access to more r
 ### Using JupyterLab
 
 * Go to [console]([https://console.cloud.intel.com/training](https://console.cloud.intel.com))
-* Select ```Home´´´
+* Select Home
 * Select Learn -> Get Started
 * Select the drop down Connect Now -> GPU
 * Select the Launch button
 
 It might then ask you to log in again, but then will load the Jupyter Notebook.
+
 Now select the "Terminal" to get access to a console.
 
 You are now ready to start with the first [lesson][lesson-1-slides]. Enjoy !
@@ -91,6 +93,17 @@ Each exercise directory contains:
 * ```solution.cpp```, where a solution has been implemented in advance.
 
 Once you have completed any given exercise make sure to compare your implementation against the corresponding ```solution.cpp```.
+
+### Building the Exercises
+
+It is possible to compile single source files using a single simple command.
+
+`icpx -fsycl -o exercise-x.out source.cpp`
+
+The source.cpp file is the one you want to compile.
+The -o output is the binary you can then run on the machine e.g.
+
+`./exercise-x.out`
 
 ## Working on the Exercises on Your Own HW
 
