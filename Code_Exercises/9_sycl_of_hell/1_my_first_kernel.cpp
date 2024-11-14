@@ -16,7 +16,11 @@ int main() {
   // (): Declaring an anonymouns function (lambda) without parameters
   // {...}: Body of the anonymouns function
   auto f = [=]() {
+#ifdef __ACPP__
+    sycl::detail::print("Hello, World for lambda!\n");
+#else
     sycl::ext::oneapi::experimental::printf("Hello, World for lambda!\n");
+#endif
   };
   // Submit one work item (a single task) to the GPU using the previous lambda
   // Queue submission are asyncrhonous (similar to OpenMP nowait)
