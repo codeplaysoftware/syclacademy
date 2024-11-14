@@ -60,7 +60,7 @@ using the code from the instructors at SC24. This will give you access to more r
 
 ### Using JupyterLab
 
-* Go to [console]([https://console.cloud.intel.com/training](https://console.cloud.intel.com))
+* Go to [console](https://console.cloud.intel.com)
 * Select Home
 * Select Learn -> Get Started
 * Select the drop down Connect Now -> GPU
