@@ -1,6 +1,6 @@
 ### Setting up Tiber Cloud
 
-If you have not done so already, follow the instructions in the [README](../../README.md#get-started-working-on-the-exercises-on-intel-tiber-cloud) to set up your environment.
+If you have not done so already, follow the instructions in the [README](../README.md#get-started-working-on-the-exercises-on-intel-tiber-cloud) to set up your environment.
 
 ### Building the Exercises
 
