@@ -1,44 +1,39 @@
 # SYCL Academy
 
-## Exercise 1: Vector Add
+## Exercise 3: Multi-Platforms
 
 ---
 
-In this exercise you will learn how add the values in two arrays and write the
-results to another array in parallel using `parallel_for`.
+In this exercise you will learn how use various devices under the platforms
+
+
+Your task is to add code to the source.cpp file and implement code using the features of
+sycl queue, nd_range.
+
+There are comments and hints in the file to help you, and you can use the slides 
+from the presentation too. These are in the "Lesson Materials" folder.
+
+TIP: verify the output under `sycl-ls --verbose`
+
+Ref: https://registry.khronos.org/SYCL/specs/sycl-2020/html/sycl-2020.html#sec:platformmodel
 
 ---
 
-### 1.) Create your queue
+### 1.) Query Platforms
 
-Create a `queue` to enqueue your kernel function to, remember to handle errors.
+- Creates a "default" platform
+- Query for the info on devices listed under the platform
+- Create a queue based on those devices
+- Submit a "Hello World" kernel using this queue
 
-### 2. ) Create buffers
+### 2. ) Switching Platforms
 
-Create `buffer`s to manage the data of the two input arrays and output array.
-
-Remember to ensure the `range` provided to the buffer is the size of the arrays.
-
-### 3. ) Create accessors
-
-Create `accessor`s to each of the `buffer`s within the command group function.
-
-### 4. ) Write the kernel function
-
-Now enqueue parallel kernel function by calling `parallel_for` on the `handler`.
-
-This function takes a `range` specifying the number of iterations of the kernel
-function to invoke and the kernel function itself must take an `id` which
-represents the current iteration.
-
-The `id` can be used in the `accessor` subscript operator to access or assign to
-the corresponding element of data that the accessor represents.
-
+- Create a platform for "CPU" type
+- Query for the info on devices listed under the platform
+- Create a queue based on those devices
+- Submit a vector-addition kernel using this queue
+- TODO: Repeat the above steps for "GPU"
 
 #### Build And Execution Hints
 
 For DevCloud follow these [instructions](../devcloud.md).
-
-For DPC++: [instructions](../dpcpp.md).
-
-For AdaptiveCpp: [instructions](../adaptivecpp.md).
