@@ -5,6 +5,11 @@
 
 In this exercise you will learn how to enqueue ND range kernel functions.
 
+Your task is to add code to the source.cpp file and implement code using nd-range.
+
+There are comments and hints in the file to help you, and you can use the slides 
+from the presentation too. These are in the "Lesson Materials" folder.
+
 ---
 
 ### 1.) Use items in parallel_for
@@ -38,7 +43,3 @@ synchronization and copy back.
 ## Build and execution hints
 
 For DevCloud follow these [instructions](../devcloud.md).
-
-For DPC++: [instructions](../dpcpp.md).
-
-For AdaptiveCpp: [instructions](../adaptivecpp.md).
