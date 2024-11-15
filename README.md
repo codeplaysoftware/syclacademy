@@ -8,6 +8,10 @@ This repository provides materials that can be used for teaching SYCL. The
 materials are provided using the "Creative Commons Attribution Share Alike 4.0
 International" license.
 
+During the SC24 tutorial we will use a small subset of the overall content.
+See the main branch of this repository for the complete set of learning 
+materials.
+
 ## What is SYCL?
 
 If you're not familiar with SYCL or would like some further resources for
@@ -19,13 +23,8 @@ learning about SYCL below are a list of useful resources:
 
 ## How to use the Materials
 
-To use these materials, simply clone this repository, including the required submodules.
-
-**Make sure you clone the correct branch**
-
-```
-git clone --recursive --branch sc24 https://github.com/codeplaysoftware/syclacademy.git
-```
+To use these materials, simply clone this repository with the correct branch 
+and include the required submodules.
 
 The lectures are written in reveal.js, and can be found in `Lesson_Materials`,
 in the sub-directory for each topic. To view them simply open the `index.html`
@@ -39,7 +38,7 @@ example implementation to compare against.
 
 ## Lesson Curriculum
 
-The tutors at ISC24 will let you know when to run through the exercises. Use the links 
+The tutors at SC24 will let you know when to run through the exercises. Use the links 
 below to find the necessary files. At the command line just remember that the 
 "Code_Exercises" folder contains the exercises.
 
@@ -50,33 +49,37 @@ below to find the necessary files. At the command line just remember that the
 | 03 | Multi Platform with SYCL | [slides][lesson-21-slides] | [exercise][lesson-21-exercise] | [source][lesson-21-source] | [solution][lesson-21-solution] | Yes | Yes |
 | Walkthrough | Image Convolution | NA | [exercise][lesson-22-exercise] | [source][lesson-22-source] | [solution][lesson-22-solution] | Yes | Yes |
 
-## Working on the Exercises on Intel Developer Cloud
+## Get Started: Working on the Exercises on Intel Tiber Cloud
 
-During the tutorial at ISC24 we will use the Intel Developer Cloud environment to run through the hands on exercises. You can set up the Developer Cloud account by following the instructions in the next section.
-Note that exercises can be built for DPC++ and AdaptiveCpp(requires [installation][adaptivecpp-installing]).
+During the tutorial at SC24 we will use the Intel Tiber Cloud environment to run through the hands on exercises.
+This environment has everything already configured and access to GPUs.
 
-### Connect to Intel Developer Cloud via JupyterLab
+Set up an account by following the guide [here](https://console.cloud.intel.com/docs/guides/get_started.html).
+Once your account is set up use the [Redeem Coupon](https://console.cloud.intel.com/docs/guides/get_started.html#cloud-credits-and-coupons)
+using the code from the instructors at SC24. This will give you access to more resources on the cloud system.
 
-* Start by creating an [Intel Developer Cloud][intel-devcloud] account if you do not already have one and login in.
-* Go to [training](https://console.cloud.intel.com/training) and click on ```Launch JupyterLab´´´
-* In the ```Jupiter Notebook``` select *File->New->Terminal*
+### Using JupyterLab
+
+* Go to [console](https://console.cloud.intel.com)
+* Select Home
+* Select Learn -> Get Started
+* Select the drop down Connect Now -> GPU
+* Select the Launch button
+
+It might then ask you to log in again, but then will load the Jupyter Notebook.
+
+Now select the "Terminal" to get access to a console.
 
 You are now ready to start with the first [lesson][lesson-1-slides]. Enjoy !
 
 ### Building the Exercises with Intel oneAPI DPC++/C++ Compiler
 
+*Make sure to use the correct branch when cloning*
+
 * Execute the following command to download SYCL Academy project (if not already done):
 ```sh
 git clone --recursive --branch sc24 https://github.com/codeplaysoftware/syclacademy.git
 ```
-* To create the code_exercises directory structure with the Makefiles:
-```sh
-cd syclacademy
-mkdir build
-cd build
-cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_SOLUTIONS=ON -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx
-```
-
 ### Working on the Exercises
 Once you have a working SYCL compiler, you are ready to start writing some SYCL code. To find the first exercise:
 ```
@@ -91,24 +94,20 @@ Each exercise directory contains:
 
 Once you have completed any given exercise make sure to compare your implementation against the corresponding ```solution.cpp```.
 
+### Building the Exercises
+
+It is possible to compile single source files using a single simple command.
+
+`icpx -fsycl -o exercise-x.out source.cpp`
+
+The source.cpp file is the one you want to compile.
+The -o output is the binary you can then run on the machine e.g.
+
+`./exercise-x.out`
+
 ## Working on the Exercises on Your Own HW
-### Supported Platforms
 
-Below is a list of the supported platforms and devices for each SYCL implementations,
-please check this before deciding which SYCL implementation to use.
-Make sure to also install the specified version to ensure that you can build
-all of the exercises.
-
-| Implementation | Supported Platforms | Supported Devices | Required Version |
-|----------------|---------------------|-------------------|------------------|
-| DPC++ | [Intel Developer Cloud](#connect-to-intel-developer-cloud-via-jupyterlab) <br> Ubuntu 22.04<br> Red Hat Enterprise Linux 9.2<br> Microsoft Windows 10, 11 Visual Studio 2019/2022 (64bit)  <br> Refer to [System Requirements][oneAPI-system-requirements] for more details | Intel CPU (OpenCL) <br> Intel GPU (OpenCL, Level Zero) <br> Intel FPGA (OpenCL) <br> Nvidia GPU (CUDA)* <br> AMD GPU (HIP)* | 2024.1	|
-| AdaptiveCpp | Any Linux | CPU (OpenMP) <br> AMD GPU (ROCm)*** <br> NVIDIA GPU (CUDA)<br> Intel GPU (Level Zero)<br> Intel CPU, GPU (OpenCL) | 23.10.0 from Nov 1, 2023 or newer |
-
-\* Supported in [open source project][intel-llvm] or requires [Codeplay oneAPI Plugins for NVIDIA & AMD][codeplay-oneapi-plugins]
-
-\*\* See [here][rocm-gpus] for the official list of GPUs supported by AMD for
-ROCm. We do not recommend using GPUs earlier than gfx9 (Vega 10 and Vega 20
-chips).
+Given the limited time, we do not recommend trying to install on your own machine, but you may like to try this later.
 
 ### Install SYCL implementations
 
