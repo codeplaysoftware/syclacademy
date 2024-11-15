@@ -11,4 +11,4 @@ It is possible to compile single source files using a single simple command.
 The source.cpp file is the one you want to compile.
 The -o output is the binary you can then run on the machine e.g.
 
-`./exercise-ndrange.out`
+`./exercise-x.out`
