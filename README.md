@@ -296,9 +296,9 @@ The CMake configuration can also be used to build the exercises, see the section
 [lesson-14-solution]: ./Code_Exercises/ND_Range_Kernel/solution.cpp
 
 [lesson-21-slides]: ./Lesson_Materials/Multi_Platform_With_SYCL/
-[lesson-20-exercise]: ./Code_Exercises/Multi_Platform_With_SYCL/README.md
-[lesson-20-source]:   ./Code_Exercises/Multi_Platform_With_SYCL/source.cpp
-[lesson-20-solution]: ./Code_Exercises/Multi_Platform_With_SYCL/solution.cpp
+[lesson-21-exercise]: ./Code_Exercises/Multi_Platform_With_SYCL/README.md
+[lesson-21-source]:   ./Code_Exercises/Multi_Platform_With_SYCL/source.cpp
+[lesson-21-solution]: ./Code_Exercises/Multi_Platform_With_SYCL/solution.cpp
 
 [lesson-22-exercise]: ./Code_Exercises/Image_Convolution_Functors/README.md
 [lesson-22-source]:   ./Code_Exercises/Image_Convolution_Functors/source.cpp
