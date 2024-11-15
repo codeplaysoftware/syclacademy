@@ -8,8 +8,8 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_01_compiling_with_sycl
-add_sycl_executable(Introduction_to_SYCL source)
+# Exercise: Multi_Platform_With_SYCL
+add_sycl_executable(Multi_Platform_with_SYCL source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
-  add_sycl_executable(Introduction_to_SYCL solution)
+  add_sycl_executable(Multi_Platform_with_SYCL solution)
 endif()
