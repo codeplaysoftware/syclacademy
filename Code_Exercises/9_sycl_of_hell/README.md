@@ -2,7 +2,7 @@
 
 # How to compile
 
-## Goold Old Make
+## Good Old Make
 
 ```
 # Aurora
