@@ -83,7 +83,7 @@ git clone --recursive --branch sc24 https://github.com/codeplaysoftware/syclacad
 ### Working on the Exercises
 Once you have a working SYCL compiler, you are ready to start writing some SYCL code. To find the first exercise:
 ```
-cd Code_Exercises/Compiling_with_SYCL/
+cd Code_Exercises/The_9_sycl_of_hell
 ```
 And read the `README.md` for further instructions.
 
