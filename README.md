@@ -98,7 +98,7 @@ Once you have completed any given exercise make sure to compare your implementat
 
 It is possible to compile single source files using a single simple command.
 
-`icpx -fsycl -I../../External/Catch2/single_include -o exercise-x.out source.cpp`
+`icpx -fsycl -o exercise-x.out source.cpp`
 
 The source.cpp file is the one you want to compile.
 The -o output is the binary you can then run on the machine e.g.
