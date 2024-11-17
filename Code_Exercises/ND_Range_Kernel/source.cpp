@@ -53,10 +53,8 @@
  *                  [=](sycl::nd_item<1> i) { // Do something });
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
+int main () {
   constexpr size_t dataSize = 1024;
 
   int a[dataSize], b[dataSize], r[dataSize];
@@ -68,10 +66,21 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_source") {
 
   // Task: parallelise the vector add kernel using nd_range
   for (int i = 0; i < dataSize; ++i) {
-    r[i] = a[i] + b[i];
+      if(ptrR[i] != i * 2)
+	    {
+		std::cout << "The results are incorrect in the first loop at iteration " << i << std::endl;
+	    return 0;
+		}
   }
+  std::cout << "The first set of results are correct"<< std::endl;
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    if(r[i] != i * 2)
+	  {
+	  std::cout << "The results are incorrect in the second loop at iteration " << i << std::endl;
+	  return 0;
+	  }
   }
+  std::cout << "All results are correct"<< std::endl;
+  return 1;
 }
