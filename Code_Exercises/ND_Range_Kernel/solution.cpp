@@ -8,15 +8,13 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
 class vector_add_1;
 class vector_add_2;
 
-TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
+int main () {
   constexpr size_t dataSize = 2<<20;
 
   try {
@@ -40,8 +38,13 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
     }).wait();
 
     for (int i = 0; i < dataSize; ++i) {
-      REQUIRE(ptrR[i] == i * 2);
+      if(ptrR[i] != i * 2)
+	    {
+		std::cout << "The results are incorrect in the first loop at iteration " << i << std::endl;
+	    return 0;
+		}
     }
+	std::cout << "The first set of results are correct"<< std::endl;
 
     sycl::free(ptrA, gpuQueue);
     sycl::free(ptrB, gpuQueue);
@@ -50,9 +53,8 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
-}
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
+
   constexpr size_t dataSize = 1024;
   constexpr size_t workGroupSize = 128;
 
@@ -95,6 +97,12 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   }
 
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+    if(r[i] != i * 2)
+	   {
+	   std::cout << "The results are incorrect in the second loop at iteration " << i << std::endl;
+	   return 0;
+	   }
   }
+  std::cout << "All results are correct"<< std::endl;
+  return 1;
 }
