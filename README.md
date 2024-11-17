@@ -44,7 +44,7 @@ below to find the necessary files. At the command line just remember that the
 
 | Lesson | Title | Slides | Exercise | Source | Solution | DPC++ | AdaptiveCpp |
 |--------|-------|--------|----------|--------|----------|-------|---------|
-| 01 | Introduction to SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | Yes | Yes |
+| 01 | Introduction to SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | NA | NA | Yes | Yes |
 | 02 | ND Range Kernels | [slides][lesson-14-slides] | [exercise][lesson-14-exercise] | [source][lesson-14-source] | [solution][lesson-14-solution] | Yes | Yes |
 | 03 | Multi Platform with SYCL | [slides][lesson-21-slides] | [exercise][lesson-21-exercise] | [source][lesson-21-source] | [solution][lesson-21-solution] | Yes | Yes |
 | Walkthrough | Image Convolution | NA | [exercise][lesson-22-exercise] | [source][lesson-22-source] | [solution][lesson-22-solution] | Yes | Yes |
@@ -98,7 +98,7 @@ Once you have completed any given exercise make sure to compare your implementat
 
 It is possible to compile single source files using a single simple command.
 
-`icpx -fsycl -o exercise-x.out source.cpp`
+`icpx -fsycl -I../../External/Catch2/single_include -o exercise-x.out source.cpp`
 
 The source.cpp file is the one you want to compile.
 The -o output is the binary you can then run on the machine e.g.
@@ -286,9 +286,7 @@ The CMake configuration can also be used to build the exercises, see the section
 [video-playlist]: https://youtube.com/playlist?list=PLCssnq0MpRdM-IUAYtNSPYck6u3oz7OZQ
 
 [lesson-1-slides]: ./Lesson_Materials/Introduction_to_SYCL/
-[lesson-1-exercise]: ./Code_Exercises/Introduction_to_SYCL/README.md
-[lesson-1-source]:   ./Code_Exercises/Introduction_to_SYCL/source.cpp
-[lesson-1-solution]: ./Code_Exercises/Introduction_to_SYCL/solution.cpp
+[lesson-1-exercise]: ./Code_Exercises/The_9_sycl_of_hell/README.md
 
 [lesson-14-slides]: ./Lesson_Materials/ND_Range_Kernel/
 [lesson-14-exercise]: ./Code_Exercises/ND_Range_Kernel/README.md
