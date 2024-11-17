@@ -30,7 +30,7 @@ void verify_results(int* result, size_t dataSize) {
     if(result[i] != i * 2)
     {
       std::cout << "The results are incorrect at iteration " << i << std::endl;
-	     return 0;
+      return;
     }
   }
   std::cout << "The results are correct"<< std::endl;
