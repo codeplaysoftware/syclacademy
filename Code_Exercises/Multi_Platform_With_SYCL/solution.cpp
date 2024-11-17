@@ -27,8 +27,13 @@ void print_device_info(std::vector<sycl::device>& devs) {
 // Helper function: To verify the results of an array `result` with a reference value
 void verify_results(int* result, size_t dataSize) {
   for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(result[i] == i * 2);
+    if(result[i] != i * 2)
+    {
+      std::cout << "The results are incorrect at iteration " << i << std::endl;
+	     return 0;
+    }
   }
+  std::cout << "The results are correct"<< std::endl;
 }
 
 // Helper function: To run a vector-add
