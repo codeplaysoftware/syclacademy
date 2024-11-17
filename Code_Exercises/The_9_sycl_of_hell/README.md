@@ -2,27 +2,11 @@
 
 # How to compile
 
-## Good Old Make
+## Use the compiler invocation or Good Old Make
 
-```
-# Aurora
-CXX=icpx CXXFLAGS=-fsycl make -j
-# Polaris
-module use /soft/modulefiles
-module load oneapi/upstream
-CXX=clang++ CXXFLAGS="-fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_80" make -j
-# Adaptive
-module load AdaptiveCpp
-CXX=acpp CXXFLAGS="" make -j
-```
+It is possible to use the instructions [here](../devcloud.md) to compile individual source files.
 
-## Fancy "new" Cmake (only for Aurora -- I have poor cmake skill)
-
-```
-module load cmake
-cmake -S . -B build
-cmake --build build/ -j
-```
+You can also use make to build all the source files, it's up to you.
 
 # List of programs
 

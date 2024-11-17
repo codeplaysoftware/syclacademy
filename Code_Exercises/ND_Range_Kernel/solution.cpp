@@ -8,40 +8,43 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 
 #include <sycl/sycl.hpp>
 
 class vector_add_1;
 class vector_add_2;
 
-TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
-  constexpr size_t dataSize = 2<<20;
+int main () {
+  constexpr size_t dataSize1 = 2<<20;
 
   try {
     auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
-    auto ptrA = sycl::malloc_shared<int>(dataSize, gpuQueue);
-    auto ptrB = sycl::malloc_shared<int>(dataSize, gpuQueue);
-    auto ptrR = sycl::malloc_shared<int>(dataSize, gpuQueue);
+    auto ptrA = sycl::malloc_shared<int>(dataSize1, gpuQueue);
+    auto ptrB = sycl::malloc_shared<int>(dataSize1, gpuQueue);
+    auto ptrR = sycl::malloc_shared<int>(dataSize1, gpuQueue);
 
-    for (int i = 0; i < dataSize; ++i) {
+    for (int i = 0; i < dataSize1; ++i) {
       ptrA[i] = i;
       ptrB[i] = i;
       ptrR[i] = 0;
     }
 
     gpuQueue.
-      parallel_for<vector_add_1>(sycl::range{dataSize},
+      parallel_for<vector_add_1>(sycl::range{dataSize1},
         [=](sycl::item<1> itm) {
           auto globalId = itm.get_id();
           ptrR[globalId] = ptrA[globalId] + ptrB[globalId];
     }).wait();
 
-    for (int i = 0; i < dataSize; ++i) {
-      REQUIRE(ptrR[i] == i * 2);
+    for (int i = 0; i < dataSize1; ++i) {
+      if(ptrR[i] != i * 2)
+	    {
+		std::cout << "The results are incorrect in the first loop at iteration " << i << std::endl;
+	    return 0;
+		}
     }
+	std::cout << "The first set of results are correct"<< std::endl;
 
     sycl::free(ptrA, gpuQueue);
     sycl::free(ptrB, gpuQueue);
@@ -50,14 +53,13 @@ TEST_CASE("range_kernel_with_item", "nd_range_kernel_solution") {
   } catch (const sycl::exception& e) {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
-}
 
-TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
-  constexpr size_t dataSize = 1024;
+
+  constexpr size_t dataSize2 = 1024;
   constexpr size_t workGroupSize = 128;
 
-  int a[dataSize], b[dataSize], r[dataSize];
-  for (int i = 0; i < dataSize; ++i) {
+  int a[dataSize2], b[dataSize2], r[dataSize2];
+  for (int i = 0; i < dataSize2; ++i) {
     a[i] = i;
     b[i] = i;
     r[i] = 0;
@@ -66,17 +68,17 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
   try {
     auto gpuQueue = sycl::queue{sycl::gpu_selector_v};
 
-    auto ptrA = sycl::malloc_device<int>(dataSize, gpuQueue);
-    auto ptrB = sycl::malloc_device<int>(dataSize, gpuQueue);
-    auto ptrR = sycl::malloc_device<int>(dataSize, gpuQueue);
+    auto ptrA = sycl::malloc_device<int>(dataSize2, gpuQueue);
+    auto ptrB = sycl::malloc_device<int>(dataSize2, gpuQueue);
+    auto ptrR = sycl::malloc_device<int>(dataSize2, gpuQueue);
 
-    gpuQueue.memcpy(ptrA, a, sizeof(int) * dataSize);
-    gpuQueue.memcpy(ptrB, b, sizeof(int) * dataSize);
+    gpuQueue.memcpy(ptrA, a, sizeof(int) * dataSize2);
+    gpuQueue.memcpy(ptrB, b, sizeof(int) * dataSize2);
 
     gpuQueue.wait();
 
     auto ndRange =
-        sycl::nd_range{sycl::range{dataSize}, sycl::range{workGroupSize}};
+        sycl::nd_range{sycl::range{dataSize2}, sycl::range{workGroupSize}};
     auto event = gpuQueue.parallel_for<vector_add_2>(ndRange,
       [=](sycl::nd_item<1> itm) {
         auto globalId = itm.get_global_id();
@@ -84,7 +86,7 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
     });
 
     // Depends on the vector add kernel.
-    gpuQueue.memcpy(r, ptrR, sizeof(int) * dataSize, event).wait();
+    gpuQueue.memcpy(r, ptrR, sizeof(int) * dataSize2, event).wait();
 
     sycl::free(ptrA, gpuQueue);
     sycl::free(ptrB, gpuQueue);
@@ -94,7 +96,13 @@ TEST_CASE("nd_range_kernel", "nd_range_kernel_solution") {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    REQUIRE(r[i] == i * 2);
+  for (int i = 0; i < dataSize2; ++i) {
+    if(r[i] != i * 2)
+	   {
+	   std::cout << "The results are incorrect in the second loop at iteration " << i << std::endl;
+	   return 0;
+	   }
   }
+  std::cout << "All results are correct"<< std::endl;
+  return 1;
 }
