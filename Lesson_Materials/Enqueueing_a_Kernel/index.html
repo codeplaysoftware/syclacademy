@@ -374,7 +374,7 @@ gpuQueue.submit([&](handler &cgh){
 						<div class="col">
 							<code><pre>
 struct my_kernel { 
-  void operator()(){ 
+  void operator()() const {
     /* kernel function */
   }
 };
@@ -383,6 +383,7 @@ struct my_kernel {
 						<div class="col" data-markdown>
 							* As well as defining SYCL kernels using lambda expressions,
 								You can also define a SYCL kernel using a regular C++ function object.
+							* Define a type with a public const-qualified `operator()` member function.
 						</div>
 					</div>
 				</section>
@@ -395,7 +396,7 @@ struct my_kernel {
 						<div class="col">
 							<code><pre>
 struct my_kernel { 
-  void operator()(){ 
+  void operator()() const {
     /* kernel function */
   }
 };
