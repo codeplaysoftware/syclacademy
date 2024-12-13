@@ -8,9 +8,9 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
-
 #include <sycl/sycl.hpp>
+
+#include "../helpers.hpp"
 
 int usm_selector(const sycl::device& dev) {
   if (dev.has(sycl::aspect::usm_device_allocations)) {
@@ -21,7 +21,7 @@ int usm_selector(const sycl::device& dev) {
 
 int main() {
   try {
-    auto usmQueue = sycl::queue { usm_selector };
+    auto usmQueue = sycl::queue{usm_selector};
 
     usmQueue.throw_asynchronous();
   } catch (const sycl::exception& e) {

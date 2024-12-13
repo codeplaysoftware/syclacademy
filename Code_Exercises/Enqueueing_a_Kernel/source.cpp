@@ -34,11 +34,11 @@
  *
  */
 
-#include "../helpers.hpp"
 #include <iostream>
 
-int main() {
+#include "../helpers.hpp"
 
+int main() {
   // Print "Hello World!\n"
   std::cout << "Hello World!\n";
 

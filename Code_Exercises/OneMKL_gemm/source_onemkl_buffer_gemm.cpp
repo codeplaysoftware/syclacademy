@@ -20,13 +20,13 @@
 
 #include <iostream>
 #include <limits>
+#include <oneapi/mkl/blas.hpp>
 #include <random>
 
-#include <oneapi/mkl/blas.hpp>
 #include <sycl/sycl.hpp>
 
 // Matrix size constants
-constexpr size_t SIZE = 4800; // Must be a multiple of 8.
+constexpr size_t SIZE = 4800;  // Must be a multiple of 8.
 constexpr size_t M = SIZE / 8;
 constexpr size_t N = SIZE / 4;
 constexpr size_t P = SIZE / 2;
@@ -75,8 +75,8 @@ void print_device_info(sycl::queue& Q) {
 
 int main() {
   std::random_device
-      rd; // Will be used to obtain a seed for the random number engine
-  std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+      rd;  // Will be used to obtain a seed for the random number engine
+  std::mt19937 gen(rd());  // Standard mersenne_twister_engine seeded with rd()
   std::uniform_real_distribution<> dis(1.0, 2.0);
 
   // matrix data sizes
@@ -103,12 +103,10 @@ int main() {
 
   // A(M, N)
   for (size_t i = 0; i < M; i++)
-    for (size_t j = 0; j < N; j++)
-      A[i * N + j] = dis(gen);
+    for (size_t j = 0; j < N; j++) A[i * N + j] = dis(gen);
   // B(N, P)
   for (size_t i = 0; i < N; i++)
-    for (size_t j = 0; j < P; j++)
-      B[i * P + j] = dis(gen);
+    for (size_t j = 0; j < P; j++) B[i * P + j] = dis(gen);
 
   // Resultant matrix: C_serial = A*B
   for (size_t i = 0; i < M; i++) {
@@ -120,7 +118,7 @@ int main() {
   }
 
   // Create a SYCL in-order queue targetting GPU device
-  sycl::queue Q { sycl::gpu_selector_v, sycl::property::queue::in_order {} };
+  sycl::queue Q{sycl::gpu_selector_v, sycl::property::queue::in_order{}};
   // Prints some basic info related to the hardware
   print_device_info(Q);
 

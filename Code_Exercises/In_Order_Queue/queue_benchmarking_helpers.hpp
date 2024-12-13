@@ -10,24 +10,25 @@
 
 #include <sycl/sycl.hpp>
 
-#define MAD_4(x, y)                                                            \
-  x = y * x + y;                                                               \
-  y = x * y + x;                                                               \
-  x = y * x + y;                                                               \
+#define MAD_4(x, y) \
+  x = y * x + y;    \
+  y = x * y + x;    \
+  x = y * x + y;    \
   y = x * y + x;
-#define MAD_16(x, y)                                                           \
-  MAD_4(x, y);                                                                 \
-  MAD_4(x, y);                                                                 \
-  MAD_4(x, y);                                                                 \
+#define MAD_16(x, y) \
+  MAD_4(x, y);       \
+  MAD_4(x, y);       \
+  MAD_4(x, y);       \
   MAD_4(x, y);
-#define MAD_64(x, y)                                                           \
-  MAD_16(x, y);                                                                \
-  MAD_16(x, y);                                                                \
-  MAD_16(x, y);                                                                \
+#define MAD_64(x, y) \
+  MAD_16(x, y);      \
+  MAD_16(x, y);      \
+  MAD_16(x, y);      \
   MAD_16(x, y);
 
 // Do some work on device
-template <class T> static T busy_sleep(size_t N, T i) {
+template <class T>
+static T busy_sleep(size_t N, T i) {
   T x = 1.3f;
   T y = i;
   for (size_t j = 0; j < N; j++) {

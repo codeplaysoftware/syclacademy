@@ -8,17 +8,18 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
+
+#include "../helpers.hpp"
 
 class hello_world;
 
 int main() {
-  auto defaultQueue = sycl::queue {};
+  auto defaultQueue = sycl::queue{};
 
   defaultQueue
       .submit([&](sycl::handler& cgh) {
-        auto os = sycl::stream { 128, 128, cgh };
+        auto os = sycl::stream{128, 128, cgh};
 
         cgh.single_task<hello_world>([=]() { os << "Hello World!\n"; });
       })

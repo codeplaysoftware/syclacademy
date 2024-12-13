@@ -48,7 +48,6 @@
 #include "../helpers.hpp"
 
 void test_usm() {
-
   int a = 18, b = 24, r = 0;
 
   // Task: Compute a+b on the SYCL device using USM
@@ -58,7 +57,6 @@ void test_usm() {
 }
 
 void test_buffer() {
-
   int a = 18, b = 24, r = 0;
 
   // Task: Compute a+b on the SYCL device using the buffer

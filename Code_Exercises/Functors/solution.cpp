@@ -8,15 +8,15 @@
    work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
  */
 
-#include "../helpers.hpp"
+#include <benchmark.h>
+#include <image_conv.h>
 
 #include <algorithm>
 #include <iostream>
 
 #include <sycl/sycl.hpp>
 
-#include <benchmark.h>
-#include <image_conv.h>
+#include "../helpers.hpp"
 
 enum Direction { COL, ROW };
 
@@ -32,8 +32,8 @@ enum Direction { COL, ROW };
  *
  * @tparam dataT The data type of the image elements
  */
-template <typename dataT> class ImageConvolutionFunctor {
-
+template <typename dataT>
+class ImageConvolutionFunctor {
  public:
   /**
    * @brief ImageConvolutionFunctor constructor
@@ -54,10 +54,10 @@ template <typename dataT> class ImageConvolutionFunctor {
                                  sycl::buffer<dataT, 2>& out,
                                  sycl::buffer<dataT, 1>& filter,
                                  const Direction& dir)
-      : inputAcc_ { in, cgh, sycl::read_only }
-      , outputAcc_ { out, cgh, sycl::write_only }
-      , filterAcc_ { filter, cgh, sycl::read_only }
-      , dir_(dir) {
+      : inputAcc_{in, cgh, sycl::read_only},
+        outputAcc_{out, cgh, sycl::write_only},
+        filterAcc_{filter, cgh, sycl::read_only},
+        dir_(dir) {
     filterWidth_ = filterAcc_.size();
     halo_ = filterWidth_ / 2;
   }
@@ -77,7 +77,7 @@ template <typename dataT> class ImageConvolutionFunctor {
   void operator()(sycl::nd_item<2> item) const {
     auto globalId = item.get_global_id();
 
-    auto sum = dataT { 0.0f, 0.0f, 0.0f, 0.0f };
+    auto sum = dataT{0.0f, 0.0f, 0.0f, 0.0f};
     auto filterOffset = sycl::id(0);
     auto src = globalId + sycl::id(halo_, halo_);
 
@@ -128,7 +128,7 @@ util::image_ref<float> linear_blur(int width) {
     filterData[index + 3] = isCenter ? 1.0f : 0.0f;
   }
 
-  return util::image_ref<float> { filterData, width, 1, 4, 0 };
+  return util::image_ref<float>{filterData, width, 1, 4, 0};
 }
 
 inline constexpr util::filter_type filterType = util::filter_type::blur;
@@ -147,7 +147,7 @@ int main() {
   auto filter = linear_blur(filterWidth);
 
   try {
-    sycl::queue myQueue { sycl::cpu_selector_v };
+    sycl::queue myQueue{sycl::cpu_selector_v};
 
     std::cout << "Running on "
               << myQueue.get_device().get_info<sycl::info::device::name>()
@@ -171,10 +171,10 @@ int main() {
     auto filterRange = sycl::range(filterWidth * channels);
 
     {
-      auto inBuf = sycl::buffer { inputImage.data(), inBufRange };
-      auto outBuf = sycl::buffer<float, 2> { outBufRange };
-      auto tempBuf = sycl::buffer<float, 2> { inBufRange };
-      auto filterBuf = sycl::buffer { filter.data(), filterRange };
+      auto inBuf = sycl::buffer{inputImage.data(), inBufRange};
+      auto outBuf = sycl::buffer<float, 2>{outBufRange};
+      auto tempBuf = sycl::buffer<float, 2>{inBufRange};
+      auto filterBuf = sycl::buffer{filter.data(), filterRange};
       outBuf.set_final_data(outputImage.data());
 
       auto inBufVec = inBuf.reinterpret<sycl::float4>(inBufRange /

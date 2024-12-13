@@ -8,8 +8,9 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
+
+#include "../helpers.hpp"
 
 class vector_add;
 
@@ -24,20 +25,20 @@ int main() {
   }
 
   try {
-    auto defaultQueue = sycl::queue {};
+    auto defaultQueue = sycl::queue{};
 
-    auto bufA = sycl::buffer { a, sycl::range { dataSize } };
-    auto bufB = sycl::buffer { b, sycl::range { dataSize } };
-    auto bufR = sycl::buffer { r, sycl::range { dataSize } };
+    auto bufA = sycl::buffer{a, sycl::range{dataSize}};
+    auto bufB = sycl::buffer{b, sycl::range{dataSize}};
+    auto bufR = sycl::buffer{r, sycl::range{dataSize}};
 
     defaultQueue
         .submit([&](sycl::handler& cgh) {
-          sycl::accessor accA { bufA, cgh, sycl::read_only };
-          sycl::accessor accB { bufB, cgh, sycl::read_only };
-          sycl::accessor accR { bufR, cgh, sycl::write_only };
+          sycl::accessor accA{bufA, cgh, sycl::read_only};
+          sycl::accessor accB{bufB, cgh, sycl::read_only};
+          sycl::accessor accR{bufR, cgh, sycl::write_only};
 
           cgh.parallel_for<vector_add>(
-              sycl::range { dataSize },
+              sycl::range{dataSize},
               [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
         })
         .wait();

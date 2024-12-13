@@ -11,12 +11,16 @@
  *
  */
 
-#include "../helpers.hpp"
-
 #include <benchmark.h>
+
 #include <sycl/sycl.hpp>
 
-template <typename T> constexpr T my_min(T a, T b) { return a < b ? a : b; }
+#include "../helpers.hpp"
+
+template <typename T>
+constexpr T my_min(T a, T b) {
+  return a < b ? a : b;
+}
 
 using T = float;
 
@@ -35,26 +39,24 @@ inline void workgroup_reduce_local_mem(sycl::local_accessor<T, 1> a,
 #pragma unroll
   for (auto i = workGroupSize; i >= 2; i /= 2) {
     if (workGroupSize >= i) {
-      if (localIdx < i / 2)
-        a[localIdx] += a[localIdx + i / 2];
+      if (localIdx < i / 2) a[localIdx] += a[localIdx + i / 2];
       item.barrier();
     }
   }
 }
 
 int main(int argc, char* argv[]) {
-
   T a[dataSize];
 
   for (auto i = 0; i < dataSize; ++i) {
     a[i] = static_cast<T>(i);
   }
 
-  auto q = sycl::queue {};
+  auto q = sycl::queue{};
 
   T* devPtrA = sycl::malloc_device<T>(dataSize, q);
   T* devPtrB =
-      sycl::malloc_device<T>(numWorkGroups, q); // Holds intermediate values
+      sycl::malloc_device<T>(numWorkGroups, q);  // Holds intermediate values
 
   auto e1 = q.memcpy(devPtrA, a, sizeof(T) * dataSize);
 
