@@ -11,6 +11,6 @@
 #include "../helpers.hpp"
 
 int main() {
-  // Use your code from Exercise 17 to start
+  // Use your code from the "Vectors" exercise to start
   SYCLACADEMY_ASSERT(true);
 }

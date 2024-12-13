@@ -8,7 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_13_load_balancing
 add_sycl_executable(Multiple_Devices source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
   add_sycl_executable(Multiple_Devices solution)

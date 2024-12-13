@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 16: Coalesced Global Memory
+## Coalesced Global Memory
 ---
 
 In this exercise you will learn how to apply row-major and column-major when

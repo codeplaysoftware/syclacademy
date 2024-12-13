@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 18: Local Memory Tiling
+## Local Memory Tiling
 ---
 
 In this exercise you will learn how to cache global memory into local memory in

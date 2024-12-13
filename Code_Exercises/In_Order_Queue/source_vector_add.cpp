@@ -58,6 +58,6 @@
 #include "../helpers.hpp"
 
 int main() {
-  // Use the Exercise 10 solution to start
+  // Use the "Data and Dependencies" exercise solution to start
   SYCLACADEMY_ASSERT(true);
 }

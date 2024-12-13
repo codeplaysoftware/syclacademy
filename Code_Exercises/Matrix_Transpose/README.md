@@ -1,4 +1,6 @@
-## Exercise: Local Memory Matrix Transpose
+# SYCL Academy
+
+## Local Memory Matrix Transpose
 ---
 
 This exercise uses GPU specific features in order to gain good GPU performance.

@@ -11,6 +11,6 @@
 #include "../helpers.hpp"
 
 int main() {
-  // Use your code from Exercise 18 to start
+  // Use your code from the "Local Memory Tiling" exercise to start
   SYCLACADEMY_ASSERT(true);
 }

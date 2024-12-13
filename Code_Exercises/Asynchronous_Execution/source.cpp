@@ -47,12 +47,12 @@
 #include "../helpers.hpp"
 
 void test_usm() {
-  // Use your code from Exercise 3 to start
+  // Use your code from the "Data Parallelism" exercise to start
   SYCLACADEMY_ASSERT(true);
 }
 
 void test_buffer() {
-  // Use your code from Exercise 3 to start
+  // Use your code from the "Data Parallelism" exercise to start
   SYCLACADEMY_ASSERT(true);
 }
 

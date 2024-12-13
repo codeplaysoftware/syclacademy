@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 3: Scalar Add
+## Scalar Add
 
 ---
 
