@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 10: Managing Dependencies
+## Managing Dependencies
 ---
 
 In this exercise you will learn how to create a data dependency data flow graph

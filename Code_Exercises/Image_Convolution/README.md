@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 15: Image Convolution
+## Image Convolution
 ---
 
 In this exercise there is no task, simply familiarize yourself with the image

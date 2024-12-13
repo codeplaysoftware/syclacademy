@@ -11,6 +11,6 @@
 #include "../helpers.hpp"
 
 int main() {
-  // Use your code from Exercise 15 to start
+  // Use your code from the "Image Convolution" exercise to start
   SYCLACADEMY_ASSERT(true);
 }

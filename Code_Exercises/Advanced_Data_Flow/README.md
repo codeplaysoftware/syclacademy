@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 12: Temporary Data
+## Temporary Data
 ---
 
 In this exercise you will learn how to use temporary data and avoid unnecessary

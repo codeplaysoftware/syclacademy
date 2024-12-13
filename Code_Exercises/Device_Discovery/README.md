@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 5: Device Selection
+## Device Selection
 
 ---
 

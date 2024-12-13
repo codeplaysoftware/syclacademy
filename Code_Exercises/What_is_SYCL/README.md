@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 1: Compiling with SYCL
+## Compiling with SYCL
 
 ---
 

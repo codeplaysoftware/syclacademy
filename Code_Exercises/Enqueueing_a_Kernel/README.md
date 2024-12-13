@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 2: Hello World
+## Hello World
 
 ---
 

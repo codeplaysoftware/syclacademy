@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 17: Vectors
+## Vectors
 ---
 
 In this exercise you will learn how to use `vec` to explicitly vectorized your

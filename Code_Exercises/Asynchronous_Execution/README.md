@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 9: Asynchronous_Execution
+## Asynchronous_Execution
 ---
 
 In this exercise you will learn how to use different techniques for
@@ -11,8 +11,9 @@ synchronizing commands and data.
 ### 1.) Waiting on events
 
 Take a look at the vector add applications using the buffer/accessor model in
-exercise 6 and the USM model in exercise 8, and familiarize yourself with how
-they call `wait` on returned `event`s to synchronize the completion of the work.
+the "Data Parallelism" exercise and the USM model in the "Using USM" exercise,
+and familiarize yourself with how they call `wait` on returned `event`s to
+synchronize the completion of the work.
 
 ### 2.) Waiting on queues
 
@@ -22,7 +23,8 @@ synchronize instead.
 ### 3.) Buffer destruction
 
 Take a look at the vector add application using the buffer/accessor mode in
-exercise 6 and how it synchronizes on the destruction of the `buffer`s. 
+the "Data Parallelism" exercise and how it synchronizes on the destruction of
+the `buffer`s.
 
 ### 4.) Copy back
 

@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 7: USM Selector
+## USM Selector
 ---
 
 In this exercise you will learn how to find a suitable device for using the USM data management model.
@@ -9,7 +9,7 @@ In this exercise you will learn how to find a suitable device for using the USM 
 
 ### 1.) Create a device selector
 
-Create a custom device selector as you did in exercise 5.
+Create a custom device selector as you did in the "Device Discovery" exercise.
 
 ### 2.) Check for USM support
 

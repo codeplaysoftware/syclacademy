@@ -8,7 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_06_vector_add
 add_sycl_executable(More_SYCL_Features reduce_naive)
 add_sycl_executable(More_SYCL_Features reduce_atomic)
 add_sycl_executable(More_SYCL_Features reduce_group_algorithms)

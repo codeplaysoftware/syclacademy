@@ -8,7 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_04_handling_errors
 add_sycl_executable(Handling_Errors source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
   add_sycl_executable(Handling_Errors solution)

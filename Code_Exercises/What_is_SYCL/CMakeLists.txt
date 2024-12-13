@@ -8,7 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_01_compiling_with_sycl
 add_sycl_executable(What_is_SYCL source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
   add_sycl_executable(What_is_SYCL solution)

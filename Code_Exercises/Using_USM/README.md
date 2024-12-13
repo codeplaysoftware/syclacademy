@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 8: USM Vector Add
+## USM Vector Add
 ---
 
 In this exercise you will learn how to use the USM API to write a SYCL
@@ -15,8 +15,8 @@ using the buffer/accessor model.
 
 ### 2.) Create a queue
 
-Create a `queue` using the USM device selector from exercise 7, remember to
-handle errors.
+Create a `queue` using the USM device selector from the "Introduction to USM"
+exercise, remember to handle errors.
 
 ### 3.) Allocate device memory
 
@@ -37,7 +37,7 @@ remember to call `wait` on the `event` that is returned.
 ### 5.) Define the kernel function
 
 Now you can define the kernel function itself, which is largely the same as in
-exercise 7.
+the "Data Parallelism" exercise.
 
 This can be done differently from the buffer/accessor model, by calling the
 shortcut member function `parallel_for` on the `queue` rather than creating a

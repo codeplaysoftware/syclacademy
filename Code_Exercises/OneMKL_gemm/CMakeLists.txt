@@ -8,7 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_11_onemkl_dgemm
 add_sycl_executable(OneMKL_gemm source_onemkl_usm_gemm)
 add_sycl_executable(OneMKL_gemm source_onemkl_buffer_gemm)
 

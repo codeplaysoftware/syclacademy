@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 13: Load Balancing
+## Load Balancing
 
 ---
 
@@ -19,9 +19,10 @@ Then create a `queue` for each of the two devices.
 
 ### 3. ) Split a task across the two queues
 
-Using either the application from exercise 6 using the buffer/accessor model or
-the application from exercise 8 with the USM model create an application where
-the work is distributed across two devices using the two `queue`s you created.
+Using either the application from the "Data Parallelism" exercise with the
+buffer/accessor model or the application from the "Using USM" exercise with the
+USM model, create an application where the work is distributed across two
+devices using the two `queue`s you created.
 
 Remember to create separate `buffer`s for the separate parts of the data being
 computed.

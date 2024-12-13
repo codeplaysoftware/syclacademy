@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 4: Handling Errors
+## Handling Errors
 
 ---
 

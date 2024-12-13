@@ -8,7 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_19_work_group_sizes
 add_sycl_executable(Work_Group_Sizes source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
   add_sycl_executable(Work_Group_Sizes solution)

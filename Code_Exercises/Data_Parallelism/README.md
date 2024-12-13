@@ -1,6 +1,6 @@
 # SYCL Academy
 
-## Exercise 6: Vector Add
+## Vector Add
 
 ---
 

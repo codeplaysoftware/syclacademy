@@ -8,7 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_05_device_selection
 add_sycl_executable(Device_Discovery source)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
   add_sycl_executable(Device_Discovery solution)

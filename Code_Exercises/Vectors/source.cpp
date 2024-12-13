@@ -11,6 +11,7 @@
 #include "../helpers.hpp"
 
 int main() {
-  // Use your code from Exercise 16 to start
+  // Use your code from the "Coalesced Global Memory" or "Image Convolution"
+  // exercises to start
   SYCLACADEMY_ASSERT(true);
 }

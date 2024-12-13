@@ -8,7 +8,6 @@
   see <http://creativecommons.org/licenses/by-sa/4.0/>.
 ]]
 
-# Exercise exercise_11_in_order_queue
 add_sycl_executable(In_Order_Queue source_vector_add)
 add_sycl_executable(In_Order_Queue source_queue_benchmarking)
 if(SYCL_ACADEMY_ENABLE_SOLUTIONS)
