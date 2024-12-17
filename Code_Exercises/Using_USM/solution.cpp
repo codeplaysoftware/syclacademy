@@ -8,9 +8,9 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
-
 #include <sycl/sycl.hpp>
+
+#include "../helpers.hpp"
 
 class vector_add;
 
@@ -32,7 +32,7 @@ int main() {
   }
 
   try {
-    auto usmQueue = sycl::queue { usm_selector };
+    auto usmQueue = sycl::queue{usm_selector};
 
     auto devicePtrA = sycl::malloc_device<float>(dataSize, usmQueue);
     auto devicePtrB = sycl::malloc_device<float>(dataSize, usmQueue);
@@ -42,7 +42,7 @@ int main() {
     usmQueue.memcpy(devicePtrB, b, sizeof(float) * dataSize).wait();
 
     usmQueue
-        .parallel_for<vector_add>(sycl::range { dataSize },
+        .parallel_for<vector_add>(sycl::range{dataSize},
                                   [=](sycl::id<1> idx) {
                                     auto globalId = idx[0];
                                     devicePtrR[globalId] =

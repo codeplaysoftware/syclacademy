@@ -1,8 +1,18 @@
-Language: Cpp
-BasedOnStyle: LLVM
-AccessModifierOffset: -1
-BreakInheritanceList: BeforeComma
-BreakConstructorInitializers: BeforeComma
-Cpp11BracedListStyle: false
-PointerAlignment: Left
-SpaceBeforeCpp11BracedList: true
+BasedOnStyle: Google
+IncludeCategories:
+  - Regex:           '^<sycl/.*>$'
+    Priority:        3
+    SortPriority:    0
+    CaseSensitive:   false
+  - Regex:           '^<.*\.h>'
+    Priority:        1
+    SortPriority:    0
+    CaseSensitive:   false
+  - Regex:           '^<.*'
+    Priority:        2
+    SortPriority:    0
+    CaseSensitive:   false
+  - Regex:           '.*'
+    Priority:        4
+    SortPriority:    0
+    CaseSensitive:   false

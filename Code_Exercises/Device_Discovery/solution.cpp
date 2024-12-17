@@ -8,8 +8,9 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
 #include <sycl/sycl.hpp>
+
+#include "../helpers.hpp"
 
 class scalar_add;
 
@@ -39,24 +40,23 @@ int main() {
   int a = 18, b = 24, r = 0;
 
   try {
-
-    auto defaultQueue1 = sycl::queue { intel_gpu_selector1 };
-    auto defaultQueue2 = sycl::queue { intel_gpu_selector2 };
+    auto defaultQueue1 = sycl::queue{intel_gpu_selector1};
+    auto defaultQueue2 = sycl::queue{intel_gpu_selector2};
 
     std::cout << "Chosen device: "
               << defaultQueue1.get_device().get_info<sycl::info::device::name>()
               << std::endl;
 
     {
-      auto bufA = sycl::buffer { &a, sycl::range { 1 } };
-      auto bufB = sycl::buffer { &b, sycl::range { 1 } };
-      auto bufR = sycl::buffer { &r, sycl::range { 1 } };
+      auto bufA = sycl::buffer{&a, sycl::range{1}};
+      auto bufB = sycl::buffer{&b, sycl::range{1}};
+      auto bufR = sycl::buffer{&r, sycl::range{1}};
 
       defaultQueue1
           .submit([&](sycl::handler& cgh) {
-            auto accA = sycl::accessor { bufA, cgh, sycl::read_only };
-            auto accB = sycl::accessor { bufB, cgh, sycl::read_only };
-            auto accR = sycl::accessor { bufR, cgh, sycl::write_only };
+            auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+            auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+            auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
             cgh.single_task<scalar_add>([=]() { accR[0] = accA[0] + accB[0]; });
           })

@@ -22,10 +22,9 @@
 // work done by `numIters` `single_task`s here would be better encapsulated in
 // a single `parallel_for` launch with range `numIters`.
 
-#include "../helpers.hpp"
-
 #include <sycl/sycl.hpp>
 
+#include "../helpers.hpp"
 #include "queue_benchmarking_helpers.hpp"
 
 using T = float;
@@ -33,7 +32,8 @@ using T = float;
 constexpr int numIters = 100;
 
 // Run busy_sleep numKernels times on a single thread using single_task
-template <typename T> auto bench(sycl::queue q, int numKernels) {
+template <typename T>
+auto bench(sycl::queue q, int numKernels) {
   auto* out = sycl::malloc_device<T>(numKernels, q);
 
   auto s = std::chrono::high_resolution_clock::now();
@@ -46,8 +46,8 @@ template <typename T> auto bench(sycl::queue q, int numKernels) {
 }
 
 void test_in_order_slow() {
-  sycl::queue q { sycl::property::queue::in_order {} };
-  bench<T>(q, 1); // Warmup
+  sycl::queue q{sycl::property::queue::in_order{}};
+  bench<T>(q, 1);  // Warmup
 
   auto singleKernelTime = bench<T>(q, 1);
   auto nKernelsTime = bench<T>(q, numIters);

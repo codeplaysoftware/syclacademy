@@ -14,14 +14,14 @@
  sycl::local_accessor<T, dims> local_acc{localRange, cgh};
 */
 
-#include "../helpers.hpp"
+#include <benchmark.h>
 
 #include <iostream>
 #include <vector>
 
 #include <sycl/sycl.hpp>
 
-#include <benchmark.h>
+#include "../helpers.hpp"
 
 constexpr size_t N = 1024;
 constexpr size_t numIters = 100;
@@ -29,7 +29,6 @@ constexpr size_t numIters = 100;
 using T = float;
 
 int main() {
-
   std::vector<T> A(N * N);
   std::vector<T> A_T(N * N);
   std::vector<T> A_T_comparison(N * N);
@@ -39,30 +38,30 @@ int main() {
   }
 
   try {
-    auto q = sycl::queue {};
+    auto q = sycl::queue{};
 
     std::cout << "Running on "
               << q.get_device().get_info<sycl::info::device::name>() << "\n";
 
-    sycl::range globalRange { N, N };
-    sycl::range localRange { 16, 16 };
-    sycl::nd_range ndRange { globalRange, localRange };
+    sycl::range globalRange{N, N};
+    sycl::range localRange{16, 16};
+    sycl::nd_range ndRange{globalRange, localRange};
 
     {
-      sycl::buffer inBuf { A.data(), globalRange };
-      sycl::buffer outBuf { A_T.data(), globalRange };
-      sycl::buffer compBuf { A_T_comparison.data(), globalRange };
+      sycl::buffer inBuf{A.data(), globalRange};
+      sycl::buffer outBuf{A_T.data(), globalRange};
+      sycl::buffer compBuf{A_T_comparison.data(), globalRange};
 
       util::benchmark(
           [&]() {
             q.submit([&](sycl::handler& cgh) {
-              sycl::accessor inAcc { inBuf, cgh, sycl::read_only };
-              sycl::accessor compAcc { compBuf, cgh, sycl::write_only,
-                                       sycl::property::no_init {} };
+              sycl::accessor inAcc{inBuf, cgh, sycl::read_only};
+              sycl::accessor compAcc{compBuf, cgh, sycl::write_only,
+                                     sycl::property::no_init{}};
 
               cgh.parallel_for(ndRange, [=](sycl::nd_item<2> item) {
                 auto globalId = item.get_global_id();
-                auto globalIdTranspose = sycl::id { globalId[1], globalId[0] };
+                auto globalIdTranspose = sycl::id{globalId[1], globalId[0]};
                 compAcc[globalIdTranspose] = inAcc[globalId];
               });
             });

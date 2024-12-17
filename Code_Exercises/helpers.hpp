@@ -10,16 +10,16 @@
 
 #pragma once
 
-#include <cstddef> // for size_t
+#include <cstddef>  // for size_t
 
 #ifndef __SYCL_DEVICE_ONLY__
-#include <cstdio>  // fprintf
-#include <cstdlib> // abort
-#define SYCLACADEMY_ASSERT(cond)                                               \
-  if (!(cond)) {                                                               \
-    std::fprintf(stderr, "%s failed in %s:%d:%s\nExiting\n", #cond,            \
-                 __BASE_FILE__, __LINE__, __FUNCTION__);                       \
-    std::abort();                                                              \
+#include <cstdio>   // fprintf
+#include <cstdlib>  // abort
+#define SYCLACADEMY_ASSERT(cond)                                    \
+  if (!(cond)) {                                                    \
+    std::fprintf(stderr, "%s failed in %s:%d:%s\nExiting\n", #cond, \
+                 __BASE_FILE__, __LINE__, __FUNCTION__);            \
+    std::abort();                                                   \
   }
 #else
 #define SYCLACADEMY_ASSERT(cond) void(0);

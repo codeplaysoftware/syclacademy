@@ -8,15 +8,14 @@
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 */
 
-#include "../helpers.hpp"
-
 #include <sycl/sycl.hpp>
 
-int main() {
+#include "../helpers.hpp"
 
+int main() {
   // Task: create a queue to a device which supports USM allocations
   // Remember to check for exceptions
-  auto usmQueue = sycl::queue {};
+  auto usmQueue = sycl::queue{};
 
   SYCLACADEMY_ASSERT(true);
 }
