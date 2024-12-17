@@ -139,7 +139,5 @@ int main() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (auto i = 0; i < N * N; ++i) {
-    SYCLACADEMY_ASSERT(A_T[i] == A_T_comparison[i]);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(A_T, A_T_comparison);
 }

@@ -48,12 +48,12 @@
 
 void test_usm() {
   // Use your code from the "Data Parallelism" exercise to start
-  SYCLACADEMY_ASSERT(true);
+  SYCLACADEMY_ASSERT_EQUAL(/*output data*/ 0, /*expected data*/ 0);
 }
 
 void test_buffer() {
   // Use your code from the "Data Parallelism" exercise to start
-  SYCLACADEMY_ASSERT(true);
+  SYCLACADEMY_ASSERT_EQUAL(/*output data*/ 0, /*expected data*/ 0);
 }
 
 int main() {

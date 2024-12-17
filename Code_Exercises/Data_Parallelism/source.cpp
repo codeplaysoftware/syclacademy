@@ -56,7 +56,5 @@ int main() {
     r[i] = a[i] + b[i];
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == static_cast<float>(i) * 2.0f);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2.0f; });
 }

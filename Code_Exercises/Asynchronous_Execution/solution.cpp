@@ -61,9 +61,7 @@ void test_buffer_event_wait() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2; });
 }
 
 void test_buffer_queue_wait() {
@@ -98,9 +96,7 @@ void test_buffer_queue_wait() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2; });
 }
 
 void test_buffer_buffer_destruction() {
@@ -137,9 +133,7 @@ void test_buffer_buffer_destruction() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2; });
 }
 
 void test_usm_event_wait() {
@@ -189,9 +183,7 @@ void test_usm_event_wait() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2; });
 }
 
 void test_usm_queue_wait() {
@@ -239,9 +231,7 @@ void test_usm_queue_wait() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2; });
 }
 
 void test_buffer_host_accessor() {
@@ -277,9 +267,7 @@ void test_buffer_host_accessor() {
       {
         auto hostAccR = bufR.get_host_access(sycl::read_only);  // Copy-to-host
 
-        for (int i = 0; i < dataSize; ++i) {
-          SYCLACADEMY_ASSERT(hostAccR[i] == i * 2);
-        }
+        SYCLACADEMY_ASSERT_EQUAL(hostAccR, [](size_t i) { return i * 2; });
       }
 
     }  // Copy-back

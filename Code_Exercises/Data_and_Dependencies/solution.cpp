@@ -89,9 +89,7 @@ void test_buffer() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(out[i] == i * 2.0f);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(out, [](size_t i) { return i * 2.0f; });
 }
 
 void test_usm() {
@@ -156,9 +154,7 @@ void test_usm() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(out[i] == i * 2.0f);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(out, [](size_t i) { return i * 2.0f; });
 }
 
 int main() {
