@@ -17,20 +17,22 @@
 #ifndef __SYCL_DEVICE_ONLY__
 #include <cstdio>   // fprintf
 #include <cstdlib>  // abort
-#define SYCLACADEMY_ASSERT(cond)                                              \
-  if (!(cond)) {                                                              \
-    std::fprintf(stderr, "[FAILURE] %s failed in %s:%d:%s\nExiting\n", #cond, \
-                 __BASE_FILE__, __LINE__, __FUNCTION__);                      \
-    std::abort();                                                             \
-  } else {                                                                    \
-    std::printf("[SUCCESS] Test passed\n");                                   \
-  }
+#define SYCLACADEMY_ASSERT(cond)                                         \
+  do {                                                                   \
+    if (!(cond)) {                                                       \
+      std::fprintf(stderr, "[FAILURE] %s failed in %s:%d:%s\nExiting\n", \
+                   #cond, __BASE_FILE__, __LINE__, __FUNCTION__);        \
+      std::abort();                                                      \
+    } else {                                                             \
+      std::printf("[SUCCESS] Test passed\n");                            \
+    }                                                                    \
+  } while (false)
 #else
-#define SYCLACADEMY_ASSERT(cond) void(0);
+#define SYCLACADEMY_ASSERT(cond) void(0)
 #endif
 
 #define SYCLACADEMY_ASSERT_EQUAL(lhs, rhs) \
-  SYCLACADEMY_ASSERT(SYCLAcademy::equal(lhs, rhs));
+  SYCLACADEMY_ASSERT(SYCLAcademy::equal(lhs, rhs))
 
 namespace SYCLAcademy {
 
