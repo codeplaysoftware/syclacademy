@@ -62,7 +62,5 @@ int main() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(r[i] == i * 2);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2.0f; });
 }

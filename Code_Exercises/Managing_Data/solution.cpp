@@ -40,7 +40,7 @@ void test_usm() {
   sycl::free(dev_B, defaultQueue);
   sycl::free(dev_R, defaultQueue);
 
-  SYCLACADEMY_ASSERT(r == 42);
+  SYCLACADEMY_ASSERT_EQUAL(r, 42);
 }
 
 void test_buffer() {
@@ -65,7 +65,7 @@ void test_buffer() {
         .wait();
   }
 
-  SYCLACADEMY_ASSERT(r == 42);
+  SYCLACADEMY_ASSERT_EQUAL(r, 42);
 }
 
 int main() {

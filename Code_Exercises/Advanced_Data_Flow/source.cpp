@@ -73,7 +73,5 @@ int main() {
     out[i] = tmp[i] / 2.0f;
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(out[i] == i * 4.0f);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(out, [](size_t i) { return i * 4.0f; });
 }

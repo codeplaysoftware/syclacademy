@@ -59,5 +59,5 @@
 
 int main() {
   // Use the "Data and Dependencies" exercise solution to start
-  SYCLACADEMY_ASSERT(true);
+  SYCLACADEMY_ASSERT_EQUAL(/*output data*/ 0, /*expected data*/ 0);
 }

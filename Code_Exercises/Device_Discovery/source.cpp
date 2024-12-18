@@ -83,5 +83,5 @@ int main() {
     std::cout << "Exception caught: " << e.what() << std::endl;
   }
 
-  SYCLACADEMY_ASSERT(r == 42);
+  SYCLACADEMY_ASSERT_EQUAL(r, 42);
 }

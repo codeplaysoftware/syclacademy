@@ -87,7 +87,5 @@ int main() {
     out[i] = inB[i] + inC[i];
   }
 
-  for (int i = 0; i < dataSize; ++i) {
-    SYCLACADEMY_ASSERT(out[i] == i * 2.0f);
-  }
+  SYCLACADEMY_ASSERT_EQUAL(out, [](size_t i) { return i * 2.0f; });
 }

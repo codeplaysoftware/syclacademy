@@ -53,7 +53,7 @@ void test_usm() {
   // Task: Compute a+b on the SYCL device using USM
   r = a + b;
 
-  SYCLACADEMY_ASSERT(r == 42);
+  SYCLACADEMY_ASSERT_EQUAL(r, 42);
 }
 
 void test_buffer() {
@@ -63,7 +63,7 @@ void test_buffer() {
   // accessor memory model
   r = a + b;
 
-  SYCLACADEMY_ASSERT(r == 42);
+  SYCLACADEMY_ASSERT_EQUAL(r, 42);
 }
 
 int main() {
