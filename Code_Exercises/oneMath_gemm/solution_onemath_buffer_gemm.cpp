@@ -118,7 +118,7 @@ int main() {
   }
 
   // Create a SYCL queue
-  sycl::queue Q{};
+  sycl::queue Q;
   // Prints some basic info related to the hardware
   print_device_info(Q);
 
