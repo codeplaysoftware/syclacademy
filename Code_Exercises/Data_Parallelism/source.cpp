@@ -44,11 +44,11 @@
 int main() {
   constexpr size_t dataSize = 1024;
 
-  float a[dataSize], b[dataSize], r[dataSize];
+  int a[dataSize], b[dataSize], r[dataSize];
   for (int i = 0; i < dataSize; ++i) {
-    a[i] = static_cast<float>(i);
-    b[i] = static_cast<float>(i);
-    r[i] = 0.0f;
+    a[i] = i;
+    b[i] = i;
+    r[i] = 0;
   }
 
   // Task: Compute r[i] = a[i] + b[i] in parallel on the SYCL device
@@ -56,5 +56,5 @@ int main() {
     r[i] = a[i] + b[i];
   }
 
-  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2.0f; });
+  SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2; });
 }
