@@ -406,11 +406,10 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 					</div>
 					<div class="container">
 						<div class="col-left-3" data-markdown>
-							![Constant Memory](../common-revealjs/images/workitem-constantmemory.png "Constant Memory")
+							![Global Memory](../common-revealjs/images/workitem-constantmemory.png "Global Memory")
 						</div>
 						<div class="col-right-2" data-markdown>
 							* Each work-item can access a single region of **global memory** that's accessible to all work-items in a ND-range
-							* Each work-item can also access a region of global memory reserved as **constant memory**, which is read-only
 						</div>
 
 					</div>
@@ -423,8 +422,8 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 					<div class="container">
 						<div class="col" data-markdown>
 							* Each memory region has a different size and access latency
-							* Global / constant memory is larger than local memory and local memory is larger than private memory
-							* Private memory is faster than local memory and local memory is faster than global / constant memory
+							* Global memory is larger than local memory and local memory is larger than private memory
+							* Private memory is faster than local memory and local memory is faster than global memory
 						</div>
 						<div class="col" data-markdown>
 							![Memory Regions](../common-revealjs/images/memory-regions.png "Memory Regions")
