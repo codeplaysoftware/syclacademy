@@ -27,12 +27,10 @@ void test_usm() {
   defaultQueue.memcpy(dev_A, &a, 1 * sizeof(int)).wait();
   defaultQueue.memcpy(dev_B, &b, 1 * sizeof(int)).wait();
 
-  defaultQueue
-      .submit([&](sycl::handler& cgh) {
-        cgh.single_task<scalar_add_usm>(
-            [=] { dev_R[0] = dev_A[0] + dev_B[0]; });
-      })
-      .wait();
+  defaultQueue.submit([&](sycl::handler& cgh) {
+    cgh.single_task<scalar_add_usm>([=] { dev_R[0] = dev_A[0] + dev_B[0]; });
+  });
+  defaultQueue.wait();
 
   defaultQueue.memcpy(&r, dev_R, 1 * sizeof(int)).wait();
 
@@ -53,16 +51,14 @@ void test_buffer() {
     auto bufB = sycl::buffer{&b, sycl::range{1}};
     auto bufR = sycl::buffer{&r, sycl::range{1}};
 
-    defaultQueue
-        .submit([&](sycl::handler& cgh) {
-          auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
-          auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
-          auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
+    defaultQueue.submit([&](sycl::handler& cgh) {
+      auto accA = sycl::accessor{bufA, cgh, sycl::read_only};
+      auto accB = sycl::accessor{bufB, cgh, sycl::read_only};
+      auto accR = sycl::accessor{bufR, cgh, sycl::write_only};
 
-          cgh.single_task<scalar_add_buff_acc>(
-              [=] { accR[0] = accA[0] + accB[0]; });
-        })
-        .wait();
+      cgh.single_task<scalar_add_buff_acc>(
+          [=] { accR[0] = accA[0] + accB[0]; });
+    })
   }
 
   SYCLACADEMY_ASSERT_EQUAL(r, 42);
