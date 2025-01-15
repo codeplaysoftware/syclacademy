@@ -7,20 +7,20 @@
  You should have received a copy of the license along with this
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 
- SYCL Quick Reference
+ Quick Reference
  ~~~~~~~~~~~~~~~~~~~~
 
- // oneMKL APIs:
- https://spec.oneapi.io/versions/latest/elements/oneMKL/source/domains/blas/gemm.html#onemkl-blas-gemm
+ oneMath execution model:
+ https://oneapi-spec.uxlfoundation.org/specifications/oneapi/latest/elements/onemath/source/architecture/architecture
 
- // DGEMM:
- https://www.intel.com/content/www/us/en/docs/onemkl/tutorial-c/2021-4/multiplying-matrices-using-dgemm.html
+ oneMath GEMM API:
+ https://oneapi-spec.uxlfoundation.org/specifications/oneapi/latest/elements/onemath/source/domains/blas/gemm
 
 */
 
 #include <iostream>
 #include <limits>
-#include <oneapi/mkl/blas.hpp>
+#include <oneapi/math.hpp>
 #include <random>
 
 #include <sycl/sycl.hpp>
@@ -36,7 +36,7 @@ using T = double;
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool ValueSame(T a, T b) { return std::fabs(a - b) < 1.0e-08; }
-int VerifyResult(T* c_A, T* c_B) {
+int VerifyResult(sycl::host_accessor<T, 1>& c_A, T* c_B) {
   bool MismatchFound = false;
 
   for (size_t i = 0; i < M; i++) {
@@ -62,12 +62,12 @@ int VerifyResult(T* c_A, T* c_B) {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void print_device_info(sycl::queue& Q) {
-  std::string sycl_dev_name, sycl_runtime, sycl_driver;
+  std::string sycl_dev_name, sycl_dev_version, sycl_driver;
   sycl_dev_name = Q.get_device().get_info<sycl::info::device::name>();
   sycl_driver = Q.get_device().get_info<sycl::info::device::driver_version>();
-  sycl_runtime = Q.get_device().get_info<sycl::info::device::version>();
-  std::cout << "Running on " << sycl_dev_name.c_str() << ", SYCL runtime: v"
-            << sycl_runtime.c_str()
+  sycl_dev_version = Q.get_device().get_info<sycl::info::device::version>();
+  std::cout << "Running on " << sycl_dev_name.c_str()
+            << ", version: " << sycl_dev_version.c_str()
             << ", driver version: " << sycl_driver.c_str() << std::endl;
 }
 
@@ -117,38 +117,31 @@ int main() {
     }
   }
 
-  // Create a SYCL in-order queue targetting GPU device
-  sycl::queue Q{sycl::gpu_selector_v, sycl::property::queue::in_order{}};
+  // Create a SYCL queue
+  sycl::queue Q;
   // Prints some basic info related to the hardware
   print_device_info(Q);
 
-  // TODO: Allocate memory on device, (using sycl::malloc_device APIs)
-  T* a = sycl::malloc_device<T>((M * N), Q);
-  T* b = sycl::malloc_device<T>((N * P), Q);
-  T* c = sycl::malloc_device<T>((M * P), Q);
-  Q.memcpy(a, A.data(), sizeof(T) * M * N);
-  Q.memcpy(b, B.data(), sizeof(T) * N * P);
+  // Create 1D buffers for matrices which are bound to host memory arrays
+  sycl::buffer<T, 1> a{A.data(), sycl::range<1>{M * N}};
+  sycl::buffer<T, 1> b{B.data(), sycl::range<1>{N * P}};
+  sycl::buffer<T, 1> c{C_host.data(), sycl::range<1>{M * P}};
 
-  // TODO: Use oneMKL GEMM USM API
-  oneapi::mkl::transpose transA = oneapi::mkl::transpose::nontrans;
-  oneapi::mkl::transpose transB = oneapi::mkl::transpose::nontrans;
-  oneapi::mkl::blas::column_major::gemm(Q, transA, transB, n, m, k, alpha, b,
-                                        ldB, a, ldA, beta, c,
-                                        ldC);  // row-major
+  // Use oneMath GEMM buffer API
+  oneapi::math::transpose transA = oneapi::math::transpose::nontrans;
+  oneapi::math::transpose transB = oneapi::math::transpose::nontrans;
+  oneapi::math::blas::column_major::gemm(Q, transA, transB, n, m, k, alpha, b,
+                                         ldB, a, ldA, beta, c, ldC);
 
-  std::vector<T> C_device(M * P);
-  Q.memcpy(C_device.data(), c, sizeof(T) * M * P);
-  Q.wait();
+  // Host accessor ensures synchronisation: a read operation on the accessor
+  // will wait until all kernels writing to buffer "c" finished executing and
+  // then copy the data back to host
+  sycl::host_accessor C_device{c};
 
-  // Verify results from oneMKL APIs
+  // Verify results from oneMath
   int result = 0;
-  std::cout << "Verify results between OneMKL & Serial: ";
-  result = VerifyResult(C_device.data(), C_host.data());
-
-  // TODO: Free memory from device
-  sycl::free(a, Q);
-  sycl::free(b, Q);
-  sycl::free(c, Q);
+  std::cout << "Verify results between oneMath & serial: ";
+  result = VerifyResult(C_device, C_host.data());
 
   return result;
 }

@@ -7,20 +7,20 @@
  You should have received a copy of the license along with this
  work.  If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 
- SYCL Quick Reference
+ Quick Reference
  ~~~~~~~~~~~~~~~~~~~~
 
- // oneMKL APIs:
- https://spec.oneapi.io/versions/latest/elements/oneMKL/source/domains/blas/gemm.html#onemkl-blas-gemm
+ oneMath execution model:
+ https://oneapi-spec.uxlfoundation.org/specifications/oneapi/latest/elements/onemath/source/architecture/architecture
 
- // DGEMM:
- https://www.intel.com/content/www/us/en/docs/onemkl/tutorial-c/2021-4/multiplying-matrices-using-dgemm.html
+ oneMath GEMM API:
+ https://oneapi-spec.uxlfoundation.org/specifications/oneapi/latest/elements/onemath/source/domains/blas/gemm
 
 */
 
 #include <iostream>
 #include <limits>
-#include <oneapi/mkl/blas.hpp>
+#include <oneapi/math.hpp>
 #include <random>
 
 #include <sycl/sycl.hpp>
@@ -36,7 +36,7 @@ using T = double;
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool ValueSame(T a, T b) { return std::fabs(a - b) < 1.0e-08; }
-int VerifyResult(T* c_A, T* c_B) {
+int VerifyResult(sycl::host_accessor<T, 1>& c_A, T* c_B) {
   bool MismatchFound = false;
 
   for (size_t i = 0; i < M; i++) {
@@ -62,12 +62,12 @@ int VerifyResult(T* c_A, T* c_B) {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void print_device_info(sycl::queue& Q) {
-  std::string sycl_dev_name, sycl_runtime, sycl_driver;
+  std::string sycl_dev_name, sycl_dev_version, sycl_driver;
   sycl_dev_name = Q.get_device().get_info<sycl::info::device::name>();
   sycl_driver = Q.get_device().get_info<sycl::info::device::driver_version>();
-  sycl_runtime = Q.get_device().get_info<sycl::info::device::version>();
-  std::cout << "Running on " << sycl_dev_name.c_str() << ", SYCL runtime: v"
-            << sycl_runtime.c_str()
+  sycl_dev_version = Q.get_device().get_info<sycl::info::device::version>();
+  std::cout << "Running on " << sycl_dev_name.c_str()
+            << ", version: " << sycl_dev_version.c_str()
             << ", driver version: " << sycl_driver.c_str() << std::endl;
 }
 
@@ -117,24 +117,23 @@ int main() {
     }
   }
 
-  // Create a SYCL in-order queue targetting GPU device
-  sycl::queue Q{sycl::gpu_selector_v, sycl::property::queue::in_order{}};
+  // Create a SYCL queue
+  sycl::queue Q;
   // Prints some basic info related to the hardware
   print_device_info(Q);
 
-  // TODO: Allocate memory on device, (using sycl::malloc_device APIs)
+  // TODO: Create 1D buffers for matrices which are bound to host memory arrays
 
-  // TODO: Use oneMKL GEMM USM API
+  // TODO: Use oneMath GEMM buffer API
 
   // TODO: Copy the results from device to host for verification
+  // Hint: Use sycl::host_accessor
 
-  // Verify results from oneMKL APIs
+  // Verify results from oneMath
   int result = 0;
-  std::cout << "Verify results between OneMKL & Serial: ";
+  std::cout << "Verify results between oneMath & serial: ";
   // TODO: Uncomment the following line verify the results
   // result = VerifyResult(C_device, C_host);
-
-  // TODO: Free memory from device
 
   return result;
 }

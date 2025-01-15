@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<link rel="stylesheet" href="../common-revealjs/css/reveal.css">
+		<link rel="stylesheet" href="../common-revealjs/css/theme/white.css">
+		<link rel="stylesheet" href="../common-revealjs/css/custom.css">
+		<script>
+			// This is needed when printing the slides to pdf
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../common-revealjs/css/print/pdf.css' : '../common-revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script>
+		    // This is used to display the static images on each slide,
+			// See global-images in this html file and custom.css
+			(function() {
+				if(window.addEventListener) {
+					window.addEventListener('load', () => {
+						let slides = document.getElementsByClassName("slide-background");
+
+						if (slides.length === 0) {
+							slides = document.getElementsByClassName("pdf-page")
+						}
+
+						// Insert global images on each slide
+						for(let i = 0, max = slides.length; i < max; i++) {
+							let cln = document.getElementById("global-images").cloneNode(true);
+							cln.removeAttribute("id");
+							slides[i].appendChild(cln);
+						}
+
+						// Remove top level global images
+						let elem = document.getElementById("global-images");
+						elem.parentElement.removeChild(elem);
+					}, false);
+				}
+			})();
+		</script>
+
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+			  <div id="global-images" class="global-images">
+			    <img src="../common-revealjs/images/sycl_academy.png" />
+			    <img src="../common-revealjs/images/sycl_logo.png" />
+			    <img src="../common-revealjs/images/trademarks.png" />
+			    <img src="../common-revealjs/images/codeplay.png" />
+			  </div>
+			  <!--Slide 1-->
+			  <section class="hbox">
+			    <h2  style="text-transform: none;">
+						oneAPI Math Library (oneMath)
+					</h2>
+			  </section>
+			  <!--Slide 2-->
+			  <section class="hbox" data-markdown>
+			    ## Learning Objectives
+			    * Learn what the oneMath is and how it works
+			    * Learn how to use GEMM APIs from oneMath with both USM and buffer memory models
+			  </section>
+			  <!--Slide 3-->
+			  <section>
+					<div class="hbox" data-markdown>
+			    ## Do you need to write your own kernels?
+					</div>
+
+					<div class="container" data-markdown>
+					* Many computationally intensive applications spend the most of their time in **common operations / algorithms**
+					* **Numerical libraries** provide reliable solutions to these common problems
+					   * You can focus on solving higher-level problems instead of technical details
+					* Libraries optimised for specific hardware provide **superior performance**
+					</div>
+			  </section>
+			  <!--Slide 4-->
+			  <section>
+					<div class="hbox" data-markdown>
+			    ## Numerical libraries
+					</div>
+
+					<div class="container" data-markdown>
+					* Common APIs like BLAS or LAPACK have multiple CPU implementations and vendor-specific GPU solutions
+					   * **Intel CPU/GPU**: Intel Math Kernels Library (oneMKL)
+					   * **NVIDIA GPU**: cuBLAS, cuSOLVER, cuRAND, cuFFT
+					   * **AMD GPU**: rocBLAS, rocSOLVER, rocRAND, rocFFT
+					* Imagine being able to use all of them with *single source code* &#8594; **oneMath**
+					</div>
+			  </section>
+			  <!--Slide 5-->
+			  <section>
+					<div class="hbox">
+						<h2  style="text-transform: none;">
+							oneAPI and oneMath
+						</h2>
+					</div>
+					<div class="container" data-markdown>
+						* Open-source [**oneAPI**](https://oneapi.io/) project governed by the [United Acceleration (UXL) Foundation](https://uxlfoundation.org/):
+						   * defines SYCL-based APIs and provides library implementations
+						   * brings performance and ease of development to SYCL applications
+						* [**oneMath** specification](https://oneapi-spec.uxlfoundation.org/specifications/oneapi/latest/elements/onemath/source/):
+						   * defines SYCL API for numerical computations across several domains
+						   * Linear Algebra, Discrete Fourier Transforms, Random Number Generators, Statistics, Vector Math
+						* [**oneMath** library](https://github.com/uxlfoundation/oneMath):
+						   * wrapper implementation dispatching SYCL API calls to a multitude of implementations, both generic and vendor-specific
+					</div>
+					<div class="container">
+						<img style="height:4em; margin-top:2em;" src="../common-revealjs/images/oneAPI.png" />
+						<div style="display: inline; width: 2em;"></div>
+						<img style="height:4em; margin-top:2em;" src="../common-revealjs/images/uxl.svg" />
+					</div>
+			  </section>
+			  <!--Slide 6-->
+			  <section>
+					<h2  style="text-transform: none;">
+						oneMath library backends
+					</h2>
+					<object class="r-stretch" data="../common-revealjs/images/oneMath-backends.svg"></object>
+			  </section>
+			  <!--Slide 7-->
+			  <section>
+			    <div class="hbox" data-markdown>
+			      #### Run-time dispatching
+			    </div>
+			    <div class="container">
+						<pre><code>
+#include &lt;oneapi/math.hpp&gt;
+
+sycl::queue q{myDeviceSelector};
+
+sycl::buffer&lt;T,1&gt; a{a_host, m*k};
+sycl::buffer&lt;T,1&gt; b{b_host, k*n};
+sycl::buffer&lt;T,1&gt; c{c_host, m*n};
+
+// Compute C = A*B+C on the device
+oneapi::math::blas::column_major::gemm(q, ..., m, n, k, ..., a, ..., b, ..., c, ... );
+						</code></pre>
+			    </div>
+					<div class="container" data-markdown>
+						* Backend is loaded at run time based on the device associated with the SYCL queue
+						* Both buffer and USM APIs available (mind the different synchronisation)
+						* The same binary can run on different hardware with a generic device selector
+						   * Can run on CPU or different GPUs without recompiling
+						* Link the application with the top-level runtime library: `-lonemath`
+					</div>
+			  </section>
+			  <!--Slide 8-->
+			  <section>
+			    <div class="hbox" data-markdown>
+			      #### Compile-time dispatching
+			    </div>
+			    <div class="container">
+						<pre><code>
+#include &ltoneapi/math.hpp&gt
+
+sycl::queue cpu_queue{sycl::cpu_selector_v};
+
+sycl::buffer&lt;T,1&gt; a{a_host, m*k};
+sycl::buffer&lt;T,1&gt; b{b_host, k*n};
+sycl::buffer&lt;T,1&gt; c{c_host, m*n};
+
+oneapi::math::backend_selector&ltoneapi::math::backend::mklcpu&gt cpu_selector(cpu_queue);
+// Select the Intel oneMKL CPU backend specifically ^^^^^^
+
+oneapi::math::blas::column_major::gemm(cpu_selector, ..., m, n, k, ..., a, ..., b, ..., c, ... );
+						</code></pre>
+					</div>
+					<div class="container" data-markdown>
+				* Specific backend can be selected at compile-time with a `backend_selector`
+				   * Passed into the API in place of the queue
+				* Reduces the small dispatching overhead at the cost of removed portability
+				* Link the application with the specific backend library: `-lonemath_blas_mklcpu`
+			    </div>
+			  </section>
+			  <!--Slide 9-->
+			  <section>
+					<div class="hbox" data-markdown>
+						## Exercise
+					</div>
+					<div class="container" data-markdown>
+					* Objectives: Learn to use oneMath GEMM buffer and USM APIs
+					* Boiler-plate code already provided to:
+					   * Initialize matrices on host
+					   * Compute reference result on host
+					   * Compare the host and device results
+					* Please **complete the TODO tasks** marked in the `source_*.cpp`
+					   * Create buffers or transfer data with USM
+					   * Compute GEMM by calling the oneMath API
+					   * Use the provided `VerifyResult` function
+					* If stuck, have a look at `solution_*.cpp`
+					</div>
+			  </section>
+			</div>
+		</div>
+		<script src="../common-revealjs/js/reveal.js"></script>
+		<script src="../common-revealjs/plugin/markdown/marked.js"></script>
+		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
+		<script src="../common-revealjs/plugin/notes/notes.js"></script>
+		<script src="../common-revealjs/plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({mouseWheel: true, defaultNotes: true, plugins: [RevealMarkdown, RevealNotes, RevealHighlight]});
+			Reveal.configure({ slideNumber: true });
+		</script>
+	</body>
+</html>
