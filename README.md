@@ -101,7 +101,7 @@ SYCL implementations.
 
 | Lesson | Title | Slides | Exercise | Source | Solution |
 |--------|-------|--------|----------|--------|----------|
-| 22 | OneMath GEMM | [slides][lesson-23-slides] | [execise][lesson-23-exercise] | [source][lesson-23-source] | [solution][lesson-23-solution] |
+| 22 | OneMath GEMM | [slides][lesson-22-slides] | [execise][lesson-22-exercise] | [source][lesson-22-source] | [solution][lesson-22-solution] |
 
 ## Building the Exercises
 
