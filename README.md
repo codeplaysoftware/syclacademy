@@ -93,8 +93,15 @@ may not match completely.
 | 19 | Matrix Transpose | [slides][lesson-20-slides] | [exercise][lesson-20-exercise] | [source][lesson-20-source] | [solution][lesson-20-solution] |
 | 20 | More SYCL Features | [slides][lesson-21-slides] | [exercise][lesson-21-exercise] | [source][lesson-21-source] | [solution][lesson-21-solution] |
 | 21 | Functors | [slides][lesson-22-slides] | [exercise][lesson-22-exercise] | [source][lesson-22-source] | [solution][lesson-22-solution] |
-| 22 | OneMath GEMM | [slides][lesson-23-slides] | [execise][lesson-23-exercise] | [source][lesson-23-source] | [solution][lesson-23-solution] |
 
+### oneMath
+
+The lessons in this table work with oneAPI, but might not work with other
+SYCL implementations.
+
+| Lesson | Title | Slides | Exercise | Source | Solution |
+|--------|-------|--------|----------|--------|----------|
+| 22 | OneMath GEMM | [slides][lesson-23-slides] | [execise][lesson-23-exercise] | [source][lesson-23-source] | [solution][lesson-23-solution] |
 
 ## Building the Exercises
 
