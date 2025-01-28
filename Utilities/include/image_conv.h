@@ -9,6 +9,8 @@
 #ifndef __IMAGE_CONV_H__
 #define __IMAGE_CONV_H__
 
+#include <algorithm> // For clamp
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
