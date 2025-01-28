@@ -58,7 +58,7 @@ void test_buffer() {
 
       cgh.single_task<scalar_add_buff_acc>(
           [=] { accR[0] = accA[0] + accB[0]; });
-    })
+    });
   }
 
   SYCLACADEMY_ASSERT_EQUAL(r, 42);
