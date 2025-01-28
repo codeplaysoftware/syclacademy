@@ -465,7 +465,7 @@ cmake ../ "-GUnix Makefiles" -DSYCL_ACADEMY_USE_DPCPP=ON -DSYCL_ACADEMY_ENABLE_S
 [lesson-21-source]:   ./Code_Exercises/Functors/source.cpp
 [lesson-21-solution]: ./Code_Exercises/Functors/solution.cpp
 
-[lesson-22-slides]: ./Lesson_Materials/OneMKL_GEMM/
-[lesson-22-exercise]: ./Code_Exercises/OneMKL_gemm/README.md
-[lesson-22-source]:   ./Code_Exercises/OneMKL_gemm/source.cpp
-[lesson-22-solution]: ./Code_Exercises/OneMKL_gemm/solution.cpp
+[lesson-22-slides]: ./Lesson_Materials/oneMath_gemm/
+[lesson-22-exercise]: ./Code_Exercises/oneMath_gemm/README.md
+[lesson-22-source]:   ./Code_Exercises/oneMath_gemm/source.cpp
+[lesson-22-solution]: ./Code_Exercises/oneMath_gemm/solution.cpp
