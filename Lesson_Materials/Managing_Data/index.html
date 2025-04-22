@@ -48,7 +48,7 @@
 				<div id="global-images" class="global-images">
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
-					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/trademarks.svg" />
 				</div>
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
@@ -101,15 +101,15 @@
 					<img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
 				</section>
 				<!--Slide 3B-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### USM Allocation Types
-					</div>
-					<div class="container" data-markdown>
-						* There are different ways USM memory can be allocated: host, device and shared.
-						![SYCL](../common-revealjs/images/Figure6-1bookUSMtypes.png "SYCL")
-						(from book)
-					</div>
+				<section data-markdown>
+#### USM Allocation Types
+* There are different ways USM memory can be allocated: host, device and shared.
+
+| Type   | Description                     | Access host    | Access device  | Nominal location     |
+|--------|---------------------------------|----------------|----------------|----------------------|
+| device | device global allocations       | ❌             | ✓              | device               |
+| host   | host allocations                | ✓              | ✓              | host                 |
+| shared | Allocations shared between both | ✓              | ✓              | migrates as required |
 				</section>
 				<!--Slide 3-->
 				<section>
@@ -297,16 +297,6 @@ assert(var != 42);
 						  buffer goes out of scope.
 					</div>
 				</section>
-				<!--Slide 10-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Accessor class
-					</div>
-					<div class="hbox" data-markdown>
-						![Accessor Types](../common-revealjs/images/accessor-types.png "Accessor Types")
-					</div>
-				</section>
-				<!--Slide 12-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Accessor class
@@ -469,8 +459,8 @@ gpuQueue.submit([&](handler &cgh){
 		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
 		<script src="../common-revealjs/plugin/notes/notes.js"></script>
 		<script>
-			Reveal.initialize();
-			Reveal.configure({ slideNumber: true });
+      Reveal.initialize({});
+      Reveal.configure({ slideNumber: true });
 		</script>
 	</body>
 </html>

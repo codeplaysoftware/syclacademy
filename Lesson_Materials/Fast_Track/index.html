@@ -48,7 +48,7 @@
 				<div id="global-images" class="global-images">
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
-					<img src="../common-revealjs/images/trademarks.png" />
+					<img src="../common-revealjs/images/trademarks.svg" />
 				</div>
 				<!--Slide 1-->
 				<section class="hbox">
@@ -206,7 +206,7 @@ auto gpuDevice = device(gpu_selector_v);
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/out_of_order_execution.png "SYCL")
+							![SYCL](../common-revealjs/images/out_of_order_execution.svg "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* Commands are submitted to devices in SYCL by means of a Queue
@@ -222,7 +222,7 @@ auto gpuDevice = device(gpu_selector_v);
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/in_order_execution.png "SYCL")
+							![SYCL](../common-revealjs/images/in_order_execution.svg "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* SYCL `queue`s can be configured to be in-order.
@@ -603,7 +603,7 @@ handler.parallel_for(range, func);
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/image_convolution_data_flow.png "SYCL")
+							![SYCL](../common-revealjs/images/image_convolution_data_flow.svg "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* The kernel must read from the input image data and writes to the output image data.
