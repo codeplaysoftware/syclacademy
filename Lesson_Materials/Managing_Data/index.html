@@ -107,7 +107,7 @@
 
 | Type   | Description                     | Access host    | Access device  | Nominal location     |
 |--------|---------------------------------|----------------|----------------|----------------------|
-| device | device global allocations       | ❌             | ✓              | device               |
+| device | device global allocations       | ✗              | ✓              | device               |
 | host   | host allocations                | ✓              | ✓              | host                 |
 | shared | Allocations shared between both | ✓              | ✓              | migrates as required |
 				</section>
@@ -323,6 +323,8 @@ auto acc = sycl::accessor{bufA, cgh};
 					</div>
 					<div class="container" data-markdown>
 						* There are many ways to construct an `accessor`.
+            * Accessors are complicated templates with many template arguments,
+            representing the data type, dimensionality, access mode etc.
 						* The `accessor` class supports CTAD so it's not
 						necessary to specify all of the template arguments.
 						* The most common way to construct an `accessor` is from

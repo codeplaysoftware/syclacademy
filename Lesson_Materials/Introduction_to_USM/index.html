@@ -162,10 +162,18 @@
 						#### USM variants
 					</div>
 					<div class="container" data-markdown>
-						USM has four variants which a platform can support with varying levels of support
+						USM has four variants which a platform can support with varying levels of support.
+            Only Explicit USM is guraranteed to be available, with the others optional.
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](../common-revealjs/images/usm_variants.png "SYCL")
+|                        | Explicit USM | Restricted USM | Concurrent USM | System USM |
+|------------------------|--------------|----------------|----------------|------------|
+| Consistent pointers    | ✓            | ✓              | ✓              | ✓          |
+| Pointers in structures | ✓            | ✓              | ✓              | ✓          |
+| Explicit data movement | ✓            | ✓              | ✓              | ✓          |
+| Shared allocations     | ✗            | ✓              | ✓              | ✓          |
+| Concurrent access      | ✗            | ✗              | ✓              | ✓          |
+| System allocations     | ✗            | ✗              | ✗              | ✓          |
 					</div>
 				</section>
 				<!--Slide 10-->
