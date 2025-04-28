@@ -107,7 +107,12 @@ section {
 .reveal section img { background:none; border:none; box-shadow:none; }
 
 
-
+div.trademarks {
+  position: fixed;
+  left: 20px;
+  bottom: 10px;
+  font-size: 0.8rem;
+}
 
 /*
  * October 28, 2021 - James Reinders - the following lines
