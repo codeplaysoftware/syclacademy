@@ -101,15 +101,20 @@
 					<img src="../common-revealjs/images/gpu_cpu_memory.png" height="400">
 				</section>
 				<!--Slide 3B-->
-				<section data-markdown>
+				<section>
+					<div class="hbox" data-markdown>
 #### USM Allocation Types
+					</div>
+					<div class="container" data-markdown>
 * There are different ways USM memory can be allocated: host, device and shared.
-
+					</div>
+					<div class="container" data-markdown>
 | Type   | Description                     | Access host    | Access device  | Nominal location     |
 |--------|---------------------------------|----------------|----------------|----------------------|
 | device | device global allocations       | ✗              | ✓              | device               |
 | host   | host allocations                | ✓              | ✓              | host                 |
 | shared | Allocations shared between both | ✓              | ✓              | migrates as required |
+					</div>
 				</section>
 				<!--Slide 3-->
 				<section>
