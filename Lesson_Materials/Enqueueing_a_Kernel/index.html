@@ -48,7 +48,7 @@
 				<div id="global-images" class="global-images">
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
-					<img src="../common-revealjs/images/trademarks.png" />
+					<div class="trademarks">SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</div>
 				</div>
 				<!--Slide 1-->
 				<section>
@@ -99,7 +99,7 @@
 					<div class="container">
 						<div class="col">
 							<div class="col-left-1" data-markdown>
-								![SYCL](../common-revealjs/images/command_group.png "SYCL")
+								![SYCL](../common-revealjs/images/command_group.svg "SYCL")
 							</div>
 						</div>
 						<div class="col" data-markdown>
@@ -119,7 +119,7 @@
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/composing_a_command_group.png "SYCL")
+							![SYCL](../common-revealjs/images/composing_a_command_group.svg "SYCL")
 						</div>
 						<div class="col" data-markdown>
 							* Command groups are composed by calling the `submit` member function on a `queue`.
@@ -202,7 +202,7 @@ gpuQueue.submit([&](handler &cgh){
 						#### Scheduling
 					</div>
 					<div class="container" data-markdown>
-						![SYCL](../common-revealjs/images/scheduling.png "SYCL")
+						![SYCL](../common-revealjs/images/scheduling.svg "SYCL")
 					</div>
 					<div class="container" data-markdown>
 						* Once `submit` has created a command group it will submit it to the scheduler.
@@ -217,7 +217,7 @@ gpuQueue.submit([&](handler &cgh){
 					</div>
 					<div class="container">
 						<div class="col" data-markdown>
-							![SYCL](../common-revealjs/images/common_scheduler.png "SYCL")
+							![SYCL](../common-revealjs/images/common_scheduler.svg "SYCL")
 						</div>
 					</div>
 					<div class="container" data-markdown>

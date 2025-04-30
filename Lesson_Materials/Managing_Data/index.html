@@ -48,7 +48,7 @@
 				<div id="global-images" class="global-images">
 					<img src="../common-revealjs/images/sycl_academy.png" />
 					<img src="../common-revealjs/images/sycl_logo.png" />
-					<img src="../common-revealjs/images/trademarks.png" />
+					<div class="trademarks">SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</div>
 				</div>
 				<!--Slide 1-->
 				<section class="hbox" data-markdown>
@@ -103,12 +103,17 @@
 				<!--Slide 3B-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### USM Allocation Types
+#### USM Allocation Types
 					</div>
 					<div class="container" data-markdown>
-						* There are different ways USM memory can be allocated: host, device and shared.
-						![SYCL](../common-revealjs/images/Figure6-1bookUSMtypes.png "SYCL")
-						(from book)
+* There are different ways USM memory can be allocated: host, device and shared.
+					</div>
+					<div class="container" data-markdown>
+| Type   | Description                     | Access host    | Access device  | Nominal location     |
+|--------|---------------------------------|----------------|----------------|----------------------|
+| device | device global allocations       | ✗              | ✓              | device               |
+| host   | host allocations                | ✓              | ✓              | host                 |
+| shared | Allocations shared between both | ✓              | ✓              | migrates as required |
 					</div>
 				</section>
 				<!--Slide 3-->
@@ -297,16 +302,6 @@ assert(var != 42);
 						  buffer goes out of scope.
 					</div>
 				</section>
-				<!--Slide 10-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Accessor class
-					</div>
-					<div class="hbox" data-markdown>
-						![Accessor Types](../common-revealjs/images/accessor-types.png "Accessor Types")
-					</div>
-				</section>
-				<!--Slide 12-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Accessor class
@@ -333,6 +328,8 @@ auto acc = sycl::accessor{bufA, cgh};
 					</div>
 					<div class="container" data-markdown>
 						* There are many ways to construct an `accessor`.
+						* Accessors are complicated templates with many template arguments,
+						representing the data type, dimensionality, access mode etc.
 						* The `accessor` class supports CTAD so it's not
 						necessary to specify all of the template arguments.
 						* The most common way to construct an `accessor` is from
@@ -469,8 +466,8 @@ gpuQueue.submit([&](handler &cgh){
 		<script src="../common-revealjs/plugin/markdown/markdown.js"></script>
 		<script src="../common-revealjs/plugin/notes/notes.js"></script>
 		<script>
-			Reveal.initialize();
-			Reveal.configure({ slideNumber: true });
+      Reveal.initialize({});
+      Reveal.configure({ slideNumber: true });
 		</script>
 	</body>
 </html>
