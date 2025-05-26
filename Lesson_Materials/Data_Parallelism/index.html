@@ -40,7 +40,7 @@
 				}
 			})();
 		</script>
-		
+
 	</head>
 	<body>
 		<div class="reveal">
@@ -73,10 +73,10 @@
 					<div class="container" data-markdown>
 						* **Task parallelism** is where you have several,
 						possibly distinct tasks executing in parallel.
-						  * In task parallelism you optimize for latency.
+						  * In task parallelism you generally optimize for latency.
 						* **Data parallelism** is where you have the same
 						task being performed on multiple elements of data.
-						  * In data parallelism you optimize for throughput.
+						  * In data parallelism you generally optimize for throughput.
 					</div>
 				</section>
 				<!--Slide 4-->
@@ -109,7 +109,7 @@ void calc(const int in[], int out[]) {
   }
 }
 
-// calc is invoked just once and all
+// calc(...) is invoked just once and all
 // iterations are performed inline
 calc(in, out);
 							</code></pre>
@@ -123,7 +123,7 @@ void calc(const int in[], int out[], int id) {
   out[id] = in[id] * in[id];
 }
 
-// parallel_for invokes calc multiple
+// parallel_for invokes calc(...) multiple
 // times in parallel
 parallel_for(calc, in, out, 1024);
 
@@ -139,9 +139,9 @@ parallel_for(calc, in, out, 1024);
 					</div>
 					<div class="container">
 						<div class="col-left" data-markdown>
-							* In SYCL kernel functions are executed by 
+							* In SYCL kernel functions are executed by
 							 **work- items**.
-							* You can think of a work-item as a thread of 
+							* You can think of a work-item as a thread of
 							execution.
 							* Each work-item will execute a SYCL kernel function from start to end.
 							* A work-item can run on CPU threads, SIMD lanes,
@@ -153,7 +153,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-				<!--Slide 5-->
+				<!--Slide 7-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -169,7 +169,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-				<!--Slide 6-->
+				<!--Slide 8-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -177,7 +177,7 @@ parallel_for(calc, in, out, 1024);
 					<div class="container">
 						<div class="col" data-markdown>
 							* The nd-range describes an **iteration space**: how it is composed in terms of work-groups and work-items
-							* An nd-range can be 1, 2 or 3 dimensions
+							* An nd-range can have 1, 2 or 3 dimensions
 							* An nd-range has two components
 							  * The **global-range** describes the total number of work-items in each dimension
 							  * The **local-range** describes the number of work-items in a work-group in each dimension
@@ -187,7 +187,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-				<!--Slide 7-->
+				<!--Slide 9-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -209,7 +209,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-				<!--Slide 8-->
+				<!--Slide 10-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -223,7 +223,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-				<!--Slide 9-->
+				<!--Slide 11-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -231,7 +231,9 @@ parallel_for(calc, in, out, 1024);
 					<div class="container">
 						<div class="col" data-markdown>
 							* Multiple work-items will generally execute concurrently
-							* On vector hardware this is often done in lock-step, which means the same hardware instructions
+							* On vector hardware this is often done in lock-step, with
+							  neighboring work-items executing the same instruction at
+							  all times
 							* The number of work-items that will execute concurrently can vary from one device to another
 							* Work-items will be batched along with other work-items in the same work-group
 							* The order work-items and work-groups are executed in is implementation defined
@@ -241,7 +243,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-				<!--Slide 10-->
+				<!--Slide 12-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -256,7 +258,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-				<!--Slide 12-->
+				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -271,7 +273,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-				<!--Slide 7-->
+				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL execution model
@@ -291,8 +293,7 @@ parallel_for(calc, in, out, 1024);
 						</div>
 					</div>
 				</section>
-
-				<!--Slide 14-->
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Parallel_for
@@ -302,7 +303,7 @@ parallel_for(calc, in, out, 1024);
 							<code><pre>
 cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>nd_range{{1024, 16}, {32, 4}}</mark>,
                           [=](<mark>nd_item&lt;2&gt; item)</mark>{
-  // SYCL kernel function is executed 
+  // SYCL kernel function is executed
   // on a range of work-items
 });
 							</code></pre>
@@ -310,7 +311,7 @@ cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>nd_range{{1024, 16}, {32, 4
 					</div>
 					<div class="container" data-markdown>
 					  * In SYCL, kernel functions can be enqueued to execute
-					  over a range of work-items using `parallel_for`
+					  over a range of work-items using `sycl::handler::parallel_for`
 					  * The first argument to `parallel_for` is an `nd_range` or
 					  a `range` which describes the iteration space over which
 					  the kernel is to be executed
@@ -368,7 +369,7 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 						</div>
 					</div>
 				</section>
-				<!--Slide 14-->
+				<!--Slide 17-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL memory model
@@ -384,7 +385,7 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 
 					</div>
 				</section>
-				<!--Slide 15-->
+				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL memory model
@@ -399,7 +400,7 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 						</div>
 					</div>
 				</section>
-				<!--Slide 16-->
+				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL memory model
@@ -409,12 +410,12 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 							![Global Memory](../common-revealjs/images/workitem-constantmemory.png "Global Memory")
 						</div>
 						<div class="col-right-2" data-markdown>
-							* Each work-item can access a single region of **global memory** that's accessible to all work-items in a ND-range
+							* Each work-item can access all of the **global memory**
 						</div>
 
 					</div>
 				</section>
-				<!--Slide 17-->
+				<!--Slide 20-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### SYCL memory model
@@ -430,7 +431,7 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 						</div>
 					</div>
 				</section>
-				<!--Slide 22-->
+				<!--Slide 21-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Accessing Data With Accessors
@@ -446,7 +447,7 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 					  * This returns a raw pointer to the data
 					</div>
 				</section>
-				<!--Slide 23-->
+				<!--Slide 22-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Accessing Data With Accessors
@@ -476,7 +477,7 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
-				<!--Slide 24-->
+				<!--Slide 23-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Accessing Data With Accessors
@@ -514,11 +515,11 @@ gpuQueue.submit([&](handler &cgh){
 						</div>
 					</div>
 				</section>
-				<!--Slide 17-->
+				<!--Slide 24-->
 				<section class="hbox" data-markdown>
 					## Questions
 				</section>
-				<!--Slide 18-->
+				<!--Slide 25-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
