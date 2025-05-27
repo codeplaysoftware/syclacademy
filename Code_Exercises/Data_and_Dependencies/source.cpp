@@ -56,7 +56,7 @@
 int main() {
   constexpr size_t dataSize = 1024;
 
-  int inA[dataSize], inB[dataSize], inC[dataSize], out[dataSize];
+  float inA[dataSize], inB[dataSize], inC[dataSize], out[dataSize];
   for (int i = 0; i < dataSize; ++i) {
     inA[i] = static_cast<float>(i);
     inB[i] = static_cast<float>(i);
