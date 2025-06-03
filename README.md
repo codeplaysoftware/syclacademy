@@ -19,17 +19,6 @@ matter.
 
 | Lesson | Title | Slides | Exercise | Source | Solution |
 |--------|-------|--------|----------|--------|----------|
-https://github.com/codeplaysoftware/syclacademy/tree/main/Lesson_Materials/Fast_Track
-https://github.com/codeplaysoftware/syclacademy/blob/main/Code_Exercises/Asynchronous_Execution/README.md
-
-https://github.com/codeplaysoftware/syclacademy/tree/main/Lesson_Materials/Data_Parallelism
-https://github.com/codeplaysoftware/syclacademy/blob/main/Code_Exercises/Data_Parallelism/README.md
-
-https://github.com/codeplaysoftware/syclacademy/tree/main/Lesson_Materials/Data_and_Dependencies
-https://github.com/codeplaysoftware/syclacademy/blob/main/Code_Exercises/Data_and_Dependencies/
-
-Recap
-
 | 01 | A Fast Introduction to SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] |
 | 02 | ND Range Kernels and Concepts | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] |
 | 03 | Data Flow with SYCL | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] |
