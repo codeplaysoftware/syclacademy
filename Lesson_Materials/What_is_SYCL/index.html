@@ -93,9 +93,10 @@
 				<section data-markdown>
 					## SYCL is...
 					
-					* SYCL extends C++ in two key ways:
+					* SYCL extends C++ in three key ways:
 					  * device discovery (and information)
-					  * device control (kernels of work, memory)
+					  * device and data control (kernels of work, memory/data location)
+					  * expression of parallelism (queues, work-groups, sub-groups, work-items)
 					* SYCL is modern C++
 					* SYCL is open, multivendor, multiarchitecture
 				</section>
@@ -113,7 +114,7 @@
 						</div>
 						<div class="col" data-markdown>
 							*  SYCL allows you to write both host CPU and device code in the same C++ source file
-							*  This requires two compilation passes; one for the host code and one for the device code
+							*  This (usually) requires two compilation passes; one for the host code and one for the device code
 						</div>
 					</div>
 					<aside class="notes">
@@ -134,7 +135,7 @@
 					<article class="main" data-markdown>
 						*  SYCL provides high-level abstractions over common boilerplate code 
 						  * Platform/device selection
-						  * Buffer creation and data movement
+						  * Buffer creation and data allocation/movement
 						  * Kernel function compilation
 						  * Dependency management and scheduling
 					</article>
@@ -157,7 +158,7 @@
 							* It has no:
 								* pragmas
 								* language extensions
-								* attributes (though some implementations may have optional
+								* mandatory attributes (some are optionally available, and some implementations may have optional
 								attributes for extension features)
 						</div>
 					</div>
@@ -320,7 +321,7 @@
 				<!--Slide 18-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
+						#### A SYCL compilation model
 					</div>
 					<div class="container" data-markdown>
 						![SYCL Backend](../common-revealjs/images/compilation_3.png "SYCL")
@@ -333,7 +334,7 @@
 				<!--Slide 19-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
+						#### A SYCL compilation model
 					</div>
 					<div class="container" data-markdown>
 						![SYCL Backend](../common-revealjs/images/compilation_4.png "SYCL")
@@ -346,7 +347,7 @@
 				<!--Slide 20-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
+						#### A SYCL compilation model
 					</div>
 					<div class="container" data-markdown>
 						![SYCL Backend](../common-revealjs/images/compilation_5.png "SYCL")
@@ -358,7 +359,7 @@
 				<!--Slide 21-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
+						#### A SYCL compilation model
 					</div>
 					<div class="container" data-markdown>
 						![SYCL Backend](../common-revealjs/images/compilation_5.png "SYCL")
@@ -371,7 +372,7 @@
 				<!--Slide 22-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Std C++ compilation model
+						#### Another SYCL compilation model
 					</div>
 					<div class="container" data-markdown>
 						![SYCL Backend](../common-revealjs/images/compilation_6.png "SYCL")
