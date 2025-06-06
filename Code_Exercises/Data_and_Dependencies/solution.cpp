@@ -84,6 +84,4 @@ void test_buffer() {
   SYCLACADEMY_ASSERT_EQUAL(out, [](size_t i) { return i * 2.0f; });
 }
 
-int main() {
-  test_buffer();
-}
+int main() { test_buffer(); }
