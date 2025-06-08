@@ -301,8 +301,8 @@ parallel_for(calc, in, out, 1024);
 					<div class="container">
 						<div class="col">
 							<code><pre>
-cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>nd_range{{1024, 16}, {32, 4}}</mark>,
-                          [=](<mark>nd_item&lt;2&gt; item)</mark>{
+cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>sycl::nd_range{{1024, 16}, {32, 4}}</mark>,
+                            [=](<mark>sycl::nd_item&lt;2&gt; item)</mark>{
   // SYCL kernel function is executed
   // on a range of work-items
 });
@@ -329,8 +329,8 @@ cgh.<mark>parallel_for</mark>&lt;my_kernel&gt;(<mark>nd_range{{1024, 16}, {32, 4
 						<div style="font-size: 90%; display: grid; grid-template-columns: 45% 55%; grid-template-rows: 1fr 1fr 1fr;">
 							<div style="margin: auto 0; vertical-align: middle;">
 								<code><pre>
-cgh.parallel_for&lt;kernel&gt;((<mark>nd_range&lt;1&gt;{1024,32}</mark>,
-  [=](<mark>nd_item&lt;1&gt; ndItem</mark>){
+cgh.parallel_for&lt;kernel&gt;((<mark>sycl::nd_range&lt;1&gt;{1024,32}</mark>,
+  [=](<mark>sycl::nd_item&lt;1&gt; ndItem</mark>){
     /* kernel function code */
     id globalId = ndItem.get_global_id();
     id localId = ndItem.get_local_id();
@@ -343,8 +343,8 @@ cgh.parallel_for&lt;kernel&gt;((<mark>nd_range&lt;1&gt;{1024,32}</mark>,
 							</div>
 							<div style="margin: auto 0; vertical-align: middle;">
 								<code><pre>
-cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
-  [=](<mark>item&lt;1&gt; item</mark>){
+cgh.parallel_for&lt;kernel&gt;(<mark>sycl::range&lt;1&gt;{1024}</mark>,
+  [=](<mark>sycl::item&lt;1&gt; item</mark>){
     /* kernel function code */
     id globalId = item.get_id();
 });
@@ -356,8 +356,8 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 							</div>
 							<div style="margin: auto 0; vertical-align: middle;">
 								<code><pre>
-cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
-  [=](<mark>id&lt;1&gt; globalId</mark>){
+cgh.parallel_for&lt;kernel&gt;(<mark>sycl::range&lt;1&gt;{1024}</mark>,
+  [=](<mark>sycl::id&lt;1&gt; globalId</mark>){
     /* kernel function code */
 });
 								</code></pre>
@@ -455,16 +455,16 @@ cgh.parallel_for&lt;kernel&gt;(<mark>range&lt;1&gt;{1024}</mark>,
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
-buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
-buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+sycl::buffer&ltfloat, 1&gt bufA(dA.data(), sycl::range&lt1&gt(dA.size()));
+sycl::buffer&ltfloat, 1&gt bufB(dB.data(), sycl::range&lt1&gt(dB.size()));
+sycl::buffer&ltfloat, 1&gt bufO(dO.data(), sycl::range&lt1&gt(dO.size()));
 
-gpuQueue.submit([&](handler &cgh){
+gpuQueue.submit([&](sycl::handler &cgh){
   sycl::accessor inA{bufA, cgh, sycl::read_only};
   sycl::accessor inB{bufB, cgh, sycl::read_only};
   sycl::accessor out{bufO, cgh, sycl::write_only};
-  cgh.parallel_for&ltadd&gt(range&lt1&gt(dA.size()),
-    [=](id&lt1&gt i){
+  cgh.parallel_for&ltadd&gt(sycl::range&lt1&gt(dA.size()),
+    [=](sycl::id&lt1&gt i){
     <mark>out[i] = inA[i] + inB[i];</mark>
   });
 });
@@ -485,15 +485,15 @@ gpuQueue.submit([&](handler &cgh){
 					<div class="container">
 						<div class="col-left-3">
 							<code><pre>
-buffer&ltfloat, 1&gt bufA(dA.data(), range&lt1&gt(dA.size()));
-buffer&ltfloat, 1&gt bufB(dB.data(), range&lt1&gt(dB.size()));
-buffer&ltfloat, 1&gt bufO(dO.data(), range&lt1&gt(dO.size()));
+sycl::buffer&ltfloat, 1&gt bufA(dA.data(), sycl::range&lt1&gt(dA.size()));
+sycl::buffer&ltfloat, 1&gt bufB(dB.data(), sycl::range&lt1&gt(dB.size()));
+sycl::buffer&ltfloat, 1&gt bufO(dO.data(), sycl::range&lt1&gt(dO.size()));
 
 gpuQueue.submit([&](handler &cgh){
   sycl::accessor inA{bufA, cgh, sycl::read_only};
   sycl::accessor inB{bufB, cgh, sycl::read_only};
   sycl::accessor out{bufO, cgh, sycl::write_only};
-  cgh.parallel_for&ltadd&gt(rng, [=](item&lt3&gt i){
+  cgh.parallel_for&ltadd&gt(rng, [=](sycl::item&lt3&gt i){
     <mark>auto ptrA = inA.get_pointer();</mark>
     <mark>auto ptrB = inB.get_pointer();</mark>
     <mark>auto ptrO = out.get_pointer();</mark>
