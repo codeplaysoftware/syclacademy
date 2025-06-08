@@ -17,12 +17,12 @@ consisting of slides for presenting the material and a more detailed write-up,
 each accompanied by a tutorial for getting hands on experience with the subject
 matter. The code is available in both the repository and as a Compiler Explorer link.
 
-| Lesson | Title | Slides | Exercise | Source | Solution | CompilerExplorer |
-|--------|-------|--------|----------|--------|----------|------------------|
-| 01 | A Fast Introduction to SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source] | [solution][lesson-1-solution] | [source][lesson-1-CEsource] [solution][lesson-1-CEsolution] |
-| 02 | ND Range Kernels and Concepts | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source] | [solution][lesson-2-solution] |
-| 03 | Data Flow with SYCL | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source] | [solution][lesson-3-solution] |
-| 04 | Recap and Further Learning | [slides][lesson-4-slides] | NA | NA | NA |
+| Lesson | Title | Slides | Exercise | Repository | CompilerExplorer |
+|--------|-------|--------|----------|------------|------------------|
+| 01 | A Fast Introduction to SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source]  [solution][lesson-1-solution] | [source][lesson-1-CEsource] [solution][lesson-1-CEsolution] |
+| 02 | ND Range Kernels and Concepts | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source]  [solution][lesson-2-solution] |
+| 03 | Data Flow with SYCL | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source]  [solution][lesson-3-solution] |
+| 04 | Recap and Further Learning | [slides][lesson-4-slides] | NA | NA |
 
 [lesson-1-slides]: ./Lesson_Materials/Fast_Track/
 [lesson-1-exercise]: ./Code_Exercises/Asynchronous_Execution/README.md
