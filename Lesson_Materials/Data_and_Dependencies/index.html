@@ -50,20 +50,24 @@
 					<img src="../common-revealjs/images/sycl_logo.png" />
 					<div class="trademarks">SYCL and the SYCL logo are trademarks of the Khronos Group Inc.</div>
 				</div>
+
 				<!--Slide 1-->
 				<section class="hbox">
 					<div class="hbox" data-markdown>
 						## Data and Dependencies
 					</div>
 				</section>
+
 				<!--Slide 2-->
 				<section class="hbox" data-markdown>
 					## Learning Objectives
 					* Learn about how to create dependencies between kernel functions
 					* Learn about how to move data between the host and device(s)
-					* Learn about the differences between the buffer/accessor and USM data management models
+					<!--* Learn about the differences between the buffer/accessor and USM
+						data management models-->
 					* Learn how to represent basic data flow graphs
                 </section>
+
 				<!--Slide 3-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -87,6 +91,7 @@
 						</div>
 					</div>
 				</section>
+
 				<!--Slide 4-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -104,6 +109,7 @@
 						</div>
 					</div>
 				</section>
+
 				<!--Slide 5-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -121,6 +127,7 @@
 						</div>
 					</div>
 				</section>
+
 				<!--Slide 6-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -137,6 +144,7 @@
 						</div>
 					</div>
 				</section>
+
 				<!--Slide 7-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -175,6 +183,7 @@ gpuQueue.wait();
 						</div>
 					</div>
 				</section>
+
 				<!--Slide 8-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -214,6 +223,7 @@ gpuQueue.wait();
 						</div>
 					</div>
 				</section>
+
 				<!--Slide 9-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -252,6 +262,7 @@ gpuQueue.wait();
 						</div>
 					</div>
 				</section>
+
 				<!--Slide 10-->
 				<section>
 					<div class="hbox" data-markdown>
@@ -289,117 +300,9 @@ gpuQueue.wait();
 						</div>
 					</div>
 				</section>
+
+
 				<!--Slide 11-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Data flow with USM
-					</div>
-					<div class="container">
-						<div class="col">
-							<code class="code-100pc"><pre>
-auto devicePtr =
-  sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
-
-auto e1 = gpuQueue.memcpy(devicePtr, data, sizeof(int));
-
-auto e2 = gpuQueue.parallel_for&lt;kernel_a&gt;(
-  sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx) {
-    devicePtr[idx] = /* some computation */
-  });
-
-auto e3 = gpuQueue.parallel_for&lt;kernel_b&gt;(
-  sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx) {
-    devicePtr[idx] = /* some computation */
-  });
-
-auto e4 = gpuQueue.memcpy(data, devicePtr,
-                          sizeof(int), e3);
-
-e4.wait();
-
-sycl::free(devicePtr, gpuQueue);
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* The USM data management model data model is prescriptive
-							* Dependencies are defined explicitly by passing around `event` objects
-							* Data movement is performed explicitly by enqueuing `memcpy` operations
-							* The user is responsible for ensuring data dependencies and consistency are maintained
-						</div>
-					</div>
-				</section>
-				<!--Slide 12-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Data flow with USM
-					</div>
-					<div class="container">
-						<div class="col">
-							<code class="code-100pc"><pre>
-auto devicePtr =
-  sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
-
-<mark>auto e1</mark> = gpuQueue.memcpy(devicePtr, data, sizeof(int));
-
-<mark>auto e2</mark> = gpuQueue.parallel_for&lt;kernel_a&gt;(
-  sycl::range{1024}, <mark>e1</mark>, [=](sycl::id&lt;1&gt; idx) {
-    devicePtr[idx] = /* some computation */
-  });
-
-<mark>auto e3</mark> = gpuQueue.parallel_for&lt;kernel_b&gt;(
-  sycl::range{1024}, <mark>e2</mark>, [=](sycl::id&lt;1&gt; idx) {
-    devicePtr[idx] = /* some computation */
-  });
-
-<mark>auto e4</mark> = gpuQueue.memcpy(data, devicePtr,
-                          sizeof(int), <mark>e3</mark>);
-
-<mark>e4.wait();</mark>
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* Each command enqueued to the `queue` produces an `event` object which can be used to synchronize with the completion of that command
-							* Passing those `event` objects when enqueueing other commands creates dependencies
-						</div>
-					</div>
-				</section>
-				<!--Slide 13-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Data flow with USM
-					</div>
-					<div class="container">
-						<div class="col">
-							<code class="code-100pc"><pre>
-auto devicePtr =
-  sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
-
-<mark>auto e1 = gpuQueue.memcpy(devicePtr, data, sizeof(int));</mark>
-
-auto e2 = gpuQueue.parallel_for&lt;kernel_a&gt;(
-  sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx) {
-    devicePtr[idx] = /* some computation */
-  });
-
-auto e3 = gpuQueue.parallel_for&lt;kernel_b&gt;(
-  sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx) {
-    devicePtr[idx] = /* some computation */
-  });
-
-auto e4 = gpuQueue.memcpy(data, devicePtr,
-                          sizeof(int), e3);
-
-e4.wait();
-
-sycl::free(devicePtr, gpuQueue);
-							</code></pre>
-						</div>
-						<div class="col" data-markdown>
-							* The `memcpy` member functions are used to enqueue data movement commands, moving the data to the GPU and then back again
-						</div>
-					</div>
-				</section>
-				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Concurrent data flow
@@ -416,7 +319,8 @@ sycl::free(devicePtr, gpuQueue);
 						</div>
 					</div>
 				</section>
-				<!--Slide 15-->
+
+				<!--Slide 12-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Concurrent data flow with buffers and accessors
@@ -456,75 +360,58 @@ gpuQueue.wait();
 						</div>
 					</div>
 				</section>
-				<!--Slide 16-->
+
+				<!--Slide 13-->
 				<section>
 					<div class="hbox" data-markdown>
-						#### Concurrent data flow with USM
+						#### Buffer Accessor Modes
 					</div>
 					<div class="container">
-						<code class="code-100pc"><pre>
-auto devicePtrA = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
-auto devicePtrB = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
+						<div class="col">
+							<code class="code-100pc"><pre>
+sycl::buffer bufA {dataA, sycl::range{1024}};
+sycl::buffer bufB {dataB, sycl::range{1024}};
+sycl::buffer bufC {dataC, sycl::range{1024}};
 
-<mark>auto e1</mark> = gpuQueue.memcpy(devicePtrA, dataA, sizeof(int));
-auto e2 = gpuQueue.memcpy(devicePtrB, dataB, sizeof(int));
+gpuQueue.submit([&](sycl::handler &cgh) {
+  <mark>sycl::accessor accA {bufA, cgh, sycl::read_only};</mark>
+  <mark>sycl::accessor accB {bufB, cgh, sycl::read_write};</mark>
 
-<mark>auto e3</mark> = gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024}, <mark>e1</mark>, [=](sycl::id&lt;1&gt; idx) {
-  devicePtrA[idx] = /* some computation */ });
+  cgh.parallel_for&lt;kernel_a&gt;(sycl::range{1024},
+    [=](sycl::id&lt;1&gt; idx) {
+      accB[idx] = accA[idx] * accB[idx];
+    });
+});
 
-auto e4 = gpuQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024}, e2, [=](sycl::id&lt;1&gt; idx) {
-  devicePtrB[idx] = /* some computation */ });
+gpuQueue.submit([&](sycl::handler &cgh) {
+  <mark>sycl::accessor accA {bufA, cgh, sycl::read_only};</mark>
+  <mark>sycl::accessor accC {bufC, cgh, sycl::write_only,
+			sycl::no_init};</mark>
 
-<mark>auto e5</mark> = gpuQueue.memcpy(dataA), devicePtrA, sizeof(int), <mark>e3</mark>);
+  cgh.parallel_for&lt;kernel_b&gt;(sycl::range{1024},
+    [=](sycl::id&lt;1&gt; idx) {
+      accC[idx] = accA[idx];
+    });
+});
 
-auto e6 = gpuQueue.memcpy(dataB, devicePtrB, sizeof(int), e4);
-
-<mark>e5.wait();</mark> e6.wait();
-
-sycl::free(devicePtrA, gpuQueue);
-sycl::free(devicePtrB, gpuQueue);
+gpuQueue.wait();
 							</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* Dependencies are defined explicitly
-						* We don't create dependencies between kernel functions but we do create dependencies on the data movement
+						</div>
+						<div class="col" data-markdown>
+							* Access modes help optimise the dependency graph
+							* Both kernels access buffer A; B and C are only
+							accessed by one kernel each
+							* The A-accessors are marked read-only, so the kernels are
+							independent
+							* B and C are written to; C is write-only and does not need it's
+							initial data copied in.
+							* These kernels can now run concurrently despite both accessing
+							buffer A
+						</div>
 					</div>
 				</section>
-				<!--Slide 17-->
-				<section>
-					<div class="hbox" data-markdown>
-						#### Concurrent data flow with USM
-					</div>
-					<div class="container">
-						<code class="code-100pc"><pre>
-auto devicePtrA = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
-auto devicePtrB = sycl::malloc_device&lt;int&gt;(1024, gpuQueue);
 
-auto e1 = gpuQueue.memcpy(devicePtrA, dataA, sizeof(int));
-<mark>auto e2</mark> = gpuQueue.memcpy(devicePtrB, dataB, sizeof(int));
-
-auto e3 = gpuQueue.parallel_for&lt;kernel_a&gt;(sycl::range{1024}, e1, [=](sycl::id&lt;1&gt; idx) {
-  devicePtrA[idx] = /* some computation */ });
-
-<mark>auto e4</mark> = gpuQueue.parallel_for&lt;kernel_b&gt;(sycl::range{1024}, <mark>e2</mark>, [=](sycl::id&lt;1&gt; idx) {
-  devicePtrB[idx] = /* some computation */ });
-
-auto e5 = gpuQueue.memcpy(dataA), devicePtrA, sizeof(int), e3);
-
-<mark>auto e6</mark> = gpuQueue.memcpy(dataB, devicePtrB, sizeof(int), <mark>e4</mark>);
-
-e5.wait(); <mark>e6.wait();</mark>
-
-sycl::free(devicePtrA, gpuQueue);
-sycl::free(devicePtrB, gpuQueue);
-							</code></pre>
-					</div>
-					<div class="container" data-markdown>
-						* The dependencies of each chain of commands is independant of the other
-						* The two kernels and their respective copies collectively can be executed in any order
-					</div>
-				</section>
-				<!--Slide 15-->
+				<!--Slide 14-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Which should you choose?
@@ -547,13 +434,15 @@ sycl::free(devicePtrB, gpuQueue);
 						</div>
 					</div>
 				</section>
-				<!--Slide 16-->
+
+				<!--Slide 15-->
 				<section>
 					<div class="hbox" data-markdown>
 						## Questions
 					</div>
 				</section>
-				<!--Slide 17-->
+
+				<!--Slide 16-->
 				<section>
 					<div class="hbox" data-markdown>
 						#### Exercise
@@ -565,7 +454,8 @@ sycl::free(devicePtrB, gpuQueue);
 						![SYCL](../common-revealjs/images/diamond_data_flow.svg "SYCL")
 					</div>
 					<div class="container" data-markdown>
-						Put together what you've seen here to create the above diamond data flow graph in either buffer/accessor or USM data management models
+						Put together what you've seen here to create the above diamond data
+						flow graph using the buffer/accessor data management model
 					</div>
 				</section>
 			</div>
