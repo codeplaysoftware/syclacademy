@@ -45,6 +45,4 @@ void test_buffer() {
   SYCLACADEMY_ASSERT_EQUAL(/*output data*/ 0, /*expected data*/ 0);
 }
 
-int main() {
-  test_buffer();
-}
+int main() { test_buffer(); }

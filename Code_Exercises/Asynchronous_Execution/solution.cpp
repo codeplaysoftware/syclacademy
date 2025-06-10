@@ -9,10 +9,9 @@
 */
 
 #include <sycl/sycl.hpp>
+
 #include "../helpers.hpp"
 using namespace sycl;
-
-
 
 void test_buffer_event_wait() {
   constexpr size_t dataSize = 1024;
@@ -37,9 +36,9 @@ void test_buffer_event_wait() {
           accessor accB = accessor{bufB, cgh, read_only};
           accessor accR = accessor{bufR, cgh, write_only};
 
-          cgh.parallel_for(
-              range{dataSize},
-              [=](id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
+          cgh.parallel_for(range{dataSize}, [=](id<1> idx) {
+            accR[idx] = accA[idx] + accB[idx];
+          });
         })
         .wait();  // Synchronize
 
@@ -73,9 +72,8 @@ void test_buffer_queue_wait() {
       accessor accB = accessor{bufB, cgh, read_only};
       accessor accR = accessor{bufR, cgh, write_only};
 
-      cgh.parallel_for(
-          range{dataSize},
-          [=](id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
+      cgh.parallel_for(range{dataSize},
+                       [=](id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
     });
 
     defaultQueue.wait_and_throw();      // Synchronize
@@ -109,9 +107,8 @@ void test_buffer_buffer_destruction() {
         accessor accB = accessor{bufB, cgh, read_only};
         accessor accR = accessor{bufR, cgh, write_only};
 
-        cgh.parallel_for(
-            range{dataSize},
-            [=](id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
+        cgh.parallel_for(range{dataSize},
+                         [=](id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
       });
     }  // Synchronize and copy-back
 
@@ -122,7 +119,6 @@ void test_buffer_buffer_destruction() {
 
   SYCLACADEMY_ASSERT_EQUAL(r, [](size_t i) { return i * 2; });
 }
-
 
 void test_buffer_host_accessor() {
   constexpr size_t dataSize = 1024;
@@ -147,15 +143,16 @@ void test_buffer_host_accessor() {
         accessor accB = accessor{bufB, cgh, read_only};
         accessor accR = accessor{bufR, cgh, write_only};
 
-        cgh.parallel_for(
-            range{dataSize},
-            [=](sycl::id<1> idx) { accR[idx] = accA[idx] + accB[idx]; });
+        cgh.parallel_for(range{dataSize}, [=](sycl::id<1> idx) {
+          accR[idx] = accA[idx] + accB[idx];
+        });
       });
 
       defaultQueue.wait();  // Synchronize
 
       {
-        host_accessor hostAccR = bufR.get_host_access(read_only);  // Copy-to-host
+        host_accessor hostAccR =
+            bufR.get_host_access(read_only);  // Copy-to-host
 
         SYCLACADEMY_ASSERT_EQUAL(hostAccR, [](size_t i) { return i * 2; });
       }
