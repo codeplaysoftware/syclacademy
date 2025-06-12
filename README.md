@@ -7,7 +7,7 @@ This repository provides materials that can be used for teaching SYCL. The
 materials are provided using the "Creative Commons Attribution Share Alike 4.0
 International" license.
 
-This specific branch of SYCL Academy is being used for ISC25 and contains a subset 
+This specific branch of SYCL Academy is being used for ISC25 and contains a subset
 of the materials available in the main branch.
 
 ## Lesson Curriculum
@@ -20,7 +20,7 @@ matter. The code is available in both the repository and as a Compiler Explorer 
 | Lesson | Title | Slides | Exercise | Repository | CompilerExplorer |
 |--------|-------|--------|----------|------------|------------------|
 | 01 | A Fast Introduction to SYCL | [slides][lesson-1-slides] | [exercise][lesson-1-exercise] | [source][lesson-1-source]  [solution][lesson-1-solution] | [source][lesson-1-CEsource] [solution][lesson-1-CEsolution] |
-| 02 | ND Range Kernels and Concepts | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source]  [solution][lesson-2-solution] |
+| 02 | ND Range Kernels and Concepts | [slides][lesson-2-slides] | [exercise][lesson-2-exercise] | [source][lesson-2-source]  [solution][lesson-2-solution] | [source][lesson-2-CEsource] [solution][lesson-2-CEsolution] |
 | 03 | Data Flow with SYCL | [slides][lesson-3-slides] | [exercise][lesson-3-exercise] | [source][lesson-3-source]  [solution][lesson-3-solution] |
 | 04 | Recap and Further Learning | [slides][lesson-4-slides] | NA | NA |
 
@@ -36,6 +36,8 @@ matter. The code is available in both the repository and as a Compiler Explorer 
 [lesson-2-exercise]: ./Code_Exercises/Data_Parallelism/README.md
 [lesson-2-source]:   ./Code_Exercises/Data_Parallelism/source.cpp
 [lesson-2-solution]: ./Code_Exercises/Data_Parallelism/solution.cpp
+[lesson-2-CEsource]: https://godbolt.org/z/rWEee49rP
+[lesson-2-CEsolution]: https://godbolt.org/z/TeY38q9vh
 
 [lesson-3-slides]: ./Lesson_Materials/Data_and_Dependencies/
 [lesson-3-exercise]: ./Code_Exercises/Data_and_Dependencies/README.md
