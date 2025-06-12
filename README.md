@@ -41,5 +41,7 @@ matter. The code is available in both the repository and as a Compiler Explorer 
 [lesson-3-exercise]: ./Code_Exercises/Data_and_Dependencies/README.md
 [lesson-3-source]:   ./Code_Exercises/Data_and_Dependencies/source.cpp
 [lesson-3-solution]: ./Code_Exercises/Data_and_Dependencies/solution.cpp
+[lesson-3-CEsource]: https://godbolt.org/z/ajErrMccv
+[lesson-3-CEsolution]: https://godbolt.org/z/djc7zK9bG
 
 [lesson-4-slides]: ./Lesson_Materials/Recap_and_Further_Learning/
