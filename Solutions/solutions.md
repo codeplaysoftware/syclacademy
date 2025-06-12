@@ -4,7 +4,7 @@ If you are stuck, here is a list of the solution source files for the exercises,
 
 
 | Lesson | Title | Compiler Explorer Solution |
-|--------|-------|--------|
+|--------|-------|----------------------------|
 | 01 | A Fast Introduction to SYCL | [solution][lesson-1-CEsolution]  |
 | 02 | ND Range Kernels and Concepts | [solution][lesson-2-CEsolution] |
 | 03 | Data Flow with SYCL | [solution][lesson-3-CEsolution] |
