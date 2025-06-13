@@ -41,11 +41,3 @@ This version of `parallel_for` takes an `nd_range` which is made up of two
 kernel function must take an `nd_item`, which cannot be passed directly to the
 subscript operator of an `accessor`. Instead, retrieve the `id` using the
 `get_global_id` member function.
-
-#### Build And Execution Hints
-
-For DevCloud via JupiterLab follow these [instructions](../devcloudJupyter.md).
-
-For DPC++: [instructions](../dpcpp.md).
-
-For AdaptiveCpp: [instructions](../adaptivecpp.md).
