@@ -48,11 +48,3 @@ Remember to do this within a scope to ensure the host `accessor` is destroyed.
 
 Also note that creating a host `accessor` may copy the data back to the original
 pointer provided to the `buffer` but this is not guaranteed.
-
-#### Build And Execution Hints
-
-For DevCloud via JupiterLab follow these [instructions](../devcloudJupyter.md).
-
-For DPC++: [instructions](../dpcpp.md).
-
-For AdaptiveCpp: [instructions](../adaptivecpp.md).
