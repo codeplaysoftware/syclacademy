@@ -29,11 +29,3 @@ buffer/accessor these dependencies are created implicitly using the creation of
 
 Feel free to use any method of synchronization and copy back you like, but
 remember to handle errors.
-
-#### Build And Execution Hints
-
-For DevCloud via JupiterLab follow these [instructions](../devcloudJupyter.md).
-
-For DPC++: [instructions](../dpcpp.md).
-
-For AdaptiveCpp: [instructions](../adaptivecpp.md).
